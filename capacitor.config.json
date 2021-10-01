@@ -1,0 +1,11 @@
+{
+  "appId": "com.test.asdfghjkl",
+  "appName": "test",
+  "bundledWebRuntime": true,
+  "webDir": "src",
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 0
+    }
+  }
+}

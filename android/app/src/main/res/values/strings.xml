@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">BitShift</string>
+    <string name="title_activity_main">BitShift</string>
+    <string name="package_name">ooo.hyperi.BitShift</string>
+    <string name="custom_url_scheme">ooo.hyperi.BitShift</string>
+</resources>
