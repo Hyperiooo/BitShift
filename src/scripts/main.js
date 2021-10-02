@@ -15,7 +15,10 @@ var settings = {
         "colorTwo": "#d4d4d4",
     },
     "ui": {
-        "canvasScale": 20
+        "canvasScale": 10,
+        "angle": 0,
+        "transformX": 0,
+        "transformY": 0,
     },
     "tools": {
         "brushSize": 1
@@ -37,6 +40,39 @@ var lc = [];
 var preview = true;
 class Canvas {
     constructor(width, height) {
+
+        this.canvasParent = document.getElementById("canvas-parent")
+        this.canvasParent.addEventListener("touchmove", (e) => {
+            e.preventDefault()
+        })
+
+        this.initialScale = 1
+
+        interact(this.canvasParent)
+            .gesturable({
+                listeners: {
+                    start(event) {
+                        settings.ui.angle -= event.angle
+                        console.log(event)
+                        event.preventDefault()
+                        board.active = false
+                        board.initialScale = settings.ui.canvasScale
+                        console.log(settings.ui.canvasScale)
+                    },
+                    move(event) {
+                        var currentScale = event.scale * board.initialScale
+                        event.preventDefault()
+                        board.active = false
+                        board.setCanvScale(Math.pow(currentScale / 5, 1.25))
+                    },
+                    end(event) {
+                        settings.ui.canvasScale = board.initialScale * event.scale
+                        event.preventDefault()
+                        board.active = true
+                        console.log(settings.ui.canvasScale)
+                    }
+                }
+            })
         this.canvUnit = 1
         this.canvScale = settings.ui.canvasScale
         this.canvas = document.querySelector("#canvas");
@@ -104,6 +140,28 @@ class Canvas {
             }
 
         });
+
+        this.canvasParent.addEventListener("mousedown", e => {
+            if (e.button == 1) {
+                this.setCanvTransform(e.clientX, e.clientY)
+            }
+        })
+
+        this.canvasParent.addEventListener("mousemove", e => {
+            if (e.buttons == 4) {
+                this.setCanvTransform(e.clientX, e.clientY)
+            }
+        })
+        this.canvasParent.addEventListener("wheel", e => {
+            this.zoom(e.deltaY / 100 * -1, 0)
+        })
+
+
+        this.canvasParent.addEventListener("mouseup", e => {
+            this.prevTX = null;
+            this.prevTY = null;
+        })
+
         this.canvas.addEventListener("mousemove", e => {
             this.inputActive(e)
         });
@@ -113,20 +171,19 @@ class Canvas {
         })
 
         this.canvas.addEventListener("mousedown", e => {
-            console.log('a')
+            if (e.button != 0) {
+                return
+            }
             this.inputDown(e)
         });
         this.canvas.addEventListener("mouseup", e => {
-            console.log('a')
             this.inputUp(e)
         });
 
         this.canvas.addEventListener("touchstart", e => {
-            console.log('a')
             this.inputDown(e)
         });
         this.canvas.addEventListener("touchend", e => {
-            console.log('a')
             this.inputUp(e)
         });
     }
@@ -170,8 +227,8 @@ class Canvas {
         this.ctrlKey = e.ctrlKey;
         this.altKey = e.altKey;
         var rect = this.canvas.getBoundingClientRect();
-        var x = (e.clientX) - rect.left || e.touches[0].clientX - rect.left;
-        var y = (e.clientY) - rect.top || e.touches[0].clientY - rect.top;
+        var x = (e.clientX) - rect.left || e.touches[0].clientX - rect.left || -1;
+        var y = (e.clientY) - rect.top || e.touches[0].clientY - rect.top || -1;
         x = Math.floor(this.width * x / (this.canvas.clientWidth * this.canvScale));
         y = Math.floor(this.height * y / (this.canvas.clientHeight * this.canvScale));
         if (this.active) {
@@ -381,20 +438,34 @@ class Canvas {
         return Math.round(value * inv) / inv;
     }
     changeBrushSize(sz) {
-        let slide = document.getElementById('brushSzSlide')
-        let txt = document.getElementById('brushSzNum')
-        let icon = document.getElementById('brushSzIcon')
-        slide.value = sz
-        txt.value = sz
+        //let slide = document.getElementById('brushSzSlide')
+        //let txt = document.getElementById('brushSzNum')
+        //let icon = document.getElementById('brushSzIcon')
+        //slide.value = sz
+        //txt.value = sz
         settings.tools.brushSize = sz
-        icon.style.fontSize = Math.max(Math.min(sz, 30), 5) + "px"
-        var value = (slide.value - slide.min) / (slide.max - slide.min) * 100
-        slide.style.background = 'linear-gradient(to right, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.15) ' + value + '%, rgba(255, 255, 255, 0.03) ' + value + '%, rgba(255, 255, 255, 0.03) 100%)'
+        //icon.style.fontSize = Math.max(Math.min(sz, 30), 5) + "px"
+        //var value = (slide.value - slide.min) / (slide.max - slide.min) * 100
+        //slide.style.background = 'linear-gradient(to right, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.15) ' + value + '%, rgba(255, 255, 255, 0.03) ' + value + '%, rgba(255, 255, 255, 0.03) 100%)'
+    }
+    zoom(z) {
+        this.setCanvScale(Math.max(settings.ui.canvasScale + z, 1))
     }
     setCanvScale(s) {
         settings.ui.canvasScale = s;
         this.canvScale = settings.ui.canvasScale;
         document.documentElement.style.setProperty('--canvScale', this.canvScale);
+    }
+    setCanvTransform(x, y) {
+        if (!this.prevTX) { this.prevTX = x; }
+        if (!this.prevTY) { this.prevTY = y; }
+        if (!this.prevTY || !this.prevTX) { return; }
+        settings.ui.transformX = settings.ui.transformX + (x - this.prevTX)
+        settings.ui.transformY = settings.ui.transformY + (y - this.prevTY)
+        document.documentElement.style.setProperty('--canvTransformX', settings.ui.transformX + "px");
+        document.documentElement.style.setProperty('--canvTransformY', settings.ui.transformY + "px");
+        this.prevTX = x
+        this.prevTY = y
     }
     drawBgGrid() {
         let nCol = Math.ceil(this.width / settings.background.width)
@@ -859,34 +930,6 @@ window.onload = function () {
     //    console.log(e.getAttribute('data-input-function'))
     //	new shadowRange(e, e.getAttribute('data-input-function'))
     //})
-    let canvasGesture = document.getElementById("canvases")
-    var angleScale = {
-        scale: 1
-      }
-      canvasGesture.addEventListener("touchmove", (e) => {
-          e.preventDefault()
-      })
-    interact(canvasGesture)
-        .gesturable({
-            listeners: {
-                start(event) {
-                    angleScale.angle -= event.angle
-                    console.log(event)
-                    event.preventDefault()
-                },
-                move(event) {
-                    // document.body.appendChild(new Text(event.scale))
-                    var currentScale = event.scale * angleScale.scale
-                    event.preventDefault()
-
-                    board.setCanvScale((currentScale * 10) + 10)
-                },
-                end(event) {
-                    angleScale.scale = angleScale.scale * event.scale
-                    event.preventDefault()
-                }
-            }
-        })
     let canvasData = localStorage.getItem('pc-canvas-data');
     if (canvasData) {
         data = JSON.parse(canvasData);
@@ -976,9 +1019,6 @@ document.querySelector("#close").onclick = function () {
     });
 }
 
-document.querySelector(".menubtn").onclick = function () {
-    document.querySelector(".menu").style.display = document.querySelector(".menu").style.display != "block" ? "block" : "none";
-}
 
 function newProject() {
     document.querySelector(".menu").style.display = "none";
@@ -1068,4 +1108,14 @@ function install() {
 
 window.onerror = function (errorMsg, url, lineNumber) {
     //alert('Error: ' + errorMsg + ' Script: ' + url + ' Line: ' + lineNumber);
+}
+
+function openColorPicker() {
+    console.log('color')
+}
+
+function openMenu() {
+
+    document.querySelector(".menu").style.display = document.querySelector(".menu").style.display != "block" ? "block" : "none";
+
 }

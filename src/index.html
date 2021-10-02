@@ -1,71 +1,129 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
   <head>
-    <link rel="manifest" href="manifest.json">
-    <script src="https://kit.fontawesome.com/473e8f3a80.js" crossorigin="anonymous"></script>
+    <link rel="manifest" href="manifest.json" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/9.3.0/math.js"></script>
-    <script src="./lib/Matrix.js"></script>
-    <script src="./lib/Shapes.js"></script>
-    <script src="./lib/Transformation.js"></script>
-    <script src="./lib/gif.js"></script>
-    <link rel="stylesheet" href="main.css">
-    <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
+    <script src="./scripts/Matrix.js"></script>
+    <script src="./scripts/Shapes.js"></script>
+    <script src="./scripts/Transformation.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+      />
+    <script src="./scripts/gif.js"></script>
+    <link rel="stylesheet" href="main.css" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css"
+      rel="stylesheet"
+      />
     <script src="https://unpkg.com/interactjs/dist/interact.min.js"></script>
-    
+    <link rel="icon"
+      type="image/svg"
+      href="./assets/logo.svg">
   </head>
   <body>
-    <div class="menubtn">☰</div>
     <ul class="menu">
       <li onclick="newProject()">New</li>
       <li onclick="board.save()">Save image</li>
       <li onclick="board.renderGIF()">Save GIF</li>
       <li onclick="install()">Install PWA</li>
-      <li><a href="https://github.com/rgab1508/PixelCraft" target="_blank"><i class="fab fa-github"></i>Github</a></li>
+      <li>
+        <a href="https://github.com/rgab1508/PixelCraft" target="_blank"><i
+            class="fab fa-github"></i>Github</a>
+      </li>
     </ul>
     <div id="popup">
       <h3>Select the Dimensions Of the grid</h3>
-      <input type="text" id="width" value="16">X<input type="text" id="height" value="16">
+      <input type="text" id="width" value="16" />X<input
+        type="text"
+        id="height"
+        value="16"
+        />
       <button id="close">OK</button>
     </div>
-    <div id="frames" onblur="Frames.close()" tabindex="0">
-    <div class="btn" style="left: 10px;" onclick="document.querySelector('#frames #gallery').scrollLeft-=100;"><i class="fa fa-chevron-left"></i></div>
-    <div class="btn" style="right: 10px;" onclick="document.querySelector('#frames #gallery').scrollLeft+=100;"><i class="fa fa-chevron-right"></i></div>
-    <div id="gallery"></div>
-    </div>
-    </div>
-    <div id="canvases" onclick="console.log('asdf')">
+    <div id="canvas-parent" onclick="console.log('asdf')">
       <canvas id="previewcanv"></canvas>
       <canvas id="canvas"></canvas>
       <canvas id="bggridcanv"></canvas>
     </div>
     <div id="toolbar" class="ui">
-      
-      <span class="item tool-active" onclick="board.setmode(0)"><i class="ri-pencil-fill"></i></span>
-      <span class="item" onclick="board.setmode(1)"><i class="ri-eraser-fill"></i></span>
-      <span class="item" onclick="board.setmode(2)"><i class="ri-paint-fill"></i></span>
-      <span class="item" onclick="board.setmode(3)">
-        <i>
-        <svg viewBox="0 0 24 24" width="20" height="20" version="1.1" id="svg6">
-          <path d="M 19.071,3.515 20.485,4.929 4.93,20.485 3.516,19.071 19.07,3.515 Z" id="path4"/>
-        </svg></i>
-      </span>
-      <span class="item" onclick="board.setmode(4)"><i class="ri-checkbox-blank-circle-line"></i></span>
-      <span class="item" onclick="board.setmode(5)"><i class="ri-checkbox-blank-line"></i></span>
-      <span class="item" onclick="board.addFrame()"><i class="fas fa-plus"></i></span>
-      <span class="item" onclick="board.undo()"><i class="fas fa-undo"></i></span>
-      <span class="item" onclick="board.redo()"><i class="fas fa-redo"></i></span>
-      <span class="item" onclick="board.clear()"><i class="fas fa-trash"></i></span>
-      <span class="item" onclick="board.addImage()"><i class="fa fa-upload"></i></span>
-    </div>
-    <div id="settingsBar" class="ui"><ul><div class="slider-wrapper ui"><!---
-      ---><li class="icon"><i id="brushSzIcon" class="ri-checkbox-blank-circle-fill" style="font-size:7px;"></i></li><!---
-      ---><li class="slide-wrap" data-tippy-content="Width"><input type="range" min="1" class="slider" max="100" value="40" id="brushSzSlide" data-input-function="board.changeBrushSize(this.value)"></li><!---
-      ---><li class="num-wrap" data-tippy-content="Width"><input type="number" min="1" class="number" max="100" value="40" id="brushSzNum" oninput="board.changeBrushSize(this.value)"><div class="num-label">px</div></li>
-      
-    </ul>
-  </div></div> </div>
-    <div id="palette" class="ui"></div>
-    <div id="debug" style="position:absolute;top:70px; color:white">asdfasdfasf</div>
-  </body>
-  <script type="text/javascript" src="main.js"></script>
-</html>
+      <span class="item" onclick="openMenu()"><i
+          class="ri-menu-fill"></i></span>
+      <div id="toolbar-right">
+        <span class="item tool-active" onclick="board.setmode(0)"><i
+            class="ri-pencil-fill"></i></span>
+        <span class="item" onclick="board.setmode(1)"><i class="ri-eraser-fill"></i></span>
+        <span class="item" onclick="board.setmode(2)"><i class="ri-paint-fill"></i></span>
+        <span class="item" onclick="board.setmode(3)">
+          <i>
+            <svg
+              viewBox="0 0 24 24"
+              width="20"
+              height="20"
+              version="1.1"
+              id="svg6">
+              <path
+                d="M 19.071,3.515 20.485,4.929 4.93,20.485 3.516,19.071
+                19.07,3.515 Z"
+                id="path4"
+                /></svg></i>
+          </span>
+          <span class="item" onclick="board.setmode(4)"><i
+              class="ri-checkbox-blank-circle-line"></i></span>
+          <span class="item" onclick="board.setmode(5)"><i
+              class="ri-checkbox-blank-line"></i></span>
+          <span class="item" onclick="openColorPicker()"><i
+              class="ri-checkbox-blank-circle-fill"></i></span>
+          <span class="item" onclick="board.undo()"><i
+              class="ri-arrow-go-back-line"></i></span>
+          <span class="item" onclick="board.redo()"><i
+              class="ri-arrow-go-forward-line"></i></span>
+          <span class="item" onclick="board.clear()"><i
+              class="ri-delete-bin-fill"></i></span>
+        </div>
+
+      </div><!--
+      <div id="settingsBar" class="ui">
+        <ul>
+          <div class="slider-wrapper ui">
+            <!---
+            <li class="icon">
+              <i
+                id="brushSzIcon"
+                class="ri-checkbox-blank-circle-fill"
+                style="font-size: 7px"></i>
+            </li>
+            <!---
+            <li class="slide-wrap" data-tippy-content="Width">
+              <input
+                type="range"
+                min="1"
+                class="slider"
+                max="100"
+                value="40"
+                id="brushSzSlide"
+                data-input-function="board.changeBrushSize(this.value)"
+                />
+            </li>
+            <!---
+            <li class="num-wrap" data-tippy-content="Width">
+              <input
+                type="number"
+                min="1"
+                class="number"
+                max="100"
+                value="40"
+                id="brushSzNum"
+                oninput="board.changeBrushSize(this.value)"
+                />
+              <div class="num-label">px</div>
+            </li>
+          </div>
+        </ul>
+      </div>-->
+      <div id="palette" class="ui"></div>
+    </body>
+    <script type="text/javascript" src="./scripts/main.js"></script>
+  </html>
