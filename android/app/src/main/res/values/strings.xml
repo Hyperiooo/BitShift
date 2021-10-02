@@ -2,6 +2,6 @@
 <resources>
     <string name="app_name">BitShift</string>
     <string name="title_activity_main">BitShift</string>
-    <string name="package_name">ooo.hyperi.BitShift</string>
-    <string name="custom_url_scheme">ooo.hyperi.BitShift</string>
+    <string name="package_name">com.hyperio.bitshift</string>
+    <string name="custom_url_scheme">com.hyperio.bitshift</string>
 </resources>

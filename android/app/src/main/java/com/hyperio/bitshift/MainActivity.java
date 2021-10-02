@@ -1,4 +1,4 @@
-package com.test.asdfghjkl;
+package com.hyperio.bitshift;
 
 import com.getcapacitor.BridgeActivity;
 

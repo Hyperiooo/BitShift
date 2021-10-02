@@ -1,6 +1,6 @@
 {
-	"appId": "com.test.asdfghjkl",
-	"appName": "test",
+	"appId": "com.hyperio.bitshift",
+	"appName": "BitShift",
 	"bundledWebRuntime": true,
 	"webDir": "src",
 	"plugins": {
