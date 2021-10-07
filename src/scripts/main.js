@@ -15,7 +15,7 @@ var settings = {
         "colorTwo": "#d4d4d4",
     },
     "ui": {
-        "canvasScale": 10,
+        "canvasScale": 20,
         "angle": 0,
         "transformX": 0,
         "transformY": 0,
@@ -40,6 +40,10 @@ var lc = [];
 var preview = true;
 class Canvas {
     constructor(width, height) {
+        this.mobile = false
+        if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+            this.mobile = true
+        }
 
         this.canvasParent = document.getElementById("canvas-parent")
         this.canvasParent.addEventListener("touchmove", (e) => {
@@ -47,6 +51,8 @@ class Canvas {
         })
 
         this.initialScale = 1
+        this.canvUnit = 1
+        this.canvScale = settings.ui.canvasScale
 
         interact(this.canvasParent)
             .gesturable({
@@ -73,8 +79,6 @@ class Canvas {
                     }
                 }
             })
-        this.canvUnit = 1
-        this.canvScale = settings.ui.canvasScale
         this.canvas = document.querySelector("#canvas");
         this.previewcanvas = document.querySelector("#previewcanv");
         this.bggridcanvas = document.querySelector("#bggridcanv");
@@ -136,7 +140,7 @@ class Canvas {
             } else if (tools[Tool.rect]) {
             } else if (tools[Tool.ellipse]) {
             } else {
-                this.draw(x, y);
+                this.draw(new Point(x, y));
             }
 
         });
@@ -164,6 +168,10 @@ class Canvas {
 
         this.canvas.addEventListener("mousemove", e => {
             this.inputActive(e)
+        });
+
+        this.canvas.addEventListener("mouseout", e => {
+            if (tools[Tool.pen]) this.clearPreview()
         });
 
         this.canvas.addEventListener("touchmove", e => {
@@ -204,19 +212,17 @@ class Canvas {
         this.active = false;
         if (tools[Tool.circle] || tools[Tool.ellipse] || tools[Tool.line] || tools[Tool.rect]) {
             var p;
-            for (p of this.tempL) this.draw(p.x, p.y);
+            for (p of this.tempL) this.draw(p);
             this.clearPreview()
             this.tempL = []
-            if (tools[Tool.shapeFilled] && tools[Tool.circle]) {
-                let fillL = filledCircle(this.filledData.r, this.filledData.c)
-                for (let l of fillL) this.draw(l.x, l.y);
-            } else if (tools[Tool.shapeFilled] && tools[Tool.ellipse]) {
-                let fillL = filledCircle(this.filledData.x, this.filledData.y, this.filledData.c.x, this.filledData.c.y)
-                for (let l of fillL) this.draw(l.x, l.y);
-            } else if (tools[Tool.shapeFilled] && tools[Tool.rect]) {
-                let fillL = filledCircle(this.filledData.r, this.filledData.c)
-                for (let l of fillL) this.draw(l.x, l.y);
-            }
+            //if (tools[Tool.shapeFilled] && tools[Tool.ellipse]) {
+            //    console.log(this.filledData)
+            //    let fillL = filledEllipse(this.filledData.c.x, this.filledData.c.y, this.filledData.x, this.filledData.y)
+            //    for (let l of fillL) this.draw(l);
+            //} else if (tools[Tool.shapeFilled] && tools[Tool.rect]) {
+            //    let fillL = filledRectangle(this.filledData.r, this.filledData.c)
+            //    for (let l of fillL) this.draw(l);
+            //}
         }
         console.log(this.linePoints)
         this.linePoints = [];
@@ -236,7 +242,7 @@ class Canvas {
                 let P = line(new Point(this.sX, this.sY), new Point(x, y))
                 let p
                 for (p of P) this.draw(p.x, p.y)
-                this.draw(x, y)
+                this.draw(new Point(x, y))
                 this.sX = x;
                 this.sY = y;
             }
@@ -307,7 +313,7 @@ class Canvas {
                         this.tempL = circle(Math.floor(r), c);
                         if (tools[Tool.shapeFilled]) this.filledData = { "r": math.floor(r), "c": c };
                         var p;
-                        for (p of this.tempL) this.pDraw(p.x, p.y);
+                        for (p of this.tempL) this.pDraw(new Point(p.x, p.y));
                     } else if (!this.shiftKey) {
                         let c = new Point(this.sX, this.sY)
                         if (this.ctrlKey) { c = new Point(this.sX - (x - this.sX), this.sY - (y - this.sY)) }
@@ -315,7 +321,7 @@ class Canvas {
                         this.tempL = ellipse(x, y, c.x, c.y)
                         if (tools[Tool.shapeFilled]) this.filledData = { "x": x, "y": y, "c": c };
                         var p;
-                        for (p of this.tempL) this.pDraw(p.x, p.y);
+                        for (p of this.tempL) this.pDraw(new Point(p.x, p.y));
                         //if(this.ctrlKey) console.log('control hehe')
                     }
 
@@ -325,7 +331,7 @@ class Canvas {
                     let c = new Point(this.sX, this.sY)
                     this.tempL = line(c, new Point(x, y));
                     var p;
-                    for (p of this.tempL) this.pDraw(p.x, p.y);
+                    for (p of this.tempL) this.pDraw(new Point(p.x, p.y));
 
                 }
                 if (tools[Tool.rect]) {
@@ -392,7 +398,7 @@ class Canvas {
 
                         this.tempL = rectangle(c, e);
                         var p;
-                        for (p of this.tempL) this.pDraw(p.x, p.y);
+                        for (p of this.tempL) this.pDraw(new Point(p.x, p.y));
 
                     } else if (!this.shiftKey) {
                         //var radius = +prompt("radius?");
@@ -401,7 +407,7 @@ class Canvas {
                         let e = new Point(x, y)
                         this.tempL = rectangle(c, e);
                         let aa = []
-                        for (let p of this.tempL) this.pDraw(p.x, p.y);
+                        for (let p of this.tempL) this.pDraw(new Point(p.x, p.y));
                     }
 
                 }
@@ -411,22 +417,9 @@ class Canvas {
             if (preview) {
                 this.pctx.globalCompositeOperation = "destination-out";
                 this.pctx.fillRect(0, 0, this.w, this.h);
-                if (settings.tools.brushSize <= 2) {
-                    if (settings.tools.brushSize == 2) {
-                        this.pDraw(x, y)
-                        this.pDraw(x - 1, y)
-                        this.pDraw(x, y - 1)
-                        this.pDraw(x - 1, y - 1)
-
-                    } else if (settings.tools.brushSize == 1) {
-                        this.pDraw(x, y)
-
-                    }
-                } else {
-                    let point = plotCircle(x, y, brushSize);
-                    var p;
-                    for (p of point) this.pDraw(p.x, p.y);
-
+                //TODO when doing brush size you'd modify it here
+                if (!this.mobile) {
+                    this.pDraw(new Point(x, y))
                 }
             }
         }
@@ -588,44 +581,108 @@ class Canvas {
         this.pctx.globalCompositeOperation = "destination-out";
         this.pctx.fillRect(0, 0, this.w, this.h);
     }
-    draw(x, y, count) {
-        if (x >= 0 && x < this.width && y >= 0 && y < this.height) {
-            this.ctx.globalCompositeOperation = 'source-over'
-            this.ctx.fillRect(Math.floor(x * (this.w / this.width)), Math.floor(y * (this.h / this.height)), Math.floor(this.w / this.width), Math.floor(this.h / this.height));
-            if (!count && JSON.stringify(this.steps[this.steps.length - 1]) !== JSON.stringify([x, y, this.color, this.ctx.globalAlpha])) this.steps.push([x, y, this.color, this.ctx.globalAlpha]);
+    draw(coord) {
+        if (coord.constructor.name == "Point") {
+            var x = coord.x
+            var y = coord.y
+            if (x >= 0 && x < this.width && y >= 0 && y < this.height) {
+                this.ctx.globalCompositeOperation = 'source-over'
+                this.ctx.fillRect(x, y, 1, 1);
+            }
+        } else if (coord.constructor.name == "Rect") {
+            console.log("aye")
+            var x1 = coord.x1
+            var y1 = coord.y1
+            var x2 = coord.x2
+            var y2 = coord.y2
+            var ax1, ax2, ay1, ay2
+            if (x1 >= 0 && x1 < this.width && y1 >= 0 && y1 < this.height && x2 >= 0 && x2 < this.width && y2 >= 0 && y2 < this.height) {
+                this.pctx.globalCompositeOperation = 'source-over'
+                if (x1 >= x2) {
+                    ax1 = x2
+                    ax2 = x1
+                } else if (x1 < x2) {
+                    ax1 = x1
+                    ax2 = x2
+                }
+                if (y1 >= y2) {
+                    ay1 = y2
+                    ay2 = y1
+                } else if (y1 < y2) {
+                    ay1 = y1
+                    ay2 = y2
+                }
+                this.ctx.fillRect(ax1, ay1, ax2 - ax1, ay2 - ay1);
+            }
         }
     }
-    pDraw(x, y, count) {
-        if (x >= 0 && x < this.width && y >= 0 && y < this.height) {
-            this.pctx.globalCompositeOperation = 'source-over'
-            this.pctx.fillRect(Math.floor(x * (this.w / this.width)), Math.floor(y * (this.h / this.height)), Math.floor(this.w / this.width), Math.floor(this.h / this.height));
+    pDraw(coord) {
+        if (coord.constructor.name == "Point") {
+            var x = coord.x
+            var y = coord.y
+            if (x >= 0 && x < this.width && y >= 0 && y < this.height) {
+                this.pctx.globalCompositeOperation = 'source-over'
+                this.pctx.fillRect(x, y, 1, 1);
+            }
+        } else if (coord.constructor.name == "Rect") {
+            var x1 = coord.x1
+            var y1 = coord.y1
+            var x2 = coord.x2
+            var y2 = coord.y2
+            var ax1, ax2, ay1, ay2
+            if (x1 >= 0 && x1 < this.width && y1 >= 0 && y1 < this.height && x2 >= 0 && x2 < this.width && y2 >= 0 && y2 < this.height) {
+                this.pctx.globalCompositeOperation = 'source-over'
+                if (x1 >= x2) {
+                    ax1 = x2
+                    ax2 = x1
+                } else if (x1 < x2) {
+                    ax1 = x1
+                    ax2 = x2
+                }
+                if (y1 >= y2) {
+                    ay1 = y2
+                    ay2 = y1
+                } else if (y1 < y2) {
+                    ay1 = y1
+                    ay2 = y2
+                }
+                this.pctx.fillRect(ax1, ay1, ax2 - ax1, ay2 - ay1);
+            }
         }
     }
-    eDraw(x, y, count) {
-        if (x >= 0 && x < this.width && y >= 0 && y < this.height) {
-            this.ctx.globalCompositeOperation = 'destination-out'
-            this.ctx.fillRect(Math.floor(x * (this.w / this.width)), Math.floor(y * (this.h / this.height)), Math.floor(this.w / this.width), Math.floor(this.h / this.height));
-            if (!count && JSON.stringify(this.steps[this.steps.length - 1]) !== JSON.stringify([x, y, this.color, this.ctx.globalAlpha])) this.steps.push([x, y, this.color, this.ctx.globalAlpha]);
+    eDraw(coord) {
+        if (coord.constructor.name == "Point") {
+            var x = coord.x
+            var y = coord.y
+            if (x >= 0 && x < this.width && y >= 0 && y < this.height) {
+                this.ctx.globalCompositeOperation = 'destination-out'
+                this.ctx.fillRect(x, y, 1, 1);
+            }
         }
     }
     erase(x, y) {
         var temp = this.color;
-        this.eDraw(x, y);
+        this.eDraw(new Point(x, y));
         this.setcolor(temp);
         this.ctx.globalCompositeOperation = 'source-over'
     }
     setcolor(color) {
-        console.trace(color)
         this.color = color;
         this.ctx.fillStyle = "rgba(" + color[0] + "," + color[1] + "," + color[2] + "," + color[3] + ")";
         this.pctx.fillStyle = "rgba(" + color[0] + "," + color[1] + "," + color[2] + "," + color[3] + ")";
         act(document.getElementById("pc-" + rgbToHex(color[0], color[1], color[2], color[3])))
     }
     setmode(i) {
-        tools = [false, false, false, false, false, false, false, false, false];
+        if (tools[Tool.shapeFilled]) {
+            tools = [false, false, false, false, false, false, false, false, false];
+            tools[Tool.shapeFilled] = true
+
+        } else {
+            tools = [false, false, false, false, false, false, false, false, false];
+        }
         tools[i] = true;
         document.querySelectorAll("#toolbar .item").forEach((x, i) => {
-            if (tools[i]) x.classList.add("tool-active");
+            if (tools[i + 1]) x.classList.add("tool-active");
             else x.classList.remove('tool-active');
         })
     }

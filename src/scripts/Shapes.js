@@ -1,33 +1,19 @@
-/*
- *
- *  function Template
- *
- *  function Shape_name(data){
- *	//data -> parameters Required for the Shape
- *	let points = [];
- *
- *	// Calculate points
- *
- *	return points;
- * }
- *
- * example:
- * 	function line(x0, y0, x1, y1){
- * 	  //x0, y0 -> Initial Points of Line
- *	  //x1, y1 ->  End Points of the line
- *        let points = []
- * 	
- *	  //Calculate points
- *
- *	  return points
- *	
- */
+
 
 
 class Point {
 	constructor(x, y) {
 		this.x = x;
 		this.y = y;
+	}
+}
+
+class Rect {
+	constructor(x1, y1, x2, y2) {
+		this.x1 = x1;
+		this.y1 = y1;
+		this.x2 = x2;
+		this.y2 = y2;
 	}
 }
 
@@ -98,86 +84,6 @@ function line(p1, p2) {
 	return points;
 }
 
-
-//console.log(line(new Point(1, 1), new Point(5, 5)));
-
-
-function circleO(r, pc) {
-	/* This function returns points of Circle with radius r and center as pc*/
-
-	let points = [];
-	let x = 0;
-	let y = r;
-	points.push(new Point(x, y));
-	p = 1 - r;
-
-	while (x <= y) {
-		//conditions
-		x++;
-
-		if (p < 0) {
-			points.push(new Point(x, y));
-			p = p + (2 * x) + 1;
-		} else if (p >= 0) {
-			y--;
-			points.push(new Point(x, y));
-			p = p + (2 * x) + 1 - (2 * y);
-		}
-	}
-
-	points = _sym8(points);
-	for (let pt of points) {
-		pt.x += pc.x;
-		pt.y += pc.y;
-	}
-
-	return points;
-}
-function filledCircleO(r, pc) {
-	/* This function returns points of Circle with radius r and center as pc*/
-
-	let points = [];
-	let x = 0;
-	let y = r;
-	points.push(new Point(x, y));
-	p = 1 - r;
-
-	while (x <= y) {
-		//conditions
-		x++;
-
-		if (p < 0) {
-			points.push(new Point(x, y));
-			p = p + (2 * x) + 1;
-		} else if (p >= 0) {
-			y--;
-			points.push(new Point(x, y));
-			p = p + (2 * x) + 1 - (2 * y);
-		}
-	}
-
-	points = _sym45(points);
-	let nPoints = []
-	let usedY = []
-	for (let it of points) {
-		nPoints.push(new Point(it.x, it.y))
-		if (!usedY.includes(it.y)) {
-			nPoints.push(new Point(0, it.y))
-			usedY.push(it.y);
-			let l = line(new Point(it.x, it.y), new Point(0, it.y))
-			for (let lP of l) {
-				nPoints.push(lP)
-			}
-		}
-	}
-	nPoints = _sym4(nPoints)
-	for (let pt of nPoints) {
-		pt.x += pc.x;
-		pt.y += pc.y;
-	}
-
-	return { "f": nPoints, "l": points };
-}
 function _sym45(points) {
 	/* This is a helper function for circle which calculates points on all the 8 symmetries */
 	let nPoints = [];
@@ -237,58 +143,6 @@ function _sym8(points) {
 	return nPoints;
 }
 
-function ellipseB(rx, ry, pc) {
-	/* This function return the points of the ellipse with major axis rx and minor axis ry with center pc */
-	let points = [];
-	let x = 0;
-	let y = ry;
-	points.push(new Point(x, y));
-
-	//Region 1
-	let p1 = Math.pow(ry, 2) + (1 / 4) * Math.pow(rx, 2) - Math.pow(rx, 2) * ry;
-
-	while ((2 * Math.pow(ry, 2) * x) < (2 * Math.pow(rx, 2) * y)) {
-		x++;
-		//console.log(x);
-		if (p1 < 0) {
-			points.push(new Point(x, y));
-			p1 = p1 + 2 * Math.pow(ry, 2) * x + Math.pow(ry, 2);
-		} else {
-			y--;
-			points.push(new Point(x, y));
-			p1 = p1 + 2 * Math.pow(ry, 2) * x - 2 * Math.pow(rx, 2) * y + Math.pow(ry, 2);
-		}
-	}
-
-	//Region 2
-	let x0 = points[points.length - 1].x;
-	let y0 = points[points.length - 1].y;
-
-	let p2 = Math.pow(ry, 2) * Math.pow((x0 + 1 / 2), 2) + Math.pow(rx, 2) * Math.pow((y0 - 1), 2) - Math.pow(rx, 2) * Math.pow(ry, 2);
-
-	while (y0 >= 0) {
-		y0--;
-
-		if (p2 < 0) {
-			points.push(new Point(x0, y0));
-			p2 = p2 - 2 * Math.pow(rx, 2) * y0 + Math.pow(rx, 2);
-		}
-		else {
-			x0++;
-			points.push(new Point(x0, y0));
-			p2 = p2 + 2 * Math.pow(ry, 2) * x0 - 2 * Math.pow(rx, 2) * y0 + Math.pow(rx, 2);
-		}
-	}
-	//symmetrizing
-	points = _sym4(points);
-	//offsetting the center
-	for (let pt of points) {
-		pt.x += pc.x;
-		pt.y += pc.y;
-	}
-	return points;
-}
-
 function _sym4(points) {
 	/* This is a helper function for ellipse which calculates points on all the 4 symmetries */
 	let nPoints = [];
@@ -306,9 +160,6 @@ function _sym4(points) {
 	}
 	return nPoints;
 }
-
-//console.log(ellipse(5, 5,new Point(0, 0)));
-//console.log(circle(5,new Point(0, 0)));
 
 
 function circle(r, pc) {
@@ -342,6 +193,90 @@ function filledCircle(r, pc) {
 	return points
 }
 
+function filledEllipse(xc, yc, a, b) {
+	var points = []
+	/* e(x,y) = b^2*x^2 + a^2*y^2 - a^2*b^2 */
+	var x = 0,
+		y = b;
+	var rx = x,
+		ry = y;
+	var width = 1;
+	var height = 1;
+	var a2 = a * a,
+		b2 = b * b;
+	var crit1 = -(a2 / 4 + (a % 2) + b2);
+	var crit2 = -(b2 / 4 + (b % 2) + a2);
+	var crit3 = -(b2 / 4 + (b % 2));
+	var t = -a2 * y; /* e(x+1/2,y-1/2) - (a^2+b^2)/4 */
+	var dxt = 2 * b2 * x,
+		dyt = -2 * a2 * y;
+	var d2xt = 2 * b2,
+		d2yt = 2 * a2;
+
+	function incx() {
+		x++;
+		dxt += d2xt;
+		t += dxt;
+	}
+
+	function incy() {
+		y--;
+		dyt += d2yt;
+		t += dyt;
+	}
+
+	if (b == 0) {
+		points.push(new Rect(xc - a, yc, (2 * a + 1) + (xc - a), 1 + yc));
+		return;
+	}
+
+	while (y >= 0 && x <= a) {
+		if (t + b2 * x <= crit1 /* e(x+1,y-1/2) <= 0 */ || t + a2 * y <= crit3) {
+			/* e(x+1/2,y) <= 0 */
+			if (height == 1);
+			else if (ry * 2 + 1 > (height - 1) * 2) {
+				/* draw nothing */
+				points.push(new Rect(xc - rx, yc - ry, width + xc - rx, height - 1 + yc - ry));
+				points.push(new Rect(xc - rx, yc + ry + 1, width + xc - rx, 1 - height + yc + ry + 1));
+				ry -= height - 1;
+				height = 1;
+			} else {
+				points.push(new Rect(xc - rx, yc - ry, width + xc - rx, (ry * 2 + 1) + yc - ry));
+				ry -= ry;
+				height = 1;
+			}
+			incx();
+			rx++;
+			width += 2;
+		} else if (t - a2 * y > crit2) {
+			/* e(x+1/2,y-1) > 0 */
+			incy();
+			height++;
+		} else {
+			if (ry * 2 + 1 > height * 2) {
+				points.push(new Rect(xc - rx, yc - ry, width + xc - rx, height + yc - ry));
+				points.push(new Rect(xc - rx, yc + ry + 1, width + xc - rx, -height + yc + ry + 1));
+			} else {
+				points.push(new Rect(xc - rx, yc - ry, width + xc - rx, (ry * 2 + 1) + yc - ry));
+			}
+			incx();
+			incy();
+			rx++;
+			width += 2;
+			ry -= height;
+			height = 1;
+		}
+	}
+
+	if (ry > height) {
+		points.push(new Rect(xc - rx, yc - ry, width + xc - rx, height + yc - ry));
+		points.push(xc - rx, yc + ry + 1, width, -height);
+	} else {
+		points.push(new Rect(xc - rx, yc - ry, width + xc - rx, (ry * 2 + 1) + yc - ry));
+	}
+	return points
+}
+
 function ellipse(x0, y0, x1, y1) {                              /* rectangular parameter enclosing the ellipse */
 	var a = Math.abs(x1 - x0), b = Math.abs(y1 - y0), b1 = b & 1;        /* diameter */
 	var dx = 4 * (1.0 - a) * b * b, dy = 4 * (b1 + 1) * a * a;              /* error increment */
@@ -371,11 +306,11 @@ function ellipse(x0, y0, x1, y1) {                              /* rectangular p
 	let nPoints = []
 	let usedY = []
 	for (let it of points) {
-		nPoints.push(new Point(it.x - x0, it.y - ((y0+y1)/2)))
+		nPoints.push(new Point(it.x - x0, it.y - ((y0 + y1) / 2)))
 		if (!usedY.includes(it.y)) {
-			nPoints.push(new Point(x0- x0, it.y - ((y0+y1)/2)))
+			nPoints.push(new Point(x0 - x0, it.y - ((y0 + y1) / 2)))
 			usedY.push(it.y);
-			let l = line(new Point(it.x - x0, it.y - ((y0+y1)/2)), new Point(x0 - x0, it.y - ((y0+y1)/2)))
+			let l = line(new Point(it.x - x0, it.y - ((y0 + y1) / 2)), new Point(x0 - x0, it.y - ((y0 + y1) / 2)))
 			for (let lP of l) {
 				nPoints.push(lP)
 			}
@@ -383,8 +318,8 @@ function ellipse(x0, y0, x1, y1) {                              /* rectangular p
 	}
 	nPoints = _sym4(nPoints)
 	for (let pt of nPoints) {
-		pt.x += ((x0+x1)/2);
-		pt.y += ((y0+y1)/2);
+		pt.x += ((x0 + x1) / 2);
+		pt.y += ((y0 + y1) / 2);
 	}
 	return points
 }
