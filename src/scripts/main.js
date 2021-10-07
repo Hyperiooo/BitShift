@@ -258,8 +258,6 @@ class Canvas {
                         //var radius = +prompt("radius?");
                         let r = 0
                         let c = 0
-
-                        document.getElementById('debug').innerHTML = ""
                         if (!this.ctrlKey) {
                             if (x - this.sX > y - this.sY) {
                                 r = Math.abs(x - this.sX) / 2
@@ -309,7 +307,6 @@ class Canvas {
                             }
                         }
                         //console.log(r)
-                        document.getElementById('debug').innerHTML = Math.floor(r * 2)
                         this.tempL = circle(Math.floor(r), c);
                         if (tools[Tool.shapeFilled]) this.filledData = { "r": math.floor(r), "c": c };
                         var p;
