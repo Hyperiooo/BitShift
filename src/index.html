@@ -29,6 +29,12 @@
       <div class="menu-btn" onclick="board.save()">Save image</div>
       <div class="menu-btn" onclick="board.renderGIF()">Save GIF</div>
     </div>
+    <div class="color-menu color-open" id="color-menu">
+      <canvas id="color-value" width="200" height="200"></canvas>
+      <canvas id="color-hue" width="40" height="200"></canvas>
+      <canvas id="color-opacity" width="40" height="200"></canvas>
+      <div id="palette" class="ui color-palette-menu"></div>
+    </div>
     <div id="popup" class="popup">
       <h1>New File</h1>
       <span class="popup-input-group">
@@ -81,7 +87,7 @@
               class="ri-checkbox-blank-circle-line"></i></span>
           <span class="item" onclick="board.setmode(5)"><i
               class="ri-checkbox-blank-line"></i></span>
-          <span class="item" onclick="openColorPicker()"><i
+          <span class="item" onclick="toggleColorPicker()"><i
               class="ri-checkbox-blank-circle-fill"></i></span><!--
                 <span class="item" onclick="board.undo()"><i
                     class="ri-arrow-go-back-line"></i></span>
@@ -132,7 +138,6 @@
           </div>
         </ul>
       </div>-->
-      <div id="palette" class="ui"></div>
     </body>
     <script type="text/javascript" src="./scripts/main.js"></script>
   </html>

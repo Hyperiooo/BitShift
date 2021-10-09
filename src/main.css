@@ -171,21 +171,7 @@ body {
     background: rgba(255, 255, 255, 0.062);
     color: rgb(255, 255, 255);
 }
-/*
-.menu .menu-btn::after {
-    width: calc(100% - 20px);
-    height: 1px;
-    content: '';
-    background: rgba(255, 255, 255, 0.158) !important;
-    position: absolute;
-    bottom: -2px;
-    left: 10px;
-}
 
-.menu .menu-btn:last-of-type:after {
-    display: none;
-}
-*/
 .menu .menu-btn i {
     padding-right: 10px;
 }
@@ -470,32 +456,7 @@ input[type=number] {
     vertical-align: middle;
 }
 
-#palette {
-    position: fixed;
-    top: 50%;
-    right: 0%;
-    transform: translateY(-50%);
-    padding: 0px;
-    color: white;
-    max-width: 100px;
-}
 
-#palette .item {
-    position: relative;
-    display: inline-block;
-    float: left;
-    padding: 15px;
-    cursor: pointer;
-    margin: 0px;
-}
-
-.palette-active {
-    -webkit-box-shadow: inset 0px 0px 0px 2px white;
-    -moz-box-shadow: inset 0px 0px 0px 2px white;
-    box-shadow: inset 0px 0px 0px 2px white;
-    position: relative;
-    z-index: 1000;
-}
 
 .ui {
     z-index: 200000;
@@ -510,30 +471,7 @@ input[type=number] {
 path {
     fill: white;
 }
-
-.menubtn {
-    position: fixed;
-    left: 20px;
-    top: 20px;
-    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.5);
-    background-color: #332f35;
-    color: white;
-    padding: 5px 15px 5px 15px;
-    border-radius: 5px;
-    font-size: 25px;
-    font-weight: bolder;
-    cursor: pointer;
-    z-index: 3;
-    -webkit-user-select: none;
-    /* Safari */
-    -moz-user-select: none;
-    /* Firefox */
-    -ms-user-select: none;
-    /* IE10+/Edge */
-    user-select: none;
-    /* Standard */
-}
-
+/*
 @media only screen and (orientation: portrait) {
     #palette {
         position: absolute;
@@ -545,4 +483,103 @@ path {
         padding: 0px;
         color: white;
     }
+}*/
+
+.color-menu {
+    position: fixed;
+    top: 53px;
+    right: 5px;
+    border-radius: 9px;
+    overflow: hidden;
+    padding: 0px;
+    margin: 0;
+    color: rgb(202, 202, 202);
+    background: #18171a;
+    z-index: 3;
+    display: none;
+    -webkit-user-select: none;
+    /* Safari */
+    -moz-user-select: none;
+    /* Firefox */
+    -ms-user-select: none;
+    /* IE10+/Edge */
+    user-select: none;
+    /* Standard */
+    display: block;
+    opacity: 0;
+    transform: translate(0, -10px);
+    transition: 0.2s opacity, 0.2s transform;
+}
+
+.color-menu canvas {
+    position: relative;
+    margin: 4px;
+    margin-bottom: 0;
+    border-radius: 5px;
+    display: inline-block;
+}
+
+.color-menu #color-value {
+    background-image: linear-gradient(to bottom, transparent 0%, rgb(0, 0, 0) 100%), linear-gradient(to right, transparent 0%, rgb(255, 0, 0) 100%), linear-gradient(to bottom, white 0%, white 100%);
+}
+
+.color-menu #color-hue {
+    background-image: linear-gradient(to top, #ff0000 0%, #ffff00 17%, #00ff00 33%, #00ffff 50%, #0000ff 67%, #ff00ff 83%, #ff0000 100%);
+    margin-left: -5px;
+}
+
+.color-menu #color-opacity {
+    background: white;
+    background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgb(255, 0, 0)), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 8 8'%3E%3Cg fill='%23bababa' fill-opacity='0.4'%3E%3Cpath fill-rule='evenodd' d='M0 0h4v4H0V0zm4 4h4v4H4V4z'/%3E%3C/g%3E%3C/svg%3E");
+    margin-left: -4px;
+}
+
+.color-menu.color-open {
+    opacity: 1;
+    transform: translate(0, 0);
+}
+/*
+#palette {
+    position: fixed;
+    top: 50%;
+    right: 0%;
+    transform: translateY(-50%);
+    padding: 0px;
+    color: white;
+    max-width: 100px;
+}
+*/
+.color-palette-menu {
+    position: relative;
+    background: rgba(255, 255, 255, 0.062);
+    margin: 4px;
+    border-radius: 5px;
+    margin-top: 0;
+    left: 0px;
+    right: 0px;
+    height: fit-content;
+    width: calc(100% - 8px);
+    overflow: hidden;
+}
+
+#palette .item {
+    position: relative;
+    display: inline-block;
+    width: 10%;
+    aspect-ratio: 1/1;
+    cursor: pointer;
+    margin: 0;
+    float: left;
+    padding: 0 !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.palette-active {
+    -webkit-box-shadow: inset 0px 0px 0px 2px white;
+    -moz-box-shadow: inset 0px 0px 0px 2px white;
+    box-shadow: inset 0px 0px 0px 2px white;
+    position: relative;
+    z-index: 1000;
 }

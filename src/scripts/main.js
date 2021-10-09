@@ -1170,8 +1170,8 @@ window.onerror = function (errorMsg, url, lineNumber) {
     //alert('Error: ' + errorMsg + ' Script: ' + url + ' Line: ' + lineNumber);
 }
 
-function openColorPicker() {
-    console.log('color')
+function toggleColorPicker() {
+    document.getElementById('color-menu').classList.toggle("color-open")
 }
 
 function openMenu() {
