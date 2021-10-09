@@ -40,6 +40,8 @@ var lc = [];
 var preview = true;
 class Canvas {
     constructor(width, height) {
+        document.documentElement.style.setProperty('--canvX', width + "px");
+        document.documentElement.style.setProperty('--canvY', height + "px");
         this.mobile = false
         if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
             this.mobile = true
@@ -146,6 +148,7 @@ class Canvas {
         });
 
         this.canvasParent.addEventListener("mousedown", e => {
+            console.log('a')
             if (e.button == 1) {
                 this.setCanvTransform(e.clientX, e.clientY)
             }
@@ -235,8 +238,8 @@ class Canvas {
         var rect = this.canvas.getBoundingClientRect();
         var x = (e.clientX) - rect.left || e.touches[0].clientX - rect.left || -1;
         var y = (e.clientY) - rect.top || e.touches[0].clientY - rect.top || -1;
-        x = Math.floor(this.width * x / (this.canvas.clientWidth * this.canvScale));
-        y = Math.floor(this.height * y / (this.canvas.clientHeight * this.canvScale));
+        x = Math.floor((x) / (this.canvScale));
+        y = Math.floor((y) / (this.canvScale));
         if (this.active) {
             if (tools[Tool.pen]) {
                 let P = line(new Point(this.sX, this.sY), new Point(x, y))
@@ -1051,6 +1054,9 @@ function componentToHex(c) {
     return hex.length == 1 ? "0" + hex : hex;
 }
 
+function closePopup() {
+    window.dim.close()
+}
 
 document.querySelector("#close").onclick = function () {
     var width = +document.querySelector("#width").value;
