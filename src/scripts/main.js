@@ -142,7 +142,7 @@ class Canvas {
             } else if (tools[Tool.rect]) {
             } else if (tools[Tool.ellipse]) {
             } else {
-                this.draw(new Point(x, y));
+                //this.draw(new Point(x, y));
             }
 
         });
@@ -672,7 +672,7 @@ class Canvas {
         this.pctx.fillStyle = "rgba(" + color[0] + "," + color[1] + "," + color[2] + "," + color[3] + ")";
         act(document.getElementById("pc-" + rgbToHex(color[0], color[1], color[2], color[3])))
     }
-    setmode(i) {
+    setmode(i, el) {
         if (tools[Tool.shapeFilled]) {
             tools = [false, false, false, false, false, false, false, false, false];
             tools[Tool.shapeFilled] = true
@@ -681,10 +681,10 @@ class Canvas {
             tools = [false, false, false, false, false, false, false, false, false];
         }
         tools[i] = true;
-        document.querySelectorAll("#toolbar .item").forEach((x, i) => {
-            if (tools[i + 1]) x.classList.add("tool-active");
-            else x.classList.remove('tool-active');
+        document.querySelectorAll("#toolbar .item").forEach((x) => {
+            x.classList.remove('tool-active');
         })
+        el.classList.add("tool-active")
     }
     save() {
         this.canvas.toBlob(function (blob) {
@@ -947,11 +947,10 @@ class Canvas {
 class Popup {
     constructor(s) {
         this.s = s;
-        document.querySelector(this.s).style.display = "block";
-        document.querySelector(this.s).style.transform = "translate(-50%,-50%) scale(1,1)";
+        document.querySelector(this.s).classList.add("popup-open")
     }
     close() {
-        document.querySelector(this.s).style.transform = "translate(-50%,-50%) scale(0,0)";
+        document.querySelector(this.s).classList.remove("popup-open")
     }
 }
 
@@ -1039,10 +1038,18 @@ window.onload = function () {
     }
 
     let inner = ""
+    console.log(colors)
     colors.forEach(x => {
-        inner += `<span id="pc-${rgbToHex(x[0], x[1], x[2], x[3])}" class="item" style="background-color: rgb(${x[0]},${x[1]},${x[2]}, ${x[3]})" onclick="board.setcolor([${x}]);" oncontextmenu="board.setcolor([${x}]);board.ctx.globalAlpha=+prompt('Transparency(0-1)?')"></span>\n`
+        var rgba = `rgba(${x[0]},${x[1]},${x[2]}, ${x[3]/256 * 100}%)`
+        //inner += `<span id="pc-${rgbToHex(x[0], x[1], x[2], x[3])}" class="item" onclick="board.setcolor([${x}]);" ></span>\n`
+        let e = document.createElement("span")
+        e.id = `pc-${rgbToHex(x[0], x[1], x[2], x[3])}`
+        e.classList.add('item')
+        e.style.setProperty("--color", rgba)
+        e.addEventListener("click",() => {board.setcolor(x)} )
+        document.querySelector("#palette").appendChild(e)
     });
-    document.querySelector("#palette").innerHTML = inner
+    //document.querySelector("#palette").innerHTML = inner
     board.setcolor(colors[0])
     document.querySelector("#palette").addEventListener("contextmenu", e => e.preventDefault());
 }
@@ -1081,7 +1088,7 @@ document.querySelector("#close").onclick = function () {
 
 
 function newProject() {
-    document.querySelector(".menu").style.display = "none";
+    toggleMenu()
     localStorage.removeItem('pc-canvas-data');
     window.dim = new Popup("#popup");
     window.colors = [
@@ -1174,8 +1181,12 @@ function toggleColorPicker() {
     document.getElementById('color-menu').classList.toggle("color-open")
 }
 
-function openMenu() {
+function toggleMenu() {
 
-    document.querySelector(".menu").style.display = document.querySelector(".menu").style.display != "block" ? "block" : "none";
+    document.querySelector(".menu").classList.toggle("menu-open")
+
+}
+
+function toggleFile() {
 
 }

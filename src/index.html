@@ -24,16 +24,199 @@
       href="./assets/logo.svg">
   </head>
   <body>
-    <div class="menu">
+    <div class="menu menu-open">
       <div class="menu-btn" onclick="newProject()">New</div>
       <div class="menu-btn" onclick="board.save()">Save image</div>
       <div class="menu-btn" onclick="board.renderGIF()">Save GIF</div>
     </div>
     <div class="color-menu color-open" id="color-menu">
-      <canvas id="color-value" width="200" height="200"></canvas>
-      <canvas id="color-hue" width="40" height="200"></canvas>
-      <canvas id="color-opacity" width="40" height="200"></canvas>
-      <div id="palette" class="ui color-palette-menu"></div>
+      <div class="color-selector" id="color-value" width="200" height="200"></div><!--
+      --><div class="color-selector" id="color-hue" width="40" height="200"></div><!--
+      --><div class="color-selector" id="color-opacity" width="40" height="200"></div>
+      <div id="palettes">
+        <div class="color-palette-group">
+          <h2 class="color-palette-title">Default</h2>
+          <div id="palette" class="ui color-palette-menu"></div>
+        </div>
+        <div class="color-palette-group">
+          <h2 class="color-palette-title">Midnight</h2>
+          <div id="palette" class="ui color-palette-menu">
+            <span id="pc-5ba675ff" class="item
+              palette-active" style="--color:#ff1714;"></span>
+            <span id="pc-5ba675ff" class="item
+              palette-active" style="--color:#b91740;"></span>
+            <span id="pc-5ba675ff" class="item
+              palette-active" style="--color:#69173d;"></span>
+            <span id="pc-5ba675ff" class="item
+              palette-active" style="--color:#37173d;"></span>
+            <span id="pc-5ba675ff" class="item
+              palette-active" style="--color:#05173d;"></span>
+          </div>
+        </div>
+        <div class="color-palette-group">
+          <h2 class="color-palette-title">NEO-5</h2>
+          <div id="palette"
+            class="ui color-palette-menu">
+            <span id="pc-5ba675ff" class="item
+              palette-active" style="--color:#0e0e0e;"></span>
+            <span id="pc-5ba675ff" class="item
+              palette-active" style="--color:#5433be;"></span>
+            <span id="pc-5ba675ff" class="item
+              palette-active" style="--color:#e624af;"></span>
+            <span id="pc-5ba675ff" class="item
+              palette-active" style="--color:#3df9ea;"></span>
+            <span id="pc-5ba675ff" class="item
+              palette-active" style="--color:#effafa;"></span>
+          </div>
+        </div>
+        <div class="color-palette-group">
+          <h2 class="color-palette-title">Oil 6</h2>
+          <div id="palette" class="ui color-palette-menu">
+            <span id="pc-5ba675ff" class="item
+              palette-active" style="--color:#fbf5ef;"></span>
+            <span id="pc-5ba675ff" class="item
+              palette-active" style="--color:#f2d3ab;"></span>
+            <span id="pc-5ba675ff" class="item
+              palette-active" style="--color:#c69fa5;"></span>
+            <span id="pc-5ba675ff" class="item
+              palette-active" style="--color:#8b6d9c;"></span>
+            <span id="pc-5ba675ff" class="item
+              palette-active" style="--color:#494d7e;"></span>
+            <span id="pc-5ba675ff" class="item
+              palette-active" style="--color:#272744;"></span>
+          </div>
+        </div>
+        <div class="color-palette-group">
+          <h2 class="color-palette-title">Ice Cream GB</h2>
+          <div id="palette" class="ui color-palette-menu">
+            <span id="pc-5ba675ff" class="item
+              palette-active" style="--color:#7c3f58;"></span>
+            <span id="pc-5ba675ff" class="item
+              palette-active" style="--color:#eb6b6f;"></span>
+            <span id="pc-5ba675ff" class="item
+              palette-active" style="--color:#f9a875;"></span>
+            <span id="pc-5ba675ff" class="item
+              palette-active" style="--color:#fff6d3;"></span>
+          </div>
+        </div>
+        <div class="color-palette-group">
+          <h2 class="color-palette-title">Twilight</h2>
+          <div id="palette" class="ui color-palette-menu">
+            <span id="pc-5ba675ff" class="item
+              palette-active" style="--color:#fbbbad;"></span>
+            <span id="pc-5ba675ff" class="item
+              palette-active" style="--color:#ee8695;"></span>
+            <span id="pc-5ba675ff" class="item
+              palette-active" style="--color:#4a7a96;"></span>
+            <span id="pc-5ba675ff" class="item
+              palette-active" style="--color:#333f58;"></span>
+            <span id="pc-5ba675ff" class="item
+              palette-active" style="--color:#292831;"></span>
+          </div>
+        </div>
+        <div class="color-palette-group">
+          <h2 class="color-palette-title">CAPP-5</h2>
+          <div id="palette" class="ui color-palette-menu">
+            <span id="pc-5ba675ff" class="item
+              palette-active" style="--color:#fadda2;"></span>
+            <span id="pc-5ba675ff" class="item
+              palette-active" style="--color:#6b61ff;"></span>
+            <span id="pc-5ba675ff" class="item
+              palette-active" style="--color:#66a1ff;"></span>
+            <span id="pc-5ba675ff" class="item
+              palette-active" style="--color:#8ecde6;"></span>
+            <span id="pc-5ba675ff" class="item
+              palette-active" style="--color:#f0eff4;"></span>
+          </div>
+        </div>
+        <div class="color-palette-group">
+          <h2 class="color-palette-title">SpaceHaze</h2>
+          <div id="palette" class="ui color-palette-menu">
+            <span id="pc-5ba675ff" class="item
+              palette-active" style="--color:#f8e3c4;"></span>
+            <span id="pc-5ba675ff" class="item
+              palette-active" style="--color:#cc3495;"></span>
+            <span id="pc-5ba675ff" class="item
+              palette-active" style="--color:#6b1fb1;"></span>
+            <span id="pc-5ba675ff" class="item
+              palette-active" style="--color:#0b0630;"></span>
+          </div>
+        </div>
+        <div class="color-palette-group">
+          <h2 class="color-palette-title">Neon Space</h2>
+          <div id="palette" class="ui color-palette-menu">
+            <span id="pc-5ba675ff" class="item
+              palette-active" style="--color:#df0772;"></span>
+            <span id="pc-5ba675ff" class="item
+              palette-active" style="--color:#fe546f;"></span>
+            <span id="pc-5ba675ff" class="item
+              palette-active" style="--color:#ff9e7d;"></span>
+            <span id="pc-5ba675ff" class="item
+              palette-active" style="--color:#ffd080;"></span>
+            <span id="pc-5ba675ff" class="item
+              palette-active" style="--color:#fffdff;"></span>
+            <span id="pc-5ba675ff" class="item
+              palette-active" style="--color:#0bffe6;"></span>
+            <span id="pc-5ba675ff" class="item
+              palette-active" style="--color:#01cbcf;"></span>
+            <span id="pc-5ba675ff" class="item
+              palette-active" style="--color:#0188a5;"></span>
+            <span id="pc-5ba675ff" class="item
+              palette-active" style="--color:#3e3264;"></span>
+            <span id="pc-5ba675ff" class="item
+              palette-active" style="--color:#352a55;"></span>
+          </div>
+        </div>
+        <div class="color-palette-group">
+          <h2 class="color-palette-title">Astralae</h2>
+          <div id="palette" class="ui color-palette-menu">
+            <span id="pc-5ba675ff" class="item
+              palette-active" style="--color:#FFF1AA;"></span>
+            <span id="pc-5ba675ff" class="item
+              palette-active" style="--color:#FFF7DB;"></span>
+            <span id="pc-5ba675ff" class="item
+              palette-active" style="--color:#FFFFFF;"></span>
+            <span id="pc-5ba675ff" class="item
+              palette-active" style="--color:#E0FEFF;"></span>
+            <span id="pc-5ba675ff" class="item
+              palette-active" style="--color:#C1F0FF;"></span>
+            <span id="pc-5ba675ff" class="item
+              palette-active" style="--color:#AEE0F7;"></span>
+            <span id="pc-5ba675ff" class="item
+              palette-active" style="--color:#71D7FD;"></span>
+            <span id="pc-5ba675ff" class="item
+              palette-active" style="--color:#14AFFF;"></span>
+            <span id="pc-5ba675ff" class="item
+              palette-active" style="--color:#395EFF;"></span>
+            <span id="pc-5ba675ff" class="item
+              palette-active" style="--color:#5245E0;"></span>
+            <span id="pc-5ba675ff" class="item
+              palette-active" style="--color:#483A99;"></span>
+            <span id="pc-5ba675ff" class="item
+              palette-active" style="--color:#7A63F6;"></span>
+            <span id="pc-5ba675ff" class="item
+              palette-active" style="--color:#9685FB;"></span>
+            <span id="pc-5ba675ff" class="item
+              palette-active" style="--color:#BC89FC;"></span>
+            <span id="pc-5ba675ff" class="item
+              palette-active" style="--color:#D49BF3;"></span>
+            <span id="pc-5ba675ff" class="item
+              palette-active" style="--color:#FD8EF1;"></span>
+            <span id="pc-5ba675ff" class="item
+              palette-active" style="--color:#FFA9FB;"></span>
+            <span id="pc-5ba675ff" class="item
+              palette-active" style="--color:#FDBFFE;"></span>
+            <span id="pc-5ba675ff" class="item
+              palette-active" style="--color:#FECDFF;"></span>
+            <span id="pc-5ba675ff" class="item
+              palette-active" style="--color:#FDEAFE;"></span>
+            <span id="pc-5ba675ff" class="item
+              palette-active" style="--color:#67E4FF;"></span>
+            <span id="pc-5ba675ff" class="item
+              palette-active" style="--color:#5EFFFE;"></span>
+          </div>
+        </div>
+      </div>
     </div>
     <div id="popup" class="popup">
       <h1>New File</h1>
@@ -56,20 +239,22 @@
         <button onclick="closePopup()" class="popup-btn">Cancel</button>
       </div>
     </div>
-    <div id="canvas-parent" onclick="console.log('asdf')">
+    <div id="canvas-parent">
       <canvas id="previewcanv"></canvas>
       <canvas id="canvas"></canvas>
       <canvas id="bggridcanv"></canvas>
     </div>
     <div id="toolbar" class="ui">
-      <span class="item" onclick="openMenu()"><i
+      <span class="item" onclick="toggleMenu()"><i
           class="ri-menu-fill"></i></span>
       <div id="toolbar-right">
-        <span class="item tool-active" onclick="board.setmode(0)"><i
+        <span class="item tool-active" onclick="board.setmode(0, this)"><i
             class="ri-pencil-fill"></i></span>
-        <span class="item" onclick="board.setmode(1)"><i class="ri-eraser-fill"></i></span>
-        <span class="item" onclick="board.setmode(2)"><i class="ri-paint-fill"></i></span>
-        <span class="item" onclick="board.setmode(3)">
+        <span class="item" onclick="board.setmode(1, this)"><i
+            class="ri-eraser-fill"></i></span>
+        <span class="item" onclick="board.setmode(2, this)"><i
+            class="ri-paint-fill"></i></span>
+        <span class="item" onclick="board.setmode(3, this)">
           <i>
             <svg
               viewBox="0 0 24 24"
@@ -83,9 +268,9 @@
                 id="path4"
                 /></svg></i>
           </span>
-          <span class="item" onclick="board.setmode(4)"><i
+          <span class="item" onclick="board.setmode(4, this)"><i
               class="ri-checkbox-blank-circle-line"></i></span>
-          <span class="item" onclick="board.setmode(5)"><i
+          <span class="item" onclick="board.setmode(5, this)"><i
               class="ri-checkbox-blank-line"></i></span>
           <span class="item" onclick="toggleColorPicker()"><i
               class="ri-checkbox-blank-circle-fill"></i></span><!--
