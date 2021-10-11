@@ -982,6 +982,15 @@ class Frames {
 }
 
 window.onload = function () {
+    opacThumb = document.getElementById("color-opacity-thumb")
+    opacRange = document.getElementById("color-opacity")
+    opacRect = opacRange.getBoundingClientRect()
+    hThumb = document.getElementById("color-hue-thumb")
+    hueRange = document.getElementById("color-hue")
+    hueRect = hueRange.getBoundingClientRect()
+    vThumb = document.getElementById("color-value-thumb")
+    valueRange = document.getElementById("color-value")
+    valueRect = valueRange.getBoundingClientRect()
     //document.querySelectorAll("input[type=range]").forEach((e) => {
     //    console.log(e.getAttribute('data-input-function'))
     //	new shadowRange(e, e.getAttribute('data-input-function'))
@@ -1040,13 +1049,13 @@ window.onload = function () {
     let inner = ""
     console.log(colors)
     colors.forEach(x => {
-        var rgba = `rgba(${x[0]},${x[1]},${x[2]}, ${x[3]/256 * 100}%)`
+        var rgba = `rgba(${x[0]},${x[1]},${x[2]}, ${x[3] / 256 * 100}%)`
         //inner += `<span id="pc-${rgbToHex(x[0], x[1], x[2], x[3])}" class="item" onclick="board.setcolor([${x}]);" ></span>\n`
         let e = document.createElement("span")
         e.id = `pc-${rgbToHex(x[0], x[1], x[2], x[3])}`
         e.classList.add('item')
         e.style.setProperty("--color", rgba)
-        e.addEventListener("click",() => {board.setcolor(x)} )
+        e.addEventListener("click", () => { board.setcolor(x) })
         document.querySelector("#palette").appendChild(e)
     });
     //document.querySelector("#palette").innerHTML = inner
@@ -1189,4 +1198,104 @@ function toggleMenu() {
 
 function toggleFile() {
 
+}
+
+var selectorColor = [0, 0, 0, 100]
+
+var opacMoving = false
+var opacThumb
+var opacRange
+var opacRect
+
+function opacityThumb(e) {
+    opacMoving = true
+}
+
+function opacEndDrag(e) {
+    opacMoving = false
+}
+
+function opacDrag(e) {
+    if(opacMoving)
+    {
+        selectorColor[3] = (e.clientY - opacRect.top) / opacRect.height * 100
+        opacThumb.style.setProperty("--pos", (e.clientY - opacRect.top) / opacRect.height * 100 + "%")
+        opacThumb.style.setProperty("--posp", (e.clientY - opacRect.top) / opacRect.height)
+        updateSelectorColor()
+    }
+}
+
+var hueMoving = false
+var hThumb
+var hueRange
+var hueRect
+
+function hueThumb(e) {
+    hueMoving = true
+}
+
+function hueEndDrag(e) {
+    hueMoving = false
+}
+
+function hueDrag(e) {
+    if(hueMoving)
+    {
+        selectorColor[0] = (1 - ((e.clientY - hueRect.top) / hueRect.height)) * 360
+        hThumb.style.setProperty("--pos", (e.clientY - hueRect.top) / hueRect.height * 100 + "%")
+        hThumb.style.setProperty("--posp", (e.clientY - hueRect.top) / hueRect.height)
+        updateSelectorColor()
+    }
+}
+
+
+var valueMoving = false
+var valThumb
+var valueRange
+var valueRect
+
+function valueThumb(e) {
+    valueMoving = true
+}
+
+function valueEndDrag(e) {
+    valueMoving = false
+}
+
+function valueDrag(e) {
+    if(valueMoving)
+    {
+        selectorColor[1] = (e.clientX - valueRect.left) / valueRect.width * 100
+        selectorColor[2] = 100 - ((e.clientY - valueRect.top) / valueRect.height * 100)
+        vThumb.style.setProperty("--posX", (e.clientX - valueRect.left) / valueRect.width * 100 + "%")
+        vThumb.style.setProperty("--posY", (e.clientY - valueRect.top) / valueRect.height * 100 + "%")
+        updateSelectorColor()
+    }
+}
+
+function updateSelectorColor() {
+    let hsla = HSVToHSL(selectorColor)
+    document.getElementById("color-current").style.setProperty("--color", `hsla( ${hsla[0]}, ${hsla[1]}%, ${hsla[2]}%, ${hsla[3]}%)`)
+    console.log(`hsla( ${hsla[0]}, ${hsla[1]}%, ${hsla[2]}%, ${hsla[3]}%)`)
+    console.log("%c _", `background: hsla( ${hsla[0]}, ${hsla[1]}%, ${hsla[2]}%, ${hsla[3]}%)`)
+}
+
+function HSVToHSL(hsva) {
+    var h = hsva[0]
+    var s = hsva[1] / 100
+    var v = hsva[2] / 100
+    var a = hsva[3]
+    var l = (2 - s) * v / 2;
+
+    if (l != 0) {
+        if (l == 1) {
+            s = 0
+        } else if (l < 0.5) {
+            s = s * v / (l * 2)
+        } else {
+            s = s * v / (2 - l * 2)
+        }
+    }
+
+    return [h, s * 100, l * 100, a]
 }

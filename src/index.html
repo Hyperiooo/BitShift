@@ -24,15 +24,41 @@
       href="./assets/logo.svg">
   </head>
   <body>
+    <input class="color-range" type="range" />
     <div class="menu menu-open">
       <div class="menu-btn" onclick="newProject()">New</div>
       <div class="menu-btn" onclick="board.save()">Save image</div>
       <div class="menu-btn" onclick="board.renderGIF()">Save GIF</div>
     </div>
     <div class="color-menu color-open" id="color-menu">
-      <div class="color-selector" id="color-value" width="200" height="200"></div><!--
-      --><div class="color-selector" id="color-hue" width="40" height="200"></div><!--
-      --><div class="color-selector" id="color-opacity" width="40" height="200"></div>
+      <div class="color-selector" id="color-value" width="200" height="200"
+        onmouseleave="valueEndDrag()"
+        onmousedown="valueThumb(event);valueDrag(event);"
+        onmousemove="valueDrag(event)" onmouseup="valueEndDrag(event)">
+        <div id="color-value-thumb"
+          onmousedown="valueThumb(event);valueDrag(event);"
+          onmousemove="valueDrag(event)" onmouseup="valueEndDrag(event)"></div>
+      </div><!--
+      --><div class="color-selector" id="color-hue" width="40"
+        height="200" onmouseleave="hueEndDrag()"
+        onmousedown="hueThumb(event);hueDrag(event);"
+        onmousemove="hueDrag(event)" onmouseup="hueEndDrag(event)">
+        <div id="color-hue-thumb" onmousedown="hueThumb(event);hueDrag(event);"
+          onmousemove="hueDrag(event)" onmouseup="hueEndDrag(event)"></div>
+      </div><!--
+      --><div class="color-selector" id="color-opacity"
+        width="40" height="200" onmouseleave="opacEndDrag()"
+        onmousedown="opacityThumb(event);opacDrag(event);"
+        onmouseup="opacEndDrag(event)" onmousemove="opacDrag(event)">
+        <div id="color-opacity-thumb"
+          onmousedown="opacityThumb(event);opacDrag(event);"
+          onmousemove="opacDrag(event)" onmouseup="opacEndDrag(event)"></div>
+      </div>
+      <div class="color-data">
+        <div class="color-preview">
+          <div id="color-previous"></div><div id="color-current"></div>
+        </div>
+      </div>
       <div id="palettes">
         <div class="color-palette-group">
           <h2 class="color-palette-title">Default</h2>
