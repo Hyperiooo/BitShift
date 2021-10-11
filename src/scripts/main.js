@@ -148,7 +148,6 @@ class Canvas {
         });
 
         this.canvasParent.addEventListener("mousedown", e => {
-            console.log('a')
             if (e.button == 1) {
                 this.setCanvTransform(e.clientX, e.clientY)
             }
@@ -667,6 +666,8 @@ class Canvas {
         this.ctx.globalCompositeOperation = 'source-over'
     }
     setcolor(color) {
+        console.log('a')
+        setPickerColor(color)
         this.color = color;
         this.ctx.fillStyle = "rgba(" + color[0] + "," + color[1] + "," + color[2] + "," + color[3] + ")";
         this.pctx.fillStyle = "rgba(" + color[0] + "," + color[1] + "," + color[2] + "," + color[3] + ")";
@@ -1025,6 +1026,8 @@ window.onload = function () {
         }
        */
 
+        preparePalette()
+
         window.board.steps = data.steps;
         window.board.redo_arr = data.redo_arr;
         window.board.setcolor(data.currColor);
@@ -1044,23 +1047,43 @@ window.onload = function () {
     }
     else {
         newProject();
+        preparePalette()
     }
+}
 
-    let inner = ""
-    console.log(colors)
-    colors.forEach(x => {
-        var rgba = `rgba(${x[0]},${x[1]},${x[2]}, ${x[3] / 256 * 100}%)`
-        //inner += `<span id="pc-${rgbToHex(x[0], x[1], x[2], x[3])}" class="item" onclick="board.setcolor([${x}]);" ></span>\n`
-        let e = document.createElement("span")
-        e.id = `pc-${rgbToHex(x[0], x[1], x[2], x[3])}`
-        e.classList.add('item')
-        e.style.setProperty("--color", rgba)
-        e.addEventListener("click", () => { board.setcolor(x) })
-        document.querySelector("#palette").appendChild(e)
+function preparePalette() {
+    var setCurrent = false;
+    colors.forEach(g => {
+        var title = g.title
+        var palette = g.colors
+        var paletteParent = document.getElementById("palettes")
+        var group = document.createElement("div")
+        group.classList.add("color-palette-group")
+        var titleEl = document.createElement("h2")
+        titleEl.classList.add("color-palette-title")
+        titleEl.innerText = title
+        group.appendChild(titleEl)
+        var colorMenu = document.createElement("div")
+        colorMenu.classList.add("ui")
+        colorMenu.classList.add("color-palette-menu")
+        group.appendChild(colorMenu)
+        paletteParent.appendChild(group)
+        palette.forEach(x => {
+            if(!setCurrent) {
+                setCurrent = true
+                board.setcolor(x)
+            }
+            var rgba = `rgba(${x[0]},${x[1]},${x[2]}, ${x[3] / 256 * 100}%)`
+            //inner += `<span id="pc-${rgbToHex(x[0], x[1], x[2], x[3])}" class="item" onclick="board.setcolor([${x}]);" ></span>\n`
+            let e = document.createElement("span")
+            e.id = `pc-${rgbToHex(x[0], x[1], x[2], x[3])}`
+            e.classList.add('palette-color')
+            e.style.setProperty("--color", rgba)
+            e.addEventListener("click", () => { board.setcolor(x) })
+            colorMenu.appendChild(e)
+        })
+        console.log(palette)
     });
-    //document.querySelector("#palette").innerHTML = inner
-    board.setcolor(colors[0])
-    document.querySelector("#palette").addEventListener("contextmenu", e => e.preventDefault());
 }
 function rgbToHex(r, g, b, a) {
     return componentToHex(r) + componentToHex(g) + componentToHex(b) + componentToHex(a);
@@ -1078,7 +1101,7 @@ document.querySelector("#close").onclick = function () {
     var width = +document.querySelector("#width").value;
     var height = +document.querySelector("#height").value;
     window.board = new Canvas(width, height);
-    window.board.setcolor(colors[0]);
+    window.board.setcolor(colors[0].colors[0]);
     window.dim.close();
     window.gif = new GIF({
         workers: 2,
@@ -1095,12 +1118,9 @@ document.querySelector("#close").onclick = function () {
     });
 }
 
-
-function newProject() {
-    toggleMenu()
-    localStorage.removeItem('pc-canvas-data');
-    window.dim = new Popup("#popup");
-    window.colors = [
+var test = [{
+    title: "Default",
+    colors: [
         [91, 166, 117, 255],
         [107, 201, 108, 255],
         [171, 221, 100, 255],
@@ -1133,7 +1153,161 @@ function newProject() {
         [131, 77, 196, 255],
         [125, 45, 160, 255],
         [78, 24, 124, 255]
-    ];
+    ]
+}, {
+    title: "Ice Cream GB",
+    colors: [
+        [124, 63, 88, 255],
+        [235, 107, 111, 255],
+        [249, 168, 117, 255],
+        [255, 246, 211, 255]
+    ]
+}, {
+    title: "SpaceHaze",
+    colors: [
+        [248, 227, 196, 255],
+        [204, 52, 149, 255],
+        [107, 31, 177, 255],
+        [11, 6, 48, 255]
+    ]
+}, {
+    title: "Neon Space",
+    colors: [
+        [223, 7, 114, 255],
+        [254, 84, 111, 255],
+        [255, 158, 125, 255],
+        [255, 208, 128, 255],
+        [255, 253, 255, 255],
+        [11, 255, 230, 255],
+        [1, 203, 207, 255],
+        [1, 136, 165, 255],
+        [62, 50, 100, 255],
+        [53, 42, 85, 255]
+    ]
+}, {
+    title: "Astralae",
+    colors: [
+        [255, 241, 170, 255],
+        [255, 247, 219, 255],
+        [255, 255, 255, 255],
+        [224, 254, 255, 255],
+        [193, 240, 255, 255],
+        [174, 224, 247, 255],
+        [113, 215, 253, 255],
+        [20, 175, 255, 255],
+        [57, 94, 255, 255],
+        [82, 69, 224, 255],
+        [72, 58, 153, 255],
+        [122, 99, 246, 255],
+        [150, 133, 251, 255],
+        [188, 137, 252, 255],
+        [212, 155, 243, 255],
+        [253, 142, 241, 255],
+        [255, 169, 251, 255],
+        [253, 191, 254, 255],
+        [254, 205, 255, 255],
+        [253, 234, 254, 255],
+        [103, 228, 255, 255],
+        [94, 255, 254, 255]
+    ]
+}]
+function newProject() {
+    toggleMenu()
+    localStorage.removeItem('pc-canvas-data');
+    window.dim = new Popup("#popup");
+    window.colors = [{
+        title: "Default",
+        colors: [
+            [91, 166, 117, 255],
+            [107, 201, 108, 255],
+            [171, 221, 100, 255],
+            [252, 239, 141, 255],
+            [255, 184, 121, 255],
+            [234, 98, 98, 255],
+            [204, 66, 94, 255],
+            [163, 40, 88, 255],
+            [117, 23, 86, 255],
+            [57, 9, 71, 255],
+            [97, 24, 81, 255],
+            [135, 53, 85, 255],
+            [166, 85, 95, 255],
+            [201, 115, 115, 255],
+            [242, 174, 153, 255],
+            [255, 195, 242, 255],
+            [238, 143, 203, 255],
+            [212, 110, 179, 255],
+            [135, 62, 132, 255],
+            [31, 16, 42, 255],
+            [74, 48, 82, 255],
+            [123, 84, 128, 255],
+            [166, 133, 159, 255],
+            [217, 189, 200, 255],
+            [255, 255, 255, 255],
+            [174, 226, 255, 255],
+            [141, 183, 255, 255],
+            [109, 128, 250, 255],
+            [132, 101, 236, 255],
+            [131, 77, 196, 255],
+            [125, 45, 160, 255],
+            [78, 24, 124, 255]
+        ]
+    }, {
+        title: "Ice Cream GB",
+        colors: [
+            [124, 63, 88, 255],
+            [235, 107, 111, 255],
+            [249, 168, 117, 255],
+            [255, 246, 211, 255]
+        ]
+    }, {
+        title: "SpaceHaze",
+        colors: [
+            [248, 227, 196, 255],
+            [204, 52, 149, 255],
+            [107, 31, 177, 255],
+            [11, 6, 48, 255]
+        ]
+    }, {
+        title: "Neon Space",
+        colors: [
+            [223, 7, 114, 255],
+            [254, 84, 111, 255],
+            [255, 158, 125, 255],
+            [255, 208, 128, 255],
+            [255, 253, 255, 255],
+            [11, 255, 230, 255],
+            [1, 203, 207, 255],
+            [1, 136, 165, 255],
+            [62, 50, 100, 255],
+            [53, 42, 85, 255]
+        ]
+    }, {
+        title: "Astralae",
+        colors: [
+            [255, 241, 170, 255],
+            [255, 247, 219, 255],
+            [255, 255, 255, 255],
+            [224, 254, 255, 255],
+            [193, 240, 255, 255],
+            [174, 224, 247, 255],
+            [113, 215, 253, 255],
+            [20, 175, 255, 255],
+            [57, 94, 255, 255],
+            [82, 69, 224, 255],
+            [72, 58, 153, 255],
+            [122, 99, 246, 255],
+            [150, 133, 251, 255],
+            [188, 137, 252, 255],
+            [212, 155, 243, 255],
+            [253, 142, 241, 255],
+            [255, 169, 251, 255],
+            [253, 191, 254, 255],
+            [254, 205, 255, 255],
+            [253, 234, 254, 255],
+            [103, 228, 255, 255],
+            [94, 255, 254, 255]
+        ]
+    }]
 }
 var fillCol = [0, 0, 0, 0]
 function filler(x, y, cc) {
@@ -1200,7 +1374,7 @@ function toggleFile() {
 
 }
 
-var selectorColor = [0, 0, 0, 100]
+var pickerColor = [0, 0, 0, 100]
 
 var opacMoving = false
 var opacThumb
@@ -1216,12 +1390,11 @@ function opacEndDrag(e) {
 }
 
 function opacDrag(e) {
-    if(opacMoving)
-    {
-        selectorColor[3] = (e.clientY - opacRect.top) / opacRect.height * 100
-        opacThumb.style.setProperty("--pos", (e.clientY - opacRect.top) / opacRect.height * 100 + "%")
-        opacThumb.style.setProperty("--posp", (e.clientY - opacRect.top) / opacRect.height)
-        updateSelectorColor()
+    if (opacMoving) {
+        pickerColor[3] = clamp((e.clientY - opacRect.top) / opacRect.height * 100, 0, 100)
+        opacThumb.style.setProperty("--pos", clamp((e.clientY - opacRect.top) / opacRect.height * 100, 0, 100) + "%")
+        opacThumb.style.setProperty("--posp", clamp((e.clientY - opacRect.top) / opacRect.height, 0, 1))
+        updatePickerColor()
     }
 }
 
@@ -1239,12 +1412,11 @@ function hueEndDrag(e) {
 }
 
 function hueDrag(e) {
-    if(hueMoving)
-    {
-        selectorColor[0] = (1 - ((e.clientY - hueRect.top) / hueRect.height)) * 360
-        hThumb.style.setProperty("--pos", (e.clientY - hueRect.top) / hueRect.height * 100 + "%")
-        hThumb.style.setProperty("--posp", (e.clientY - hueRect.top) / hueRect.height)
-        updateSelectorColor()
+    if (hueMoving) {
+        pickerColor[0] = clamp((1 - ((e.clientY - hueRect.top) / hueRect.height)), 0, 1) * 360
+        hThumb.style.setProperty("--pos", clamp((e.clientY - hueRect.top) / hueRect.height * 100, 0, 100) + "%")
+        hThumb.style.setProperty("--posp", clamp((e.clientY - hueRect.top) / hueRect.height, 0, 1))
+        updatePickerColor()
     }
 }
 
@@ -1263,21 +1435,23 @@ function valueEndDrag(e) {
 }
 
 function valueDrag(e) {
-    if(valueMoving)
-    {
-        selectorColor[1] = (e.clientX - valueRect.left) / valueRect.width * 100
-        selectorColor[2] = 100 - ((e.clientY - valueRect.top) / valueRect.height * 100)
-        vThumb.style.setProperty("--posX", (e.clientX - valueRect.left) / valueRect.width * 100 + "%")
-        vThumb.style.setProperty("--posY", (e.clientY - valueRect.top) / valueRect.height * 100 + "%")
-        updateSelectorColor()
+    if (valueMoving) {
+        pickerColor[1] = clamp((e.clientX - valueRect.left) / valueRect.width * 100, 0, 100)
+        pickerColor[2] = 100 - clamp((e.clientY - valueRect.top) / valueRect.height * 100, 0, 100)
+        vThumb.style.setProperty("--posX", clamp((e.clientX - valueRect.left) / valueRect.width * 100, 0, 100) + "%")
+        vThumb.style.setProperty("--posY", clamp((e.clientY - valueRect.top) / valueRect.height * 100, 0, 100) + "%")
+        updatePickerColor()
     }
 }
 
-function updateSelectorColor() {
-    let hsla = HSVToHSL(selectorColor)
+function updatePickerColor() {
+    opacRange.style.setProperty("--hue", pickerColor[0])
+    valueRange.style.setProperty("--hue", pickerColor[0])
+    let hsla = HSVToHSL(pickerColor)
+    opacRange.style.setProperty("--color", `hsl( ${hsla[0]}, ${hsla[1]}%, ${hsla[2]}%)`)
     document.getElementById("color-current").style.setProperty("--color", `hsla( ${hsla[0]}, ${hsla[1]}%, ${hsla[2]}%, ${hsla[3]}%)`)
-    console.log(`hsla( ${hsla[0]}, ${hsla[1]}%, ${hsla[2]}%, ${hsla[3]}%)`)
-    console.log("%c _", `background: hsla( ${hsla[0]}, ${hsla[1]}%, ${hsla[2]}%, ${hsla[3]}%)`)
+    //console.log(`hsla( ${hsla[0]}, ${hsla[1]}%, ${hsla[2]}%, ${hsla[3]}%)`)
+    //console.log("%c _", `background: hsla( ${hsla[0]}, ${hsla[1]}%, ${hsla[2]}%, ${hsla[3]}%)`)
 }
 
 function HSVToHSL(hsva) {
@@ -1298,4 +1472,79 @@ function HSVToHSL(hsva) {
     }
 
     return [h, s * 100, l * 100, a]
+}
+
+document.onmousemove = (e) => {
+    valueDrag(e)
+    hueDrag(e)
+    opacDrag(e)
+}
+
+document.onmouseup = (e) => {
+    valueEndDrag(e)
+    opacEndDrag(e)
+    hueEndDrag(e)
+}
+
+
+const clamp = (num, min, max) => Math.min(Math.max(num, min), max);
+
+function setPickerColor(rgba) {
+    if (!rgba) return false;
+    console.log(rgba)
+    let convHSV = RGBToHSV(rgba)
+    console.log(convHSV)
+    var newPickerColor = [convHSV.h, convHSV.s, convHSV.v, convHSV.a]
+    vThumb.style.setProperty("--posX", convHSV.s + "%")
+    vThumb.style.setProperty("--posY", 100 - convHSV.v + "%")
+    hThumb.style.setProperty("--pos", ((1 - (convHSV.h / 360)) * 100) + "%")
+    hThumb.style.setProperty("--posp", 1 - convHSV.h / 360)
+    opacThumb.style.setProperty("--pos", convHSV.a + "%")
+    opacThumb.style.setProperty("--posp", convHSV.a / 100)
+    pickerColor = newPickerColor
+    let hsla = HSVToHSL(pickerColor)
+    document.getElementById("color-previous").style.setProperty("--color", `hsla( ${hsla[0]}, ${hsla[1]}%, ${hsla[2]}%, ${hsla[3]}%)`)
+    updatePickerColor()
+}
+
+function RGBToHSV(rgba) {
+    var r = rgba[0]
+    var g = rgba[1]
+    var b = rgba[2]
+    var a = rgba[3]
+    let rabs, gabs, babs, rr, gg, bb, h, s, v, diff, diffc, percentRoundFn;
+    rabs = r / 255;
+    gabs = g / 255;
+    babs = b / 255;
+    v = Math.max(rabs, gabs, babs),
+        diff = v - Math.min(rabs, gabs, babs);
+    diffc = c => (v - c) / 6 / diff + 1 / 2;
+    percentRoundFn = num => Math.round(num * 100) / 100;
+    if (diff == 0) {
+        h = s = 0;
+    } else {
+        s = diff / v;
+        rr = diffc(rabs);
+        gg = diffc(gabs);
+        bb = diffc(babs);
+
+        if (rabs === v) {
+            h = bb - gg;
+        } else if (gabs === v) {
+            h = (1 / 3) + rr - bb;
+        } else if (babs === v) {
+            h = (2 / 3) + gg - rr;
+        }
+        if (h < 0) {
+            h += 1;
+        } else if (h > 1) {
+            h -= 1;
+        }
+    }
+    return {
+        h: Math.round(h * 360),
+        s: percentRoundFn(s * 100),
+        v: percentRoundFn(v * 100),
+        a: a / 255 * 100
+    };
 }
