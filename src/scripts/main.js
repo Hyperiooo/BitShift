@@ -688,7 +688,6 @@ class Canvas {
         document.getElementById("tool-color").style.setProperty("--color", "rgba(" + color[0] + "," + color[1] + "," + color[2] + "," + color[3] + ")");
         this.ctx.fillStyle = "rgba(" + color[0] + "," + color[1] + "," + color[2] + "," + color[3] + ")";
         this.pctx.fillStyle = "rgba(" + color[0] + "," + color[1] + "," + color[2] + "," + color[3] + ")";
-        //act(document.getElementById("pc-" + rgbToHex(color[0], color[1], color[2], color[3])))
         act(document.querySelectorAll(`[data-palette-color='${rgbToHex(color[0], color[1], color[2], color[3])}']`))
     }
     setmode(i, el) {
@@ -1107,8 +1106,9 @@ function preparePalette() {
         var startRect;
         var subMoving = false;
         var tempOut = false
+        var snapped = false
         titleEl.onmousedown = (e) => {
-            if(tempOut) return;
+            if (tempOut) return;
             startRect = group.getBoundingClientRect()
             tempNode = group.cloneNode(true)
             tempNode.querySelector(".color-palette-title").onmouseup = mouseUpHandler
@@ -1139,12 +1139,18 @@ function preparePalette() {
             tempNode.style.setProperty('z-index', '100000001', 'important')
         }
         titleEl.onmouseup = mouseUpHandler
-        function mouseUpHandler(e) {
-            console.log(tempOut)
-            if(tempOut) {mouseUpSub(); return}
-            if(tempOut == false){
+        function mouseUpHandler(e, c) {
+            console.log(snapped, tempNode)
+            if (!snapped && tempNode) {
                 mainMoving = false;
-                tempOut = true
+                subMoving = false
+                tempNode.style.setProperty("transform", "unset")
+                tempNode.remove()
+            }
+            if (tempOut) { mouseUpSub(); return }
+            if (tempOut == false) {
+                mainMoving = false;
+                if (snapped) tempOut = true
                 subMoving = true
                 offsetX = curX
                 offsetY = curY
@@ -1177,14 +1183,15 @@ function preparePalette() {
                 curY = lerp(e.clientY - startY, 0, 0.7);
                 group.style.transform = `translate(${Math.ceil(curX)}px, ${Math.ceil(curY)}px)`;
                 tempNode.style.transform = `translate(${startRect.x + Math.ceil(curX) - 8}px, ${startRect.y + Math.ceil(curY) - 30}px)`;
-                if (Math.abs(curX) > 100 || Math.abs(curY) > 100) mouseUpHandler()
+                if (Math.abs(curX) > 100 || Math.abs(curY) > 100) { snapped = true; mouseUpHandler(); }
+                return
             }
-            if(!tempNode) return
-            if(!subMoving) return;
+            if (!tempNode) return
+            if (!subMoving) return;
             if (subMoving) {
                 var timeout = setInterval(() => {
-                    offsetX = lerp(0, offsetX, 0.9)
-                    offsetY = lerp(0, offsetY, 0.9)
+                    offsetX = lerp(0, offsetX, 0.99)
+                    offsetY = lerp(0, offsetY, 0.99)
                 }, 2);
                 tX = e.clientX - startX - offsetX
                 tY = e.clientY - startY - offsetY
@@ -1199,7 +1206,6 @@ function preparePalette() {
                 board.setcolor(x)
             }
             var rgba = `rgba(${x[0]},${x[1]},${x[2]}, ${x[3] / 256 * 100}%)`
-            //inner += `<span id="pc-${rgbToHex(x[0], x[1], x[2], x[3])}" class="item" onclick="board.setcolor([${x}]);" ></span>\n`
             let e = document.createElement("span")
             e.setAttribute("data-palette-color", `${rgbToHex(x[0], x[1], x[2], x[3])}`)
             e.classList.add('palette-color')
@@ -1243,7 +1249,7 @@ document.querySelector("#close").onclick = function () {
     });
 }
 
-var test = [{
+var palettes = [{
     title: "Default",
     colors: [
         [91, 166, 117, 255],
@@ -1337,101 +1343,10 @@ var test = [{
     ]
 }]
 function newProject() {
+    closeMenu()
     localStorage.removeItem('pc-canvas-data');
     window.dim = new Popup("#popup");
-    window.colors = [{
-        title: "Default",
-        colors: [
-            [91, 166, 117, 255],
-            [107, 201, 108, 255],
-            [171, 221, 100, 255],
-            [252, 239, 141, 255],
-            [255, 184, 121, 255],
-            [234, 98, 98, 255],
-            [204, 66, 94, 255],
-            [163, 40, 88, 255],
-            [117, 23, 86, 255],
-            [57, 9, 71, 255],
-            [97, 24, 81, 255],
-            [135, 53, 85, 255],
-            [166, 85, 95, 255],
-            [201, 115, 115, 255],
-            [242, 174, 153, 255],
-            [255, 195, 242, 255],
-            [238, 143, 203, 255],
-            [212, 110, 179, 255],
-            [135, 62, 132, 255],
-            [31, 16, 42, 255],
-            [74, 48, 82, 255],
-            [123, 84, 128, 255],
-            [166, 133, 159, 255],
-            [217, 189, 200, 255],
-            [255, 255, 255, 255],
-            [174, 226, 255, 255],
-            [141, 183, 255, 255],
-            [109, 128, 250, 255],
-            [132, 101, 236, 255],
-            [131, 77, 196, 255],
-            [125, 45, 160, 255],
-            [78, 24, 124, 255]
-        ]
-    }, {
-        title: "Ice Cream GB",
-        colors: [
-            [124, 63, 88, 255],
-            [235, 107, 111, 255],
-            [249, 168, 117, 255],
-            [255, 246, 211, 255]
-        ]
-    }, {
-        title: "SpaceHaze",
-        colors: [
-            [248, 227, 196, 255],
-            [204, 52, 149, 255],
-            [107, 31, 177, 255],
-            [11, 6, 48, 255]
-        ]
-    }, {
-        title: "Neon Space",
-        colors: [
-            [223, 7, 114, 255],
-            [254, 84, 111, 255],
-            [255, 158, 125, 255],
-            [255, 208, 128, 255],
-            [255, 253, 255, 255],
-            [11, 255, 230, 255],
-            [1, 203, 207, 255],
-            [1, 136, 165, 255],
-            [62, 50, 100, 255],
-            [53, 42, 85, 255]
-        ]
-    }, {
-        title: "Astralae",
-        colors: [
-            [255, 241, 170, 255],
-            [255, 247, 219, 255],
-            [255, 255, 255, 255],
-            [224, 254, 255, 255],
-            [193, 240, 255, 255],
-            [174, 224, 247, 255],
-            [113, 215, 253, 255],
-            [20, 175, 255, 255],
-            [57, 94, 255, 255],
-            [82, 69, 224, 255],
-            [72, 58, 153, 255],
-            [122, 99, 246, 255],
-            [150, 133, 251, 255],
-            [188, 137, 252, 255],
-            [212, 155, 243, 255],
-            [253, 142, 241, 255],
-            [255, 169, 251, 255],
-            [253, 191, 254, 255],
-            [254, 205, 255, 255],
-            [253, 234, 254, 255],
-            [103, 228, 255, 255],
-            [94, 255, 254, 255]
-        ]
-    }]
+    window.colors = palettes
 }
 var fillCol = [0, 0, 0, 0]
 function filler(x, y, cc) {
@@ -1496,6 +1411,16 @@ function toggleColorPicker() {
 function toggleMenu() {
 
     document.querySelector(".menu").classList.toggle("menu-open")
+
+}
+
+function closeMenu() {
+    document.querySelector(".menu").classList.remove("menu-open")
+
+}
+
+function openMenu() {
+    document.querySelector(".menu").classList.add("menu-open")
 
 }
 

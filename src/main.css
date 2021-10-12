@@ -621,7 +621,7 @@ path {
     transition: 0.2s opacity, 0.2s transform;
     max-height: 450px;
     overflow-y: scroll;
-    overflow-x: scroll;
+    overflow-x: hidden;
     pointer-events: none;
 }
 
