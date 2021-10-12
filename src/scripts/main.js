@@ -1087,58 +1087,106 @@ function preparePalette() {
         group.appendChild(colorMenu)
         paletteParent.appendChild(group)
 
-        
+
         var curX = 0;
         var startX = 0;
         var initialX = 0;
         var curY = 0;
         var startY = 0;
         var initialY = 0;
-        var moving = false;
+        var tX = 0
+        var offsetX = 0
+        var tY = 0
+        var offsetY = 0
+        var mainMoving = false;
         var limit = 5;
         var tempNode;
         var startRect;
+        var subMoving = false;
+        var tempOut = false
         titleEl.onmousedown = (e) => {
+            if(tempOut) return;
             startRect = group.getBoundingClientRect()
             tempNode = group.cloneNode(true)
+            tempNode.querySelector(".color-palette-title").onmouseup = mouseUpHandler
+            tempNode.onmousedown = (e) => {
+                startRect = e.target.getBoundingClientRect()
+                if (tempOut) {
+                    subMoving = true;
+                    startX = e.clientX;
+                    startY = e.clientY;
+                    document.querySelectorAll(".color-palette-group").forEach(e => {
+                        e.style.setProperty('z-index', 'unset', 'important')
+                    })
+                    group.style.setProperty('z-index', '100000000', 'important')
+                    tempNode.style.setProperty('z-index', '100000001', 'important')
+                }
+            }
             tempNode.classList.replace("color-palette-group", "color-palette-standalone")
             tempNode.style.width = startRect.width + "px"
             document.body.appendChild(tempNode)
             console.log(group)
-            moving = true;
+            mainMoving = true;
             startX = e.clientX;
             startY = e.clientY;
             document.querySelectorAll(".color-palette-group").forEach(e => {
                 e.style.setProperty('z-index', 'unset', 'important')
             })
             group.style.setProperty('z-index', '100000000', 'important')
+            tempNode.style.setProperty('z-index', '100000001', 'important')
         }
         titleEl.onmouseup = mouseUpHandler
         function mouseUpHandler(e) {
-            moving = false;
-            var timeout = setInterval(() => {
-              var nX = lerp(curX, initialX, 0.1);
-              var nY = lerp(curY, initialY, 0.1);
-              group.style.transform = `translate(${nX}px, ${nY}px)`;
-              curX = nX;
-              curY = nY;
-          
-              if (Math.abs(curX - initialX) < 0.1 && Math.abs(curY - initialY) < 0.1) {
-                curX = initialX;
-                curY = initialY;
-                group.style.transform = "unset";
-                clearTimeout(timeout);
-              }
-            }, 2);
+            console.log(tempOut)
+            if(tempOut) {mouseUpSub(); return}
+            if(tempOut == false){
+                mainMoving = false;
+                tempOut = true
+                subMoving = true
+                offsetX = curX
+                offsetY = curY
+                var timeout = setInterval(() => {
+                    var nX = lerp(curX, initialX, 0.1);
+                    var nY = lerp(curY, initialY, 0.1);
+                    group.style.transform = `translate(${Math.round(nX)}px, ${Math.round(nY)}px)`;
+                    curX = nX;
+                    curY = nY;
+
+                    if (Math.abs(curX - initialX) < 0.1 && Math.abs(curY - initialY) < 0.1) {
+                        curX = initialX;
+                        curY = initialY;
+                        group.style.transform = "unset";
+                        clearTimeout(timeout);
+                    }
+                }, 2);
+            } else {
+                return
+            }
         }
-        document.addEventListener("mouseup",mouseUpHandler)
-        document.addEventListener("mousemove",(e) => {
-            if (moving) {
-              curX = lerp(e.clientX - startX, 0, 0.7);
-              curY = lerp(e.clientY - startY, 0, 0.7);
-              group.style.transform = `translate(${curX}px, ${curY}px)`;
-              tempNode.style.transform = `translate(${startRect.x + curX}px, ${startRect.y + curY}px)`;
-              if(Math.abs(curX) > 40 || Math.abs(curY) > 40) mouseUpHandler()
+
+        function mouseUpSub() {
+            subMoving = false
+        }
+        document.addEventListener("mouseup", mouseUpHandler)
+        document.addEventListener("mousemove", (e) => {
+            if (mainMoving) {
+                curX = lerp(e.clientX - startX, 0, 0.7);
+                curY = lerp(e.clientY - startY, 0, 0.7);
+                group.style.transform = `translate(${Math.ceil(curX)}px, ${Math.ceil(curY)}px)`;
+                tempNode.style.transform = `translate(${startRect.x + Math.ceil(curX) - 8}px, ${startRect.y + Math.ceil(curY) - 30}px)`;
+                if (Math.abs(curX) > 100 || Math.abs(curY) > 100) mouseUpHandler()
+            }
+            if(!tempNode) return
+            if(!subMoving) return;
+            if (subMoving) {
+                var timeout = setInterval(() => {
+                    offsetX = lerp(0, offsetX, 0.9)
+                    offsetY = lerp(0, offsetY, 0.9)
+                }, 2);
+                tX = e.clientX - startX - offsetX
+                tY = e.clientY - startY - offsetY
+                tempNode.style.transform = `translate(${startRect.x + Math.ceil(tX) - 8}px, ${startRect.y + Math.ceil(tY) - 30}px)`;
+
             }
         })
 
@@ -1286,7 +1334,6 @@ var test = [{
     ]
 }]
 function newProject() {
-    toggleMenu()
     localStorage.removeItem('pc-canvas-data');
     window.dim = new Popup("#popup");
     window.colors = [{
@@ -1391,7 +1438,7 @@ function filler(x, y, cc) {
 
 function lerp(v0, v1, t) {
     return v0 * (1 - t) + v1 * t;
-  }
+}
 function act(clr) {
     document.querySelectorAll(".palette-color").forEach(x => {
         x.classList.add('palette-inactive')

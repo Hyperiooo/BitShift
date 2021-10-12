@@ -797,6 +797,8 @@ path {
     outline-style: solid;
     outline-width: 4px;
     outline-color: #18171A;
+    
+    transform: translate(-1000%, -1000%);
 }
 
 .palette-color {
