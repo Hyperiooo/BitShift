@@ -1217,7 +1217,8 @@ function preparePalette() {
     });
 }
 function rgbToHex(r, g, b, a) {
-    return componentToHex(r) + componentToHex(g) + componentToHex(b) + componentToHex(a);
+    if(a) return componentToHex(r) + componentToHex(g) + componentToHex(b) + componentToHex(a);
+    else if(!a) return componentToHex(r) + componentToHex(g) + componentToHex(b);
 }
 function componentToHex(c) {
     var hex = c.toString(16);
