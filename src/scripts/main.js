@@ -688,7 +688,8 @@ class Canvas {
         document.getElementById("tool-color").style.setProperty("--color", "rgba(" + color[0] + "," + color[1] + "," + color[2] + "," + color[3] + ")");
         this.ctx.fillStyle = "rgba(" + color[0] + "," + color[1] + "," + color[2] + "," + color[3] + ")";
         this.pctx.fillStyle = "rgba(" + color[0] + "," + color[1] + "," + color[2] + "," + color[3] + ")";
-        act(document.getElementById("pc-" + rgbToHex(color[0], color[1], color[2], color[3])))
+        //act(document.getElementById("pc-" + rgbToHex(color[0], color[1], color[2], color[3])))
+        act(document.querySelectorAll(`[data-palette-color='${rgbToHex(color[0], color[1], color[2], color[3])}']`))
     }
     setmode(i, el) {
         if (tools[Tool.shapeFilled]) {
@@ -1087,6 +1088,8 @@ function preparePalette() {
         group.appendChild(colorMenu)
         paletteParent.appendChild(group)
 
+        //TODO rewrite so that this works with more than one palette
+
 
         var curX = 0;
         var startX = 0;
@@ -1198,7 +1201,7 @@ function preparePalette() {
             var rgba = `rgba(${x[0]},${x[1]},${x[2]}, ${x[3] / 256 * 100}%)`
             //inner += `<span id="pc-${rgbToHex(x[0], x[1], x[2], x[3])}" class="item" onclick="board.setcolor([${x}]);" ></span>\n`
             let e = document.createElement("span")
-            e.id = `pc-${rgbToHex(x[0], x[1], x[2], x[3])}`
+            e.setAttribute("data-palette-color", `${rgbToHex(x[0], x[1], x[2], x[3])}`)
             e.classList.add('palette-color')
             e.style.setProperty("--color", rgba)
             e.setAttribute("onclick", `board.setcolor([${x}])`)
@@ -1445,8 +1448,10 @@ function act(clr) {
         x.classList.remove('palette-active')
     });
     if (clr) {
-        clr.classList.remove('palette-inactive')
-        clr.classList.add('palette-active')
+        clr.forEach(e => {
+            e.classList.remove('palette-inactive')
+            e.classList.add('palette-active')
+        })
     }
 }
 
