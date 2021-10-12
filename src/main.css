@@ -785,6 +785,20 @@ path {
     outline-color: #18171A;
 }
 
+.color-palette-standalone {
+    position: absolute;
+    background: #262628;
+    margin: 8px;
+    width: calc(100% - 8px);
+    border-radius: 5px;
+    overflow: hidden;
+    z-index: 9999999;
+    margin-right: 0;
+    outline-style: solid;
+    outline-width: 4px;
+    outline-color: #18171A;
+}
+
 .palette-color {
     z-index: 1 !important;
     position: relative;

@@ -1101,6 +1101,7 @@ function preparePalette() {
         titleEl.onmousedown = (e) => {
             startRect = group.getBoundingClientRect()
             tempNode = group.cloneNode(true)
+            tempNode.classList.replace("color-palette-group", "color-palette-standalone")
             tempNode.style.width = startRect.width + "px"
             document.body.appendChild(tempNode)
             console.log(group)
