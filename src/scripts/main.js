@@ -252,10 +252,10 @@ class Canvas {
                     let r = brushSize - 1
                     //let c = filledEllipse(p.x, p.y, 2, 2)
                     let c;
-                    if(brushSize % 2 == 0) {
-                        c = filledEllipse(p.x - (r/2) - .5, p.y - (r/2) - .5, p.x + (r/2) - .5, p.y + (r/2) - .5)
-                    }else if(brushSize % 2 != 0) {
-                        c = filledEllipse(p.x - (r/2), p.y - (r/2), p.x + (r/2), p.y + (r/2))
+                    if (brushSize % 2 == 0) {
+                        c = filledEllipse(p.x - (r / 2) - .5, p.y - (r / 2) - .5, p.x + (r / 2) - .5, p.y + (r / 2) - .5)
+                    } else if (brushSize % 2 != 0) {
+                        c = filledEllipse(p.x - (r / 2), p.y - (r / 2), p.x + (r / 2), p.y + (r / 2))
                     }
                     var b;
                     for (b of c) this.draw(b);
@@ -434,10 +434,10 @@ class Canvas {
                     let r = brushSize - 1
                     //let c = filledEllipse(p.x, p.y, 2, 2)
                     let c;
-                    if(brushSize % 2 == 0) {
-                        c = filledEllipse(x - (r/2) - .5, y - (r/2) - .5, x + (r/2) - .5, y + (r/2) - .5)
-                    }else if(brushSize % 2 != 0) {
-                        c = filledEllipse(x - (r/2), y - (r/2), x + (r/2), y + (r/2))
+                    if (brushSize % 2 == 0) {
+                        c = filledEllipse(x - (r / 2) - .5, y - (r / 2) - .5, x + (r / 2) - .5, y + (r / 2) - .5)
+                    } else if (brushSize % 2 != 0) {
+                        c = filledEllipse(x - (r / 2), y - (r / 2), x + (r / 2), y + (r / 2))
                     }
                     var b;
                     for (b of c) this.pDraw(b);
@@ -629,7 +629,7 @@ class Canvas {
                 ay1 = y1
                 ay2 = y2
             }
-            if(ay2 - ay1 == 0) ay2 = ay1 + 1
+            if (ay2 - ay1 == 0) ay2 = ay1 + 1
             this.ctx.fillRect(ax1, ay1, ax2 - ax1, ay2 - ay1);
 
         }
@@ -661,7 +661,7 @@ class Canvas {
                 ay1 = y1
                 ay2 = y2
             }
-            if(ay2 - ay1 == 0) ay2 = ay1 + 1
+            if (ay2 - ay1 == 0) ay2 = ay1 + 1
             this.pctx.fillRect(ax1, ay1, ax2 - ax1, ay2 - ay1);
         }
     }
@@ -1079,12 +1079,68 @@ function preparePalette() {
         var titleEl = document.createElement("h2")
         titleEl.classList.add("color-palette-title")
         titleEl.innerText = title
+
         group.appendChild(titleEl)
         var colorMenu = document.createElement("div")
         colorMenu.classList.add("ui")
         colorMenu.classList.add("color-palette-menu")
         group.appendChild(colorMenu)
         paletteParent.appendChild(group)
+
+        
+        var curX = 0;
+        var startX = 0;
+        var initialX = 0;
+        var curY = 0;
+        var startY = 0;
+        var initialY = 0;
+        var moving = false;
+        var limit = 5;
+        var tempNode;
+        var startRect;
+        titleEl.onmousedown = (e) => {
+            startRect = group.getBoundingClientRect()
+            tempNode = group.cloneNode(true)
+            tempNode.style.width = startRect.width + "px"
+            document.body.appendChild(tempNode)
+            console.log(group)
+            moving = true;
+            startX = e.clientX;
+            startY = e.clientY;
+            document.querySelectorAll(".color-palette-group").forEach(e => {
+                e.style.setProperty('z-index', 'unset', 'important')
+            })
+            group.style.setProperty('z-index', '100000000', 'important')
+        }
+        titleEl.onmouseup = mouseUpHandler
+        function mouseUpHandler(e) {
+            moving = false;
+            var timeout = setInterval(() => {
+              var nX = lerp(curX, initialX, 0.1);
+              var nY = lerp(curY, initialY, 0.1);
+              group.style.transform = `translate(${nX}px, ${nY}px)`;
+              curX = nX;
+              curY = nY;
+          
+              if (Math.abs(curX - initialX) < 0.1 && Math.abs(curY - initialY) < 0.1) {
+                curX = initialX;
+                curY = initialY;
+                group.style.transform = "unset";
+                clearTimeout(timeout);
+              }
+            }, 2);
+        }
+        document.addEventListener("mouseup",mouseUpHandler)
+        document.addEventListener("mousemove",(e) => {
+            if (moving) {
+              curX = lerp(e.clientX - startX, 0, 0.7);
+              curY = lerp(e.clientY - startY, 0, 0.7);
+              group.style.transform = `translate(${curX}px, ${curY}px)`;
+              tempNode.style.transform = `translate(${startRect.x + curX}px, ${startRect.y + curY}px)`;
+              if(Math.abs(curX) > 40 || Math.abs(curY) > 40) mouseUpHandler()
+            }
+        })
+
         palette.forEach(x => {
             if (!setCurrent) {
                 setCurrent = true
@@ -1096,7 +1152,7 @@ function preparePalette() {
             e.id = `pc-${rgbToHex(x[0], x[1], x[2], x[3])}`
             e.classList.add('palette-color')
             e.style.setProperty("--color", rgba)
-            e.addEventListener("click", () => { board.setcolor(x) })
+            e.setAttribute("onclick", `board.setcolor([${x}])`)
             colorMenu.appendChild(e)
         })
         console.log(palette)
@@ -1332,6 +1388,9 @@ function filler(x, y, cc) {
     console.log(x, y, cc)
 }
 
+function lerp(v0, v1, t) {
+    return v0 * (1 - t) + v1 * t;
+  }
 function act(clr) {
     document.querySelectorAll(".palette-color").forEach(x => {
         x.classList.add('palette-inactive')

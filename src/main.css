@@ -73,7 +73,7 @@ body {
 }
 
 .popup-input-num {
-    background: rgba(255, 255, 255, 0.062);
+    background: #262628;
     color: white;
     margin: 10px 0;
     padding: 5px;
@@ -183,7 +183,7 @@ body {
 }
 
 .popup-input-num {
-    background: rgba(255, 255, 255, 0.062);
+    background: #262628;
     color: white;
     margin: 10px 0;
     padding: 5px;
@@ -282,7 +282,7 @@ body {
 }
 
 .menu .menu-btn:hover {
-    background: rgba(255, 255, 255, 0.062);
+    background: #262628;
     color: rgb(255, 255, 255);
 }
 
@@ -422,7 +422,7 @@ body {
 
 
 #toolbar .item:hover, .tool-active {
-    background: rgba(255, 255, 255, 0.062);
+    background: #262628;
 }
 
 .tool-active i, .tool-active i svg path {
@@ -605,7 +605,6 @@ path {
     top: 64px;
     right: 8px;
     border-radius: 13px;
-    overflow: hidden;
     padding: 0px;
     margin: 0;
     color: rgb(202, 202, 202);
@@ -621,8 +620,8 @@ path {
     transform: translate(0, -10px);
     transition: 0.2s opacity, 0.2s transform;
     max-height: 450px;
-    overflow: scroll;
-    overflow-x: hidden;
+    overflow-y: scroll;
+    overflow-x: scroll;
     pointer-events: none;
 }
 
@@ -632,7 +631,7 @@ path {
 }
 
 .color-menu::-webkit-scrollbar-thumb {
-    background-color: rgba(255, 255, 255, 0.062);
+    background-color: #262628;
     min-height: 40px;
 }
 
@@ -768,21 +767,26 @@ path {
     left: 0px;
     right: 0px;
     height: fit-content;
-    z-index: 10000000;
+    z-index: 0 !important;
     margin-right: 0;
 }
 
 .color-palette-group {
-    background: rgba(255, 255, 255, 0.062);
+    position: relative;
+    background: #262628;
     margin: 8px;
     width: calc(100% - 8px);
     border-radius: 5px;
     overflow: hidden;
     z-index: 9999999;
     margin-right: 0;
+    outline-style: solid;
+    outline-width: 4px;
+    outline-color: #18171A;
 }
 
 .palette-color {
+    z-index: 1 !important;
     position: relative;
     display: inline-block;
     width: 10%;
@@ -790,7 +794,7 @@ path {
     cursor: pointer;
     margin: 0;
     float: left;
-    padding: 0 !important;
+    padding: 0;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -811,4 +815,5 @@ path {
     font-weight: unset;
     margin: 0;
     margin: 5px;
+    color: rgb(202, 202, 202);
 }
