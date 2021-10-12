@@ -193,7 +193,7 @@ function filledCircle(r, pc) {
 	return points
 }
 
-function filledEllipse(xc, yc, a, b) {
+function filledEllipseO(xc, yc, a, b) {
 	var points = []
 	/* e(x,y) = b^2*x^2 + a^2*y^2 - a^2*b^2 */
 	var x = 0,
@@ -277,7 +277,11 @@ function filledEllipse(xc, yc, a, b) {
 	return points
 }
 
-function ellipse(x0, y0, x1, y1) {                              /* rectangular parameter enclosing the ellipse */
+function ellipse(x0, y0, x1, y1) { 
+	var ox0 = x0
+	var oy0 = y0
+	var ox1 = x1
+	var oy1 = y1                             /* rectangular parameter enclosing the ellipse */
 	var a = Math.abs(x1 - x0), b = Math.abs(y1 - y0), b1 = b & 1;        /* diameter */
 	var dx = 4 * (1.0 - a) * b * b, dy = 4 * (b1 + 1) * a * a;              /* error increment */
 	var err = dx + dy + b1 * a * a, e2;                             /* error of 1.step */
@@ -303,26 +307,62 @@ function ellipse(x0, y0, x1, y1) {                              /* rectangular p
 		points.push(new Point(x0 - 1, y1));
 		points.push(new Point(x1 + 1, y1--));
 	}
-	let nPoints = []
-	let usedY = []
-	for (let it of points) {
-		nPoints.push(new Point(it.x - x0, it.y - ((y0 + y1) / 2)))
-		if (!usedY.includes(it.y)) {
-			nPoints.push(new Point(x0 - x0, it.y - ((y0 + y1) / 2)))
-			usedY.push(it.y);
-			let l = line(new Point(it.x - x0, it.y - ((y0 + y1) / 2)), new Point(x0 - x0, it.y - ((y0 + y1) / 2)))
-			for (let lP of l) {
-				nPoints.push(lP)
-			}
-		}
-	}
-	nPoints = _sym4(nPoints)
-	for (let pt of nPoints) {
-		pt.x += ((x0 + x1) / 2);
-		pt.y += ((y0 + y1) / 2);
-	}
-	
 	return points
+}
+
+
+function filledEllipse(x0, y0, x1, y1) { 
+	var ox0 = x0
+	var oy0 = y0
+	var ox1 = x1
+	var oy1 = y1                             /* rectangular parameter enclosing the ellipse */
+	var a = Math.abs(x1 - x0), b = Math.abs(y1 - y0), b1 = b & 1;        /* diameter */
+	var dx = 4 * (1.0 - a) * b * b, dy = 4 * (b1 + 1) * a * a;              /* error increment */
+	var err = dx + dy + b1 * a * a, e2;                             /* error of 1.step */
+
+	if (x0 > x1) { x0 = x1; x1 += a; }        /* if called with swapped points */
+	if (y0 > y1) y0 = y1;                                  /* .. exchange them */
+	y0 += (b + 1) >> 1; y1 = y0 - b1;                              /* starting pixel */
+	a = 8 * a * a; b1 = 8 * b * b;
+	let points = []
+	do {
+		points.push(new Point(x1, y0));                                      /*   I. Quadrant */
+		points.push(new Point(x0, y0));                                      /*  II. Quadrant */
+		points.push(new Point(x0, y1));                                      /* III. Quadrant */
+		points.push(new Point(x1, y1));                                      /*  IV. Quadrant */
+		e2 = 2 * err;
+		if (e2 <= dy) { y0++; y1--; err += dy += a; }                 /* y step */
+		if (e2 >= dx || 2 * err > dy) { x0++; x1--; err += dx += b1; }       /* x */
+	} while (x0 <= x1);
+
+	while (y0 - y1 <= b) {                /* too early stop of flat ellipses a=1 */
+		points.push(new Point(x0 - 1, y0));                         /* -> finish tip of ellipse */
+		points.push(new Point(x1 + 1, y0++));
+		points.push(new Point(x0 - 1, y1));
+		points.push(new Point(x1 + 1, y1--));
+	}
+	points = [...new Set(points)]
+	var highestY = oy1
+	var lowestX = ox1
+	var highestX = ox0
+	points.forEach(el => {
+		if(el.y != highestY) return
+		if(lowestX > el.x) lowestX = el.x
+		if(highestX < el.x) highestX = el.x
+	});
+	var lp = []
+	var hp = []
+	for (let i = 0; i < points.length; i++) {
+		const el = points[i];
+		if(el.x <= lowestX) lp.push(el)
+		if(el.x >= highestX) hp.push(el)
+	}
+	let fp = []
+	for (let i = 0; i < lp.length; i++) {
+		const el = lp[i];
+		fp.push(new Rect(el.x, el.y, hp[i].x + 1, hp[i].y))
+	}
+	return fp
 }
 
 

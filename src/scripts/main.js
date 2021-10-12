@@ -181,10 +181,13 @@ class Canvas {
         })
 
         this.canvas.addEventListener("mousedown", e => {
+            console.log('acu')
             if (e.button != 0) {
                 return
             }
+            console.log('puncture')
             this.inputDown(e)
+            this.inputActive(e)
         });
         this.canvas.addEventListener("mouseup", e => {
             this.inputUp(e)
@@ -245,7 +248,15 @@ class Canvas {
                 let p
                 for (p of P) {
                     this.draw(new Point(p.x, p.y))
-                    let c = filledEllipse(p.x, p.y, 2, 2)
+                    let brushSize = parseInt(settings.tools.brushSize)
+                    let r = brushSize - 1
+                    //let c = filledEllipse(p.x, p.y, 2, 2)
+                    let c;
+                    if(brushSize % 2 == 0) {
+                        c = filledEllipse(p.x - (r/2) - .5, p.y - (r/2) - .5, p.x + (r/2) - .5, p.y + (r/2) - .5)
+                    }else if(brushSize % 2 != 0) {
+                        c = filledEllipse(p.x - (r/2), p.y - (r/2), p.x + (r/2), p.y + (r/2))
+                    }
                     var b;
                     for (b of c) this.draw(b);
                 }
@@ -419,7 +430,17 @@ class Canvas {
                     //let c = filledEllipse(x, y, 2, 2)
                     //var p;
                     //for (p of c) this.pDraw(p);
-                    this.pDraw(new Point(x, y))
+                    let brushSize = parseInt(settings.tools.brushSize)
+                    let r = brushSize - 1
+                    //let c = filledEllipse(p.x, p.y, 2, 2)
+                    let c;
+                    if(brushSize % 2 == 0) {
+                        c = filledEllipse(x - (r/2) - .5, y - (r/2) - .5, x + (r/2) - .5, y + (r/2) - .5)
+                    }else if(brushSize % 2 != 0) {
+                        c = filledEllipse(x - (r/2), y - (r/2), x + (r/2), y + (r/2))
+                    }
+                    var b;
+                    for (b of c) this.pDraw(b);
                 }
             }
         }
@@ -608,6 +629,7 @@ class Canvas {
                 ay1 = y1
                 ay2 = y2
             }
+            if(ay2 - ay1 == 0) ay2 = ay1 + 1
             this.ctx.fillRect(ax1, ay1, ax2 - ax1, ay2 - ay1);
 
         }
@@ -639,6 +661,7 @@ class Canvas {
                 ay1 = y1
                 ay2 = y2
             }
+            if(ay2 - ay1 == 0) ay2 = ay1 + 1
             this.pctx.fillRect(ax1, ay1, ax2 - ax1, ay2 - ay1);
         }
     }
