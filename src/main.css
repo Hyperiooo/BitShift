@@ -412,6 +412,15 @@ body {
     fill: rgba(255, 255, 255, 0.411) !important;
 }
 
+#toolbar .item #tool-color {
+    color: var(--color) !important;
+}
+
+#toolbar .item:hover #tool-color {
+    color: var(--color) !important;
+}
+
+
 #toolbar .item:hover, .tool-active {
     background: rgba(255, 255, 255, 0.062);
 }

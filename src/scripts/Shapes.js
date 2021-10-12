@@ -321,6 +321,7 @@ function ellipse(x0, y0, x1, y1) {                              /* rectangular p
 		pt.x += ((x0 + x1) / 2);
 		pt.y += ((y0 + y1) / 2);
 	}
+	
 	return points
 }
 
