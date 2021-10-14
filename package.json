@@ -1,26 +1,62 @@
 {
-  "name": "capacitor-app",
-  "version": "1.0.0",
-  "description": "An Amazing Capacitor App",
+  "name": "BitShift",
+  "version": "0.0.1",
+  "description": "A JavaScript based pixel art application for the web, Windows, and Android using CapacitorJS and ElectronJS",
   "main": "main.js",
   "keywords": [
     "capacitor",
     "mobile"
   ],
+  "author": "Hyperio",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "electron ."
+    "start": "electron-forge start",
+    "package": "electron-forge package",
+    "make": "electron-forge make",
+    "build": "gradlew assembleDebug"
   },
   "dependencies": {
     "@capacitor/android": "^3.2.4",
     "@capacitor/camera": "latest",
     "@capacitor/core": "^3.2.4",
-    "@capacitor/splash-screen": "latest"
+    "@capacitor/splash-screen": "latest",
+    "electron-squirrel-startup": "^1.0.0"
   },
   "devDependencies": {
     "@capacitor/cli": "latest",
+    "@electron-forge/cli": "^6.0.0-beta.61",
+    "@electron-forge/maker-deb": "^6.0.0-beta.61",
+    "@electron-forge/maker-rpm": "^6.0.0-beta.61",
+    "@electron-forge/maker-squirrel": "^6.0.0-beta.61",
+    "@electron-forge/maker-zip": "^6.0.0-beta.61",
     "electron": "^15.1.0"
   },
-  "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "config": {
+    "forge": {
+      "packagerConfig": {},
+      "makers": [
+        {
+          "name": "@electron-forge/maker-squirrel",
+          "config": {
+            "name": "capacitor_app"
+          }
+        },
+        {
+          "name": "@electron-forge/maker-zip",
+          "platforms": [
+            "darwin"
+          ]
+        },
+        {
+          "name": "@electron-forge/maker-deb",
+          "config": {}
+        },
+        {
+          "name": "@electron-forge/maker-rpm",
+          "config": {}
+        }
+      ]
+    }
+  }
 }

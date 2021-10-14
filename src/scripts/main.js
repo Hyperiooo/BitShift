@@ -201,6 +201,7 @@ class Canvas {
         });
     }
     inputDown(e) {
+        updatePrevious(this.color)
         this.active = true;
         var rect = this.canvas.getBoundingClientRect();
         var x = e.clientX - rect.left || e.touches[0].clientX - rect.left;
@@ -452,6 +453,7 @@ class Canvas {
         return Math.round(value * inv) / inv;
     }
     changeBrushSize(sz) {
+        console.log(sz)
         //let slide = document.getElementById('brushSzSlide')
         //let txt = document.getElementById('brushSzNum')
         //let icon = document.getElementById('brushSzIcon')
@@ -1048,6 +1050,7 @@ window.onload = function () {
         window.board.steps = data.steps;
         window.board.redo_arr = data.redo_arr;
         window.board.setcolor(data.currColor);
+        updatePrevious(data.currColor)
         window.gif = new GIF({
             workers: 2,
             quality: 10,
@@ -1068,14 +1071,27 @@ window.onload = function () {
     }
 }
 
+function randomString(l) {
+    var result = '';
+    var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    var charactersLength = characters.length;
+    for (var i = 0; i < l; i++) {
+        result += characters.charAt(Math.floor(Math.random() *
+            charactersLength));
+    }
+    return result;
+}
 function preparePalette() {
     var setCurrent = false;
     colors.forEach(g => {
         var title = g.title
         var palette = g.colors
+        var id = randomString(7);
+        console.log(id)
         var paletteParent = document.getElementById("palettes")
         var group = document.createElement("div")
         group.classList.add("color-palette-group")
+        group.setAttribute("data-palette-id", id)
         var titleEl = document.createElement("h2")
         titleEl.classList.add("color-palette-title")
         titleEl.innerText = title
@@ -1192,6 +1208,10 @@ function preparePalette() {
                 var timeout = setInterval(() => {
                     offsetX = lerp(0, offsetX, 0.99)
                     offsetY = lerp(0, offsetY, 0.99)
+                    if (Math.abs(offsetX) < 0.1 && Math.abs(offsetY) < 0.1) {
+                        offsetX = 0
+                        offsetY = 0
+                    }
                 }, 2);
                 tX = e.clientX - startX - offsetX
                 tY = e.clientY - startY - offsetY
@@ -1210,15 +1230,15 @@ function preparePalette() {
             e.setAttribute("data-palette-color", `${rgbToHex(x[0], x[1], x[2], x[3])}`)
             e.classList.add('palette-color')
             e.style.setProperty("--color", rgba)
-            e.setAttribute("onclick", `board.setcolor([${x}])`)
+            e.setAttribute("onclick", `board.setcolor([${x}]); updatePrevious([${x}])`)
             colorMenu.appendChild(e)
         })
         console.log(palette)
     });
 }
 function rgbToHex(r, g, b, a) {
-    if(a) return componentToHex(r) + componentToHex(g) + componentToHex(b) + componentToHex(a);
-    else if(!a) return componentToHex(r) + componentToHex(g) + componentToHex(b);
+    if (a) return componentToHex(r) + componentToHex(g) + componentToHex(b) + componentToHex(a);
+    else if (!a) return componentToHex(r) + componentToHex(g) + componentToHex(b);
 }
 function componentToHex(c) {
     var hex = c.toString(16);
@@ -1450,6 +1470,8 @@ function opacDrag(e) {
         opacThumb.style.setProperty("--pos", clamp((e.clientY - opacRect.top) / opacRect.height * 100, 0, 100) + "%")
         opacThumb.style.setProperty("--posp", clamp((e.clientY - opacRect.top) / opacRect.height, 0, 1))
         updatePickerColor()
+        var rgba = HSLToRGB(HSVToHSL(pickerColor))
+        board.setcolor(rgba)
     }
 }
 
@@ -1472,6 +1494,8 @@ function hueDrag(e) {
         hThumb.style.setProperty("--pos", clamp((e.clientY - hueRect.top) / hueRect.height * 100, 0, 100) + "%")
         hThumb.style.setProperty("--posp", clamp((e.clientY - hueRect.top) / hueRect.height, 0, 1))
         updatePickerColor()
+        var rgba = HSLToRGB(HSVToHSL(pickerColor))
+        board.setcolor(rgba)
     }
 }
 
@@ -1496,18 +1520,42 @@ function valueDrag(e) {
         vThumb.style.setProperty("--posX", clamp((e.clientX - valueRect.left) / valueRect.width * 100, 0, 100) + "%")
         vThumb.style.setProperty("--posY", clamp((e.clientY - valueRect.top) / valueRect.height * 100, 0, 100) + "%")
         updatePickerColor()
+        var rgba = HSLToRGB(HSVToHSL(pickerColor))
+        board.setcolor(rgba)
     }
 }
 
+
 function updatePickerColor() {
+    var colorCurrent = document.getElementById("color-current")
+    var rEl = document.getElementById("color-rgba-r")
+    var gEl = document.getElementById("color-rgba-g")
+    var bEl = document.getElementById("color-rgba-b")
+    var rgbAEl = document.getElementById("color-rgba-a")
+    var hEl = document.getElementById("color-hsla-h")
+    var sEl = document.getElementById("color-hsla-s")
+    var lEl = document.getElementById("color-hsla-l")
+    var hslAEl = document.getElementById("color-hsla-a")
+    var hexEl = document.getElementById("color-data-hex")
     opacRange.style.setProperty("--hue", pickerColor[0])
     valueRange.style.setProperty("--hue", pickerColor[0])
     let hsla = HSVToHSL(pickerColor)
+    var rgba = HSLToRGB(hsla)
     opacRange.style.setProperty("--color", `hsl( ${hsla[0]}, ${hsla[1]}%, ${hsla[2]}%)`)
-    document.getElementById("color-current").style.setProperty("--color", `hsla( ${hsla[0]}, ${hsla[1]}%, ${hsla[2]}%, ${hsla[3]}%)`)
-    //console.log(`hsla( ${hsla[0]}, ${hsla[1]}%, ${hsla[2]}%, ${hsla[3]}%)`)
-    //console.log("%c _", `background: hsla( ${hsla[0]}, ${hsla[1]}%, ${hsla[2]}%, ${hsla[3]}%)`)
+    colorCurrent.style.setProperty("--color", `hsla( ${hsla[0]}, ${hsla[1]}%, ${hsla[2]}%, ${hsla[3]}%)`)
+    rEl.value = rgba[0]
+    gEl.value = rgba[1]
+    bEl.value = rgba[2]
+    rgbAEl.value = rgba[3]
+    hEl.value = Math.round(hsla[0])
+    sEl.value = Math.round(hsla[1])
+    lEl.value = Math.round(hsla[2])
+    hslAEl.value = Math.round(hsla[3])
+    hexEl.value = rgbToHex(rgba[0], rgba[1], rgba[2], rgba[3])
+    //board.setcolor(rgba)
 }
+
+
 
 function HSVToHSL(hsva) {
     var h = hsva[0]
@@ -1548,18 +1596,20 @@ function setPickerColor(rgba) {
     if (!rgba) return false;
     console.log(rgba)
     let convHSV = RGBToHSV(rgba)
-    console.log(convHSV)
-    var newPickerColor = [convHSV.h, convHSV.s, convHSV.v, convHSV.a]
-    vThumb.style.setProperty("--posX", convHSV.s + "%")
-    vThumb.style.setProperty("--posY", 100 - convHSV.v + "%")
-    hThumb.style.setProperty("--pos", ((1 - (convHSV.h / 360)) * 100) + "%")
-    hThumb.style.setProperty("--posp", 1 - convHSV.h / 360)
-    opacThumb.style.setProperty("--pos", convHSV.a + "%")
-    opacThumb.style.setProperty("--posp", convHSV.a / 100)
+    var newPickerColor = [convHSV[0], convHSV[1], convHSV[2], convHSV[3]]
+    vThumb.style.setProperty("--posX", convHSV[1] + "%")
+    vThumb.style.setProperty("--posY", 100 - convHSV[2] + "%")
+    hThumb.style.setProperty("--pos", ((1 - (convHSV[0] / 360)) * 100) + "%")
+    hThumb.style.setProperty("--posp", 1 - convHSV[0] / 360)
+    opacThumb.style.setProperty("--pos", convHSV[3] + "%")
+    opacThumb.style.setProperty("--posp", convHSV[3] / 100)
     pickerColor = newPickerColor
     let hsla = HSVToHSL(pickerColor)
+    updatePickerColor(rgba)
+}
+function updatePrevious(col) {
+    let hsla = HSVToHSL(RGBToHSV(col))
     document.getElementById("color-previous").style.setProperty("--color", `hsla( ${hsla[0]}, ${hsla[1]}%, ${hsla[2]}%, ${hsla[3]}%)`)
-    updatePickerColor()
 }
 
 function RGBToHSV(rgba) {
@@ -1596,10 +1646,40 @@ function RGBToHSV(rgba) {
             h -= 1;
         }
     }
-    return {
-        h: Math.round(h * 360),
-        s: percentRoundFn(s * 100),
-        v: percentRoundFn(v * 100),
-        a: a / 255 * 100
-    };
+    return [
+        Math.round(h * 360),
+        percentRoundFn(s * 100),
+        percentRoundFn(v * 100),
+        a / 255 * 100
+    ];
+}
+
+function HSLToRGB(hsla) {
+    var h = hsla[0] / 360
+    var s = hsla[1] / 100
+    var l = hsla[2] / 100
+    var a = hsla[3]
+    var r, g, b;
+
+    if (s == 0) {
+        r = g = b = l; // achromatic
+    } else {
+        function hue2rgb(p, q, t) {
+            if (t < 0) t += 1;
+            if (t > 1) t -= 1;
+            if (t < 1 / 6) return p + (q - p) * 6 * t;
+            if (t < 1 / 2) return q;
+            if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
+            return p;
+        }
+
+        var q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+        var p = 2 * l - q;
+
+        r = hue2rgb(p, q, h + 1 / 3);
+        g = hue2rgb(p, q, h);
+        b = hue2rgb(p, q, h - 1 / 3);
+    }
+
+    return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255), Math.round(a / 100 * 255)];
 }

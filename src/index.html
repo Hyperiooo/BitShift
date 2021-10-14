@@ -22,6 +22,9 @@
     <link rel="icon"
       type="image/svg"
       href="./assets/logo.svg">
+      <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono&display=swap" rel="stylesheet">
   </head>
   <body>
     <input class="color-range" type="range" />
@@ -54,8 +57,53 @@
           onmousemove="opacDrag(event)" onmouseup="opacEndDrag(event)"></div>
       </div>
       <div class="color-data">
+        <div class="color-rgba">
+          <p>R</p><!--
+          --><input class="color-input-num"
+            id="color-rgba-r" value="255" min="0" max="255" type="number" /><!--
+          --><p>G</p><!--
+          --><input
+            class="color-input-num" id="color-rgba-g" value="255" min="0"
+            max="255" type="number"
+            /><!--
+            --><p>B</p><!--
+          --><input
+            class="color-input-num" id="color-rgba-b" value="255" min="0"
+            max="255" type="number"
+            /><!--
+              --><p>A</p><!--
+          --><input
+            class="color-input-num" id="color-rgba-a" value="255" min="0"
+            max="255" type="number"
+            />
+        </div>
         <div class="color-preview">
           <div id="color-previous"></div><div id="color-current"></div>
+        </div>
+      </div>
+      <div class="color-data">
+        <div class="color-hsla">
+          <p>H</p><!--
+          --><input class="color-input-num"
+            id="color-hsla-h" value="0" min="0" max="360" type="number" /><!--
+          --><p>S</p><!--
+          --><input
+            class="color-input-num" id="color-hsla-s" value="100" min="0"
+            max="100" type="number"
+            /><!--
+            --><p>L</p><!--
+          --><input
+            class="color-input-num" id="color-hsla-l" value="100" min="0"
+            max="100" type="number"
+            /><!--
+              --><p>A</p><!--
+          --><input
+            class="color-input-num" id="color-hsla-a" value="100" min="0"
+            max="100" type="number"
+            /><p class="label-hex">#</p><!--
+            --><input
+            class="color-input-hex" maxlength="8" id="color-data-hex" value="ffffff" type="text"
+            />
         </div>
       </div>
       <div id="palettes">
@@ -66,14 +114,14 @@
       <span class="popup-input-group">
         <p class="popup-input-title">Width</p>
         <div class="popup-input-wrap">
-          <input class="popup-input-num" type="text" id="width" value="16" />
+          <input class="popup-input-num" type="number" id="width" value="16" />
           <p class="popup-input-unit">px</p>
         </div>
       </span>
       <span class="popup-input-group">
         <p class="popup-input-title">Height</p>
         <div class="popup-input-wrap">
-          <input class="popup-input-num" type="text" id="height" value="16" />
+          <input class="popup-input-num" type="number" id="height" value="16" />
           <p class="popup-input-unit">px</p>
         </div>
       </span>
@@ -90,6 +138,8 @@
     <div id="toolbar" class="ui">
       <span class="item" onclick="toggleMenu()"><i
           class="ri-menu-fill"></i></span>
+      <input type="range" oninput="board.changeBrushSize(this.value)" name=""
+        id="" min="1">
       <div id="toolbar-right">
         <span class="item tool-active" onclick="board.setmode(0, this)"><i
             class="ri-pencil-fill"></i></span>
@@ -127,45 +177,7 @@
               class="ri-delete-bin-fill"></i></span>
         </div>
 
-      </div><!--
-      <div id="settingsBar" class="ui">
-        <ul>
-          <div class="slider-wrapper ui">
-            <!---
-            <li class="icon">
-              <i
-                id="brushSzIcon"
-                class="ri-checkbox-blank-circle-fill"
-                style="font-size: 7px"></i>
-            </li>
-            <!---
-            <li class="slide-wrap" data-tippy-content="Width">
-              <input
-                type="range"
-                min="1"
-                class="slider"
-                max="100"
-                value="40"
-                id="brushSzSlide"
-                data-input-function="board.changeBrushSize(this.value)"
-                />
-            </li>
-            <!---
-            <li class="num-wrap" data-tippy-content="Width">
-              <input
-                type="number"
-                min="1"
-                class="number"
-                max="100"
-                value="40"
-                id="brushSzNum"
-                oninput="board.changeBrushSize(this.value)"
-                />
-              <div class="num-label">px</div>
-            </li>
-          </div>
-        </ul>
-      </div>-->
+      </div>
     </body>
     <script type="text/javascript" src="./scripts/main.js"></script>
   </html>
