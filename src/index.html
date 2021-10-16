@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
   <head>
+    <title>BitShift</title>
     <link rel="manifest" href="manifest.json" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/9.3.0/math.js"></script>
     <script src="./scripts/Matrix.js"></script>
@@ -22,9 +23,12 @@
     <link rel="icon"
       type="image/svg"
       href="./assets/logo.svg">
-      <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <script src="./scripts/PinchZoom.js"></script>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono&display=swap"
+      rel="stylesheet">
   </head>
   <body>
     <input class="color-range" type="range" />
@@ -36,22 +40,32 @@
     <div class="color-menu color-open" id="color-menu">
       <div class="color-selector" id="color-value" width="200" height="200"
         onmousedown="valueThumb(event);valueDrag(event);"
-        onmousemove="valueDrag(event)" onmouseup="valueEndDrag(event)">
+        onmousemove="valueDrag(event)" onmouseup="valueEndDrag(event)"
+        ontouchstart="valueThumb(event);valueDrag(event);"
+        ontouchmove="valueDrag(event)" ontouchend="valueEndDrag(event)">
         <div id="color-value-thumb"
           onmousedown="valueThumb(event);valueDrag(event);"
-          onmousemove="valueDrag(event)" onmouseup="valueEndDrag(event)"></div>
+          onmousemove="valueDrag(event)" onmouseup="valueEndDrag(event)"
+          ontouchstart="valueThumb(event);valueDrag(event);"
+          ontouchmove="valueDrag(event)" ontouchend="valueEndDrag(event)"></div>
       </div><!--
       --><div class="color-selector" id="color-hue" width="40"
         height="200"
         onmousedown="hueThumb(event);hueDrag(event);"
-        onmousemove="hueDrag(event)" onmouseup="hueEndDrag(event)">
+        onmousemove="hueDrag(event)" onmouseup="hueEndDrag(event)"
+        ontouchstart="hueThumb(event);hueDrag(event);"
+        ontouchmove="hueDrag(event)" ontouchend="hueEndDrag(event)">
         <div id="color-hue-thumb" onmousedown="hueThumb(event);hueDrag(event);"
-          onmousemove="hueDrag(event)" onmouseup="hueEndDrag(event)"></div>
+          onmousemove="hueDrag(event)" onmouseup="hueEndDrag(event)"
+          ontouchstart="hueThumb(event);hueDrag(event);"
+          ontouchmove="hueDrag(event)" ontouchend="hueEndDrag(event)"></div>
       </div><!--
       --><div class="color-selector" id="color-opacity"
         width="40" height="200"
         onmousedown="opacityThumb(event);opacDrag(event);"
-        onmouseup="opacEndDrag(event)" onmousemove="opacDrag(event)">
+        onmouseup="opacEndDrag(event)" onmousemove="opacDrag(event)"
+        ontouchstart="opacityThumb(event);opacDrag(event);"
+        ontouchend="opacEndDrag(event)" ontouchmove="opacDrag(event)">
         <div id="color-opacity-thumb"
           onmousedown="opacityThumb(event);opacDrag(event);"
           onmousemove="opacDrag(event)" onmouseup="opacEndDrag(event)"></div>
@@ -102,7 +116,8 @@
             max="100" type="number"
             /><p class="label-hex">#</p><!--
             --><input
-            class="color-input-hex" maxlength="8" id="color-data-hex" value="ffffff" type="text"
+            class="color-input-hex" maxlength="8" id="color-data-hex"
+            value="ffffff" type="text"
             />
         </div>
       </div>
@@ -141,13 +156,13 @@
       <input type="range" oninput="board.changeBrushSize(this.value)" name=""
         id="" min="1">
       <div id="toolbar-right">
-        <span class="item tool-active" onclick="board.setmode(0, this)"><i
+        <span class="item tool-active" onclick="board.setmode('pen', this)"><i
             class="ri-pencil-fill"></i></span>
-        <span class="item" onclick="board.setmode(1, this)"><i
+        <span class="item" onclick="board.setmode('eraser', this)"><i
             class="ri-eraser-fill"></i></span>
-        <span class="item" onclick="board.setmode(2, this)"><i
+        <span class="item" onclick="board.setmode('fillBucket', this)"><i
             class="ri-paint-fill"></i></span>
-        <span class="item" onclick="board.setmode(3, this)">
+        <span class="item" onclick="board.setmode('line', this)">
           <i>
             <svg
               viewBox="0 0 24 24"
@@ -161,9 +176,9 @@
                 id="path4"
                 /></svg></i>
           </span>
-          <span class="item" onclick="board.setmode(4, this)"><i
+          <span class="item" onclick="board.setmode('ellipse', this)"><i
               class="ri-checkbox-blank-circle-line"></i></span>
-          <span class="item" onclick="board.setmode(5, this)"><i
+          <span class="item" onclick="board.setmode('rect', this)"><i
               class="ri-checkbox-blank-line"></i></span>
           <span class="item" onclick="toggleColorPicker()"><i
               class="ri-checkbox-blank-circle-fill" id="tool-color"></i></span><!--

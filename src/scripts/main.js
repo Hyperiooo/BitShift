@@ -1,18 +1,11 @@
-var Tool = {
-    "pen": 0,
-    "eraser": 1,
-    "fillBucket": 2,
-    "line": 3,
-    "ellipse": 4,
-    "rect": 5,
-    "shapeFilled": 6
-};
 var settings = {
     "background": {
         "width": 4, //size in px
         "height": 4, //size in px
         "colorOne": "#f0f0f0",
         "colorTwo": "#d4d4d4",
+        "colorOne": "#ffffff",
+        "colorTwo": "#f0f0f0",
     },
     "ui": {
         "canvasScale": 20,
@@ -21,21 +14,22 @@ var settings = {
         "transformY": 0,
     },
     "tools": {
-        "brushSize": 1
+        "brushSize": 1,
+        "brushSquare": false,
+        "brushSmoothing": 0,
+        "brushPixelPerfect": false,
+        "shapeFilled": false, 
     }
 };
-//class shadowRange {
-//    constructor(el, func) {
-//        var val1 = (el.value - el.min) / (el.max - el.min) * 100
-//        el.style.background = 'linear-gradient(to right, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.15) ' + val1 + '%, rgba(255, 255, 255, 0.03) ' + val1 + '%, rgba(255, 255, 255, 0.03) 100%)'
-//        el.oninput = function () {
-//            var value = (this.value - this.min) / (this.max - this.min) * 100
-//            this.style.background = 'linear-gradient(to right, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.15) ' + value + '%, rgba(255, 255, 255, 0.03) ' + value + '%, rgba(255, 255, 255, 0.03) 100%)'
-//            eval(func)
-//        };
-//    }
-//}
-var tools = [true, false, false, false, false, false, true, true];
+var Tools = {
+    "pen": true,
+    "eraser": false,
+    "fillBucket": false,
+    "line": false,
+    "ellipse": false,
+    "rect": false,
+    "pan": false
+}
 var lc = [];
 var preview = true;
 class Canvas {
@@ -131,16 +125,16 @@ class Canvas {
             var y = (e.clientY) - rect.top;
             x = Math.floor(this.width * x / (this.canvas.clientWidth * this.canvScale));
             y = Math.floor(this.height * y / (this.canvas.clientHeight * this.canvScale));
-            if (tools[Tool.fillBucket]) {
+            if (Tools.fillBucket) {
                 this.filler(x, y, this.data[x][y]);
-            } else if (tools[Tool.eraser]) {
+            } else if (Tools.eraser) {
                 var temp = this.color;
                 this.setcolor([255, 255, 255, 255]);
                 this.erase(x, y);
                 this.setcolor(temp);
-            } else if (tools[Tool.line]) {
-            } else if (tools[Tool.rect]) {
-            } else if (tools[Tool.ellipse]) {
+            } else if (Tools.line) {
+            } else if (Tools.rect) {
+            } else if (Tools.ellipse) {
             } else {
                 //this.draw(new Point(x, y));
             }
@@ -173,7 +167,7 @@ class Canvas {
         });
 
         this.canvas.addEventListener("mouseout", e => {
-            if (tools[Tool.pen]) this.clearPreview()
+            if (Tools.pen) this.clearPreview()
         });
 
         this.canvas.addEventListener("touchmove", e => {
@@ -208,7 +202,7 @@ class Canvas {
         var y = e.clientY - rect.top || e.touches[0].clientY - rect.top;
         x = Math.floor(this.width * x / (this.canvas.clientWidth * this.canvScale));
         y = Math.floor(this.height * y / (this.canvas.clientHeight * this.canvScale));
-        if (tools[Tool.circle] || tools[Tool.ellipse] || tools[Tool.line] || tools[Tool.rect] || tools[Tool.pen]) {
+        if (Tools.circle || Tools.ellipse || Tools.line || Tools.rect || Tools.pen) {
             this.sX = x;
             this.sY = y;
         }
@@ -216,16 +210,16 @@ class Canvas {
     }
     inputUp(e) {
         this.active = false;
-        if (tools[Tool.circle] || tools[Tool.ellipse] || tools[Tool.line] || tools[Tool.rect]) {
+        if (Tools.circle || Tools.ellipse || Tools.line || Tools.rect) {
             var p;
             for (p of this.tempL) this.draw(p);
             this.clearPreview()
             this.tempL = []
-            //if (tools[Tool.shapeFilled] && tools[Tool.ellipse]) {
+            //if (settings.tools.shapeFilled && Tools.ellipse) {
             //    console.log(this.filledData)
             //    let fillL = filledEllipse(this.filledData.c.x, this.filledData.c.y, this.filledData.x, this.filledData.y)
             //    for (let l of fillL) this.draw(l);
-            //} else if (tools[Tool.shapeFilled] && tools[Tool.rect]) {
+            //} else if (settings.tools.shapeFilled && Tools.rect) {
             //    let fillL = filledRectangle(this.filledData.r, this.filledData.c)
             //    for (let l of fillL) this.draw(l);
             //}
@@ -244,7 +238,7 @@ class Canvas {
         x = Math.floor((x) / (this.canvScale));
         y = Math.floor((y) / (this.canvScale));
         if (this.active) {
-            if (tools[Tool.pen]) {
+            if (Tools.pen) {
                 let P = line(new Point(this.sX, this.sY), new Point(x, y))
                 let p
                 for (p of P) {
@@ -265,13 +259,13 @@ class Canvas {
                 this.sX = x;
                 this.sY = y;
             }
-            else if (tools[Tool.eraser]) {
+            else if (Tools.eraser) {
                 this.erase(x, y);
             }
             if (preview) {
                 this.pctx.globalCompositeOperation = "destination-out";
                 this.pctx.fillRect(0, 0, this.w, this.h);
-                if (tools[Tool.ellipse]) {
+                if (Tools.ellipse) {
                     if (this.shiftKey) {
                         var centre = new Point(this.sX, this.sY);
                         //var radius = +prompt("radius?");
@@ -320,7 +314,7 @@ class Canvas {
                         }
                         //this.tempL = circle(Math.floor(r), c);
                         this.tempL = ellipse(c.x + (r * 2), c.y + (r * 2), c.x, c.y)
-                        if (tools[Tool.shapeFilled]) this.filledData = { "r": math.floor(r), "c": c };
+                        if (settings.tools.shapeFilled) this.filledData = { "r": math.floor(r), "c": c };
                         var p;
                         for (p of this.tempL) this.pDraw(new Point(p.x, p.y));
                     } else if (!this.shiftKey) {
@@ -328,14 +322,14 @@ class Canvas {
                         if (this.ctrlKey) { c = new Point(this.sX - (x - this.sX), this.sY - (y - this.sY)) }
                         //this.tempL = ellipse(this.round(Math.abs(x - c.x) / 2, .5), this.round(Math.abs(y - c.y) / 2, .5), c);
                         this.tempL = ellipse(x, y, c.x, c.y)
-                        if (tools[Tool.shapeFilled]) this.filledData = { "x": x, "y": y, "c": c };
+                        if (settings.tools.shapeFilled) this.filledData = { "x": x, "y": y, "c": c };
                         var p;
                         for (p of this.tempL) this.pDraw(new Point(p.x, p.y));
                         //if(this.ctrlKey) console.log('control hehe')
                     }
 
                 }
-                if (tools[Tool.line]) {
+                if (Tools.line) {
                     console.log("a")
                     let c = new Point(this.sX, this.sY)
                     this.tempL = line(c, new Point(x, y));
@@ -343,7 +337,7 @@ class Canvas {
                     for (p of this.tempL) this.pDraw(new Point(p.x, p.y));
 
                 }
-                if (tools[Tool.rect]) {
+                if (Tools.rect) {
                     if (this.shiftKey) {
                         let c = 0
                         let e = new Point(x, y)
@@ -692,15 +686,14 @@ class Canvas {
         this.pctx.fillStyle = "rgba(" + color[0] + "," + color[1] + "," + color[2] + "," + color[3] + ")";
         act(document.querySelectorAll(`[data-palette-color='${rgbToHex(color[0], color[1], color[2], color[3])}']`))
     }
-    setmode(i, el) {
-        if (tools[Tool.shapeFilled]) {
-            tools = [false, false, false, false, false, false, false, false, false];
-            tools[Tool.shapeFilled] = true
-
+    setmode(tool, el) {
+        if (settings.tools.shapeFilled) {
+            Object.keys(Tools).forEach(v => Tools[v] = false)
+            settings.tools.shapeFilled = true
         } else {
-            tools = [false, false, false, false, false, false, false, false, false];
+            Object.keys(Tools).forEach(v => Tools[v] = false)
         }
-        tools[i] = true;
+        Tools[tool] = true
         document.querySelectorAll("#toolbar .item").forEach((x) => {
             x.classList.remove('tool-active');
         })
@@ -721,7 +714,6 @@ class Canvas {
         this.ctx.fillRect(0, 0, this.w, this.h);
         this.data = [...Array(this.width)].map(e => Array(this.height).fill([255, 255, 255, 255]));
         this.setcolor(this.color);
-        this.setmode(Tool.pen);
     }
 
     clearCanv() {
@@ -1123,17 +1115,18 @@ function preparePalette() {
         var subMoving = false;
         var tempOut = false
         var snapped = false
-        titleEl.onmousedown = (e) => {
+        titleEl.onmousedown = titleEl.ontouchstart = mouseDownHandler
+        function mouseDownHandler(e) {
             if (tempOut) return;
             startRect = group.getBoundingClientRect()
             tempNode = group.cloneNode(true)
             tempNode.querySelector(".color-palette-title").onmouseup = mouseUpHandler
-            tempNode.onmousedown = (e) => {
+            tempNode.onmousedown = tempNode.ontouchstart = (e) => {
                 startRect = e.target.getBoundingClientRect()
                 if (tempOut) {
                     subMoving = true;
-                    startX = e.clientX;
-                    startY = e.clientY;
+                    startX = e.clientX || e.touches[0].clientX;
+                    startY = e.clientY || e.touches[0].clientY;
                     document.querySelectorAll(".color-palette-group").forEach(e => {
                         e.style.setProperty('z-index', 'unset', 'important')
                     })
@@ -1146,15 +1139,15 @@ function preparePalette() {
             document.body.appendChild(tempNode)
             console.log(group)
             mainMoving = true;
-            startX = e.clientX;
-            startY = e.clientY;
+            startX = e.clientX || e.touches[0].clientX;
+            startY = e.clientY || e.touches[0].clientY;
             document.querySelectorAll(".color-palette-group").forEach(e => {
                 e.style.setProperty('z-index', 'unset', 'important')
             })
             group.style.setProperty('z-index', '100000000', 'important')
             tempNode.style.setProperty('z-index', '100000001', 'important')
         }
-        titleEl.onmouseup = mouseUpHandler
+        titleEl.onmouseup = titleEl.ontouchend = mouseUpHandler
         function mouseUpHandler(e, c) {
             console.log(snapped, tempNode)
             if (!snapped && tempNode) {
@@ -1193,10 +1186,15 @@ function preparePalette() {
             subMoving = false
         }
         document.addEventListener("mouseup", mouseUpHandler)
-        document.addEventListener("mousemove", (e) => {
+        document.addEventListener("touchend", mouseUpHandler)
+        document.addEventListener("mousemove", moveHandler)
+        document.addEventListener("touchmove", moveHandler)
+        function moveHandler(e) {
+            var x = e.clientX - startX || e.touches[0].clientX - startX;
+            var y = e.clientY - startY || e.touches[0].clientY - startY;
             if (mainMoving) {
-                curX = lerp(e.clientX - startX, 0, 0.7);
-                curY = lerp(e.clientY - startY, 0, 0.7);
+                curX = lerp(x, 0, 0.7);
+                curY = lerp(y, 0, 0.7);
                 group.style.transform = `translate(${Math.ceil(curX)}px, ${Math.ceil(curY)}px)`;
                 tempNode.style.transform = `translate(${startRect.x + Math.ceil(curX) - 8}px, ${startRect.y + Math.ceil(curY) - 30}px)`;
                 if (Math.abs(curX) > 100 || Math.abs(curY) > 100) { snapped = true; mouseUpHandler(); }
@@ -1213,12 +1211,12 @@ function preparePalette() {
                         offsetY = 0
                     }
                 }, 2);
-                tX = e.clientX - startX - offsetX
-                tY = e.clientY - startY - offsetY
+                tX = x - offsetX
+                tY = y - offsetY
                 tempNode.style.transform = `translate(${startRect.x + Math.ceil(tX) - 8}px, ${startRect.y + Math.ceil(tY) - 30}px)`;
 
             }
-        })
+        }
 
         palette.forEach(x => {
             if (!setCurrent) {
@@ -1465,10 +1463,13 @@ function opacEndDrag(e) {
 }
 
 function opacDrag(e) {
+    e.preventDefault()
+    var x = e.clientX - opacRect.left || e.touches[0].clientX - opacRect.left;
+    var y = e.clientY - opacRect.top || e.touches[0].clientY - opacRect.top;
     if (opacMoving) {
-        pickerColor[3] = clamp((e.clientY - opacRect.top) / opacRect.height * 100, 0, 100)
-        opacThumb.style.setProperty("--pos", clamp((e.clientY - opacRect.top) / opacRect.height * 100, 0, 100) + "%")
-        opacThumb.style.setProperty("--posp", clamp((e.clientY - opacRect.top) / opacRect.height, 0, 1))
+        pickerColor[3] = clamp(y / opacRect.height * 100, 0, 100)
+        opacThumb.style.setProperty("--pos", clamp(y / opacRect.height * 100, 0, 100) + "%")
+        opacThumb.style.setProperty("--posp", clamp(y / opacRect.height, 0, 1))
         updatePickerColor()
         var rgba = HSLToRGB(HSVToHSL(pickerColor))
         board.setcolor(rgba)
@@ -1489,10 +1490,13 @@ function hueEndDrag(e) {
 }
 
 function hueDrag(e) {
+    e.preventDefault()
+    var x = e.clientX - hueRect.left || e.touches[0].clientX - hueRect.left;
+    var y = e.clientY - hueRect.top || e.touches[0].clientY - hueRect.top;
     if (hueMoving) {
-        pickerColor[0] = clamp((1 - ((e.clientY - hueRect.top) / hueRect.height)), 0, 1) * 360
-        hThumb.style.setProperty("--pos", clamp((e.clientY - hueRect.top) / hueRect.height * 100, 0, 100) + "%")
-        hThumb.style.setProperty("--posp", clamp((e.clientY - hueRect.top) / hueRect.height, 0, 1))
+        pickerColor[0] = clamp((1 - (y / hueRect.height)), 0, 1) * 360
+        hThumb.style.setProperty("--pos", clamp(y / hueRect.height * 100, 0, 100) + "%")
+        hThumb.style.setProperty("--posp", clamp(y / hueRect.height, 0, 1))
         updatePickerColor()
         var rgba = HSLToRGB(HSVToHSL(pickerColor))
         board.setcolor(rgba)
@@ -1514,11 +1518,14 @@ function valueEndDrag(e) {
 }
 
 function valueDrag(e) {
+    e.preventDefault()
+    var x = e.clientX - valueRect.left || e.touches[0].clientX - valueRect.left;
+    var y = e.clientY - valueRect.top || e.touches[0].clientY - valueRect.top;
     if (valueMoving) {
-        pickerColor[1] = clamp((e.clientX - valueRect.left) / valueRect.width * 100, 0, 100)
-        pickerColor[2] = 100 - clamp((e.clientY - valueRect.top) / valueRect.height * 100, 0, 100)
-        vThumb.style.setProperty("--posX", clamp((e.clientX - valueRect.left) / valueRect.width * 100, 0, 100) + "%")
-        vThumb.style.setProperty("--posY", clamp((e.clientY - valueRect.top) / valueRect.height * 100, 0, 100) + "%")
+        pickerColor[1] = clamp(x / valueRect.width * 100, 0, 100)
+        pickerColor[2] = 100 - clamp(y / valueRect.height * 100, 0, 100)
+        vThumb.style.setProperty("--posX", clamp(x / valueRect.width * 100, 0, 100) + "%")
+        vThumb.style.setProperty("--posY", clamp(y / valueRect.height * 100, 0, 100) + "%")
         updatePickerColor()
         var rgba = HSLToRGB(HSVToHSL(pickerColor))
         board.setcolor(rgba)
