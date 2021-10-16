@@ -1120,6 +1120,7 @@ function preparePalette() {
             if (tempOut) return;
             startRect = group.getBoundingClientRect()
             tempNode = group.cloneNode(true)
+            tempNode.style.setProperty("transform", "translate(-1000%, -1000%)")
             tempNode.querySelector(".color-palette-title").onmouseup = mouseUpHandler
             tempNode.onmousedown = tempNode.ontouchstart = (e) => {
                 startRect = e.target.getBoundingClientRect()
