@@ -74,20 +74,24 @@
         <div class="color-rgba">
           <p>R</p><!--
           --><input class="color-input-num"
-            id="color-rgba-r" value="255" min="0" max="255" type="number" /><!--
+            id="color-rgba-r" value="255" min="0" max="255" type="number"
+            data-color-input/><!--
           --><p>G</p><!--
           --><input
             class="color-input-num" id="color-rgba-g" value="255" min="0"
+            data-color-input
             max="255" type="number"
             /><!--
             --><p>B</p><!--
           --><input
             class="color-input-num" id="color-rgba-b" value="255" min="0"
+            data-color-input
             max="255" type="number"
             /><!--
               --><p>A</p><!--
           --><input
             class="color-input-num" id="color-rgba-a" value="255" min="0"
+            data-color-input
             max="255" type="number"
             />
         </div>
@@ -99,24 +103,30 @@
         <div class="color-hsla">
           <p>H</p><!--
           --><input class="color-input-num"
-            id="color-hsla-h" value="0" min="0" max="360" type="number" /><!--
+            data-color-input
+            id="color-hsla-h" value="0" min="0" max="360" maxlength="3"
+            type="number" /><!--
           --><p>S</p><!--
           --><input
             class="color-input-num" id="color-hsla-s" value="100" min="0"
+            data-color-input
             max="100" type="number"
             /><!--
             --><p>L</p><!--
           --><input
             class="color-input-num" id="color-hsla-l" value="100" min="0"
+            data-color-input
             max="100" type="number"
             /><!--
               --><p>A</p><!--
           --><input
             class="color-input-num" id="color-hsla-a" value="100" min="0"
+            data-color-input
             max="100" type="number"
             /><p class="label-hex">#</p><!--
             --><input
             class="color-input-hex" maxlength="8" id="color-data-hex"
+            data-color-input
             value="ffffff" type="text"
             />
         </div>
@@ -180,6 +190,10 @@
               class="ri-checkbox-blank-circle-line"></i></span>
           <span class="item" onclick="board.setmode('rect', this)"><i
               class="ri-checkbox-blank-line"></i></span>
+          <span class="item" onclick="board.setmode('pan', this)"><i
+              class="ri-drag-move-2-line"></i></span>
+          <span class="item" onclick="board.setmode('sprayPaint', this)"><i
+              class="ri-loader-2-line"></i></span>
           <span class="item" onclick="toggleColorPicker()"><i
               class="ri-checkbox-blank-circle-fill" id="tool-color"></i></span><!--
                 <span class="item" onclick="board.undo()"><i

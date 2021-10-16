@@ -564,15 +564,25 @@ path {
     justify-content: center;
     align-items: center;
     background-size: contain;
-    background-image: linear-gradient(to right, var(--color), var(--color)), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 9 9'%3E%3Cg fill='%23bababa' fill-opacity='0.4'%3E%3Cpath fill-rule='evenodd' d='M 0 0 h 3 v 3 H 0 V 0 z m 3 3 h 3 v 3 H 3 V 3 z M 6 0 H 9 V 3 H 6 V 0 M 0 6 H 3 V 9 H 0 V 6 M 6 6 H 9 V 9 H 6 V 6'/%3E%3C/g%3E%3C/svg%3E"), linear-gradient(to right, var(--textMain), var(--textMain));
+    background-image: linear-gradient(to right, var(--color), var(--color)), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 9 9'%3E%3Cg fill='%23ffffff' fill-opacity='0.4'%3E%3Cpath fill-rule='evenodd' d='M 0 0 h 3 v 3 H 0 V 0 z m 3 3 h 3 v 3 H 3 V 3 z M 6 0 H 9 V 3 H 6 V 0 M 0 6 H 3 V 9 H 0 V 6 M 6 6 H 9 V 9 H 6 V 6'/%3E%3C/g%3E%3C/svg%3E"), linear-gradient(to right, #bababa, #bababa);
 }
 
 .palette-active {
-    -webkit-box-shadow: inset 0px 0px 0px 2px var(--textMain);
-    -moz-box-shadow: inset 0px 0px 0px 2px var(--textMain);
-    box-shadow: inset 0px 0px 0px 2px var(--textMain);
+    -webkit-box-shadow: inset 0px 0px 0px 2px white;
+    -moz-box-shadow: inset 0px 0px 0px 2px white;
+    box-shadow: inset 0px 0px 0px 2px white;
     position: relative;
     z-index: 1000;
+}
+.palette-active:before {
+    content: '';
+    top:0;
+    left:0;
+    right:0;
+    bottom:0;
+    position: absolute;
+    background: white;
+    clip-path: polygon(100% 100%, 60% 100%, 100% 60%);
 }
 
 .color-palette-title {

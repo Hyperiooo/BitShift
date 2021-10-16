@@ -14,11 +14,14 @@ var settings = {
         "transformY": 0,
     },
     "tools": {
-        "brushSize": 1,
+        "brushSize": 6,
         "brushSquare": false,
         "brushSmoothing": 0,
         "brushPixelPerfect": false,
-        "shapeFilled": false, 
+        "shapeFilled": false,
+        "spraySpeed": 10,
+        "spraySize": 10,
+        "sprayChance": 0.8
     }
 };
 var Tools = {
@@ -28,7 +31,8 @@ var Tools = {
     "line": false,
     "ellipse": false,
     "rect": false,
-    "pan": false
+    "pan": false,
+    "sprayPaint": false
 }
 var lc = [];
 var preview = true;
@@ -135,23 +139,31 @@ class Canvas {
             } else if (Tools.line) {
             } else if (Tools.rect) {
             } else if (Tools.ellipse) {
-            } else {
-                //this.draw(new Point(x, y));
             }
 
         });
 
         this.canvasParent.addEventListener("mousedown", e => {
-            if (e.button == 1) {
+            if (e.button == 1 || Tools.pan) {
                 this.setCanvTransform(e.clientX, e.clientY)
             }
         })
 
         this.canvasParent.addEventListener("mousemove", e => {
-            if (e.buttons == 4) {
-                this.setCanvTransform(e.clientX, e.clientY)
+            if (e.buttons) {
+                if (Tools.pan || e.buttons == 4) {
+
+                    this.setCanvTransform(e.clientX, e.clientY)
+                }
             }
         })
+
+        this.canvasParent.addEventListener("touchmove", e => {
+            if (e.touches && Tools.pan) {
+                this.setCanvTransform(e.touches[0].clientX, e.touches[0].clientY)
+            }
+        })
+
         this.canvasParent.addEventListener("wheel", e => {
             this.zoom(e.deltaY / 100 * -1, 0)
         })
@@ -175,11 +187,9 @@ class Canvas {
         })
 
         this.canvas.addEventListener("mousedown", e => {
-            console.log('acu')
             if (e.button != 0) {
                 return
             }
-            console.log('puncture')
             this.inputDown(e)
             this.inputActive(e)
         });
@@ -258,6 +268,37 @@ class Canvas {
                 this.draw(new Point(x, y))
                 this.sX = x;
                 this.sY = y;
+            }
+            else if (Tools.sprayPaint) {
+                let brushSize = parseInt(settings.tools.brushSize)
+                let r = brushSize - 1
+                //let c = filledEllipse(p.x, p.y, 2, 2)
+                let c;
+                if (brushSize % 2 == 0) {
+                    c = filledEllipse(x - (r / 2) - .5, y - (r / 2) - .5, x + (r / 2) - .5, y + (r / 2) - .5)
+                } else if (brushSize % 2 != 0) {
+                    c = filledEllipse(x - (r / 2), y - (r / 2), x + (r / 2), y + (r / 2))
+                }
+                var b = [];
+                for (let i = 0; i < parseInt(settings.tools.brushSize); i++) {
+                    if(Math.random() > parseFloat(settings.tools.sprayChance))b.push(c[Math.floor(Math.random() * c.length)])
+                }
+                var p = []
+                b.forEach(e => {
+                    let p = new Point((Math.floor(Math.random() * (e.x2 - e.x1))) + e.x1, e.y1)
+                    this.draw(new Point(p.x, p.y))
+                    let brushSize = parseInt(settings.tools.spraySize)
+                    let r = brushSize - 1
+                    //let c = filledEllipse(p.x, p.y, 2, 2)
+                    let c;
+                    if (brushSize % 2 == 0) {
+                        c = filledEllipse(p.x - (r / 2) - .5, p.y - (r / 2) - .5, p.x + (r / 2) - .5, p.y + (r / 2) - .5)
+                    } else if (brushSize % 2 != 0) {
+                        c = filledEllipse(p.x - (r / 2), p.y - (r / 2), p.x + (r / 2), p.y + (r / 2))
+                    }
+                    var b;
+                    for (b of c) this.draw(b);
+                })
             }
             else if (Tools.eraser) {
                 this.erase(x, y);
@@ -421,22 +462,18 @@ class Canvas {
                 this.pctx.globalCompositeOperation = "destination-out";
                 this.pctx.fillRect(0, 0, this.w, this.h);
                 //TODO when doing brush size you'd modify it here
-                if (!this.mobile) {
-                    //let c = filledEllipse(x, y, 2, 2)
-                    //var p;
-                    //for (p of c) this.pDraw(p);
-                    let brushSize = parseInt(settings.tools.brushSize)
-                    let r = brushSize - 1
-                    //let c = filledEllipse(p.x, p.y, 2, 2)
-                    let c;
-                    if (brushSize % 2 == 0) {
-                        c = filledEllipse(x - (r / 2) - .5, y - (r / 2) - .5, x + (r / 2) - .5, y + (r / 2) - .5)
-                    } else if (brushSize % 2 != 0) {
-                        c = filledEllipse(x - (r / 2), y - (r / 2), x + (r / 2), y + (r / 2))
-                    }
-                    var b;
-                    for (b of c) this.pDraw(b);
+                if (this.mobile || Tools.pan) return;
+                let brushSize = parseInt(settings.tools.brushSize)
+                let r = brushSize - 1
+                let c;
+                if (brushSize % 2 == 0) {
+                    c = filledEllipse(x - (r / 2) - .5, y - (r / 2) - .5, x + (r / 2) - .5, y + (r / 2) - .5)
+                } else if (brushSize % 2 != 0) {
+                    c = filledEllipse(x - (r / 2), y - (r / 2), x + (r / 2), y + (r / 2))
                 }
+                var b;
+                for (b of c) this.pDraw(b);
+
             }
         }
 
@@ -677,9 +714,9 @@ class Canvas {
         this.setcolor(temp);
         this.ctx.globalCompositeOperation = 'source-over'
     }
-    setcolor(color) {
-        console.log('a')
-        setPickerColor(color)
+    setcolor(color, skipDuplicate) {
+        if (!skipDuplicate) setPickerColor(color)
+        if (skipDuplicate) updatePickerColor(color)
         this.color = color;
         document.getElementById("tool-color").style.setProperty("--color", "rgba(" + color[0] + "," + color[1] + "," + color[2] + "," + color[3] + ")");
         this.ctx.fillStyle = "rgba(" + color[0] + "," + color[1] + "," + color[2] + "," + color[3] + ")";
@@ -994,6 +1031,8 @@ class Frames {
 }
 
 window.onload = function () {
+
+
     opacThumb = document.getElementById("color-opacity-thumb")
     opacRange = document.getElementById("color-opacity")
     opacRect = opacRange.getBoundingClientRect()
@@ -1140,8 +1179,8 @@ function preparePalette() {
             document.body.appendChild(tempNode)
             console.log(group)
             mainMoving = true;
-            startX = e.clientX || e.touches[0].clientX;
-            startY = e.clientY || e.touches[0].clientY;
+            startX = e.clientX || e.touches[0].clientX || 0;
+            startY = e.clientY || e.touches[0].clientY || 0;
             document.querySelectorAll(".color-palette-group").forEach(e => {
                 e.style.setProperty('z-index', 'unset', 'important')
             })
@@ -1150,7 +1189,6 @@ function preparePalette() {
         }
         titleEl.onmouseup = titleEl.ontouchend = mouseUpHandler
         function mouseUpHandler(e, c) {
-            console.log(snapped, tempNode)
             if (!snapped && tempNode) {
                 mainMoving = false;
                 subMoving = false
@@ -1191,8 +1229,16 @@ function preparePalette() {
         document.addEventListener("mousemove", moveHandler)
         document.addEventListener("touchmove", moveHandler)
         function moveHandler(e) {
-            var x = e.clientX - startX || e.touches[0].clientX - startX;
-            var y = e.clientY - startY || e.touches[0].clientY - startY;
+            var cX, cY
+            if (e.touches) {
+                cX = e.touches[0].clientX
+                cY = e.touches[0].clientY
+            } else {
+                cX = e.clientX
+                cY = e.clientY
+            }
+            var x = cX - startX || 0;
+            var y = cY - startY || 0;
             if (mainMoving) {
                 curX = lerp(x, 0, 0.7);
                 curY = lerp(y, 0, 0.7);
@@ -1450,6 +1496,73 @@ function toggleFile() {
 
 var pickerColor = [0, 0, 0, 100]
 
+var previousData = {
+    r: 0, g: 0, b: 0, rgba: 0, h: 0, s: 0, l: 0, hsla: 0, hex: "ffffffff"
+}
+document.querySelectorAll("[data-color-input]").forEach(el => {
+    el.onblur = el.onkeyup = updateColorNum
+})
+
+
+
+function updateColorNum(el) {
+    if (el.keyCode) {
+        if (el.keyCode != 13) return;
+    }
+    var isValid = true;
+    var rgb, hsv
+    document.querySelectorAll("[data-color-input]").forEach(e => {
+        if (e.type == "number") {
+            if (e == el.target) {
+                if (e.id.includes("rgba")) {
+                    if (isValidNum(e.value)) {
+                        rgb = [
+                            clamp(document.getElementById("color-rgba-r").value, 0, 255),
+                            clamp(document.getElementById("color-rgba-g").value, 0, 255),
+                            clamp(document.getElementById("color-rgba-b").value, 0, 255),
+                            clamp(document.getElementById("color-rgba-a").value, 0, 255),
+                        ]
+                        hsv = RGBToHSV(rgb)
+                        console.log(rgb)
+                    } else {
+                        isValid = false
+                    }
+                } else if (e.id.includes("hsla")) {
+                    if (isValidNum(e.value)) {
+                        var hsl = [
+                            clamp(document.getElementById("color-hsla-h").value, 0, 360),
+                            clamp(document.getElementById("color-hsla-s").value, 0, 100),
+                            clamp(document.getElementById("color-hsla-l").value, 0, 100),
+                            clamp(document.getElementById("color-hsla-a").value, 0, 100),
+                        ]
+                        rgb = HSLToRGB(hsl)
+                        hsv = RGBToHSV(rgb)
+                    } else {
+                        isValid = false
+                    }
+                }
+            }
+        } else if (e.type == "text") {
+            if (e == el.target) {
+                if (isValidHex(e.value)) {
+                    rgb = hexToRGB(e.value)
+                    hsv = RGBToHSV(rgb)
+                } else {
+                    isValid = false
+                }
+            }
+        }
+    })
+    if (isValid) {
+        console.log("valid")
+        setPickerColor(rgb)
+        pickerColor = hsv
+        updatePickerColor()
+    } else {
+        updatePickerColor()
+    }
+}
+
 var opacMoving = false
 var opacThumb
 var opacRange
@@ -1468,14 +1581,17 @@ function opacDrag(e) {
     var x = e.clientX - opacRect.left || e.touches[0].clientX - opacRect.left;
     var y = e.clientY - opacRect.top || e.touches[0].clientY - opacRect.top;
     if (opacMoving) {
+        document.querySelectorAll('[data-color-input]').forEach(e => { e.blur() });
         pickerColor[3] = clamp(y / opacRect.height * 100, 0, 100)
         opacThumb.style.setProperty("--pos", clamp(y / opacRect.height * 100, 0, 100) + "%")
         opacThumb.style.setProperty("--posp", clamp(y / opacRect.height, 0, 1))
         updatePickerColor()
         var rgba = HSLToRGB(HSVToHSL(pickerColor))
-        board.setcolor(rgba)
+        board.setcolor(rgba, true)
     }
 }
+
+
 
 var hueMoving = false
 var hThumb
@@ -1492,15 +1608,15 @@ function hueEndDrag(e) {
 
 function hueDrag(e) {
     e.preventDefault()
-    var x = e.clientX - hueRect.left || e.touches[0].clientX - hueRect.left;
     var y = e.clientY - hueRect.top || e.touches[0].clientY - hueRect.top;
     if (hueMoving) {
+        document.querySelectorAll('[data-color-input]').forEach(e => { e.blur() });
         pickerColor[0] = clamp((1 - (y / hueRect.height)), 0, 1) * 360
         hThumb.style.setProperty("--pos", clamp(y / hueRect.height * 100, 0, 100) + "%")
         hThumb.style.setProperty("--posp", clamp(y / hueRect.height, 0, 1))
         updatePickerColor()
         var rgba = HSLToRGB(HSVToHSL(pickerColor))
-        board.setcolor(rgba)
+        board.setcolor(rgba, true)
     }
 }
 
@@ -1523,13 +1639,14 @@ function valueDrag(e) {
     var x = e.clientX - valueRect.left || e.touches[0].clientX - valueRect.left;
     var y = e.clientY - valueRect.top || e.touches[0].clientY - valueRect.top;
     if (valueMoving) {
+        document.querySelectorAll('[data-color-input]').forEach(e => { e.blur() });
         pickerColor[1] = clamp(x / valueRect.width * 100, 0, 100)
         pickerColor[2] = 100 - clamp(y / valueRect.height * 100, 0, 100)
         vThumb.style.setProperty("--posX", clamp(x / valueRect.width * 100, 0, 100) + "%")
         vThumb.style.setProperty("--posY", clamp(y / valueRect.height * 100, 0, 100) + "%")
         updatePickerColor()
         var rgba = HSLToRGB(HSVToHSL(pickerColor))
-        board.setcolor(rgba)
+        board.setcolor(rgba, true)
     }
 }
 
@@ -1559,12 +1676,70 @@ function updatePickerColor() {
     sEl.value = Math.round(hsla[1])
     lEl.value = Math.round(hsla[2])
     hslAEl.value = Math.round(hsla[3])
-    hexEl.value = rgbToHex(rgba[0], rgba[1], rgba[2], rgba[3])
+    var hex = rgbToHex(rgba[0], rgba[1], rgba[2], rgba[3])
+    if (hex.endsWith("ff")) {
+        hexEl.value = hex.substring(0, hex.length - 2)
+    } else {
+        hexEl.value = hex
+    }
+    previousData = {
+        r: rgba[0], g: rgba[1], b: rgba[2], rgba: rgba[3], h: Math.round(hsla[0]), s: Math.round(hsla[1]), l: Math.round(hsla[2]), hsla: Math.round(hsla[3]), hex: rgbToHex(rgba[0], rgba[1], rgba[2], rgba[3])
+    }
     //board.setcolor(rgba)
 }
 
 
+function isValidHex(color) {
+    if (!color || typeof color !== 'string') return false;
 
+    if (color.substring(0, 1) === '#') color = color.substring(1);
+
+    switch (color.length) {
+        case 3: return /^[0-9A-F]{3}$/i.test(color);
+        case 4: return /^[0-9A-F]{4}$/i.test(color);
+        case 6: return /^[0-9A-F]{6}$/i.test(color);
+        case 8: return /^[0-9A-F]{8}$/i.test(color);
+        default: return false;
+    }
+
+    return false;
+}
+
+function isValidNum(str) {
+    if (typeof str != "string") return false // we only process strings!  
+    return !isNaN(str) && // use type coercion to parse the _entirety_ of the string (`parseFloat` alone does not do this)...
+        !isNaN(parseFloat(str)) // ...and ensure strings of whitespace fail
+}
+
+function hexToRGB(hex) {
+    hex = hex.replace("#", '')
+    if (hex.length == 3) {
+        hex += "f"
+    } else if (hex.length == 6) {
+        hex += "ff"
+    }
+    var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])([a-f\d])$/i;
+    hex = hex.replace(shorthandRegex, function (m, r, g, b, a) {
+        return r + r + g + g + b + b + (a || "ff") + (a || "ff");
+    });
+
+    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return result ? [
+        parseInt(result[1], 16),
+        parseInt(result[2], 16),
+        parseInt(result[3], 16),
+        parseInt(result[4], 16)] : null;
+}
+function HSLToHSV(hsla) {
+    var h = hsla[0]
+    var s = hsla[1]
+    var l = hsla[2]
+    var a = hsla[3]
+    const hsv1 = s * (l < 50 ? l : 100 - l) / 100;
+    const hsvS = hsv1 === 0 ? 0 : 2 * hsv1 / (l + hsv1) * 100;
+    const hsvV = l + hsv1;
+    return [h, hsvS, hsvV, a];
+}
 function HSVToHSL(hsva) {
     var h = hsva[0]
     var s = hsva[1] / 100
@@ -1602,7 +1777,6 @@ const clamp = (num, min, max) => Math.min(Math.max(num, min), max);
 
 function setPickerColor(rgba) {
     if (!rgba) return false;
-    console.log(rgba)
     let convHSV = RGBToHSV(rgba)
     var newPickerColor = [convHSV[0], convHSV[1], convHSV[2], convHSV[3]]
     vThumb.style.setProperty("--posX", convHSV[1] + "%")
