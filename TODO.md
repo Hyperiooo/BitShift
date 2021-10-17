@@ -2,25 +2,25 @@
 A list of all the things planned to do for BitShift
 
 ## Tools
-- Pan tool
+- ~~Pan tool~~
 - Zoom tool
-- Spray brush tool
+- ~~Spray brush tool~~
 - Smudge and scatter tools
   - Effect surrounding pixels
 - Magic wand tool
 - Marquee tool
 - General transforming and rotation
 - Tool settings
+  - ~~Main Window~~
   - Brush:
     - Square brush
-    - Brush size
+    - ~~Brush size~~
     - Smoothing w/ cardinal curves
     - Pixel Perfect Algorithm
   - Spray Brush: 
-    - Spray Speed
-    - Spray Size
-      - How big each pixel in the spray is
-    - Spray chance
+    - ~~Spray Speed~~
+    - ~~Spray Size~~
+      - ~~How big each pixel in the spray is~~
   - Filled shapes
 - Gradient tool (Dither & No dither)
 

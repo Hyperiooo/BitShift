@@ -14,18 +14,77 @@ var settings = {
         "transformY": 0,
     },
     "tools": {
-        "brushSize": 6,
-        "brushSquare": false,
-        "brushSmoothing": 0,
-        "brushPixelPerfect": false,
-        "shapeFilled": false,
-        "spraySpeed": 10,
-        "spraySize": 10,
-        "sprayChance": 0.8
+        "assignments": {
+            "pen": ["brushSize", "brushSquare", "brushSmoothing", "brushPixelPerfect"],
+            "sprayPaint": ["brushSize", "brushSquare", "brushSmoothing", "spraySpeed", "spraySize"],
+            "fillBucket": ["contiguous"],
+        },
+        "brushSize": {
+            "title": "Brush Size",
+            "value": 1,
+            "type": "int",
+            "draggable": true,
+            "min": 1,
+            "max": 100,
+            "unit": "px",
+            "callback": "settings.tools.brushSize.value = this.value"
+        },
+        "brushSquare": {
+            "title": "Square Brush",
+            "value": false,
+            "type": "bool",
+            "callback": "settings.tools.brushSquare.value = this.checked"
+        },
+        "brushSmoothing": {
+            "title": "Brush Smoothness",
+            "value": 0,
+            "type": "int",
+            "draggable": true,
+            "min": 0,
+            "max": 100,
+            "unit": "px",
+            "callback": "settings.tools.brushSmoothing.value = this.value"
+        },
+        "brushPixelPerfect": {
+            "title": "Pixel Perfect",
+            "value": false,
+            "type": "bool",
+            "callback": "settings.tools.brushPixelPerfect.value = this.value"
+        },
+        "shapeFilled": {
+            "value": false,
+            "type": "bool"
+        },
+        "spraySpeed": {
+            "title": "Spray Speed",
+            "value": 1,
+            "type": "int",
+            "draggable": true,
+            "min": 1,
+            "max": 100,
+            "unit": "px",
+            "callback": "settings.tools.spraySpeed.value = this.value"
+        },
+        "spraySize": {
+            "title": "Spray Size",
+            "value": 10,
+            "type": "int",
+            "draggable": true,
+            "min": 1,
+            "max": 100,
+            "unit": "px",
+            "callback": "settings.tools.spraySize.value = this.value"
+        },
+        "contiguous": {
+            "title": "Contiguous",
+            "value": false,
+            "type": "bool",
+            "callback": "settings.tools.contiguous.value = this.checked"
+        },
     }
 };
 var Tools = {
-    "pen": true,
+    "pen": false,
     "eraser": false,
     "fillBucket": false,
     "line": false,
@@ -35,6 +94,7 @@ var Tools = {
     "sprayPaint": false
 }
 var lc = [];
+var draggableNumInputs = []
 var preview = true;
 class Canvas {
     constructor(width, height) {
@@ -120,7 +180,7 @@ class Canvas {
         this.altKey = false;
         this.wasInCanv = false;
         this.drawBgGrid()
-        this.changeBrushSize(settings.tools.brushSize)
+        this.changeBrushSize(settings.tools.brushSize.value)
         this.imageData = this.ctx.getImageData(0, 0, this.width, this.height)
         console.log(this.imageData)
         this.canvas.addEventListener("click", e => {
@@ -129,8 +189,10 @@ class Canvas {
             var y = (e.clientY) - rect.top;
             x = Math.floor(this.width * x / (this.canvas.clientWidth * this.canvScale));
             y = Math.floor(this.height * y / (this.canvas.clientHeight * this.canvScale));
-            if (Tools.fillBucket) {
+            if (Tools.fillBucket && settings.tools.contiguous.value) {
                 this.filler(x, y, this.data[x][y]);
+            }else if (Tools.fillBucket && !settings.tools.contiguous.value) {
+                this.fillerNonContiguous(new Point(x, y));
             } else if (Tools.eraser) {
                 var temp = this.color;
                 this.setcolor([255, 255, 255, 255]);
@@ -225,11 +287,11 @@ class Canvas {
             for (p of this.tempL) this.draw(p);
             this.clearPreview()
             this.tempL = []
-            //if (settings.tools.shapeFilled && Tools.ellipse) {
+            //if (settings.tools.shapeFilled.value && Tools.ellipse) {
             //    console.log(this.filledData)
             //    let fillL = filledEllipse(this.filledData.c.x, this.filledData.c.y, this.filledData.x, this.filledData.y)
             //    for (let l of fillL) this.draw(l);
-            //} else if (settings.tools.shapeFilled && Tools.rect) {
+            //} else if (settings.tools.shapeFilled.value && Tools.rect) {
             //    let fillL = filledRectangle(this.filledData.r, this.filledData.c)
             //    for (let l of fillL) this.draw(l);
             //}
@@ -253,7 +315,7 @@ class Canvas {
                 let p
                 for (p of P) {
                     this.draw(new Point(p.x, p.y))
-                    let brushSize = parseInt(settings.tools.brushSize)
+                    let brushSize = parseInt(settings.tools.brushSize.value)
                     let r = brushSize - 1
                     //let c = filledEllipse(p.x, p.y, 2, 2)
                     let c;
@@ -270,7 +332,7 @@ class Canvas {
                 this.sY = y;
             }
             else if (Tools.sprayPaint) {
-                let brushSize = parseInt(settings.tools.brushSize)
+                let brushSize = parseInt(settings.tools.spraySize.value)
                 let r = brushSize - 1
                 //let c = filledEllipse(p.x, p.y, 2, 2)
                 let c;
@@ -280,14 +342,40 @@ class Canvas {
                     c = filledEllipse(x - (r / 2), y - (r / 2), x + (r / 2), y + (r / 2))
                 }
                 var b = [];
-                for (let i = 0; i < parseInt(settings.tools.brushSize); i++) {
-                    if(Math.random() > parseFloat(settings.tools.sprayChance))b.push(c[Math.floor(Math.random() * c.length)])
+                c.forEach(e => {
+                    for (let i = 0; i < e.x2 - e.x1; i++) {
+                        b.push(new Point(e.x1 + i, e.y1))
+
+                    }
+                })
+                var d = []
+                for (let i = 0; i < parseInt(settings.tools.spraySpeed.value); i++) {
+                    d.push(b[Math.floor(Math.random() * b.length)])
+                }
+                d.forEach(e => {
+                    let p = e
+                    this.draw(new Point(p.x, p.y))
+                    let brushSize = parseInt(settings.tools.brushSize.value)
+                    let r = brushSize - 1
+                    //let c = filledEllipse(p.x, p.y, 2, 2)
+                    let c;
+                    if (brushSize % 2 == 0) {
+                        c = filledEllipse(p.x - (r / 2) - .5, p.y - (r / 2) - .5, p.x + (r / 2) - .5, p.y + (r / 2) - .5)
+                    } else if (brushSize % 2 != 0) {
+                        c = filledEllipse(p.x - (r / 2), p.y - (r / 2), p.x + (r / 2), p.y + (r / 2))
+                    }
+                    var a;
+                    for (a of c) this.draw(a);
+                })
+                console.log("")
+                /*for (let i = 0; i < parseInt(settings.tools.brushSize.value); i++) {
+                    if (Math.random() > parseFloat(settings.tools.sprayChance.value)) b.push(c[Math.floor(Math.random() * c.length)])
                 }
                 var p = []
                 b.forEach(e => {
                     let p = new Point((Math.floor(Math.random() * (e.x2 - e.x1))) + e.x1, e.y1)
                     this.draw(new Point(p.x, p.y))
-                    let brushSize = parseInt(settings.tools.spraySize)
+                    let brushSize = parseInt(settings.tools.brushSize.value)
                     let r = brushSize - 1
                     //let c = filledEllipse(p.x, p.y, 2, 2)
                     let c;
@@ -298,7 +386,7 @@ class Canvas {
                     }
                     var b;
                     for (b of c) this.draw(b);
-                })
+                })*/
             }
             else if (Tools.eraser) {
                 this.erase(x, y);
@@ -355,7 +443,7 @@ class Canvas {
                         }
                         //this.tempL = circle(Math.floor(r), c);
                         this.tempL = ellipse(c.x + (r * 2), c.y + (r * 2), c.x, c.y)
-                        if (settings.tools.shapeFilled) this.filledData = { "r": math.floor(r), "c": c };
+                        if (settings.tools.shapeFilled.value) this.filledData = { "r": math.floor(r), "c": c };
                         var p;
                         for (p of this.tempL) this.pDraw(new Point(p.x, p.y));
                     } else if (!this.shiftKey) {
@@ -363,7 +451,7 @@ class Canvas {
                         if (this.ctrlKey) { c = new Point(this.sX - (x - this.sX), this.sY - (y - this.sY)) }
                         //this.tempL = ellipse(this.round(Math.abs(x - c.x) / 2, .5), this.round(Math.abs(y - c.y) / 2, .5), c);
                         this.tempL = ellipse(x, y, c.x, c.y)
-                        if (settings.tools.shapeFilled) this.filledData = { "x": x, "y": y, "c": c };
+                        if (settings.tools.shapeFilled.value) this.filledData = { "x": x, "y": y, "c": c };
                         var p;
                         for (p of this.tempL) this.pDraw(new Point(p.x, p.y));
                         //if(this.ctrlKey) console.log('control hehe')
@@ -457,13 +545,13 @@ class Canvas {
                 }
             }
         } else if (!this.active) {
-            let brushSize = parseInt(settings.tools.brushSize)
+            let brushSize = parseInt(settings.tools.brushSize.value)
             if (preview) {
                 this.pctx.globalCompositeOperation = "destination-out";
                 this.pctx.fillRect(0, 0, this.w, this.h);
                 //TODO when doing brush size you'd modify it here
                 if (this.mobile || Tools.pan) return;
-                let brushSize = parseInt(settings.tools.brushSize)
+                let brushSize = parseInt(settings.tools.brushSize.value)
                 let r = brushSize - 1
                 let c;
                 if (brushSize % 2 == 0) {
@@ -490,7 +578,7 @@ class Canvas {
         //let icon = document.getElementById('brushSzIcon')
         //slide.value = sz
         //txt.value = sz
-        settings.tools.brushSize = sz
+        settings.tools.brushSize.value = sz
         //icon.style.fontSize = Math.max(Math.min(sz, 30), 5) + "px"
         //var value = (slide.value - slide.min) / (slide.max - slide.min) * 100
         //slide.style.background = 'linear-gradient(to right, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.15) ' + value + '%, rgba(255, 255, 255, 0.03) ' + value + '%, rgba(255, 255, 255, 0.03) 100%)'
@@ -723,18 +811,25 @@ class Canvas {
         this.pctx.fillStyle = "rgba(" + color[0] + "," + color[1] + "," + color[2] + "," + color[3] + ")";
         act(document.querySelectorAll(`[data-palette-color='${rgbToHex(color[0], color[1], color[2], color[3])}']`))
     }
-    setmode(tool, el) {
-        if (settings.tools.shapeFilled) {
+    setmode(tool) {
+        if (settings.tools.shapeFilled.value) {
             Object.keys(Tools).forEach(v => Tools[v] = false)
-            settings.tools.shapeFilled = true
+            settings.tools.shapeFilled.value = true
         } else {
             Object.keys(Tools).forEach(v => Tools[v] = false)
+        }
+
+        if (settings.tools.assignments[tool]) {
+            openToolSettings()
+            updateToolSettings(tool)
+        } else {
+            closeToolSettings()
         }
         Tools[tool] = true
         document.querySelectorAll("#toolbar .item").forEach((x) => {
             x.classList.remove('tool-active');
         })
-        el.classList.add("tool-active")
+        document.getElementById(`tool-btn-${tool}`).classList.add("tool-active")
     }
     save() {
         this.canvas.toBlob(function (blob) {
@@ -795,6 +890,39 @@ class Canvas {
 
         this.putImgData(this.imageData)
     }
+
+    getPixelCol(p) {
+        var imgData = this.ctx.getImageData(0, 0, this.width, this.height)
+
+        var pixel = (p.y * this.width + p.x) * 4
+
+        return [
+            imgData.data[pixel],
+            imgData.data[pixel + 1],
+            imgData.data[pixel + 2],
+            imgData.data[pixel + 3],
+        ]
+    }
+
+    fillerNonContiguous(p) {
+        var src = this.getPixelCol(p)
+        var im = this.ctx.getImageData(0, 0, this.width, this.height);
+        console.log(im.data[0], im.data[1], im.data[2], im.data[3])
+        for (var i = 0; i < im.data.length; i += 4) {
+          if (
+            im.data[i] === src[0] &&
+            im.data[i + 1] === src[1] &&
+            im.data[i + 2] === src[2] &&
+            im.data[i + 3] === src[3]
+          ) {
+            im.data[i] = this.color[0];
+            im.data[i + 1] = this.color[1];
+            im.data[i + 2] = this.color[2];
+            im.data[i + 3] = this.color[3];
+          }
+        }
+        this.ctx.putImageData(im, 0, 0);
+      }
 
     filler(startX, startY) {
 
@@ -1030,6 +1158,76 @@ class Frames {
     }
 }
 
+function updateToolSettings(tool) {
+    let toolSettings = settings.tools.assignments[tool]
+    let toolCont = ""
+    for (let i = 0; i < toolSettings.length; i++) {
+        const element = toolSettings[i];
+        const setting = settings.tools[element]
+        if (setting.type == "int") {
+            toolCont += `
+            <span class="popup-input-group">
+              <p class="popup-input-title">${setting.title}</p>
+              <div class="popup-input-wrap">
+                <div class="popup-input-field">
+                  <input min="${setting.min}" max="${setting.max}" ${(setting.draggable) ? "data-input-num-draggable" : ""} class="popup-input-num" onchange="console.log('a')" oninput="${setting.callback}" type="number" value="${setting.value}" />
+                  <p class="popup-input-unit">${setting.unit}</p>
+                </div>
+              </div>
+            </span>`
+        } else if (setting.type == "bool") {
+            toolCont += `
+            <span class="popup-input-group">
+              <p class="popup-input-title">${setting.title}</p>
+              <div class="popup-input-wrap">
+                <div class="popup-input-field">
+                  <input class="popup-input-check" oninput="${setting.callback}" type="checkbox" ${(setting.value) ? "checked" : ""} />
+                  <span class="checkmark"></span>
+                </div>
+              </div>
+            </span>`
+        }
+    }
+    document.getElementById("tool-settings").innerHTML = `<h1>Tool Settings</h1> ${toolCont}`
+    for (let i = 0; i < draggableNumInputs.length; i++) {
+        const e = draggableNumInputs[i];
+        e.clear()
+    }
+    draggableNumInputs = []
+    document.querySelectorAll("[data-input-num-draggable]").forEach(e => {
+        draggableNumInputs.push(new numberDraggable(e))
+    })
+}
+
+class numberDraggable {
+    constructor(el) {
+        this.do = false
+        this.startX = 0
+        this.el = el
+        this.startVal = this.el.value
+        self = this
+        this.el.addEventListener('mousedown', (e) => {this.do = true; this.startX = e.clientX; this.startVal = this.el.value})
+        this.el.addEventListener('mouseup', () => {this.do = false})
+        document.addEventListener("mousemove", e => {
+            if(this.do) {
+                this.el.value = clamp(parseInt(this.startVal) + Math.floor((e.clientX - this.startX) / 10 ), this.el.min, this.el.max)
+                this.el.oninput()
+            }
+        })
+    }
+    clear() {
+        console.log('cum')
+    }
+}
+
+function closeToolSettings() {
+    document.getElementById("tool-settings").classList.remove("tool-settings-open")
+}
+
+function openToolSettings() {
+    document.getElementById("tool-settings").classList.add("tool-settings-open")
+}
+
 window.onload = function () {
 
 
@@ -1042,10 +1240,12 @@ window.onload = function () {
     vThumb = document.getElementById("color-value-thumb")
     valueRange = document.getElementById("color-value")
     valueRect = valueRange.getBoundingClientRect()
-    //document.querySelectorAll("input[type=range]").forEach((e) => {
-    //    console.log(e.getAttribute('data-input-function'))
-    //	new shadowRange(e, e.getAttribute('data-input-function'))
-    //})
+
+    var numDraggable = document.querySelectorAll("[data-input-num-draggable]")
+    numDraggable.forEach(e => {
+        draggableNumInputs.push(new numberDraggable(e))
+    })
+
     let canvasData = localStorage.getItem('pc-canvas-data');
     if (canvasData) {
         data = JSON.parse(canvasData);
@@ -1095,11 +1295,13 @@ window.onload = function () {
             link.href = url;
             link.click();
         });
+        board.setmode("fillBucket")
     }
     else {
         newProject();
         preparePalette()
     }
+
 }
 
 function randomString(l) {
