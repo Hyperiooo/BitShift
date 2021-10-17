@@ -29,6 +29,7 @@
     <link
       href="https://fonts.googleapis.com/css2?family=JetBrains+Mono&display=swap"
       rel="stylesheet">
+    <script src="./scripts/panzoom.js"></script>
   </head>
   <body>
     <input class="color-range" type="range" />
@@ -94,23 +95,27 @@
       <div class="color-data">
         <div class="color-rgba">
           <p>R</p><!--
-          --><input class="color-input-num" data-input-num-draggable
+          --><input class="color-input-num"
+            data-input-num-draggable
             id="color-rgba-r" value="255" min="0" max="255" type="number"
             data-color-input/><!--
           --><p>G</p><!--
-          --><input data-input-num-draggable
+          --><input
+            data-input-num-draggable
             class="color-input-num" id="color-rgba-g" value="255" min="0"
             data-color-input
             max="255" type="number"
             /><!--
             --><p>B</p><!--
-          --><input data-input-num-draggable
+          --><input
+            data-input-num-draggable
             class="color-input-num" id="color-rgba-b" value="255" min="0"
             data-color-input
             max="255" type="number"
             /><!--
               --><p>A</p><!--
-          --><input data-input-num-draggable
+          --><input
+            data-input-num-draggable
             class="color-input-num" id="color-rgba-a" value="255" min="0"
             data-color-input
             max="255" type="number"
@@ -123,24 +128,28 @@
       <div class="color-data">
         <div class="color-hsla">
           <p>H</p><!--
-          --><input class="color-input-num" data-input-num-draggable
+          --><input class="color-input-num"
+            data-input-num-draggable
             data-color-input
             id="color-hsla-h" value="0" min="0" max="360" maxlength="3"
             type="number" /><!--
           --><p>S</p><!--
-          --><input data-input-num-draggable
+          --><input
+            data-input-num-draggable
             class="color-input-num" id="color-hsla-s" value="100" min="0"
             data-color-input
             max="100" type="number"
             /><!--
             --><p>L</p><!--
-          --><input data-input-num-draggable
+          --><input
+            data-input-num-draggable
             class="color-input-num" id="color-hsla-l" value="100" min="0"
             data-color-input
             max="100" type="number"
             /><!--
               --><p>A</p><!--
-          --><input data-input-num-draggable
+          --><input
+            data-input-num-draggable
             class="color-input-num" id="color-hsla-a" value="100" min="0"
             data-color-input
             max="100" type="number"
@@ -161,7 +170,8 @@
         <p class="popup-input-title">Width</p>
         <div class="popup-input-wrap">
           <div class="popup-input-field">
-            <input data-input-num-draggable class="popup-input-num" type="number" id="width" value="16"
+            <input data-input-num-draggable class="popup-input-num"
+              type="number" id="width" value="16"
               />
             <p class="popup-input-unit">px</p>
           </div>
@@ -171,7 +181,8 @@
         <p class="popup-input-title">Height</p>
         <div class="popup-input-wrap">
           <div class="popup-input-field">
-            <input data-input-num-draggable class="popup-input-num" type="number" id="height" value="16"
+            <input data-input-num-draggable class="popup-input-num"
+              type="number" id="height" value="16"
               />
             <p class="popup-input-unit">px</p>
           </div>
@@ -202,6 +213,12 @@
         <span id="tool-btn-fillBucket" class="item"
           onclick="board.setmode('fillBucket', this)"><i
             class="ri-paint-fill"></i></span>
+        <span id="tool-btn-sprayPaint" class="item"
+          onclick="board.setmode('sprayPaint', this)"><i
+            class="ri-loader-2-line"></i></span>
+        <span id="tool-btn-eyedropper" class="item"
+          onclick="board.setmode('eyedropper', this)"><i
+            class="ri-sip-fill"></i></span>
         <span id="tool-btn-line" class="item" onclick="board.setmode('line',
           this)">
           <i>
@@ -226,9 +243,9 @@
           <span id="tool-btn-pan" class="item" onclick="board.setmode('pan',
             this)"><i
               class="ri-drag-move-2-line"></i></span>
-          <span id="tool-btn-sprayPaint" class="item"
-            onclick="board.setmode('sprayPaint', this)"><i
-              class="ri-loader-2-line"></i></span>
+          <!--<span id="tool-btn-zoom" class="item" onclick="board.setmode('zoom',
+            this)"><i
+              class="ri-search-line"></i></span>-->
           <span class="item" onclick="toggleColorPicker()"><i
               class="ri-checkbox-blank-circle-fill" id="tool-color"></i></span><!--
                 <span class="item" onclick="board.undo()"><i

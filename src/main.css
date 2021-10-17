@@ -291,8 +291,6 @@ body {
 
 #canvas {
     position: absolute;
-    left: 50%;
-    top: 50%;
     transform: translate(calc(-50% + var(--canvTransformX)), calc(-50% + var(--canvTransformY))) scale(var(--canvScale), var(--canvScale));
     display: block !important;
     cursor: crosshair;
@@ -307,8 +305,6 @@ body {
 
 #bggridcanv {
     position: absolute;
-    left: 50%;
-    top: 50%;
     transform: translate(calc(-50% + var(--canvTransformX)), calc(-50% + var(--canvTransformY))) scale(var(--canvScale), var(--canvScale));
     display: none;
     cursor: crosshair;
@@ -327,9 +323,7 @@ body {
 
 #previewcanv {
     position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(calc(-50% + var(--canvTransformX)), calc(-50% + var(--canvTransformY))) scale(var(--canvScale), var(--canvScale));
+    transform: translate(var(--canvTransformX), var(--canvTransformY)) scale(var(--canvScale), var(--canvScale));
     display: none;
     cursor: crosshair;
     touch-action: none;

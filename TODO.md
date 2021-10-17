@@ -3,13 +3,16 @@ A list of all the things planned to do for BitShift
 
 ## Tools
 - ~~Pan tool~~
+  - ~~Improve pan tool~~
 - Zoom tool
+  - Improve zoom tool
 - ~~Spray brush tool~~
 - Smudge and scatter tools
   - Effect surrounding pixels
 - Magic wand tool
 - Marquee tool
 - General transforming and rotation
+- ~~Eyedropper~~
 - Tool settings
   - ~~Main Window~~
   - Brush:

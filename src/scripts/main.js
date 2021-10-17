@@ -8,7 +8,7 @@ var settings = {
         "colorTwo": "#f0f0f0",
     },
     "ui": {
-        "canvasScale": 20,
+        "canvasScale": 2,
         "angle": 0,
         "transformX": 0,
         "transformY": 0,
@@ -91,7 +91,9 @@ var Tools = {
     "ellipse": false,
     "rect": false,
     "pan": false,
-    "sprayPaint": false
+    "zoom": false,
+    "sprayPaint": false,
+    "eyedropper": false,
 }
 var lc = [];
 var draggableNumInputs = []
@@ -113,7 +115,7 @@ class Canvas {
         this.initialScale = 1
         this.canvUnit = 1
         this.canvScale = settings.ui.canvasScale
-
+        /*
         interact(this.canvasParent)
             .gesturable({
                 listeners: {
@@ -138,7 +140,7 @@ class Canvas {
                         console.log(settings.ui.canvasScale)
                     }
                 }
-            })
+            })*/
         this.canvas = document.querySelector("#canvas");
         this.previewcanvas = document.querySelector("#previewcanv");
         this.bggridcanvas = document.querySelector("#bggridcanv");
@@ -191,7 +193,7 @@ class Canvas {
             y = Math.floor(this.height * y / (this.canvas.clientHeight * this.canvScale));
             if (Tools.fillBucket && settings.tools.contiguous.value) {
                 this.filler(x, y, this.data[x][y]);
-            }else if (Tools.fillBucket && !settings.tools.contiguous.value) {
+            } else if (Tools.fillBucket && !settings.tools.contiguous.value) {
                 this.fillerNonContiguous(new Point(x, y));
             } else if (Tools.eraser) {
                 var temp = this.color;
@@ -205,31 +207,71 @@ class Canvas {
 
         });
 
+        this.panzoom = Panzoom(this.canvas, {
+            setTransform: (elem, { scale, x, y }) => {
+                this.canvas.style.setProperty('transform', `scale(${scale}) translate(${x}px, ${y}px)`)
+                this.previewcanvas.style.setProperty('transform', `scale(${scale}) translate(${x}px, ${y}px)`)
+                this.bggridcanvas.style.setProperty('transform', `scale(${scale}) translate(${x}px, ${y}px)`)
+                this.setCanvScale(scale)
+                this.setCanvTransform(x, y)
+            },
+            maxScale: 150,
+            minScale: 0.125,
+            startScale: settings.ui.canvasScale,
+            startX: ((window.innerWidth / 2) - (this.width / 2)) / settings.ui.canvasScale,
+            startY: ((window.innerHeight / 2) - (this.height / 2)) / settings.ui.canvasScale,
+            canvas: true,
+            touchAction: "all"
+        })
+        this.canvasParent.addEventListener('wheel', this.panzoom.zoomWithWheel)
+        this.startZoomX = 0
+        this.startZoomY = 0
+        this.deltaX = 0
+        this.deltaY = 0
+        this.deltaPanX = 0
+        this.deltaPanY = 0
+
         this.canvasParent.addEventListener("mousedown", e => {
             if (e.button == 1 || Tools.pan) {
-                this.setCanvTransform(e.clientX, e.clientY)
+                this.deltaX = e.clientX
+                this.deltaY = e.clientY
+            }else if (e.button == 1 || Tools.zoom) {
+                this.startZoomX = e.clientX
+                this.startZoomY = e.clientY
             }
         })
 
+        this.canvasParent.addEventListener("touchstart", e => {
+            if (Tools.pan) {
+                this.deltaX = e.touches[0].clientX
+                this.deltaY = e.touches[0].clientY
+            }
+        })
+
+
         this.canvasParent.addEventListener("mousemove", e => {
             if (e.buttons) {
-                if (Tools.pan || e.buttons == 4) {
-
-                    this.setCanvTransform(e.clientX, e.clientY)
+                if (Tools.pan) {
+                    this.panzoom.pan(((e.clientX) - this.deltaX) / this.panzoom.getScale(), (e.clientY - this.deltaY) / this.panzoom.getScale(), { relative: true })
+                    this.deltaX = e.clientX
+                    this.deltaY = e.clientY
+                }else if (Tools.zoom) {
+                    var current = {
+                        clientX: e.clientX,
+                        clientY: e.clientY
+                    }
+                    this.panzoom.zoomToPoint(Math.max(0.125, Math.sqrt(Math.pow((e.clientX - this.startZoomX), 2) + Math.pow((e.clientY - this.startZoomY), 2))/20), current)
                 }
             }
         })
 
         this.canvasParent.addEventListener("touchmove", e => {
             if (e.touches && Tools.pan) {
-                this.setCanvTransform(e.touches[0].clientX, e.touches[0].clientY)
+                this.panzoom.pan(((e.touches[0].clientX) - this.deltaX) / this.panzoom.getScale(), (e.touches[0].clientY - this.deltaY) / this.panzoom.getScale(), { relative: true })
+                this.deltaX = e.touches[0].clientX
+                this.deltaY = e.touches[0].clientY
             }
         })
-
-        this.canvasParent.addEventListener("wheel", e => {
-            this.zoom(e.deltaY / 100 * -1, 0)
-        })
-
 
         this.canvasParent.addEventListener("mouseup", e => {
             this.prevTX = null;
@@ -390,6 +432,9 @@ class Canvas {
             }
             else if (Tools.eraser) {
                 this.erase(x, y);
+            }
+            else if (Tools.eyedropper) {
+                this.setcolor(this.getPixelCol(new Point(x, y)));
             }
             if (preview) {
                 this.pctx.globalCompositeOperation = "destination-out";
@@ -589,7 +634,7 @@ class Canvas {
     setCanvScale(s) {
         settings.ui.canvasScale = s;
         this.canvScale = settings.ui.canvasScale;
-        document.documentElement.style.setProperty('--canvScale', this.canvScale);
+        //document.documentElement.style.setProperty('--canvScale', this.canvScale);
     }
     setCanvTransform(x, y) {
         if (!this.prevTX) { this.prevTX = x; }
@@ -597,8 +642,8 @@ class Canvas {
         if (!this.prevTY || !this.prevTX) { return; }
         settings.ui.transformX = settings.ui.transformX + (x - this.prevTX)
         settings.ui.transformY = settings.ui.transformY + (y - this.prevTY)
-        document.documentElement.style.setProperty('--canvTransformX', settings.ui.transformX + "px");
-        document.documentElement.style.setProperty('--canvTransformY', settings.ui.transformY + "px");
+        //document.documentElement.style.setProperty('--canvTransformX', settings.ui.transformX + "px");
+        //document.documentElement.style.setProperty('--canvTransformY', settings.ui.transformY + "px");
         this.prevTX = x
         this.prevTY = y
     }
@@ -909,20 +954,20 @@ class Canvas {
         var im = this.ctx.getImageData(0, 0, this.width, this.height);
         console.log(im.data[0], im.data[1], im.data[2], im.data[3])
         for (var i = 0; i < im.data.length; i += 4) {
-          if (
-            im.data[i] === src[0] &&
-            im.data[i + 1] === src[1] &&
-            im.data[i + 2] === src[2] &&
-            im.data[i + 3] === src[3]
-          ) {
-            im.data[i] = this.color[0];
-            im.data[i + 1] = this.color[1];
-            im.data[i + 2] = this.color[2];
-            im.data[i + 3] = this.color[3];
-          }
+            if (
+                im.data[i] === src[0] &&
+                im.data[i + 1] === src[1] &&
+                im.data[i + 2] === src[2] &&
+                im.data[i + 3] === src[3]
+            ) {
+                im.data[i] = this.color[0];
+                im.data[i + 1] = this.color[1];
+                im.data[i + 2] = this.color[2];
+                im.data[i + 3] = this.color[3];
+            }
         }
         this.ctx.putImageData(im, 0, 0);
-      }
+    }
 
     filler(startX, startY) {
 
@@ -1199,6 +1244,12 @@ function updateToolSettings(tool) {
     })
 }
 
+function drawPix(x,y) {
+    document.body.innerHTML += `
+    <div style="background:white; width:1px; height:1px; position: absolute; top: ${y}px; left: ${x}px; "></div>
+    `
+}
+
 class numberDraggable {
     constructor(el) {
         this.do = false
@@ -1206,11 +1257,11 @@ class numberDraggable {
         this.el = el
         this.startVal = this.el.value
         self = this
-        this.el.addEventListener('mousedown', (e) => {this.do = true; this.startX = e.clientX; this.startVal = this.el.value})
-        this.el.addEventListener('mouseup', () => {this.do = false})
+        this.el.addEventListener('mousedown', (e) => { this.do = true; this.startX = e.clientX; this.startVal = this.el.value })
+        this.el.addEventListener('mouseup', () => { this.do = false })
         document.addEventListener("mousemove", e => {
-            if(this.do) {
-                this.el.value = clamp(parseInt(this.startVal) + Math.floor((e.clientX - this.startX) / 10 ), this.el.min, this.el.max)
+            if (this.do) {
+                this.el.value = clamp(parseInt(this.startVal) + Math.floor((e.clientX - this.startX) / 10), this.el.min, this.el.max)
                 this.el.oninput()
             }
         })
@@ -1295,7 +1346,7 @@ window.onload = function () {
             link.href = url;
             link.click();
         });
-        board.setmode("fillBucket")
+        board.setmode("pen")
     }
     else {
         newProject();
