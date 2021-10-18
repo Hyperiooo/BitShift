@@ -55,6 +55,12 @@ A list of all the things planned to do for BitShift
 - Create new layer
 - Use masonry.js to handle the movement - https://masonry.desandro.com/ 
 
+## Animation
+- Add frames
+- Change FPS
+- Timeline window
+- Export as GIF
+
 ## Menus
 - File menu
   - add Preferences
@@ -73,6 +79,13 @@ A list of all the things planned to do for BitShift
   - Use Infinite Scroll.js - https://infinite-scroll.com/
   - Tagging
 - Account 
+- Export Image
+  - Format options
+  - Location options
+  - Resize options
+- Image options
+  - Resize canvas
+  - Crop
 
 ## Animation
 
