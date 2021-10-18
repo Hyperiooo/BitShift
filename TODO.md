@@ -78,3 +78,4 @@ A list of all the things planned to do for BitShift
 
 ## Visual changes 
 - Fork remixicon to add Spray can, along with other various tools
+- Make responsive on mobile devices

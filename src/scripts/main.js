@@ -77,7 +77,7 @@ var settings = {
         },
         "contiguous": {
             "title": "Contiguous",
-            "value": false,
+            "value": true,
             "type": "bool",
             "callback": "settings.tools.contiguous.value = this.checked"
         },
