@@ -7,6 +7,7 @@ A list of all the things planned to do for BitShift
 - Zoom tool
   - Improve zoom tool
 - ~~Spray brush tool~~
+  - Improve to make speed 1 not produce as many particles 
 - Smudge and scatter tools
   - Effect surrounding pixels
 - Magic wand tool
