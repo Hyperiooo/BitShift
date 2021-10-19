@@ -95,6 +95,7 @@ A list of all the things planned to do for BitShift
 - Make responsive on mobile devices
 - ~~Give borders of palette windows an extra 4px~~
 - Enforce constant transitions on background and color across all ui
+- Theming
 
 ## Other
 - Keyboard Shortcuts
@@ -124,3 +125,4 @@ A list of all the things planned to do for BitShift
   - Allow drawing off screen
     - Useful in lines, shapes, and general drawing.
 - Some event listeners use faulty `touches` detection; adapt to new way of doing it (can be based on `opacDrag()`)
+- Filler crashes when filling on a blank canvas / pixel (only found on mobile, need to test on desktop)
