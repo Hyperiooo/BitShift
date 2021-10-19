@@ -112,35 +112,10 @@ class Canvas {
             e.preventDefault()
         })
 
+
         this.initialScale = 1
         this.canvUnit = 1
         this.canvScale = settings.ui.canvasScale
-        /*
-        interact(this.canvasParent)
-            .gesturable({
-                listeners: {
-                    start(event) {
-                        settings.ui.angle -= event.angle
-                        console.log(event)
-                        event.preventDefault()
-                        board.active = false
-                        board.initialScale = settings.ui.canvasScale
-                        console.log(settings.ui.canvasScale)
-                    },
-                    move(event) {
-                        var currentScale = event.scale * board.initialScale
-                        event.preventDefault()
-                        board.active = false
-                        board.setCanvScale(Math.pow(currentScale / 5, 1.25))
-                    },
-                    end(event) {
-                        settings.ui.canvasScale = board.initialScale * event.scale
-                        event.preventDefault()
-                        board.active = true
-                        console.log(settings.ui.canvasScale)
-                    }
-                }
-            })*/
         this.canvas = document.querySelector("#canvas");
         this.previewcanvas = document.querySelector("#previewcanv");
         this.bggridcanvas = document.querySelector("#bggridcanv");
@@ -153,6 +128,12 @@ class Canvas {
         this.previewcanvas.height = this.canvUnit * height;
         this.width = width;
         this.height = height;
+        if (window.innerHeight / this.height / 1.25 < window.innerWidth / this.width / 1.25) {
+            settings.ui.canvasScale = window.innerHeight / this.height / 1.25
+        } else {
+            settings.ui.canvasScale = window.innerWidth / this.width / 1.25
+
+        }
         this.canvas.style.display = "block";
         //this.canvas.style.height = Math.floor((height / width) * this.canvas.clientWidth) + "px";
         console.log(this.canvas.clientWidth)
@@ -209,6 +190,7 @@ class Canvas {
 
         this.panzoom = Panzoom(this.canvas, {
             setTransform: (elem, { scale, x, y }) => {
+                console.log('asdf')
                 this.canvas.style.setProperty('transform', `scale(${scale}) translate(${x}px, ${y}px)`)
                 this.previewcanvas.style.setProperty('transform', `scale(${scale}) translate(${x}px, ${y}px)`)
                 this.bggridcanvas.style.setProperty('transform', `scale(${scale}) translate(${x}px, ${y}px)`)
@@ -221,7 +203,6 @@ class Canvas {
             startX: ((window.innerWidth / 2) - (this.width / 2)) / settings.ui.canvasScale,
             startY: ((window.innerHeight / 2) - (this.height / 2)) / settings.ui.canvasScale,
             canvas: true,
-            touchAction: "all"
         })
         this.canvasParent.addEventListener('wheel', this.panzoom.zoomWithWheel)
         this.startZoomX = 0
@@ -235,7 +216,7 @@ class Canvas {
             if (e.button == 1 || Tools.pan) {
                 this.deltaX = e.clientX
                 this.deltaY = e.clientY
-            }else if (e.button == 1 || Tools.zoom) {
+            } else if (e.button == 1 || Tools.zoom) {
                 this.startZoomX = e.clientX
                 this.startZoomY = e.clientY
             }
@@ -249,43 +230,58 @@ class Canvas {
         })
 
 
+        this.canvasParent.addEventListener("touchmove", e => {
+            if (e.touches) {
+                if (Tools.pan) {
+                    this.panzoom.pan(((e.touches[0].clientX) - this.deltaX) / this.panzoom.getScale(), (e.touches[0].clientY - this.deltaY) / this.panzoom.getScale(), { relative: true })
+                    this.deltaX = e.touches[0].clientX
+                    this.deltaY = e.touches[0].clientY
+                } else if (Tools.zoom) {
+                    var dummy = {
+                        clientX: e.touches[0].clientX,
+                        clientY: e.touches[0].clientY,
+                        preventDefault: function () {
+                        },
+                        deltaY: -(this.deltaY - e.touches[0].clientY) / this.panzoom.getScale(),
+                        deltaX: -(this.deltaX - e.touches[0].clientX) / this.panzoom.getScale(),
+                    }
+                    this.panzoom.zoomWithWheel(dummy)
+                    this.deltaX = e.touches[0].clientX
+                    this.deltaY = e.touches[0].clientY
+                }
+            }
+        })
+        this.canvas.addEventListener("touchstart", e => {
+            this.inputDown(e)
+        });
+        this.canvas.addEventListener("touchend", e => {
+            this.inputUp(e)
+        });
+        this.canvas.addEventListener("touchmove", e => {
+            this.inputActive(e)
+        })
         this.canvasParent.addEventListener("mousemove", e => {
             if (e.buttons) {
                 if (Tools.pan) {
                     this.panzoom.pan(((e.clientX) - this.deltaX) / this.panzoom.getScale(), (e.clientY - this.deltaY) / this.panzoom.getScale(), { relative: true })
                     this.deltaX = e.clientX
                     this.deltaY = e.clientY
-                }else if (Tools.zoom) {
-                    var current = {
-                        clientX: e.clientX,
-                        clientY: e.clientY
-                    }
+                } else if (Tools.zoom) {
                     var dummy = {
                         clientX: e.clientX,
                         clientY: e.clientY,
-                        preventDefault: function() {
-                            console.log("a")
+                        preventDefault: function () {
                         },
-                        /*deltaY: (Math.max(0.125, Math.sqrt(Math.pow((e.clientY - this.startZoomY), 2)))),
-                        deltaX: (Math.max(0.125, Math.sqrt(Math.pow((e.clientX - this.startZoomX), 2)))),*/
                         deltaY: -(this.deltaY - e.clientY) / this.panzoom.getScale(),
                         deltaX: -(this.deltaX - e.clientX) / this.panzoom.getScale(),
                     }
                     this.panzoom.zoomWithWheel(dummy)
                     this.deltaX = e.clientX
                     this.deltaY = e.clientY
-                    //this.panzoom.zoomToPoint(Math.max(0.125, Math.sqrt(Math.pow((e.clientX - this.startZoomX), 2) + Math.pow((e.clientY - this.startZoomY), 2))/20), current, null, e)
                 }
             }
         })
 
-        this.canvasParent.addEventListener("touchmove", e => {
-            if (e.touches && Tools.pan) {
-                this.panzoom.pan(((e.touches[0].clientX) - this.deltaX) / this.panzoom.getScale(), (e.touches[0].clientY - this.deltaY) / this.panzoom.getScale(), { relative: true })
-                this.deltaX = e.touches[0].clientX
-                this.deltaY = e.touches[0].clientY
-            }
-        })
 
         this.canvasParent.addEventListener("mouseup", e => {
             this.prevTX = null;
@@ -300,9 +296,6 @@ class Canvas {
             if (Tools.pen) this.clearPreview()
         });
 
-        this.canvas.addEventListener("touchmove", e => {
-            this.inputActive(e)
-        })
 
         this.canvas.addEventListener("mousedown", e => {
             if (e.button != 0) {
@@ -315,12 +308,6 @@ class Canvas {
             this.inputUp(e)
         });
 
-        this.canvas.addEventListener("touchstart", e => {
-            this.inputDown(e)
-        });
-        this.canvas.addEventListener("touchend", e => {
-            this.inputUp(e)
-        });
     }
     inputDown(e) {
         updatePrevious(this.color)
@@ -1258,7 +1245,7 @@ function updateToolSettings(tool) {
     })
 }
 
-function drawPix(x,y) {
+function drawPix(x, y) {
     document.body.innerHTML += `
     <div style="background:white; width:1px; height:1px; position: absolute; top: ${y}px; left: ${x}px; "></div>
     `
@@ -1272,8 +1259,8 @@ class numberDraggable {
         this.startVal = this.el.value
         self = this
         this.el.addEventListener('mousedown', (e) => { this.do = true; this.startX = e.clientX; this.startVal = this.el.value })
-        this.el.addEventListener('mouseup', () => { this.do = false})
-        document.addEventListener('mouseup', () => { this.do = false})
+        this.el.addEventListener('mouseup', () => { this.do = false })
+        document.addEventListener('mouseup', () => { this.do = false })
         document.addEventListener("mousemove", e => {
             if (this.do) {
                 this.el.value = clamp(parseInt(this.startVal) + Math.floor((e.clientX - this.startX) / 10), this.el.min, this.el.max)
@@ -1845,7 +1832,7 @@ function opacEndDrag(e) {
 
 function opacDrag(e) {
     e.preventDefault()
-    
+
     var x, y
     if (e.touches) {
         x = e.touches[0].clientX - opacRect.left
