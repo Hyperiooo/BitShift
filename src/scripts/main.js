@@ -16,6 +16,7 @@ var settings = {
     "tools": {
         "assignments": {
             "pen": ["brushSize", "brushSquare", "brushSmoothing", "brushPixelPerfect"],
+            "eraser": ["brushSize", "brushSquare", "brushSmoothing", "brushPixelPerfect"],
             "sprayPaint": ["brushSize", "brushSquare", "brushSmoothing", "spraySpeed", "spraySize"],
             "fillBucket": ["contiguous"],
         },
@@ -176,14 +177,6 @@ class Canvas {
                 this.filler(x, y, this.data[x][y]);
             } else if (Tools.fillBucket && !settings.tools.contiguous.value) {
                 this.fillerNonContiguous(new Point(x, y));
-            } else if (Tools.eraser) {
-                var temp = this.color;
-                this.setcolor([255, 255, 255, 255]);
-                this.erase(x, y);
-                this.setcolor(temp);
-            } else if (Tools.line) {
-            } else if (Tools.rect) {
-            } else if (Tools.ellipse) {
             }
 
         });
@@ -317,7 +310,7 @@ class Canvas {
         var y = e.clientY - rect.top || e.touches[0].clientY - rect.top;
         x = Math.floor(this.width * x / (this.canvas.clientWidth * this.canvScale));
         y = Math.floor(this.height * y / (this.canvas.clientHeight * this.canvScale));
-        if (Tools.circle || Tools.ellipse || Tools.line || Tools.rect || Tools.pen) {
+        if (Tools.circle || Tools.ellipse || Tools.line || Tools.rect || Tools.pen || Tools.eraser) {
             this.sX = x;
             this.sY = y;
         }
@@ -410,14 +403,12 @@ class Canvas {
                     var a;
                     for (a of c) this.draw(a);
                 })
-                console.log("")
-                /*for (let i = 0; i < parseInt(settings.tools.brushSize.value); i++) {
-                    if (Math.random() > parseFloat(settings.tools.sprayChance.value)) b.push(c[Math.floor(Math.random() * c.length)])
-                }
-                var p = []
-                b.forEach(e => {
-                    let p = new Point((Math.floor(Math.random() * (e.x2 - e.x1))) + e.x1, e.y1)
-                    this.draw(new Point(p.x, p.y))
+            }
+            else if (Tools.eraser) {
+                let P = line(new Point(this.sX, this.sY), new Point(x, y))
+                let p
+                for (p of P) {
+                    this.erase(new Point(p.x, p.y))
                     let brushSize = parseInt(settings.tools.brushSize.value)
                     let r = brushSize - 1
                     //let c = filledEllipse(p.x, p.y, 2, 2)
@@ -428,11 +419,11 @@ class Canvas {
                         c = filledEllipse(p.x - (r / 2), p.y - (r / 2), p.x + (r / 2), p.y + (r / 2))
                     }
                     var b;
-                    for (b of c) this.draw(b);
-                })*/
-            }
-            else if (Tools.eraser) {
-                this.erase(x, y);
+                    for (b of c) this.erase(b);
+                }
+                this.erase(new Point(x, y))
+                this.sX = x;
+                this.sY = y;
             }
             else if (Tools.eyedropper) {
                 this.setcolor(this.getPixelCol(new Point(x, y)));
@@ -595,7 +586,6 @@ class Canvas {
             if (preview) {
                 this.pctx.globalCompositeOperation = "destination-out";
                 this.pctx.fillRect(0, 0, this.w, this.h);
-                //TODO when doing brush size you'd modify it here
                 if (this.mobile || Tools.pan) return;
                 let brushSize = parseInt(settings.tools.brushSize.value)
                 let r = brushSize - 1
@@ -842,11 +832,41 @@ class Canvas {
             }
         }
     }
-    erase(x, y) {
+    erase(coord) {
+
         var temp = this.color;
-        this.eDraw(new Point(x, y));
-        this.setcolor(temp);
+
+        if (coord.constructor.name == "Point") {
+            var x = coord.x
+            var y = coord.y
+            this.ctx.globalCompositeOperation = 'destination-out'
+            this.ctx.fillRect(x, y, 1, 1);
+        } else if (coord.constructor.name == "Rect") {
+            var x1 = coord.x1
+            var y1 = coord.y1
+            var x2 = coord.x2
+            var y2 = coord.y2
+            var ax1, ax2, ay1, ay2
+            this.ctx.globalCompositeOperation = 'destination-out'
+            if (x1 >= x2) {
+                ax1 = x2
+                ax2 = x1
+            } else if (x1 < x2) {
+                ax1 = x1
+                ax2 = x2
+            }
+            if (y1 >= y2) {
+                ay1 = y2
+                ay2 = y1
+            } else if (y1 < y2) {
+                ay1 = y1
+                ay2 = y2
+            }
+            if (ay2 - ay1 == 0) ay2 = ay1 + 1
+            this.ctx.fillRect(ax1, ay1, ax2 - ax1, ay2 - ay1);
+        }
         this.ctx.globalCompositeOperation = 'source-over'
+        this.setcolor(temp);
     }
     setcolor(color, skipDuplicate) {
         if (!skipDuplicate) setPickerColor(color)
@@ -984,7 +1004,8 @@ class Canvas {
         //context.fillRect(startX, startY, 1, 1)
         console.log(r, g, b, a)
 
-        if (r != this.color[0] && b != this.color[1] && g != this.color[2] && a != this.color[3]) this.floodFill(startX, startY, r, g, b, a);
+        if (r == this.color[0] && b == this.color[1] && g == this.color[2] && a == this.color[3]) return
+        this.floodFill(startX, startY, r, g, b, a);
 
         this.redraw();
     }
@@ -1234,11 +1255,12 @@ function updateToolSettings(tool) {
             </span>`
         }
     }
-    document.getElementById("tool-settings").innerHTML = `<h1>Tool Settings</h1> ${toolCont}`
+    document.getElementById("tool-settings-content").innerHTML = `${toolCont}`
     for (let i = 0; i < draggableNumInputs.length; i++) {
         const e = draggableNumInputs[i];
         e.clear()
     }
+    document.getElementById("tool-settings-content").style.setProperty("--maxHeight", document.getElementById("tool-settings-content").scrollHeight + "px")
     draggableNumInputs = []
     document.querySelectorAll("[data-input-num-draggable]").forEach(e => {
         draggableNumInputs.push(new numberDraggable(e))
@@ -1278,6 +1300,7 @@ function closeToolSettings() {
 
 function openToolSettings() {
     document.getElementById("tool-settings").classList.add("tool-settings-open")
+    document.querySelector('.tool-settings-toggle').checked = false
 }
 
 window.onload = function () {
@@ -1347,7 +1370,7 @@ window.onload = function () {
             link.href = url;
             link.click();
         });
-        board.setmode("zoom")
+        board.setmode("pen")
     }
     else {
         newProject();
@@ -1415,7 +1438,7 @@ function preparePalette() {
             tempNode = group.cloneNode(true)
             tempNode.style.setProperty("transform", "translate(-1000%, -1000%)")
             tempNode.querySelector(".color-palette-title").onmouseup = mouseUpHandler
-            tempNode.onmousedown = tempNode.ontouchstart = (e) => {
+            tempNode.querySelector(".color-palette-title").onmousedown = tempNode.querySelector(".color-palette-title").ontouchstart = (e) => {
                 startRect = e.target.getBoundingClientRect()
                 if (tempOut) {
                     subMoving = true;
@@ -1839,7 +1862,7 @@ function opacDrag(e) {
         y = e.touches[0].clientY - opacRect.top
     } else {
         x = e.clientX - opacRect.left
-        y = e.clientX - opacRect.top
+        y = e.clientY - opacRect.top
     }
     if (opacMoving) {
         document.querySelectorAll('[data-color-input]').forEach(e => { e.blur() });
@@ -1875,8 +1898,10 @@ function hueDrag(e) {
         y = e.touches[0].clientY - hueRect.top
     } else {
         x = e.clientX - hueRect.left
-        y = e.clientX - hueRect.top
+        y = e.clientY - hueRect.top
     }
+    x = e.clientX - hueRect.left
+    y = e.clientY - hueRect.top
     if (hueMoving) {
         document.querySelectorAll('[data-color-input]').forEach(e => { e.blur() });
         pickerColor[0] = clamp((1 - (y / hueRect.height)), 0, 1) * 360
@@ -1909,8 +1934,9 @@ function valueDrag(e) {
         x = e.touches[0].clientX - valueRect.left
         y = e.touches[0].clientY - valueRect.top
     } else {
+        console.log('a')
         x = e.clientX - valueRect.left
-        y = e.clientX - valueRect.top
+        y = e.clientY - valueRect.top
     }
     if (valueMoving) {
         document.querySelectorAll('[data-color-input]').forEach(e => { e.blur() });

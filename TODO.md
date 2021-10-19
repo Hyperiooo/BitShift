@@ -93,6 +93,8 @@ A list of all the things planned to do for BitShift
 ## Visual changes 
 - Fork remixicon to add Spray can, along with other various tools
 - Make responsive on mobile devices
+- Give borders of palette windows an extra 4px
+- Enforce constant transitions on background and color across all ui
 
 ## Other
 - Keyboard Shortcuts
@@ -105,6 +107,9 @@ A list of all the things planned to do for BitShift
   - ~~On chrome, it doesnt end the event when lift~~
 - Number Input doesnt clear event listeners when recreating the tool settings menu
 - On mobile, dragging the palette window ends up messing with the top bar
+- Color palettes dont fill when making a new file
+- Tools dont get set on making a new file
+- New file has "artifacts" of an old file until you refresh (it almost draws between the old and new)
 - Touch zoom on mobile is not functional
 - Zoom tool is not functional
 - Eraser tool does not function as a normal brush does
