@@ -98,12 +98,22 @@ A list of all the things planned to do for BitShift
 - Theming
 - Add min width, max height to tool settings content
 - Improve tool settings inputs to allow for input groups with proper rounding and units
+- Transition between tool settings better; Change height smoothly, fade opacity at 0.1s
+- Make canvas parent full height when closing navbar on mobile
+  - Take functionality from Delta
+- Add full screen to phone to avoid annoying scroll issue
+- Make canvas resize based on the canvas parent, not the entire document
+- Dont include toolbar with the canvasParent height
 
 ## Other
 - Keyboard Shortcuts
 - Undo / Redo
 - Give spray tool an outline to show the radius of possible spray locations
 - Give eraser outline to show where it will erase
+- Show preview details for rectangle, line, and circle
+  - Height, width, starting & end point, radius etc
+  - For a singular pixel, show cursors position on canvas
+- Add reset view button
 
 ## Bugs
 - ~~Number input in Settings doesnt work properly when drag editing:~~
@@ -111,6 +121,7 @@ A list of all the things planned to do for BitShift
   - ~~On chrome, it doesnt end the event when lift~~
 - Number Input doesnt clear event listeners when recreating the tool settings menu
 - On mobile, dragging the palette window ends up messing with the top bar
+  - Prevent Defaults
 - Color palettes dont fill when making a new file
 - Tools dont get set on making a new file
 - New file has "artifacts" of an old file until you refresh (it almost draws between the old and new)
@@ -120,11 +131,16 @@ A list of all the things planned to do for BitShift
   - ~~Is not affected by `brushSize`~~
   - ~~Does not have lines going between its points~~
   - Major performance issue inherent in destination-out
+    - Somehow doesnt perform poorly on mobile or second computer, may just be my personal computer?
+      - On both computers that it performed well on, the browser was Chrome. On the low performing computer, the browser was Firefox
   - Should not display as a normal brush:
     - Show as clearing the area below it
     - OR Show as an outline (similar to Aseprite)
+      - Do this by creating a special canvas thats larger than the current drwaing but at the same ratio, offset pixels in all 4 directions ( nw, ne, sw, se ) 
 - Lines get cut off if theyre off screen, causing the canvas to see the cursor as drawing when the mouse buttons arent held.
   - Allow drawing off screen
     - Useful in lines, shapes, and general drawing.
 - Some event listeners use faulty `touches` detection; adapt to new way of doing it (can be based on `opacDrag()`)
 - Filler crashes when filling on a blank canvas / pixel (only found on mobile, need to test on desktop)
+- Canvas doesnt fill on an empty canvas on mobile & crashes
+- 
