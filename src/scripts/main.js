@@ -260,7 +260,21 @@ class Canvas {
                         clientX: e.clientX,
                         clientY: e.clientY
                     }
-                    this.panzoom.zoomToPoint(Math.max(0.125, Math.sqrt(Math.pow((e.clientX - this.startZoomX), 2) + Math.pow((e.clientY - this.startZoomY), 2))/20), current)
+                    var dummy = {
+                        clientX: e.clientX,
+                        clientY: e.clientY,
+                        preventDefault: function() {
+                            console.log("a")
+                        },
+                        /*deltaY: (Math.max(0.125, Math.sqrt(Math.pow((e.clientY - this.startZoomY), 2)))),
+                        deltaX: (Math.max(0.125, Math.sqrt(Math.pow((e.clientX - this.startZoomX), 2)))),*/
+                        deltaY: -(this.deltaY - e.clientY) / this.panzoom.getScale(),
+                        deltaX: -(this.deltaX - e.clientX) / this.panzoom.getScale(),
+                    }
+                    this.panzoom.zoomWithWheel(dummy)
+                    this.deltaX = e.clientX
+                    this.deltaY = e.clientY
+                    //this.panzoom.zoomToPoint(Math.max(0.125, Math.sqrt(Math.pow((e.clientX - this.startZoomX), 2) + Math.pow((e.clientY - this.startZoomY), 2))/20), current, null, e)
                 }
             }
         })
@@ -1258,7 +1272,8 @@ class numberDraggable {
         this.startVal = this.el.value
         self = this
         this.el.addEventListener('mousedown', (e) => { this.do = true; this.startX = e.clientX; this.startVal = this.el.value })
-        this.el.addEventListener('mouseup', () => { this.do = false })
+        this.el.addEventListener('mouseup', () => { this.do = false})
+        document.addEventListener('mouseup', () => { this.do = false})
         document.addEventListener("mousemove", e => {
             if (this.do) {
                 this.el.value = clamp(parseInt(this.startVal) + Math.floor((e.clientX - this.startX) / 10), this.el.min, this.el.max)
@@ -1267,7 +1282,6 @@ class numberDraggable {
         })
     }
     clear() {
-        console.log('cum')
     }
 }
 
@@ -1346,7 +1360,7 @@ window.onload = function () {
             link.href = url;
             link.click();
         });
-        board.setmode("pen")
+        board.setmode("zoom")
     }
     else {
         newProject();
@@ -1831,8 +1845,15 @@ function opacEndDrag(e) {
 
 function opacDrag(e) {
     e.preventDefault()
-    var x = e.clientX - opacRect.left || e.touches[0].clientX - opacRect.left;
-    var y = e.clientY - opacRect.top || e.touches[0].clientY - opacRect.top;
+    
+    var x, y
+    if (e.touches) {
+        x = e.touches[0].clientX - opacRect.left
+        y = e.touches[0].clientY - opacRect.top
+    } else {
+        x = e.clientX - opacRect.left
+        y = e.clientX - opacRect.top
+    }
     if (opacMoving) {
         document.querySelectorAll('[data-color-input]').forEach(e => { e.blur() });
         pickerColor[3] = clamp(y / opacRect.height * 100, 0, 100)
@@ -1861,7 +1882,14 @@ function hueEndDrag(e) {
 
 function hueDrag(e) {
     e.preventDefault()
-    var y = e.clientY - hueRect.top || e.touches[0].clientY - hueRect.top;
+    var x, y
+    if (e.touches) {
+        x = e.touches[0].clientX - hueRect.left
+        y = e.touches[0].clientY - hueRect.top
+    } else {
+        x = e.clientX - hueRect.left
+        y = e.clientX - hueRect.top
+    }
     if (hueMoving) {
         document.querySelectorAll('[data-color-input]').forEach(e => { e.blur() });
         pickerColor[0] = clamp((1 - (y / hueRect.height)), 0, 1) * 360
@@ -1889,8 +1917,14 @@ function valueEndDrag(e) {
 
 function valueDrag(e) {
     e.preventDefault()
-    var x = e.clientX - valueRect.left || e.touches[0].clientX - valueRect.left;
-    var y = e.clientY - valueRect.top || e.touches[0].clientY - valueRect.top;
+    var x, y
+    if (e.touches) {
+        x = e.touches[0].clientX - valueRect.left
+        y = e.touches[0].clientY - valueRect.top
+    } else {
+        x = e.clientX - valueRect.left
+        y = e.clientX - valueRect.top
+    }
     if (valueMoving) {
         document.querySelectorAll('[data-color-input]').forEach(e => { e.blur() });
         pickerColor[1] = clamp(x / valueRect.width * 100, 0, 100)

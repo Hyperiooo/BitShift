@@ -6,7 +6,7 @@ A list of all the things planned to do for BitShift
   - ~~Improve pan tool~~
 - Zoom tool
   - Improve zoom tool
-- ~~Spray brush tool~~
+- Spray brush tool
   - Improve to make speed 1 not produce as many particles 
 - Smudge and scatter tools
   - Effect surrounding pixels
@@ -93,3 +93,27 @@ A list of all the things planned to do for BitShift
 ## Visual changes 
 - Fork remixicon to add Spray can, along with other various tools
 - Make responsive on mobile devices
+
+## Other
+- Keyboard Shortcuts
+- Undo / Redo
+- Give spray tool an outline to show the radius of possible spray locations
+
+## Bugs
+- ~~Number input in Settings doesnt work properly when drag editing:~~
+  - ~~On firefox, when you lift mouse button, it ends event~~
+  - ~~On chrome, it doesnt end the event when lift~~
+- Number Input doesnt clear event listeners when recreating the tool settings menu
+- On mobile, dragging the palette window ends up messing with the top bar
+- Touch zoom on mobile is not functional
+- Zoom tool is not functional
+- Eraser tool does not function as a normal brush does
+  - Is not affected by `brushSize`
+  - Does not have lines going between its points
+  - Should not display as a normal brush:
+    - Show as clearing the area below it
+    - OR Show as an outline (similar to Aseprite)
+- Lines get cut off if theyre off screen, causing the canvas to see the cursor as drawing when the mouse buttons arent held.
+  - Allow drawing off screen
+    - Useful in lines, shapes, and general drawing.
+- Some event listeners use faulty `touches` detection; adapt to new way of doing it (`can be s opacDrag()`)
