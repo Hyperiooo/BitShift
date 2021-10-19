@@ -119,7 +119,7 @@ A list of all the things planned to do for BitShift
 - ~~Number input in Settings doesnt work properly when drag editing:~~
   - ~~On firefox, when you lift mouse button, it ends event~~
   - ~~On chrome, it doesnt end the event when lift~~
-- Number Input doesnt clear event listeners when recreating the tool settings menu
+- ~~Number Input doesnt clear event listeners when recreating the tool settings menu~~
 - On mobile, dragging the palette window ends up messing with the top bar
   - Prevent Defaults
 - Color palettes dont fill when making a new file
