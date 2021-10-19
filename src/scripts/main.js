@@ -1000,10 +1000,6 @@ class Canvas {
             b = this.imageData.data[pixelPos + 2],
             a = this.imageData.data[pixelPos + 3];
 
-        console.log('test')
-        //context.fillRect(startX, startY, 1, 1)
-        console.log(r, g, b, a)
-
         if (r == this.color[0] && b == this.color[1] && g == this.color[2] && a == this.color[3]) return
         this.floodFill(startX, startY, r, g, b, a);
 
