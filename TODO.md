@@ -96,6 +96,8 @@ A list of all the things planned to do for BitShift
 - ~~Give borders of palette windows an extra 4px~~
 - Enforce constant transitions on background and color across all ui
 - Theming
+- Add min width, max height to tool settings content
+- Improve tool settings inputs to allow for input groups with proper rounding and units
 
 ## Other
 - Keyboard Shortcuts
