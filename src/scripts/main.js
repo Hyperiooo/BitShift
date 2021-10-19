@@ -834,8 +834,6 @@ class Canvas {
     }
     erase(coord) {
 
-        var temp = this.color;
-
         if (coord.constructor.name == "Point") {
             var x = coord.x
             var y = coord.y
@@ -866,7 +864,6 @@ class Canvas {
             this.ctx.fillRect(ax1, ay1, ax2 - ax1, ay2 - ay1);
         }
         this.ctx.globalCompositeOperation = 'source-over'
-        this.setcolor(temp);
     }
     setcolor(color, skipDuplicate) {
         if (!skipDuplicate) setPickerColor(color)
