@@ -93,13 +93,14 @@ A list of all the things planned to do for BitShift
 ## Visual changes 
 - Fork remixicon to add Spray can, along with other various tools
 - Make responsive on mobile devices
-- Give borders of palette windows an extra 4px
+- ~~Give borders of palette windows an extra 4px~~
 - Enforce constant transitions on background and color across all ui
 
 ## Other
 - Keyboard Shortcuts
 - Undo / Redo
 - Give spray tool an outline to show the radius of possible spray locations
+- Give eraser outline to show where it will erase
 
 ## Bugs
 - ~~Number input in Settings doesnt work properly when drag editing:~~
@@ -113,12 +114,13 @@ A list of all the things planned to do for BitShift
 - Touch zoom on mobile is not functional
 - Zoom tool is not functional
 - Eraser tool does not function as a normal brush does
-  - Is not affected by `brushSize`
-  - Does not have lines going between its points
+  - ~~Is not affected by `brushSize`~~
+  - ~~Does not have lines going between its points~~
+  - Major performance issue inherent in destination-out
   - Should not display as a normal brush:
     - Show as clearing the area below it
     - OR Show as an outline (similar to Aseprite)
 - Lines get cut off if theyre off screen, causing the canvas to see the cursor as drawing when the mouse buttons arent held.
   - Allow drawing off screen
     - Useful in lines, shapes, and general drawing.
-- Some event listeners use faulty `touches` detection; adapt to new way of doing it (`can be s opacDrag()`)
+- Some event listeners use faulty `touches` detection; adapt to new way of doing it (can be based on `opacDrag()`)
