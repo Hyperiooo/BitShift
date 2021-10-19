@@ -405,6 +405,7 @@ class Canvas {
                 })
             }
             else if (Tools.eraser) {
+                this.ctx.globalCompositeOperation = 'destination-out'
                 let P = line(new Point(this.sX, this.sY), new Point(x, y))
                 let p
                 for (p of P) {
@@ -424,6 +425,7 @@ class Canvas {
                 this.erase(new Point(x, y))
                 this.sX = x;
                 this.sY = y;
+                this.ctx.globalCompositeOperation = 'source-over'
             }
             else if (Tools.eyedropper) {
                 this.setcolor(this.getPixelCol(new Point(x, y)));
@@ -822,22 +824,11 @@ class Canvas {
             this.pctx.fillRect(ax1, ay1, ax2 - ax1, ay2 - ay1);
         }
     }
-    eDraw(coord) {
-        if (coord.constructor.name == "Point") {
-            var x = coord.x
-            var y = coord.y
-            if (x >= 0 && x < this.width && y >= 0 && y < this.height) {
-                this.ctx.globalCompositeOperation = 'destination-out'
-                this.ctx.fillRect(x, y, 1, 1);
-            }
-        }
-    }
     erase(coord) {
 
         if (coord.constructor.name == "Point") {
             var x = coord.x
             var y = coord.y
-            this.ctx.globalCompositeOperation = 'destination-out'
             this.ctx.fillRect(x, y, 1, 1);
         } else if (coord.constructor.name == "Rect") {
             var x1 = coord.x1
@@ -845,7 +836,6 @@ class Canvas {
             var x2 = coord.x2
             var y2 = coord.y2
             var ax1, ax2, ay1, ay2
-            this.ctx.globalCompositeOperation = 'destination-out'
             if (x1 >= x2) {
                 ax1 = x2
                 ax2 = x1
@@ -863,7 +853,6 @@ class Canvas {
             if (ay2 - ay1 == 0) ay2 = ay1 + 1
             this.ctx.fillRect(ax1, ay1, ax2 - ax1, ay2 - ay1);
         }
-        this.ctx.globalCompositeOperation = 'source-over'
     }
     setcolor(color, skipDuplicate) {
         if (!skipDuplicate) setPickerColor(color)
@@ -1927,7 +1916,6 @@ function valueDrag(e) {
         x = e.touches[0].clientX - valueRect.left
         y = e.touches[0].clientY - valueRect.top
     } else {
-        console.log('a')
         x = e.clientX - valueRect.left
         y = e.clientY - valueRect.top
     }
