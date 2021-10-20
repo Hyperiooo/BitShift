@@ -144,4 +144,3 @@ A list of all the things planned to do for BitShift
 - Some event listeners use faulty `touches` detection; adapt to new way of doing it (can be based on `opacDrag()`)
 - Filler crashes when filling on a blank canvas / pixel (only found on mobile, need to test on desktop)
 - Canvas doesnt fill on an empty canvas on mobile & crashes
-- 

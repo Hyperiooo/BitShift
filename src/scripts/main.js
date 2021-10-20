@@ -174,6 +174,7 @@ class Canvas {
             x = Math.floor(this.width * x / (this.canvas.clientWidth * this.canvScale));
             y = Math.floor(this.height * y / (this.canvas.clientHeight * this.canvScale));
             if (Tools.fillBucket && settings.tools.contiguous.value) {
+                console.log(x >= this.width)
                 this.filler(x, y, this.data[x][y]);
             } else if (Tools.fillBucket && !settings.tools.contiguous.value) {
                 this.fillerNonContiguous(new Point(x, y));
@@ -244,13 +245,13 @@ class Canvas {
                 }
             }
         })
-        this.canvas.addEventListener("touchstart", e => {
+        this.canvasParent.addEventListener("touchstart", e => {
             this.inputDown(e)
         });
-        this.canvas.addEventListener("touchend", e => {
+        this.canvasParent.addEventListener("touchend", e => {
             this.inputUp(e)
         });
-        this.canvas.addEventListener("touchmove", e => {
+        this.canvasParent.addEventListener("touchmove", e => {
             this.inputActive(e)
         })
         this.canvasParent.addEventListener("mousemove", e => {
@@ -281,30 +282,25 @@ class Canvas {
             this.prevTY = null;
         })
 
-        this.canvas.addEventListener("mousemove", e => {
+        this.canvasParent.addEventListener("mousemove", e => {
             this.inputActive(e)
         });
 
-        this.canvas.addEventListener("mouseout", e => {
-            if (Tools.pen) this.clearPreview()
-        });
 
-
-        this.canvas.addEventListener("mousedown", e => {
+        this.canvasParent.addEventListener("mousedown", e => {
             if (e.button != 0) {
                 return
             }
             this.inputDown(e)
             this.inputActive(e)
         });
-        this.canvas.addEventListener("mouseup", e => {
+        this.canvasParent.addEventListener("mouseup", e => {
             this.inputUp(e)
         });
 
     }
     inputDown(e) {
         updatePrevious(this.color)
-        this.active = true;
         var rect = this.canvas.getBoundingClientRect();
         var x = e.clientX - rect.left || e.touches[0].clientX - rect.left;
         var y = e.clientY - rect.top || e.touches[0].clientY - rect.top;
@@ -317,7 +313,6 @@ class Canvas {
 
     }
     inputUp(e) {
-        this.active = false;
         if (Tools.circle || Tools.ellipse || Tools.line || Tools.rect) {
             var p;
             for (p of this.tempL) this.draw(p);
@@ -345,7 +340,7 @@ class Canvas {
         var y = (e.clientY) - rect.top || e.touches[0].clientY - rect.top || -1;
         x = Math.floor((x) / (this.canvScale));
         y = Math.floor((y) / (this.canvScale));
-        if (this.active) {
+        if (e.buttons != 0) {
             if (Tools.pen) {
                 let P = line(new Point(this.sX, this.sY), new Point(x, y))
                 let p
@@ -583,7 +578,7 @@ class Canvas {
 
                 }
             }
-        } else if (!this.active) {
+        } else if (e.buttons == 0) {
             let brushSize = parseInt(settings.tools.brushSize.value)
             if (preview) {
                 this.pctx.globalCompositeOperation = "destination-out";
@@ -794,10 +789,17 @@ class Canvas {
         }
     }
     pDraw(coord) {
+        if (Tools.eraser) {
+            this.pctx.drawImage(this.canvas, 0, 0)
+            this.previewcanvas.style.setProperty("--invert", 1)
+            this.pctx.globalCompositeOperation = 'source-in'
+        } else {
+            this.pctx.globalCompositeOperation = 'source-over'
+            this.previewcanvas.style.setProperty("--invert", 0)
+        }
         if (coord.constructor.name == "Point") {
             var x = coord.x
             var y = coord.y
-            this.pctx.globalCompositeOperation = 'source-over'
             this.pctx.fillRect(x, y, 1, 1);
         } else if (coord.constructor.name == "Rect") {
             var x1 = coord.x1
@@ -805,7 +807,6 @@ class Canvas {
             var x2 = coord.x2
             var y2 = coord.y2
             var ax1, ax2, ay1, ay2
-            this.pctx.globalCompositeOperation = 'source-over'
             if (x1 >= x2) {
                 ax1 = x2
                 ax2 = x1
@@ -1212,10 +1213,10 @@ function updateToolSettings(tool) {
     var toolContent = document.getElementById("tool-settings-content")
     let toolSettings = settings.tools.assignments[tool]
     toolContent.classList.add("tool-settings-content-hidden")
-    if(!toolSettings) {
+    if (!toolSettings) {
         setTimeout(() => {
             toolContent.innerHTML = ``
-            toolContent.style.setProperty("--maxHeight", "0px")            
+            toolContent.style.setProperty("--maxHeight", "0px")
         }, 200);
         return
     }
@@ -1248,8 +1249,7 @@ function updateToolSettings(tool) {
             </span>`
         }
     }
-    console.log(toolContent.innerHTML)
-    if(toolContent.innerHTML == "") {
+    if (toolContent.innerHTML == "") {
         toolContent.innerHTML = `${toolCont}`
         for (let i = 0; i < draggableNumInputs.length; i++) {
             const e = draggableNumInputs[i];
@@ -1273,7 +1273,7 @@ function updateToolSettings(tool) {
             draggableNumInputs.push(new numberDraggable(e))
         })
         toolContent.classList.remove("tool-settings-content-hidden")
-        
+
     }, 150);
 }
 
