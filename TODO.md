@@ -130,9 +130,10 @@ A list of all the things planned to do for BitShift
 - Eraser tool does not function as a normal brush does
   - ~~Is not affected by `brushSize`~~
   - ~~Does not have lines going between its points~~
-  - Major performance issue inherent in destination-out
-    - Somehow doesnt perform poorly on mobile or second computer, may just be my personal computer?
-      - On both computers that it performed well on, the browser was Chrome. On the low performing computer, the browser was Firefox
+  - ~~Major performance issue inherent in destination-out~~
+    - ~~Somehow doesnt perform poorly on mobile or second computer, may just be my personal computer?~~
+      - ~~On both computers that it performed well on, the browser was Chrome. On the low performing computer, the browser was Firefox~~
+        - SOMEHOW FIXED ITSELF??? IT WORKS PERFECTLY FINE NOW IN MOST CASES.
   - Should not display as a normal brush:
     - Show as clearing the area below it
     - OR Show as an outline (similar to Aseprite)

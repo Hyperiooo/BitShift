@@ -28,7 +28,7 @@ body {
     --scrollHover: #3B3A3D;
     --toolBarDim: #49484a;
     --toolBarHover: #7f7f80;
-    /*!CONSTANT COLORS - LIGHT*/
+    /*!CONSTANT COLORS - LIGHT
     --bgMain: #ffffff;
     --canvasBg:#eaeaee;
     --bgLight: #dbdbe0;
@@ -39,7 +39,7 @@ body {
     --scrollTrack: #eaeaee;
     --scrollHover: #c0c2c9;
     --toolBarDim: #535a70;
-    --toolBarHover: #181e31;
+    --toolBarHover: #181e31;*/
 }
 
 #debug {
