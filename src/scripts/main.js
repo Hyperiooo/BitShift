@@ -193,8 +193,8 @@ class Canvas {
             maxScale: 150,
             minScale: 0.125,
             startScale: settings.ui.canvasScale,
-            startX: ((window.innerWidth / 2) - (this.width / 2)) / settings.ui.canvasScale,
-            startY: ((window.innerHeight / 2) - (this.height / 2)) / settings.ui.canvasScale,
+            startX: ((this.canvasParent.offsetWidth / 2) - (this.width / 2)) / settings.ui.canvasScale,
+            startY: ((this.canvasParent.offsetHeight / 2) - (this.height / 2)) / settings.ui.canvasScale,
             canvas: true,
         })
         this.canvasParent.addEventListener('wheel', this.panzoom.zoomWithWheel)
