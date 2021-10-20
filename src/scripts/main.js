@@ -876,6 +876,7 @@ class Canvas {
             updateToolSettings(tool)
         } else {
             closeToolSettings()
+            updateToolSettings(tool)
         }
         Tools[tool] = true
         document.querySelectorAll("#toolbar .item").forEach((x) => {
@@ -1208,7 +1209,17 @@ class Frames {
 }
 
 function updateToolSettings(tool) {
+    var toolContent = document.getElementById("tool-settings-content")
     let toolSettings = settings.tools.assignments[tool]
+    toolContent.classList.add("tool-settings-content-hidden")
+    if(!toolSettings) {
+        setTimeout(() => {
+            toolContent.innerHTML = ``
+            toolContent.style.setProperty("--maxHeight", "0px")            
+        }, 200);
+        return
+    }
+    toolContent.style.setProperty("--maxHeight", (toolSettings.length * 28) + ((toolSettings.length - 1) * 8) + "px")
     let toolCont = ""
     for (let i = 0; i < toolSettings.length; i++) {
         const element = toolSettings[i];
@@ -1237,16 +1248,33 @@ function updateToolSettings(tool) {
             </span>`
         }
     }
-    document.getElementById("tool-settings-content").innerHTML = `${toolCont}`
-    for (let i = 0; i < draggableNumInputs.length; i++) {
-        const e = draggableNumInputs[i];
-        e.clear()
+    console.log(toolContent.innerHTML)
+    if(toolContent.innerHTML == "") {
+        toolContent.innerHTML = `${toolCont}`
+        for (let i = 0; i < draggableNumInputs.length; i++) {
+            const e = draggableNumInputs[i];
+            e.clear()
+        }
+        draggableNumInputs = []
+        document.querySelectorAll("[data-input-num-draggable]").forEach(e => {
+            draggableNumInputs.push(new numberDraggable(e))
+        })
+        toolContent.classList.remove("tool-settings-content-hidden")
+        return
     }
-    document.getElementById("tool-settings-content").style.setProperty("--maxHeight", document.getElementById("tool-settings-content").scrollHeight + "px")
-    draggableNumInputs = []
-    document.querySelectorAll("[data-input-num-draggable]").forEach(e => {
-        draggableNumInputs.push(new numberDraggable(e))
-    })
+    setTimeout(() => {
+        toolContent.innerHTML = `${toolCont}`
+        for (let i = 0; i < draggableNumInputs.length; i++) {
+            const e = draggableNumInputs[i];
+            e.clear()
+        }
+        draggableNumInputs = []
+        document.querySelectorAll("[data-input-num-draggable]").forEach(e => {
+            draggableNumInputs.push(new numberDraggable(e))
+        })
+        toolContent.classList.remove("tool-settings-content-hidden")
+        
+    }, 150);
 }
 
 function drawPix(x, y) {

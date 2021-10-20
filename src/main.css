@@ -872,12 +872,18 @@ input {
 }
 
 #tool-settings-content {
-    --maxHeight: 100vh;
-    max-height: var(--maxHeight);
-    transition: 0.2s max-height, 0.2s opacity;
+    height: var(--maxHeight);
+    margin-bottom: 8px;
+    transition: 0.3s height, 0.15s opacity, 0.3s margin-bottom;
+    min-width: 240px;
 }
 
 .tool-settings-toggle:checked ~ #tool-settings-content {
-    max-height: 0;
+    height: 0px;
+    opacity: 0;
+    margin-bottom: 0;
+}
+
+.tool-settings-content-hidden {
     opacity: 0;
 }
