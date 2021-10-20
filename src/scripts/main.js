@@ -791,8 +791,8 @@ class Canvas {
     pDraw(coord) {
         if (Tools.eraser) {
             this.pctx.drawImage(this.canvas, 0, 0)
+            this.pctx.globalCompositeOperation = 'source-over'
             this.previewcanvas.style.setProperty("--invert", 1)
-            this.pctx.globalCompositeOperation = 'source-in'
         } else {
             this.pctx.globalCompositeOperation = 'source-over'
             this.previewcanvas.style.setProperty("--invert", 0)
