@@ -345,7 +345,7 @@ class Canvas {
         x = Math.floor((x) / (this.canvScale));
         y = Math.floor((y) / (this.canvScale));
         if (e.buttons != 0) {
-            if (this.sX === null || this.sY === null) return
+            if (this.sX === null || this.sY === null) { if (!Tools.sprayPaint) return }
             if (Tools.pen) {
                 let P = line(new Point(this.sX, this.sY), new Point(x, y))
                 let p
@@ -368,6 +368,7 @@ class Canvas {
                 this.sY = y;
             }
             else if (Tools.sprayPaint) {
+                console.log('a')
                 let brushSize = parseInt(settings.tools.spraySize.value)
                 let r = brushSize - 1
                 //let c = filledEllipse(p.x, p.y, 2, 2)
@@ -586,7 +587,7 @@ class Canvas {
         } else if (e.buttons == 0) {
             let brushSize = parseInt(settings.tools.brushSize.value)
             if (preview) {
-                if (!Tools.eraser) { 
+                if (!Tools.eraser) {
                     this.pctx.globalCompositeOperation = "destination-out";
                     this.pctx.fillRect(0, 0, this.w, this.h);
                     if (this.mobile || Tools.pan) return;
@@ -599,7 +600,7 @@ class Canvas {
                         c = filledEllipse(x - (r / 2), y - (r / 2), x + (r / 2), y + (r / 2))
                     }
                     var b;
-                    for (b of c) this.pDraw(b) 
+                    for (b of c) this.pDraw(b)
                 };
                 if (Tools.eraser) {
                     this.pctx.globalCompositeOperation = "destination-out";
@@ -875,16 +876,16 @@ class Canvas {
                 ay2 = y2
             }
             if (ay2 - ay1 == 0) ay2 = ay1 + 1
-            if(brushSize % 2 == 0) {
+            if (brushSize % 2 == 0) {
                 this.ectx.fillRect(ax1 + .5, ay1 + .5, ax2 - ax1, ay2 - ay1)
-            }else {
+            } else {
                 this.ectx.fillRect(ax1, ay1, ax2 - ax1, ay2 - ay1)
             }
         }
-        if(brushSize % 2 == 0) {
-            this.pctx.drawImage(this.eBufferCanvas, x - (brushSize/2), y - (brushSize/2))
-        }else {
-            this.pctx.drawImage(this.eBufferCanvas, x - (brushSize/2) + .5, y - (brushSize/2) + .5)
+        if (brushSize % 2 == 0) {
+            this.pctx.drawImage(this.eBufferCanvas, x - (brushSize / 2), y - (brushSize / 2))
+        } else {
+            this.pctx.drawImage(this.eBufferCanvas, x - (brushSize / 2) + .5, y - (brushSize / 2) + .5)
         }
         this.pctx.globalCompositeOperation = 'source-over'
     }
