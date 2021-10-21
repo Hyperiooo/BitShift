@@ -154,8 +154,8 @@ class Canvas {
         this.steps = [];
         this.redo_arr = [];
         this.frames = [];
-        this.sX = 1;
-        this.sY = 1;
+        this.sX = null;
+        this.sY = null;
         this.tempL = null;
         this.linePoints = [];
         this.filledData = {};
@@ -327,11 +327,14 @@ class Canvas {
             //    for (let l of fillL) this.draw(l);
             //}
         }
+        this.sX = null;
+        this.sY = null;
         console.log(this.linePoints)
         this.linePoints = [];
 
     }
-    inputActive(e) {//console.log(e.which)
+    inputActive(e) {
+        if(this.sX === null || this.sY === null) return
         this.shiftKey = e.shiftKey;
         this.ctrlKey = e.ctrlKey;
         this.altKey = e.altKey;
@@ -760,6 +763,7 @@ class Canvas {
         if (coord.constructor.name == "Point") {
             var x = coord.x
             var y = coord.y
+            if(x === undefined || y === undefined) return
             this.ctx.globalCompositeOperation = 'source-over'
             this.ctx.fillRect(x, y, 1, 1);
         } else if (coord.constructor.name == "Rect") {
@@ -767,6 +771,7 @@ class Canvas {
             var y1 = coord.y1
             var x2 = coord.x2
             var y2 = coord.y2
+            if(x1 === undefined || y1 === undefined || x2 === undefined || y2 === undefined) return
             var ax1, ax2, ay1, ay2
             this.pctx.globalCompositeOperation = 'source-over'
             if (x1 >= x2) {
