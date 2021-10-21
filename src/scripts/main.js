@@ -120,6 +120,8 @@ class Canvas {
         this.canvas = document.querySelector("#canvas");
         this.previewcanvas = document.querySelector("#previewcanv");
         this.bggridcanvas = document.querySelector("#bggridcanv");
+        this.eBufferCanvas = document.getElementById("eraserBrushBufferParent");
+        this.ectx = this.eBufferCanvas.getContext("2d");
         document.documentElement.style.setProperty('--canvScale', this.canvScale);
         this.canvas.width = this.canvUnit * width;
         this.canvas.height = this.canvUnit * height;
@@ -334,7 +336,6 @@ class Canvas {
 
     }
     inputActive(e) {
-        if(this.sX === null || this.sY === null) return
         this.shiftKey = e.shiftKey;
         this.ctrlKey = e.ctrlKey;
         this.altKey = e.altKey;
@@ -344,6 +345,7 @@ class Canvas {
         x = Math.floor((x) / (this.canvScale));
         y = Math.floor((y) / (this.canvScale));
         if (e.buttons != 0) {
+            if (this.sX === null || this.sY === null) return
             if (Tools.pen) {
                 let P = line(new Point(this.sX, this.sY), new Point(x, y))
                 let p
@@ -584,19 +586,37 @@ class Canvas {
         } else if (e.buttons == 0) {
             let brushSize = parseInt(settings.tools.brushSize.value)
             if (preview) {
-                this.pctx.globalCompositeOperation = "destination-out";
-                this.pctx.fillRect(0, 0, this.w, this.h);
-                if (this.mobile || Tools.pan) return;
-                let brushSize = parseInt(settings.tools.brushSize.value)
-                let r = brushSize - 1
-                let c;
-                if (brushSize % 2 == 0) {
-                    c = filledEllipse(x - (r / 2) - .5, y - (r / 2) - .5, x + (r / 2) - .5, y + (r / 2) - .5)
-                } else if (brushSize % 2 != 0) {
-                    c = filledEllipse(x - (r / 2), y - (r / 2), x + (r / 2), y + (r / 2))
-                }
-                var b;
-                for (b of c) this.pDraw(b);
+                if (!Tools.eraser) { 
+                    this.pctx.globalCompositeOperation = "destination-out";
+                    this.pctx.fillRect(0, 0, this.w, this.h);
+                    if (this.mobile || Tools.pan) return;
+                    let brushSize = parseInt(settings.tools.brushSize.value)
+                    let r = brushSize - 1
+                    let c;
+                    if (brushSize % 2 == 0) {
+                        c = filledEllipse(x - (r / 2) - .5, y - (r / 2) - .5, x + (r / 2) - .5, y + (r / 2) - .5)
+                    } else if (brushSize % 2 != 0) {
+                        c = filledEllipse(x - (r / 2), y - (r / 2), x + (r / 2), y + (r / 2))
+                    }
+                    var b;
+                    for (b of c) this.pDraw(b) 
+                };
+                if (Tools.eraser) {
+                    this.pctx.globalCompositeOperation = "destination-out";
+                    this.pctx.fillRect(0, 0, this.w, this.h);
+                    if (this.mobile || Tools.pan) return;
+                    let brushSize = parseInt(settings.tools.brushSize.value)
+                    let r = brushSize - 1
+                    let c;
+                    if (brushSize % 2 == 0) {
+                        c = filledEllipse(0 - (r / 2) - .5 + (r / 2), 0 - (r / 2) - .5 + (r / 2), 0 + (r / 2) - .5 + (r / 2), 0 + (r / 2) - .5 + (r / 2))
+                    } else if (brushSize % 2 != 0) {
+                        c = filledEllipse(0 - (r / 2) + (r / 2), 0 - (r / 2) + (r / 2), 0 + (r / 2) + (r / 2), 0 + (r / 2) + (r / 2))
+                    }
+                    var b;
+                    this.eBufferCanvas.width = this.eBufferCanvas.height = parseInt(settings.tools.brushSize.value)
+                    for (b of c) this.ePDraw(b, x, y)
+                };
 
             }
         }
@@ -763,7 +783,7 @@ class Canvas {
         if (coord.constructor.name == "Point") {
             var x = coord.x
             var y = coord.y
-            if(x === undefined || y === undefined) return
+            if (x === undefined || y === undefined) return
             this.ctx.globalCompositeOperation = 'source-over'
             this.ctx.fillRect(x, y, 1, 1);
         } else if (coord.constructor.name == "Rect") {
@@ -771,7 +791,7 @@ class Canvas {
             var y1 = coord.y1
             var x2 = coord.x2
             var y2 = coord.y2
-            if(x1 === undefined || y1 === undefined || x2 === undefined || y2 === undefined) return
+            if (x1 === undefined || y1 === undefined || x2 === undefined || y2 === undefined) return
             var ax1, ax2, ay1, ay2
             this.pctx.globalCompositeOperation = 'source-over'
             if (x1 >= x2) {
@@ -794,14 +814,8 @@ class Canvas {
         }
     }
     pDraw(coord) {
-        if (Tools.eraser) {
-            this.pctx.drawImage(this.canvas, 0, 0)
-            this.pctx.globalCompositeOperation = 'source-over'
-            this.previewcanvas.style.setProperty("--invert", 1)
-        } else {
-            this.pctx.globalCompositeOperation = 'source-over'
-            this.previewcanvas.style.setProperty("--invert", 0)
-        }
+        this.pctx.globalCompositeOperation = 'source-over'
+        this.previewcanvas.style.setProperty("--invert", 0)
         if (coord.constructor.name == "Point") {
             var x = coord.x
             var y = coord.y
@@ -829,6 +843,50 @@ class Canvas {
             if (ay2 - ay1 == 0) ay2 = ay1 + 1
             this.pctx.fillRect(ax1, ay1, ax2 - ax1, ay2 - ay1);
         }
+    }
+    ePDraw(coord, x, y) {
+        this.pctx.drawImage(this.canvas, 0, 0)
+        this.pctx.globalCompositeOperation = 'destination-in'
+        this.ectx.globalCompositeOperation = 'source-over'
+        this.previewcanvas.style.setProperty("--invert", 1)
+        let brushSize = parseInt(settings.tools.brushSize.value)
+        if (coord.constructor.name == "Point") {
+            var x = coord.x
+            var y = coord.y
+            this.ectx.fillRect(x, y, 1, 1);
+        } else if (coord.constructor.name == "Rect") {
+            var x1 = coord.x1
+            var y1 = coord.y1
+            var x2 = coord.x2
+            var y2 = coord.y2
+            var ax1, ax2, ay1, ay2
+            if (x1 >= x2) {
+                ax1 = x2
+                ax2 = x1
+            } else if (x1 < x2) {
+                ax1 = x1
+                ax2 = x2
+            }
+            if (y1 >= y2) {
+                ay1 = y2
+                ay2 = y1
+            } else if (y1 < y2) {
+                ay1 = y1
+                ay2 = y2
+            }
+            if (ay2 - ay1 == 0) ay2 = ay1 + 1
+            if(brushSize % 2 == 0) {
+                this.ectx.fillRect(ax1 + .5, ay1 + .5, ax2 - ax1, ay2 - ay1)
+            }else {
+                this.ectx.fillRect(ax1, ay1, ax2 - ax1, ay2 - ay1)
+            }
+        }
+        if(brushSize % 2 == 0) {
+            this.pctx.drawImage(this.eBufferCanvas, x - (brushSize/2), y - (brushSize/2))
+        }else {
+            this.pctx.drawImage(this.eBufferCanvas, x - (brushSize/2) + .5, y - (brushSize/2) + .5)
+        }
+        this.pctx.globalCompositeOperation = 'source-over'
     }
     erase(coord) {
 
@@ -1385,7 +1443,7 @@ window.onload = function () {
             link.href = url;
             link.click();
         });
-        board.setmode("pen")
+        board.setmode("eraser")
     }
     else {
         newProject();

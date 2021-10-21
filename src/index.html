@@ -32,7 +32,6 @@
     <script src="./scripts/panzoom.js"></script>
   </head>
   <body>
-    <input class="color-range" type="range" />
     <div class="menu">
       <div class="menu-btn" onclick="newProject()">New</div>
       <div class="menu-btn" onclick="board.save()">Save image</div>
@@ -180,6 +179,7 @@
         <button onclick="closePopup()" class="popup-btn">Cancel</button>
       </div>
     </div>
+    <canvas id="eraserBrushBufferParent"></canvas>
     <div id="canvas-parent">
       <canvas id="previewcanv"></canvas>
       <canvas id="canvas"></canvas>
