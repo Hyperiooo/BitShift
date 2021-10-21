@@ -345,7 +345,7 @@ class Canvas {
         x = Math.floor((x) / (this.canvScale));
         y = Math.floor((y) / (this.canvScale));
         if (e.buttons != 0) {
-            if (this.sX === null || this.sY === null) { if (!Tools.sprayPaint) return }
+            if (this.sX === null || this.sY === null) { if (!Tools.sprayPaint && !Tools.eyedropper) return }
             if (Tools.pen) {
                 let P = line(new Point(this.sX, this.sY), new Point(x, y))
                 let p
