@@ -150,3 +150,4 @@ A list of all the things planned to do for BitShift
 - Palette will pop off when scrilling through color window on mobile
   - Maybe implement a delay where the cursor cant move much? 
     - If successful, begin the pop off.
+- Setting color via number inputs doesnt change the actual brush color
