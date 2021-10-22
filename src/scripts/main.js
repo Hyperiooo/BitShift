@@ -2238,3 +2238,30 @@ function HSLToRGB(hsla) {
 
     return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255), Math.round(a / 100 * 255)];
 }
+
+
+
+function dropHandler(e) {
+    console.log('File(s) dropped');
+
+    e.preventDefault();
+
+    if (e.dataTransfer.items) {
+        for (var i = 0; i < e.dataTransfer.items.length; i++) {
+            if (e.dataTransfer.items[i].kind === 'file') {
+                var file = e.dataTransfer.items[i].getAsFile();
+                console.log('... file[' + i + '].name = ' + file.name);
+            }
+        }
+    } else {
+        for (var i = 0; i < e.dataTransfer.files.length; i++) {
+            console.log('... file[' + i + '].name = ' + e.dataTransfer.files[i].name);
+        }
+    }
+}
+
+function dragOverHandler(e) {
+    console.log('File(s) in drop zone');
+
+    e.preventDefault();
+}

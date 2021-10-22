@@ -115,6 +115,7 @@ A list of all the things planned to do for BitShift
   - Height, width, starting & end point, radius etc
   - For a singular pixel, show cursors position on canvas
 - Add reset view button
+- Use monaco for script editor
 
 ## Bugs
 - ~~Number input in Settings doesnt work properly when drag editing:~~

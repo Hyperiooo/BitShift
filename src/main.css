@@ -672,10 +672,15 @@ path {
     margin: 0;
     margin: 5px;
     color: var(--textDim);
+    font-family: 'JetBrains Mono', monospace;
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
+}
+
+.drop_zone {
+    border: 5px solid blue;
 }
 
 input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
@@ -850,7 +855,8 @@ input {
     vertical-align: middle;
     transition: 0.2s transform, 0.2s color, 0.2s background;
 }
-.tool-settings-toggle~.arrow i{
+
+.tool-settings-toggle~.arrow i {
     position: absolute;
     left: 50%;
     top: 50%;
@@ -863,16 +869,16 @@ input {
     margin-bottom: 0;
 }
 
-.tool-settings-toggle:hover ~.arrow {
+.tool-settings-toggle:hover~.arrow {
     background-color: var(--scrollHover);
-} 
+}
 
-.tool-settings-toggle:checked ~ .arrow {
+.tool-settings-toggle:checked~.arrow {
     box-shadow: none;
     background: var(--important);
 }
 
-.tool-settings-toggle:checked ~ .arrow i{
+.tool-settings-toggle:checked~.arrow i {
     transform: translate(-50%, -50%) rotate(180deg);
     color: var(--importantText);
     margin-bottom: -4px;
@@ -885,7 +891,7 @@ input {
     min-width: 240px;
 }
 
-.tool-settings-toggle:checked ~ #tool-settings-content {
+.tool-settings-toggle:checked~#tool-settings-content {
     height: 0px;
     opacity: 0;
     margin-bottom: 0;
