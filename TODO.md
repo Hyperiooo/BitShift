@@ -153,3 +153,6 @@ A list of all the things planned to do for BitShift
     - If successful, begin the pop off.
 - Setting color via number inputs doesnt change the actual brush color
 - On iPadOS, drag import does not work, but on anypalette's website it does
+- Make eyedropper switch to previous tool
+- add popup window for eyedropper to preview previous and next color
+- Palette popup is offset in weird amounts on firefox

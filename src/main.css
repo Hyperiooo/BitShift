@@ -22,7 +22,7 @@ body {
     --bgLight: #262628;
     --textMain: #ffffff;
     --textDim: #cacaca;
-    --important: #2741ff;
+    --important: rgb(39, 65, 255);
     --importantT:#2740ffa9;
     --importantText: #ffffff;
     --scrollTrack: #201F22;
