@@ -2324,8 +2324,8 @@ function addPaletteViewsFromFiles(files) {
         setTimeout(function () {
             AnyPalette.loadPalette(file, function (err, palette, formatUsed, matchedFileExtension) {
                 if (palette) {
-                    console.log(formatUsed.fileExtensionsPretty)
-                    new paletteGroup(file.name.replace(formatUsed.fileExtensionsPretty, ""), formatAnyPalette(AnyPalette.uniqueColors(palette)), true)
+                    console.log(file.name.replaceArray(formatUsed.fileExtensionsPretty.split(", "), ""))
+                    new paletteGroup(file.name.replaceArray(formatUsed.fileExtensionsPretty.split(", "), ""), formatAnyPalette(AnyPalette.uniqueColors(palette)), true)
                     //document.getElementById("palettes").scrollIntoView({behavior: "smooth", block: "end", inline: "nearest"});
                 }
             });
@@ -2340,3 +2340,13 @@ function formatAnyPalette(palette) {
     })
     return pal
 }
+
+String.prototype.replaceArray = function(find, replace) {
+    var replaceString = this;
+    var regex; 
+    for (var i = 0; i < find.length; i++) {
+      regex = new RegExp(find[i], "g");
+      replaceString = replaceString.replace(regex, replace);
+    }
+    return replaceString;
+  };
