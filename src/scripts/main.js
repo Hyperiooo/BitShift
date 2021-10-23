@@ -2319,22 +2319,51 @@ async function getAllFileEntries(dataTransferItemList) {
     return fileEntries;
 }
 
+const colorThief = new ColorThief();
+
 function addPaletteViewsFromFiles(files) {
     files.forEach((file, i) => {
-        setTimeout(function () {
-            AnyPalette.loadPalette(file, function (err, palette, formatUsed, matchedFileExtension) {
-                if (palette) {
-                    console.log(file.name.replaceArray(formatUsed.fileExtensionsPretty.split(", "), ""))
-                    new paletteGroup(file.name.replaceArray(formatUsed.fileExtensionsPretty.split(", "), ""), formatAnyPalette(AnyPalette.uniqueColors(palette)), true)
-                    //document.getElementById("palettes").scrollIntoView({behavior: "smooth", block: "end", inline: "nearest"});
-                } if(err) {
+        if (file.type.startsWith("image/")) {
+            var el = document.createElement("img")
+            el.src = URL.createObjectURL(file)
+            el.alt = file.name
+            el.style.width = "100px"
+            el.style.display = "none"
+            el.onload = (e) => {
+                var colors = colorThief.getPalette(el, 20)
+                var finCol = []
+                if(colors) {
+                    colors.forEach(e => {
+                        e.push(255)
+                        finCol.push(e)
+                    })
+                    new paletteGroup(el.alt, finCol, true)
+                }else {
                     document.getElementById("color-menu-drop-err").classList.add("color-menu-drop-err-on")
                     setTimeout(() => {
                         document.getElementById("color-menu-drop-err").classList.remove("color-menu-drop-err-on")
                     }, 2000);
                 }
-            });
-        }, i * 100);
+                document.body.removeChild(el)
+
+            }
+            document.body.appendChild(el)
+        } else {
+            setTimeout(function () {
+                AnyPalette.loadPalette(file, function (err, palette, formatUsed, matchedFileExtension) {
+                    if (palette) {
+                        console.log(file.name.replaceArray(formatUsed.fileExtensionsPretty.split(", "), ""))
+                        new paletteGroup(file.name.replaceArray(formatUsed.fileExtensionsPretty.split(", "), ""), formatAnyPalette(AnyPalette.uniqueColors(palette)), true)
+                        //document.getElementById("palettes").scrollIntoView({behavior: "smooth", block: "end", inline: "nearest"});
+                    } if (err) {
+                        document.getElementById("color-menu-drop-err").classList.add("color-menu-drop-err-on")
+                        setTimeout(() => {
+                            document.getElementById("color-menu-drop-err").classList.remove("color-menu-drop-err-on")
+                        }, 2000);
+                    }
+                });
+            }, i * 100);
+        }
     });
 }
 
@@ -2346,12 +2375,12 @@ function formatAnyPalette(palette) {
     return pal
 }
 
-String.prototype.replaceArray = function(find, replace) {
+String.prototype.replaceArray = function (find, replace) {
     var replaceString = this;
-    var regex; 
+    var regex;
     for (var i = 0; i < find.length; i++) {
-      regex = new RegExp(find[i], "g");
-      replaceString = replaceString.replace(regex, replace);
+        regex = new RegExp(find[i], "g");
+        replaceString = replaceString.replace(regex, replace);
     }
     return replaceString;
-  };
+};

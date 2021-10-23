@@ -8,6 +8,8 @@
     <script src="./scripts/Shapes.js"></script>
     <script src="./scripts/Transformation.js"></script>
     <script src="./scripts/anypalette.js"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.0/color-thief.umd.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -33,6 +35,7 @@
     <script src="./scripts/panzoom.js"></script>
   </head>
   <body>
+    <img id="img" />
     <div class="menu">
       <div class="menu-btn" onclick="newProject()">New</div>
       <div class="menu-btn" onclick="board.save()">Save image</div>
@@ -46,7 +49,10 @@
       </span>
       <div id="tool-settings-content"></div>
     </div>
-    <div class="color-menu color-open" id="color-menu" ondrop="dropHandler(event);" ondragover="dragOverHandler(event);" ondragleave="dragLeaveHandler(event);" ondragend="dragLeaveHandler(event);">
+    <div class="color-menu color-open" id="color-menu"
+      ondrop="dropHandler(event);" ondragover="dragOverHandler(event);"
+      ondragleave="dragLeaveHandler(event);"
+      ondragend="dragLeaveHandler(event);">
       <div id="color-menu-drop-effect">Import Palette</div>
       <div id="color-menu-drop-err">Could Not Import Palette</div>
       <div class="color-selector" id="color-value" width="200" height="200"
