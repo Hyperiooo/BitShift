@@ -1629,7 +1629,7 @@ class paletteGroup {
                 board.setcolor(x)
             }
             var rgba = `rgba(${x[0]},${x[1]},${x[2]}, ${x[3] / 256 * 100}%)`
-            let e = document.createElement("span")
+            let e = document.createElement("div")
             e.setAttribute("data-palette-color", `${rgbToHex(x[0], x[1], x[2], x[3])}`)
             if (scroll) {
                 e.style.opacity = 0;
