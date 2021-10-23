@@ -671,6 +671,7 @@ path {
     margin: 0;
     float: left;
     padding: 0;
+    transition: opacity 0.3s;
     display: flex;
     justify-content: center;
     align-items: center;

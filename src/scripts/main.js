@@ -1443,7 +1443,7 @@ window.onload = function () {
             link.href = url;
             link.click();
         });
-        board.setmode("eraser")
+        board.setmode("pen")
     }
     else {
         newProject();
@@ -1473,7 +1473,7 @@ function preparePalette() {
 var setCurrent = false;
 
 class paletteGroup {
-    constructor(title, palette) {
+    constructor(title, palette, scroll) {
         console.log(palette)
         var id = randomString(7);
         console.log(id)
@@ -1623,7 +1623,7 @@ class paletteGroup {
             }
         }
 
-        palette.forEach(x => {
+        palette.forEach((x, i) => {
             if (!setCurrent) {
                 setCurrent = true
                 board.setcolor(x)
@@ -1631,12 +1631,22 @@ class paletteGroup {
             var rgba = `rgba(${x[0]},${x[1]},${x[2]}, ${x[3] / 256 * 100}%)`
             let e = document.createElement("span")
             e.setAttribute("data-palette-color", `${rgbToHex(x[0], x[1], x[2], x[3])}`)
+            if (scroll) {
+                e.style.opacity = 0;
+                e.style.transitionDelay = (1000 / palette.length / 3) * i + "ms"
+                setTimeout(() => {
+                    e.style.opacity = 1
+                }, 200);
+            }
             e.classList.add('palette-color')
             e.style.setProperty("--color", rgba)
             e.setAttribute("onclick", `board.setcolor([${x}]); updatePrevious([${x}])`)
             colorMenu.appendChild(e)
         })
         console.log(palette)
+        var rect = colorMenu.getBoundingClientRect()
+        var colorMenu = document.getElementById("color-menu")
+        if (scroll) document.getElementById("color-menu").scrollTo({ behavior: "smooth", top: (colorMenu.scrollTop + rect.top) });
     }
 }
 
@@ -2307,13 +2317,12 @@ async function getAllFileEntries(dataTransferItemList) {
 
 function addPaletteViewsFromFiles(files) {
     files.forEach((file, i) => {
-
         setTimeout(function () {
             AnyPalette.loadPalette(file, function (err, palette, formatUsed, matchedFileExtension) {
                 if (palette) {
-                    window.console && console.log(`New palette: ${palette.map(() => `%c█`).join("")}`, ...palette.map((color) => `color: ${color};`));
-                    window.console && console.log(palette);
-                    new paletteGroup('test', formatAnyPalette(palette))
+                    console.log(formatUsed.fileExtensionsPretty)
+                    new paletteGroup(file.name.replace(formatUsed.fileExtensionsPretty, ""), formatAnyPalette(AnyPalette.uniqueColors(palette)), true)
+                    //document.getElementById("palettes").scrollIntoView({behavior: "smooth", block: "end", inline: "nearest"});
                 }
             });
         }, i * 100);
