@@ -698,11 +698,10 @@ path {
     position: relative;
     display: inline-block;
     width: 10%;
-    aspect-ratio: 1/1;
+    padding-top: 10%;
     cursor: pointer;
     margin: 0;
     float: left;
-    padding: 0;
     transition: opacity 0.3s;
     display: flex;
     justify-content: center;
