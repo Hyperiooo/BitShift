@@ -4,106 +4,27 @@
 		<meta charset="utf-8">
 		<title>AnyPalette.js Demo</title>
 		<style>
-			body {
-				font-family: Helvetica, Arial, sans-serif;
-				padding-bottom: 150px;
-			}
 			.color {
 				display: inline-block;
 				width: 20px;
 				height: 20px;
-				margin: 2px;
-				outline: 1px solid black;
-				border: 1px solid white;
 			}
-			@media (max-width: 700px) {
-				.palette-row {
-					line-height: 0;
-				}
-				.color {
-					width: 15px;
-					height: 15px;
-					margin: 0;
-					outline: 0;
-					border: 0;
-				}
-			}
-			h2 > *:not(.header-text) {
-				font-size: 0.5em;
-				padding: 10px;
-			}
-			a {
-				color: blue;
-				cursor: pointer;
-			}
-			a.header-text {
-				text-decoration: none;
-				color: black;
-			}
-			a:hover {
-				text-decoration: underline;
-			}
-			.lesser-importance {
-				color: gray !important;
-			}
-			.failed {
-				background: #f0b0a0;
-				opacity: 0.9;
-				box-shadow: 0px 0px 20px rgba(255, 255, 255, 1) inset, 0px 0px 250px rgba(255, 0, 0, 0.5) inset, 0px 0px 50px rgba(255, 0, 0, 0.5) inset;
-			}
-			.failed h3,
-			.errors {
-				color: #a00;
-				font-family: monospace;
-				margin: 15px;
-			}
-			.errors {
-				padding-bottom: 25px;
-			}
-			.status-error {
-				color: red;
-			}
-			body > h2 {
-				font-size: 1.7em;
-				padding-top: 1em;
-				border-top: 0.1em solid black;
-				margin-top: 1em;
-				box-shadow: inset 0px 5px 5px rgb(231, 255, 55);
-				border-radius: 50px;
-				text-align: center;
-			}
-			h1 {
-				text-align: center;
-			}
-			/* Drag and drop this page onto this page to reveal this secret hidden palette! */
-			/* [
-				["#000000","#000000","#000000","#aaab84"],
-				["#a80e08","#000000","#000000","#000000"],
-				["#000000","#000000","#000000","#f0ec90"],
-				["#000000","#184553","#000000","#000000"]
-			] */
 		</style>
 	</head>
 	<body>
 		<script src="lib/jquery-3.5.1.js"></script>
-		<script src="build/anypalette-dev.js"></script>
-		<script>
-			if (!window.AnyPalette) {
-				document.write(`<script src="build/anypalette-0.6.0.js"><\/script>`);
-			}
-		</script>
+		<script src="build/anypalette-0.6.0.js"></script>
 		<script>
 			function PaletteView(palette_name, url){
 				
 				var $section = $("<div>");
-				var $header = $("<h2>").appendTo($section);
+				//var $header = $("<h2>").appendTo($section);
 				var $output = $("<div>").appendTo($section);
 				
-				var $loaded_as = $("<span>").appendTo($header);
-				var $toggle_dupes = $("<button>").appendTo($header).hide();
-				var $save = $("<button>").appendTo($header);
+				//var $toggle_dupes = $("<button>").appendTo($header).hide();
+				//var $save = $("<button>").appendTo($header);
 				
-				var $header_inner;
+				/*var $header_inner;
 				if(url){
 					$header_inner = $("<a>")
 						.attr("href", url)
@@ -114,46 +35,19 @@
 				$header_inner
 					.prependTo($header)
 					.addClass("header-text")
-					.text(palette_name.replace(/.*\//, ""));
+					.text(palette_name.replace(/.*\//, ""));*/
 				
 				this.appendTo = function(e){
 					$section.appendTo(e);
 				};
 				
-				this.status = function(text){
-					$output.text(text);
-				};
-				
-				this.error = function(text){
-					$output.text(text).addClass("status-error");
-				};
-				
 				this.update = function(error, palette, formatUsed, matchedFileExtension){
-					if(error){
-						$section.addClass("failed");
-						$output.append("<h3>Failed to load:</h3>");
-						if (error.errors) {
-							var $ul = $("<ul class='errors'>").appendTo($output);
-							for(var i=0; i<error.errors.length; i++){
-								$ul.append($("<li class='error'>").text(error.errors[i].message));
-							}
-						} else {
-							$output.append($("<p class='error'>").text(error));
-						}
-						return;
-					}
-					
-					$loaded_as.html(
-						"<span class='lesser-importance'>loaded as </span>"
-						+"<span>"+formatUsed.name+"</span>"
-						+"<span class='lesser-importance'> ("+(formatUsed.fileExtensionsPretty)+")"+(matchedFileExtension?"":" - file extension not matched")+"</span>"
-					);
 					
 					var show_colors = function(palette){
 						$output.empty();
 						var $row = $("<div class='palette-row'>").appendTo($output);
 						var col = 0;
-						$.each(palette, function(i, color){
+						palette.forEach(function(color, i){
 							$("<div class='color'>")
 								.appendTo($row)
 								.css("background-color", color)
@@ -166,18 +60,11 @@
 							}
 						});
 					};
-					var withoutDuplicates = AnyPalette.uniqueColors(palette);
-					
-					var n_dupes = palette.length - withoutDuplicates.length;
-					var s = (n_dupes > 1) ? "s" : "";
-					
-					var showing_dupes = true;
 					const update_display = ()=> {
-						show_colors(showing_dupes ? palette : withoutDuplicates);
-						$toggle_dupes.text(showing_dupes ? "Hide Duplicate"+s : "Show Duplicate"+s);
+						show_colors(AnyPalette.uniqueColors(palette));
 					};
 					update_display();
-	
+					/*
 					$toggle_dupes.on("click", function(e){
 						showing_dupes = !showing_dupes;
 						update_display();
@@ -191,9 +78,9 @@
 						if(palette.geometrySpecifiedByFile){
 							$toggle_dupes.click();
 						}
-					}
+					}*/
 
-					$save.text("Save As...");
+					/*$save.text("Save As...");
 					$save.on("click", () => {
 						if ($save.parent().find(".fan").length) {
 							$save.parent().find(".fan").remove();
@@ -218,31 +105,15 @@
 							});
 							$fan.append($option);
 						});
-					});
+					});*/
 				};
 			}
 			
-			$.each([{
-				// TODO: make this not part of this silly palette sections definition object
-				name: "Try your own palettes",
-				description: "<button id='select-files'>Select Files</button> or drag and drop. If you don't have any palettes handy, you could try searching online for some palette files to load. Also try HTML, CSS, JS, SVG and other text files that have CSS-style colors in them.",
-				// TODO: use a native file input? Maybe say "Drag and drop or <input type="file" multiple>" on one line and the rest of the stuff in a separate <p>
-				// TODO: maybe add a Clear button
-				fnames: []
-			}], function(i, group){
-				if(group.disabled) return;
-				
-				//var $section = $("<section>").appendTo("body");
-				var $h2 = $("<h2>").appendTo("body").text(group.name);
-				var $p = $("<p>").appendTo("body").html(group.description);
-
-			});
 
 			function addPaletteViewsFromFiles(files){
 				files.forEach((file, i)=> {
 					var palette_view = new PaletteView("➢ "+file.name);
 					palette_view.appendTo("body");
-					palette_view.status("Loading palette from file...");
 					
 					setTimeout(function(){
 						AnyPalette.loadPalette(file, function(err, palette, formatUsed, matchedFileExtension){
@@ -255,10 +126,6 @@
 					}, i * 100); //stagger loading
 				});
 			}
-
-			document.getElementById("select-files").addEventListener("click", function(){
-				file_input.click();
-			});
 			
 			// TODO: drop indicator
 			$(window).on("dragover dragenter", function(e){
@@ -271,7 +138,9 @@
 				const dt = e.originalEvent.dataTransfer;
 				if (!dt) return;
 				if (dt.items) {
+					console.log(dt.items)
 					const items = await getAllFileEntries(dt.items);
+					if(!items) return
 					const files = await Promise.all(items.map((item)=> new Promise((resolve, reject)=> {
 						item.file(resolve, reject);
 					})));
@@ -298,8 +167,7 @@
 					if (entry.isFile) {
 						fileEntries.push(entry);
 					} else if (entry.isDirectory) {
-						let reader = entry.createReader();
-						queue.push(...await readAllDirectoryEntries(reader));
+						return false
 					}
 				}
 				return fileEntries;

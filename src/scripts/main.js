@@ -1398,7 +1398,6 @@ window.onload = function () {
     let canvasData = localStorage.getItem('pc-canvas-data');
     if (canvasData) {
         data = JSON.parse(canvasData);
-        console.log(data);
         window.colors = data.colors;
         window.board = new Canvas(data.width, data.height);
         let img = new Image();
@@ -1464,10 +1463,18 @@ function randomString(l) {
     return result;
 }
 function preparePalette() {
-    var setCurrent = false;
     colors.forEach(g => {
         var title = g.title
         var palette = g.colors
+        new paletteGroup(title, palette)
+
+    });
+}
+var setCurrent = false;
+
+class paletteGroup {
+    constructor(title, palette) {
+        console.log(palette)
         var id = randomString(7);
         console.log(id)
         var paletteParent = document.getElementById("palettes")
@@ -1521,8 +1528,8 @@ function preparePalette() {
                     document.querySelectorAll(".color-palette-group").forEach(e => {
                         e.style.setProperty('z-index', 'unset', 'important')
                     })
-                    group.style.setProperty('z-index', '100000000', 'important')
-                    tempNode.style.setProperty('z-index', '100000001', 'important')
+                    group.style.setProperty('z-index', '999', 'important')
+                    tempNode.style.setProperty('z-index', '1000', 'important')
                 }
             }
             tempNode.classList.replace("color-palette-group", "color-palette-standalone")
@@ -1535,8 +1542,8 @@ function preparePalette() {
             document.querySelectorAll(".color-palette-group").forEach(e => {
                 e.style.setProperty('z-index', 'unset', 'important')
             })
-            group.style.setProperty('z-index', '100000000', 'important')
-            tempNode.style.setProperty('z-index', '100000001', 'important')
+            group.style.setProperty('z-index', '999', 'important')
+            tempNode.style.setProperty('z-index', '1000', 'important')
         }
         titleEl.onmouseup = titleEl.ontouchend = mouseUpHandler
         function mouseUpHandler(e, c) {
@@ -1630,8 +1637,9 @@ function preparePalette() {
             colorMenu.appendChild(e)
         })
         console.log(palette)
-    });
+    }
 }
+
 function rgbToHex(r, g, b, a) {
     if (a) return componentToHex(r) + componentToHex(g) + componentToHex(b) + componentToHex(a);
     else if (!a) return componentToHex(r) + componentToHex(g) + componentToHex(b);
@@ -2241,27 +2249,81 @@ function HSLToRGB(hsla) {
 
 
 
-function dropHandler(e) {
-    console.log('File(s) dropped');
+function dragOverHandler(e) {
+    document.getElementById("color-menu-drop-effect").classList.add("color-menu-drop-effect-on")
 
     e.preventDefault();
+    e.stopPropagation();
+}
 
-    if (e.dataTransfer.items) {
-        for (var i = 0; i < e.dataTransfer.items.length; i++) {
-            if (e.dataTransfer.items[i].kind === 'file') {
-                var file = e.dataTransfer.items[i].getAsFile();
-                console.log('... file[' + i + '].name = ' + file.name);
-            }
-        }
-    } else {
-        for (var i = 0; i < e.dataTransfer.files.length; i++) {
-            console.log('... file[' + i + '].name = ' + e.dataTransfer.files[i].name);
-        }
+function dragLeaveHandler(e) {
+    document.getElementById("color-menu-drop-effect").classList.remove("color-menu-drop-effect-on")
+
+    e.preventDefault();
+    e.stopPropagation();
+}
+
+async function dropHandler(e) {
+    console.log('File(s) dropped');
+    document.getElementById("color-menu-drop-effect").classList.remove("color-menu-drop-effect-on")
+
+    e.preventDefault();
+    e.stopPropagation();
+
+    const dt = e.dataTransfer;
+    if (!dt) return;
+    if (dt.items) {
+        console.log(dt.items)
+        const items = await getAllFileEntries(dt.items);
+        if (!items) return
+        const files = await Promise.all(items.map((item) => new Promise((resolve, reject) => {
+            item.file(resolve, reject);
+        })));
+        addPaletteViewsFromFiles(files.length ? files : [...dt.files]);
+    } else if (dt.files) {
+        addPaletteViewsFromFiles([...dt.files]);
     }
 }
 
-function dragOverHandler(e) {
-    console.log('File(s) in drop zone');
+async function getAllFileEntries(dataTransferItemList) {
+    let fileEntries = [];
+    let queue = [];
+    for (let i = 0; i < dataTransferItemList.length; i++) {
+        const entry = dataTransferItemList[i].webkitGetAsEntry();
+        if (entry) {
+            queue.push(entry);
+        }
+    }
+    while (queue.length > 0) {
+        let entry = queue.shift();
+        if (entry.isFile) {
+            fileEntries.push(entry);
+        } else if (entry.isDirectory) {
+            return false
+        }
+    }
+    return fileEntries;
+}
 
-    e.preventDefault();
+function addPaletteViewsFromFiles(files) {
+    files.forEach((file, i) => {
+
+        setTimeout(function () {
+            AnyPalette.loadPalette(file, function (err, palette, formatUsed, matchedFileExtension) {
+                if (palette) {
+                    window.console && console.log(`New palette: ${palette.map(() => `%c█`).join("")}`, ...palette.map((color) => `color: ${color};`));
+                    window.console && console.log(palette);
+                    new paletteGroup('test', formatAnyPalette(palette))
+                }
+            });
+        }, i * 100);
+    });
+}
+
+function formatAnyPalette(palette) {
+    let pal = []
+    palette.forEach(e => {
+        pal.push([clamp(Math.round(e.red * 255), 0, 255), clamp(Math.round(e.green * 255), 0, 255), clamp(Math.round(e.blue * 255), 0, 255), 255])
+    })
+    return pal
 }

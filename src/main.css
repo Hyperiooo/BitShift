@@ -23,6 +23,7 @@ body {
     --textMain: #ffffff;
     --textDim: #cacaca;
     --important: #2741ff;
+    --importantT:#2740ffa9;
     --importantText: #ffffff;
     --scrollTrack: #201F22;
     --scrollHover: #3B3A3D;
@@ -35,6 +36,7 @@ body {
     --textMain: #0b0c1a;
     --textDim: #1b1c2e;
     --important: #3e88ff;
+    --importantT: #3e88ffa9;
     --importantText: #ffffff;
     --scrollTrack: #eaeaee;
     --scrollHover: #c0c2c9;
@@ -456,6 +458,35 @@ path {
     pointer-events: none;
 }
 
+#color-menu-drop-effect {
+    background: var(--importantT);
+    position: sticky;
+    top: 13px;
+    left: 13px;
+    width: calc(100% - 18px);
+    height: calc(450px - 26px);
+    margin-bottom: calc(-450px + 26px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.1px;
+    outline-width: 5px;
+    outline-style: solid;
+    outline-color: var(--important);
+    color: white;
+    font-family: 'JetBrains Mono', monospace;
+    text-shadow: 0 0 15px black;
+    z-index: 100000;
+    opacity: 0;
+    transition: 0.3s opacity ease-in-out;
+    pointer-events: none;
+}
+
+.color-menu-drop-effect-on {
+    opacity: 1 !important;
+    pointer-events: all;
+}
+
 .color-menu::-webkit-scrollbar {
     width: 26px;
     border-radius: 9px;
@@ -529,7 +560,7 @@ path {
 }
 
 #color-hue-thumb {
-    z-index: 10000000000;
+    z-index: 100;
     --pos: 100%;
     --posp: 1;
     position: absolute;
@@ -544,7 +575,7 @@ path {
 }
 
 #color-opacity-thumb {
-    z-index: 10000000000;
+    z-index: 100;
     --pos: 100%;
     --posp: 1;
     position: absolute;
@@ -608,7 +639,7 @@ path {
     width: calc(100% - 8px);
     border-radius: 5px;
     overflow: hidden;
-    z-index: 9999999;
+    z-index: 999;
     margin-right: 0;
     outline-style: solid;
     outline-width: 4px;
@@ -622,7 +653,7 @@ path {
     width: calc(100% - 8px);
     border-radius: 5px;
     overflow: hidden;
-    z-index: 9999999;
+    z-index: 999;
     margin-right: 0;
     outline-style: solid;
     outline-width: 8px;
@@ -677,10 +708,6 @@ path {
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
-}
-
-.drop_zone {
-    border: 5px solid blue;
 }
 
 input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
