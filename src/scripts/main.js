@@ -2327,6 +2327,11 @@ function addPaletteViewsFromFiles(files) {
                     console.log(file.name.replaceArray(formatUsed.fileExtensionsPretty.split(", "), ""))
                     new paletteGroup(file.name.replaceArray(formatUsed.fileExtensionsPretty.split(", "), ""), formatAnyPalette(AnyPalette.uniqueColors(palette)), true)
                     //document.getElementById("palettes").scrollIntoView({behavior: "smooth", block: "end", inline: "nearest"});
+                } if(err) {
+                    document.getElementById("color-menu-drop-err").classList.add("color-menu-drop-err-on")
+                    setTimeout(() => {
+                        document.getElementById("color-menu-drop-err").classList.remove("color-menu-drop-err-on")
+                    }, 2000);
                 }
             });
         }, i * 100);

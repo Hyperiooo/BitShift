@@ -22,8 +22,10 @@ body {
     --bgLight: #262628;
     --textMain: #ffffff;
     --textDim: #cacaca;
-    --important: rgb(39, 65, 255);
+    --important: #2741ff;
     --importantT:#2740ffa9;
+    --error: #ff163d;
+    --errorT:#ff163da9;
     --importantText: #ffffff;
     --scrollTrack: #201F22;
     --scrollHover: #3B3A3D;
@@ -485,6 +487,36 @@ path {
 .color-menu-drop-effect-on {
     opacity: 1 !important;
     pointer-events: all;
+}
+
+#color-menu-drop-err {
+    background: var(--errorT);
+    position: sticky;
+    top: 13px;
+    left: 13px;
+    width: calc(100% - 18px);
+    height: calc(450px - 26px);
+    margin-bottom: calc(-450px + 26px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.1px;
+    outline-width: 5px;
+    outline-style: solid;
+    outline-color: var(--error);
+    color: white;
+    font-family: 'JetBrains Mono', monospace;
+    text-shadow: 0 0 15px black;
+    z-index: 100000;
+    opacity: 0;
+    transition: 0.3s opacity ease-in-out;
+    pointer-events: none;
+}
+
+.color-menu-drop-err-on {
+    opacity: 1 !important;
+    pointer-events: all;
+    transition: 0.1s opacity ease-in-out;
 }
 
 .color-menu::-webkit-scrollbar {
