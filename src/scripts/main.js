@@ -2335,9 +2335,9 @@ function addPaletteViewsFromFiles(files) {
                 if(colors) {
                     colors.forEach(e => {
                         e.push(255)
-                        finCol.push(e)
+                        finCol.push({red: e[0]/255, green: e[1]/255, blue: e[2]/255})
                     })
-                    new paletteGroup(el.alt, finCol, true)
+                    new paletteGroup(el.alt, formatAnyPalette(AnyPalette.uniqueColors(finCol)), true)
                 }else {
                     document.getElementById("color-menu-drop-err").classList.add("color-menu-drop-err-on")
                     setTimeout(() => {
@@ -2353,6 +2353,7 @@ function addPaletteViewsFromFiles(files) {
                 AnyPalette.loadPalette(file, function (err, palette, formatUsed, matchedFileExtension) {
                     if (palette) {
                         console.log(file.name.replaceArray(formatUsed.fileExtensionsPretty.split(", "), ""))
+                        console.log(palette)
                         new paletteGroup(file.name.replaceArray(formatUsed.fileExtensionsPretty.split(", "), ""), formatAnyPalette(AnyPalette.uniqueColors(palette)), true)
                         //document.getElementById("palettes").scrollIntoView({behavior: "smooth", block: "end", inline: "nearest"});
                     } if (err) {
