@@ -1396,6 +1396,9 @@ window.onload = function () {
     })
 
     let canvasData = localStorage.getItem('pc-canvas-data');
+
+    setTheme(localStorage.getItem('theme'));
+
     if (canvasData) {
         data = JSON.parse(canvasData);
         window.colors = data.colors;
@@ -2332,13 +2335,13 @@ function addPaletteViewsFromFiles(files) {
             el.onload = (e) => {
                 var colors = colorThief.getPalette(el, 20)
                 var finCol = []
-                if(colors) {
+                if (colors) {
                     colors.forEach(e => {
                         e.push(255)
-                        finCol.push({red: e[0]/255, green: e[1]/255, blue: e[2]/255})
+                        finCol.push({ red: e[0] / 255, green: e[1] / 255, blue: e[2] / 255 })
                     })
                     new paletteGroup(el.alt, formatAnyPalette(AnyPalette.uniqueColors(finCol)), true)
-                }else {
+                } else {
                     document.getElementById("color-menu-drop-err").classList.add("color-menu-drop-err-on")
                     setTimeout(() => {
                         document.getElementById("color-menu-drop-err").classList.remove("color-menu-drop-err-on")
@@ -2355,7 +2358,6 @@ function addPaletteViewsFromFiles(files) {
                         console.log(file.name.replaceArray(formatUsed.fileExtensionsPretty.split(", "), ""))
                         console.log(palette)
                         new paletteGroup(file.name.replaceArray(formatUsed.fileExtensionsPretty.split(", "), ""), formatAnyPalette(AnyPalette.uniqueColors(palette)), true)
-                        //document.getElementById("palettes").scrollIntoView({behavior: "smooth", block: "end", inline: "nearest"});
                     } if (err) {
                         document.getElementById("color-menu-drop-err").classList.add("color-menu-drop-err-on")
                         setTimeout(() => {
@@ -2385,3 +2387,8 @@ String.prototype.replaceArray = function (find, replace) {
     }
     return replaceString;
 };
+
+function setTheme(themeName) {
+    localStorage.setItem('theme', themeName);
+    document.documentElement.className = themeName;
+}

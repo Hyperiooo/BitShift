@@ -16,7 +16,26 @@ body {
     --canvTransformY: 0px;
     --canvX: 32px;
     --canvY: 32px;
-    /*!CONSTANT COLORS - DARK*/
+}
+
+.ui-theme-black {
+    --bgMain: #070b10;
+    --canvasBg:#101317;
+    --bgLight: #181b1e;
+    --textMain: #bcbec4;
+    --textDim: #a8abb0;
+    --important: #0034ab;
+    --importantT: #0034aba9;
+    --error: #e0002c;
+    --errorT:#e0002ca9;
+    --importantText: #ffffff;
+    --scrollTrack: #000007;
+    --scrollHover: #222529;
+    --toolBarDim: #3f4146;
+    --toolBarHover: #7c7f84;
+}
+
+.ui-theme-dark {
     --bgMain: #18171a;
     --canvasBg: #202022;
     --bgLight: #262628;
@@ -31,7 +50,26 @@ body {
     --scrollHover: #3B3A3D;
     --toolBarDim: #49484a;
     --toolBarHover: #7f7f80;
-    /*!CONSTANT COLORS - LIGHT
+}
+
+.ui-theme-gray {
+    --bgMain: #6c6e71;
+    --canvasBg:#86888c;
+    --bgLight: #797b7e;
+    --textMain: #e8ebee;
+    --textDim: #dadce0;
+    --important: #00beee;
+    --importantT: #00beeea9;
+    --error: #ffaa3a;
+    --errorT:#ffaa3aa9;
+    --importantText: #ffffff;
+    --scrollTrack: #606165;
+    --scrollHover: #949699;
+    --toolBarDim: #3c3d40;
+    --toolBarHover: #1b1c1f;
+}
+
+.ui-theme-light {
     --bgMain: #ffffff;
     --canvasBg:#eaeaee;
     --bgLight: #dbdbe0;
@@ -39,11 +77,13 @@ body {
     --textDim: #1b1c2e;
     --important: #3e88ff;
     --importantT: #3e88ffa9;
+    --error: #ff2d3e;
+    --errorT:#ff2d3ea9;
     --importantText: #ffffff;
     --scrollTrack: #eaeaee;
     --scrollHover: #c0c2c9;
     --toolBarDim: #535a70;
-    --toolBarHover: #181e31;*/
+    --toolBarHover: #181e31;
 }
 
 #debug {
@@ -266,6 +306,7 @@ body {
     -ms-user-select: none;
     user-select: none;
     pointer-events: none;
+    min-width: 125px;
 }
 
 .menu.menu-open {
