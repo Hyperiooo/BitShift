@@ -1397,7 +1397,7 @@ window.onload = function () {
 
     let canvasData = localStorage.getItem('pc-canvas-data');
 
-    setTheme(localStorage.getItem('theme'));
+    setTheme(localStorage.getItem('theme') || "ui-theme-dark");
 
     if (canvasData) {
         data = JSON.parse(canvasData);
