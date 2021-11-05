@@ -370,7 +370,7 @@ body {
 }
 
 #previewcanv {
-    --invert: 0;
+    --opac: 1;
     position: absolute;
     transform: translate(var(--canvTransformX), var(--canvTransformY)) scale(var(--canvScale), var(--canvScale));
     display: none;
@@ -385,7 +385,7 @@ body {
     pointer-events: none;
     width: var(--canvX);
     height: var(--canvY);
-    filter: invert(calc(100% * var(--invert)));
+    opacity: var(--opac);
 }
 
 #eraserBrushBufferParent {

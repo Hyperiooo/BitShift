@@ -579,37 +579,31 @@ class Canvas {
         } else if (e.buttons == 0) {
             let brushSize = parseInt(settings.tools.brushSize.value)
             if (preview) {
-                if (!Tools.eraser) {
-                    this.pctx.globalCompositeOperation = "destination-out";
-                    this.pctx.fillRect(0, 0, this.w, this.h);
-                    if (this.mobile || Tools.pan) return;
-                    let brushSize = parseInt(settings.tools.brushSize.value)
-                    let r = brushSize - 1
-                    let c;
-                    if (brushSize % 2 == 0) {
-                        c = filledEllipse(x - (r / 2) - .5, y - (r / 2) - .5, x + (r / 2) - .5, y + (r / 2) - .5)
-                    } else if (brushSize % 2 != 0) {
-                        c = filledEllipse(x - (r / 2), y - (r / 2), x + (r / 2), y + (r / 2))
-                    }
-                    var b;
-                    for (b of c) this.pDraw(b)
+                var tempCol
+                this.previewcanvas.style.setProperty("--opac", 1)
+                
+                if (Tools.eraser) { 
+                    this.previewcanvas.style.setProperty("--opac", 0.5)
+                    tempCol = this.color
+                    this.setcolor([125, 125, 125, 255])
                 };
-                if (Tools.eraser) {
-                    this.pctx.globalCompositeOperation = "destination-out";
-                    this.pctx.fillRect(0, 0, this.w, this.h);
-                    if (this.mobile || Tools.pan) return;
-                    let brushSize = parseInt(settings.tools.brushSize.value)
-                    let r = brushSize - 1
-                    let c;
-                    if (brushSize % 2 == 0) {
-                        c = filledEllipse(0 - (r / 2) - .5 + (r / 2), 0 - (r / 2) - .5 + (r / 2), 0 + (r / 2) - .5 + (r / 2), 0 + (r / 2) - .5 + (r / 2))
-                    } else if (brushSize % 2 != 0) {
-                        c = filledEllipse(0 - (r / 2) + (r / 2), 0 - (r / 2) + (r / 2), 0 + (r / 2) + (r / 2), 0 + (r / 2) + (r / 2))
-                    }
-                    var b;
-                    this.eBufferCanvas.width = this.eBufferCanvas.height = parseInt(settings.tools.brushSize.value)
-                    for (b of c) this.ePDraw(b, x, y)
-                };
+                this.pctx.globalCompositeOperation = "destination-out";
+                this.pctx.fillRect(0, 0, this.w, this.h);
+                if (this.mobile || Tools.pan) return;
+                let brushSize = parseInt(settings.tools.brushSize.value)
+                let r = brushSize - 1
+                let c;
+                if (brushSize % 2 == 0) {
+                    c = filledEllipse(x - (r / 2) - .5, y - (r / 2) - .5, x + (r / 2) - .5, y + (r / 2) - .5)
+                } else if (brushSize % 2 != 0) {
+                    c = filledEllipse(x - (r / 2), y - (r / 2), x + (r / 2), y + (r / 2))
+                }
+                var b;
+                for (b of c) this.pDraw(b)
+
+                if(Tools.eraser) {
+                    this.setcolor(tempCol)
+                }
 
             }
         }
@@ -838,8 +832,9 @@ class Canvas {
         }
     }
     ePDraw(coord, x, y) {
+        var tempCol = this.color
+        this.setcolor([255, 255, 255, 255])
         this.pctx.drawImage(this.canvas, 0, 0)
-        this.pctx.globalCompositeOperation = 'destination-in'
         this.ectx.globalCompositeOperation = 'source-over'
         this.previewcanvas.style.setProperty("--invert", 1)
         let brushSize = parseInt(settings.tools.brushSize.value)

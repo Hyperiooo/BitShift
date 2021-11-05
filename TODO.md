@@ -136,7 +136,7 @@ A list of all the things planned to do for BitShift
   - ~~Major performance issue inherent in destination-out~~
     - ~~Somehow doesnt perform poorly on mobile or second computer, may just be my personal computer?~~
       - ~~On both computers that it performed well on, the browser was Chrome. On the low performing computer, the browser was Firefox~~
-        - SOMEHOW FIXED ITSELF??? IT WORKS PERFECTLY FINE NOW IN MOST CASES.
+        - ~~SOMEHOW FIXED ITSELF??? IT WORKS PERFECTLY FINE NOW IN MOST CASES.~~
   - ~~Should not display as a normal brush:~~
     - consider making it just make the area below it darker? like a gray at 50% opacity
     - ~~Show as clearing the area below it~~
@@ -157,3 +157,19 @@ A list of all the things planned to do for BitShift
 - Make eyedropper switch to previous tool
 - add popup window for eyedropper to preview previous and next color
 - Palette popup is offset in weird amounts on firefox
+  
+## Enhancements
+- Hold on a color in a palette -> reorder & delete
+  - Delete by moving swatch on to a delete bar that shows on the bottom of the color menu
+- Drag the color preview in the hue/value area over a palette
+  - add to a palette
+  - little color drop follows mouse/finger
+- Make color ui responsive
+- long press on color menu button and drag over canvas to fill
+- pinch zoom in/out on value color box to resize it
+  - hide hue and opacity
+- double click/tap on color preview to make a palette based on the color
+- drag distance on palettes should only work on pc, on mobile devices it shuold be via a long press due to scrolling
+- Make mousedown/touchstart only draw when the button is lifted up/mouse is moved
+  - if two finger press, disable this
+- same thing for hue/value
