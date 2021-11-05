@@ -1806,24 +1806,8 @@ function act(clr) {
 }
 
 window.onbeforeunload = function () {
-    //board.saveInLocal();
+    board.saveInLocal();
 };
-
-//var scope = {
-//    scope: './'
-//};
-//if ('serviceWorker' in navigator) {
-//    navigator.serviceWorker.register(
-//        'sw.js',
-//        scope
-//    ).then(function (serviceWorker) {
-//        console.log('successful');
-//    }).catch(function (error) {
-//        alert("error");
-//    });
-//} else {
-//    console.log('unavailable');
-//}
 
 var msg;
 window.addEventListener('beforeinstallprompt', (e) => {
@@ -1833,10 +1817,6 @@ window.addEventListener('beforeinstallprompt', (e) => {
 
 function install() {
     msg.prompt();
-}
-
-window.onerror = function (errorMsg, url, lineNumber) {
-    //alert('Error: ' + errorMsg + ' Script: ' + url + ' Line: ' + lineNumber);
 }
 
 function toggleColorPicker() {
