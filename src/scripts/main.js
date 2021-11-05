@@ -1675,12 +1675,12 @@ function clearPalettes() {
 
 document.querySelector("#close").onclick = function () {
     clearPalettes()
-    var width = +document.querySelector("#width").value;
-    var height = +document.querySelector("#height").value;
-    window.board = new Canvas(width, height);
     if ( typeof board !== 'undefined') {
         board.destroy()
     }
+    var width = +document.querySelector("#width").value;
+    var height = +document.querySelector("#height").value;
+    window.board = new Canvas(width, height);
     window.colors = defaultPalettes
     preparePalette()
     board.setcolor(colors[0].colors[0]);
