@@ -173,3 +173,5 @@ A list of all the things planned to do for BitShift
 - Make mousedown/touchstart only draw when the button is lifted up/mouse is moved
   - if two finger press, disable this
 - same thing for hue/value
+- dragging palette over color swatch button when the menu is closed should open the menu
+- 
