@@ -577,7 +577,6 @@ class Canvas {
                 }
             }
         } else if (e.buttons == 0) {
-            let brushSize = parseInt(settings.tools.brushSize.value)
             if (preview) {
                 var tempCol
                 this.previewcanvas.style.setProperty("--opac", 1)
@@ -1347,7 +1346,7 @@ class numberDraggable {
         document.addEventListener("mousemove", e => {
             if (this.do) {
                 this.el.value = clamp(parseInt(this.startVal) + Math.floor((e.clientX - this.startX) / 10), this.el.min, this.el.max)
-                if(this.el.oninput) this.el.oninput()
+                if(this.el.oninput) this.el.oninput(e)
             }
         })
     }
@@ -1452,12 +1451,19 @@ function randomString(l) {
 }
 function preparePalette() {
     colors.forEach(g => {
-        var title = g.title
+        var title = truncate(g.title)
         var palette = g.colors
         new paletteGroup(title, palette)
 
     });
 }
+
+function truncate(input) {
+    if (input.length > 30) {
+       return input.substring(0, 27) + '...';
+    }
+    return input;
+ };
 var setCurrent = false;
 
 class paletteGroup {
@@ -1844,13 +1850,13 @@ var previousData = {
     r: 0, g: 0, b: 0, rgba: 0, h: 0, s: 0, l: 0, hsla: 0, hex: "ffffffff"
 }
 document.querySelectorAll("[data-color-input]").forEach(el => {
-    el.onblur = el.onkeyup = updateColorNum
+    el.onblur = el.onkeyup = el.oninput = updateColorNum
 })
 
 
 
 function updateColorNum(el) {
-    if (el.keyCode) {
+    if (el.keyCode != null) {
         if (el.keyCode != 13) return;
     }
     var isValid = true;
@@ -1867,7 +1873,6 @@ function updateColorNum(el) {
                             clamp(document.getElementById("color-rgba-a").value, 0, 255),
                         ]
                         hsv = RGBToHSV(rgb)
-                        console.log(rgb)
                     } else {
                         isValid = false
                     }
@@ -1898,10 +1903,12 @@ function updateColorNum(el) {
         }
     })
     if (isValid) {
-        console.log("valid")
         setPickerColor(rgb)
         pickerColor = hsv
+        if(!pickerColor) return
         updatePickerColor()
+        var rgba = HSLToRGB(HSVToHSL(pickerColor))
+        board.setcolor(rgba, true)
     } else {
         updatePickerColor()
     }
@@ -2308,7 +2315,7 @@ function addPaletteViewsFromFiles(files) {
                         e.push(255)
                         finCol.push({ red: e[0] / 255, green: e[1] / 255, blue: e[2] / 255 })
                     })
-                    new paletteGroup(el.alt, formatAnyPalette(AnyPalette.uniqueColors(finCol)), true)
+                    new paletteGroup(truncate(el.alt), formatAnyPalette(AnyPalette.uniqueColors(finCol)), true)
                 } else {
                     document.getElementById("color-menu-drop-err").classList.add("color-menu-drop-err-on")
                     setTimeout(() => {
@@ -2325,7 +2332,7 @@ function addPaletteViewsFromFiles(files) {
                     if (palette) {
                         console.log(file.name.replaceArray(formatUsed.fileExtensionsPretty.split(", "), ""))
                         console.log(palette)
-                        new paletteGroup(file.name.replaceArray(formatUsed.fileExtensionsPretty.split(", "), ""), formatAnyPalette(AnyPalette.uniqueColors(palette)), true)
+                        new paletteGroup(truncate(file.name.replaceArray(formatUsed.fileExtensionsPretty.split(", "), "")), formatAnyPalette(AnyPalette.uniqueColors(palette)), true)
                     } if (err) {
                         document.getElementById("color-menu-drop-err").classList.add("color-menu-drop-err-on")
                         setTimeout(() => {
