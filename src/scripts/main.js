@@ -208,7 +208,7 @@ class Canvas {
         this.deltaPanX = 0
         this.deltaPanY = 0
 
-        this.canvasParent.addEventListener("mousedown", e => {
+        this.mouseDownEvent = (e) => {
             if (e.button == 1 || Tools.pan) {
                 this.deltaX = e.clientX
                 this.deltaY = e.clientY
@@ -216,90 +216,82 @@ class Canvas {
                 this.startZoomX = e.clientX
                 this.startZoomY = e.clientY
             }
-        })
+            if (e.button != 0) {
+                return
+            }
+            this.inputDown(e)
+            this.inputActive(e)
 
-        this.canvasParent.addEventListener("touchstart", e => {
+        }
+
+
+        this.touchStartEvent = (e) => {
+            this.inputDown(e)
             if (Tools.pan) {
                 this.deltaX = e.touches[0].clientX
                 this.deltaY = e.touches[0].clientY
             }
-        })
+        }
 
 
-        this.canvasParent.addEventListener("touchmove", e => {
+        this.moveEvent = (e) => {
+            var x, y
+            if(e.touches) {
+                x = e.touches[0].clientX
+                y = e.touches[0].clientY
+            }else {
+                x = e.clientX
+                y = e.clientY
+            }
             if (e.touches) {
                 if (Tools.pan) {
-                    this.panzoom.pan(((e.touches[0].clientX) - this.deltaX) / this.panzoom.getScale(), (e.touches[0].clientY - this.deltaY) / this.panzoom.getScale(), { relative: true })
-                    this.deltaX = e.touches[0].clientX
-                    this.deltaY = e.touches[0].clientY
+                    this.panzoom.pan(((x) - this.deltaX) / this.panzoom.getScale(), (y - this.deltaY) / this.panzoom.getScale(), { relative: true })
+                    this.deltaX = x
+                    this.deltaY = y
                 } else if (Tools.zoom) {
                     var dummy = {
-                        clientX: e.touches[0].clientX,
-                        clientY: e.touches[0].clientY,
+                        clientX: x,
+                        clientY: y,
                         preventDefault: function () {
                         },
                         deltaY: -(this.deltaY - e.touches[0].clientY) / this.panzoom.getScale(),
                         deltaX: -(this.deltaX - e.touches[0].clientX) / this.panzoom.getScale(),
                     }
                     this.panzoom.zoomWithWheel(dummy)
-                    this.deltaX = e.touches[0].clientX
-                    this.deltaY = e.touches[0].clientY
+                    this.deltaX = x
+                    this.deltaY = y
                 }
             }
-        })
-        this.canvasParent.addEventListener("touchstart", e => {
-            this.inputDown(e)
-        });
-        this.canvasParent.addEventListener("touchend", e => {
-            this.inputUp(e)
-        });
-        this.canvasParent.addEventListener("touchmove", e => {
             this.inputActive(e)
-        })
-        this.canvasParent.addEventListener("mousemove", e => {
-            if (e.buttons) {
-                if (Tools.pan) {
-                    this.panzoom.pan(((e.clientX) - this.deltaX) / this.panzoom.getScale(), (e.clientY - this.deltaY) / this.panzoom.getScale(), { relative: true })
-                    this.deltaX = e.clientX
-                    this.deltaY = e.clientY
-                } else if (Tools.zoom) {
-                    var dummy = {
-                        clientX: e.clientX,
-                        clientY: e.clientY,
-                        preventDefault: function () {
-                        },
-                        deltaY: -(this.deltaY - e.clientY) / this.panzoom.getScale(),
-                        deltaX: -(this.deltaX - e.clientX) / this.panzoom.getScale(),
-                    }
-                    this.panzoom.zoomWithWheel(dummy)
-                    this.deltaX = e.clientX
-                    this.deltaY = e.clientY
-                }
-            }
-        })
+        }
 
-
-        this.canvasParent.addEventListener("mouseup", e => {
+        this.mouseUpEvent = (e) => {
             this.prevTX = null;
             this.prevTY = null;
-        })
-
-        this.canvasParent.addEventListener("mousemove", e => {
-            this.inputActive(e)
-        });
-
-
-        this.canvasParent.addEventListener("mousedown", e => {
-            if (e.button != 0) {
-                return
-            }
-            this.inputDown(e)
-            this.inputActive(e)
-        });
-        this.canvasParent.addEventListener("mouseup", e => {
             this.inputUp(e)
-        });
+        }
 
+        this.touchEndEvent = (e) => {
+            this.inputUp(e)
+        }
+
+        this.canvasParent.addEventListener("touchmove", this.moveEvent)
+        this.canvasParent.addEventListener("mousemove", this.moveEvent)
+        this.canvasParent.addEventListener("touchstart", this.touchStartEvent)
+        this.canvasParent.addEventListener("mousedown", this.mouseDownEvent)
+        this.canvasParent.addEventListener("touchstart", this.touchStartEvent);
+        this.canvasParent.addEventListener("touchend", this.touchEndEvent);
+        this.canvasParent.addEventListener("mouseup", this.mouseUpEvent)
+
+    }
+    destroy() {
+        this.canvasParent.removeEventListener("touchmove", this.moveEvent)
+        this.canvasParent.removeEventListener("mousemove", this.moveEvent)
+        this.canvasParent.removeEventListener("touchstart", this.touchStartEvent)
+        this.canvasParent.removeEventListener("mousedown", this.mouseDownEvent)
+        this.canvasParent.removeEventListener("touchstart", this.touchStartEvent);
+        this.canvasParent.removeEventListener("touchend", this.touchEndEvent);
+        this.canvasParent.removeEventListener("mouseup", this.mouseUpEvent)
     }
     inputDown(e) {
         updatePrevious(this.color)
@@ -928,27 +920,6 @@ class Canvas {
         this.pctx.fillStyle = "rgba(" + color[0] + "," + color[1] + "," + color[2] + "," + color[3] + ")";
         act(document.querySelectorAll(`[data-palette-color='${rgbToHex(color[0], color[1], color[2], color[3])}']`))
     }
-    setmode(tool) {
-        if (settings.tools.shapeFilled.value) {
-            Object.keys(Tools).forEach(v => Tools[v] = false)
-            settings.tools.shapeFilled.value = true
-        } else {
-            Object.keys(Tools).forEach(v => Tools[v] = false)
-        }
-
-        if (settings.tools.assignments[tool]) {
-            openToolSettings()
-            updateToolSettings(tool)
-        } else {
-            closeToolSettings()
-            updateToolSettings(tool)
-        }
-        Tools[tool] = true
-        document.querySelectorAll("#toolbar .item").forEach((x) => {
-            x.classList.remove('tool-active');
-        })
-        document.getElementById(`tool-btn-${tool}`).classList.add("tool-active")
-    }
     save() {
         this.canvas.toBlob(function (blob) {
             var url = URL.createObjectURL(blob);
@@ -1236,6 +1207,27 @@ class Canvas {
             }
         }*/
 }
+function setmode(tool) {
+    if (settings.tools.shapeFilled.value) {
+        Object.keys(Tools).forEach(v => Tools[v] = false)
+        settings.tools.shapeFilled.value = true
+    } else {
+        Object.keys(Tools).forEach(v => Tools[v] = false)
+    }
+
+    if (settings.tools.assignments[tool]) {
+        openToolSettings()
+        updateToolSettings(tool)
+    } else {
+        closeToolSettings()
+        updateToolSettings(tool)
+    }
+    Tools[tool] = true
+    document.querySelectorAll("#toolbar .item").forEach((x) => {
+        x.classList.remove('tool-active');
+    })
+    document.getElementById(`tool-btn-${tool}`).classList.add("tool-active")
+}
 class Popup {
     constructor(s) {
         this.s = s;
@@ -1360,7 +1352,7 @@ class numberDraggable {
         document.addEventListener("mousemove", e => {
             if (this.do) {
                 this.el.value = clamp(parseInt(this.startVal) + Math.floor((e.clientX - this.startX) / 10), this.el.min, this.el.max)
-                this.el.oninput()
+                if(this.el.oninput) this.el.oninput()
             }
         })
     }
@@ -1378,6 +1370,7 @@ function openToolSettings() {
 }
 
 window.onload = function () {
+    window.colors = palettes
 
 
     opacThumb = document.getElementById("color-opacity-thumb")
@@ -1401,7 +1394,6 @@ window.onload = function () {
 
     if (canvasData) {
         data = JSON.parse(canvasData);
-        window.colors = data.colors;
         window.board = new Canvas(data.width, data.height);
         let img = new Image();
         img.setAttribute('src', data.url);
@@ -1446,13 +1438,11 @@ window.onload = function () {
             link.href = url;
             link.click();
         });
-        board.setmode("pen")
     }
     else {
         newProject();
-        preparePalette()
     }
-
+    setmode("pen")
 }
 
 function randomString(l) {
@@ -1627,7 +1617,7 @@ class paletteGroup {
         }
 
         palette.forEach((x, i) => {
-            if (!setCurrent) {
+            if (!setCurrent && typeof board !== 'undefined') {
                 setCurrent = true
                 board.setcolor(x)
             }
@@ -1785,10 +1775,13 @@ var palettes = [{
     ]
 }]
 function newProject() {
+    if ( typeof board !== 'undefined') {
+        board.destroy()
+    }
     closeMenu()
     localStorage.removeItem('pc-canvas-data');
     window.dim = new Popup("#popup");
-    window.colors = palettes
+    preparePalette()
 }
 var fillCol = [0, 0, 0, 0]
 function filler(x, y, cc) {
@@ -1813,7 +1806,7 @@ function act(clr) {
 }
 
 window.onbeforeunload = function () {
-    board.saveInLocal();
+    //board.saveInLocal();
 };
 
 //var scope = {
@@ -2171,7 +2164,7 @@ document.onmouseup = (e) => {
 }
 
 
-const clamp = (num, min, max) => Math.min(Math.max(num, min), max);
+const clamp = (num, min, max) => Math.min(Math.max(num, min), max || 9007199254740991);
 
 function setPickerColor(rgba) {
     if (!rgba) return false;
