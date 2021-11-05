@@ -125,9 +125,9 @@ A list of all the things planned to do for BitShift
 - ~~Number Input doesnt clear event listeners when recreating the tool settings menu~~
 - On mobile, dragging the palette window ends up messing with the top bar
   - Prevent Defaults
-- Color palettes dont fill when making a new file
+- ~~Color palettes dont fill when making a new file~~
 - Tools dont get set on making a new file
-- New file has "artifacts" of an old file until you refresh (it almost draws between the old and new)
+- ~~New file has "artifacts" of an old file until you refresh (it almost draws between the old and new)~~
 - Touch zoom on mobile is not functional
 - Zoom tool is not functional
 - ~~Eraser tool does not function as a normal brush does~~
