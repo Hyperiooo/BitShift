@@ -30,19 +30,19 @@ A list of all the things planned to do for BitShift
 
 ## Palettes
 - Add color to palette
-- Rewrite to make class based
+- ~~Rewrite to make class based~~
 - Rename palettes
 - Create palettes
 - Recent colors palette (20 colors max ?)
 - ~~Drag and drop to import ([Use Anypalette.js](https://1j01.github.io/anypalette.js/demo))~~
   - For mobile, add button to import palette
-- Import image as palette
+- ~~Import image as palette~~
 - Palette window 
   - Show only top x palettes in main window
   - Separate window for all palettes w/ search bar
 - Export to image ?
 - Export to palette formats
-- Palettes are saved in account
+- ~~Palettes are saved in account~~
 - Add error handling for imports
 
 ## Layers

@@ -1153,7 +1153,7 @@ class Canvas {
         /*let a = this.frames.map(frame=> [frame[0].src,frame[1]]);
         let f =  JSON.stringify(a);*/
         let d = {
-            'colors': window.colors,
+            'palettes': filePalettes,
             'currColor': this.color,
             'width': this.width,
             'height': this.height,
@@ -1364,7 +1364,7 @@ function openToolSettings() {
 }
 
 window.onload = function () {
-    window.colors = palettes
+    window.colors = defaultPalettes
 
 
     opacThumb = document.getElementById("color-opacity-thumb")
@@ -1413,10 +1413,11 @@ window.onload = function () {
         }
        */
 
-        preparePalette()
 
         window.board.steps = data.steps;
         window.board.redo_arr = data.redo_arr;
+        if(data.palettes) window.colors = data.palettes
+        preparePalette()
         window.board.setcolor(data.currColor);
         updatePrevious(data.currColor)
         window.gif = new GIF({
@@ -1464,10 +1465,18 @@ function truncate(input) {
     }
     return input;
  };
+
 var setCurrent = false;
+
+var filePalettes = []
 
 class paletteGroup {
     constructor(title, palette, scroll) {
+        var pal = {
+            title: title,
+            colors: palette
+        }
+        filePalettes.push(pal)
         console.log(palette)
         var id = randomString(7);
         console.log(id)
@@ -1657,11 +1666,24 @@ function closePopup() {
     window.dim.close()
 }
 
+function clearPalettes() {
+    filePalettes = []
+    var palettes = document.getElementById("palettes")
+    palettes.textContent = '';
+
+}
+
 document.querySelector("#close").onclick = function () {
+    clearPalettes()
     var width = +document.querySelector("#width").value;
     var height = +document.querySelector("#height").value;
     window.board = new Canvas(width, height);
-    window.board.setcolor(colors[0].colors[0]);
+    if ( typeof board !== 'undefined') {
+        board.destroy()
+    }
+    window.colors = defaultPalettes
+    preparePalette()
+    board.setcolor(colors[0].colors[0]);
     window.dim.close();
     window.gif = new GIF({
         workers: 2,
@@ -1678,7 +1700,7 @@ document.querySelector("#close").onclick = function () {
     });
 }
 
-var palettes = [{
+var defaultPalettes = [{
     title: "Default",
     colors: [
         [36, 61, 126, 255],
@@ -1776,13 +1798,9 @@ var palettes = [{
     ]
 }]
 function newProject() {
-    if ( typeof board !== 'undefined') {
-        board.destroy()
-    }
     closeMenu()
     localStorage.removeItem('pc-canvas-data');
     window.dim = new Popup("#popup");
-    preparePalette()
 }
 var fillCol = [0, 0, 0, 0]
 function filler(x, y, cc) {
@@ -2298,6 +2316,7 @@ async function getAllFileEntries(dataTransferItemList) {
 }
 
 const colorThief = new ColorThief();
+
 
 function addPaletteViewsFromFiles(files) {
     files.forEach((file, i) => {
