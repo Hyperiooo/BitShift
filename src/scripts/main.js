@@ -1364,6 +1364,9 @@ function openToolSettings() {
 }
 
 window.onload = function () {
+    alrt = new Alrt({
+        position: "bottom-left"
+    });
     window.colors = defaultPalettes
 
 
@@ -1517,12 +1520,14 @@ class paletteGroup {
         var snapped = false
         titleEl.onmousedown = titleEl.ontouchstart = mouseDownHandler
         function mouseDownHandler(e) {
+            e.preventDefault()
             if (tempOut) return;
             startRect = group.getBoundingClientRect()
             tempNode = group.cloneNode(true)
             tempNode.style.setProperty("transform", "translate(-1000%, -1000%)")
             tempNode.querySelector(".color-palette-title").onmouseup = mouseUpHandler
             tempNode.querySelector(".color-palette-title").onmousedown = tempNode.querySelector(".color-palette-title").ontouchstart = (e) => {
+                e.preventDefault()
                 startRect = e.target.getBoundingClientRect()
                 if (tempOut) {
                     subMoving = true;
@@ -1590,6 +1595,7 @@ class paletteGroup {
         document.addEventListener("mousemove", moveHandler)
         document.addEventListener("touchmove", moveHandler)
         function moveHandler(e) {
+            e.preventDefault()
             var cX, cY
             if (e.touches) {
                 cX = e.touches[0].clientX
@@ -2386,3 +2392,18 @@ function setTheme(themeName) {
     localStorage.setItem('theme', themeName);
     document.documentElement.className = themeName;
 }
+
+
+let vh = window.innerHeight;
+let vw = window.innerWidth;
+document.documentElement.style.setProperty('--vh', `${vh}px`);
+document.documentElement.style.setProperty('--vw', `${vw}px`);
+window.addEventListener('resize', () => {
+    vh = window.innerHeight;
+    vw = window.innerWidth;
+    document.documentElement.style.setProperty('--vh', `${vh}px`);
+    document.documentElement.style.setProperty('--vw', `${vw}px`);
+    alrt.log(vh + "px * " + vw + "px")
+});
+
+let alrt;

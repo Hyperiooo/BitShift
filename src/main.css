@@ -16,6 +16,8 @@ body {
     --canvTransformY: 0px;
     --canvX: 32px;
     --canvY: 32px;
+    --vh: 0;
+    --vw: 0;
 }
 
 .ui-theme-black {
@@ -394,12 +396,12 @@ body {
 }
 
 #canvas-parent {
-    position: absolute;
+    position: fixed;
     left: 50%;
     bottom: 0;
     transform: translate(-50%);
     width: 100%;
-    height: calc(100vh - 56px);
+    height: calc(var(--vh) - 56px);
 }
 
 #toolbar {
@@ -494,8 +496,8 @@ path {
     display: block;
     opacity: 0;
     transform: translate(0, -10px);
-    transition: 0.2s opacity, 0.2s transform;
-    max-height: 450px;
+    transition: 0.2s opacity, 0.2s transform, max-height 0.2s;
+    max-height: min(450px, calc(var(--vh) - 56px - 16px));
     overflow-y: scroll;
     overflow-x: hidden;
     pointer-events: none;

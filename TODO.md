@@ -119,8 +119,6 @@ A list of all the things planned to do for BitShift
 - ~~Give eraser outline to show where it will erase~~
 
 ## Bugs
-- On mobile, dragging the palette window ends up messing with the top bar
-  - Prevent Defaults
 - Touch zoom on mobile is not functional
 - Zoom tool is not functional
 - Some event listeners use faulty `touches` detection; adapt to new way of doing it (can be based on `opacDrag()`)
@@ -157,6 +155,8 @@ A list of all the things planned to do for BitShift
   - ~~On firefox, when you lift mouse button, it ends event~~
   - ~~On chrome, it doesnt end the event when lift~~
 - ~~Number Input doesnt clear event listeners when recreating the tool settings menu~~
+- ~~On mobile, dragging the palette window ends up messing with the top bar~~
+  - ~~Prevent Defaults~~
   
 ## Enhancements
 - Hold on a color in a palette -> reorder & delete
