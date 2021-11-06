@@ -63,38 +63,39 @@
       ondragend="dragLeaveHandler(event);">
       <div id="color-menu-drop-effect">Import Palette</div>
       <div id="color-menu-drop-err">Could Not Import Palette</div>
-      <div class="color-selector" id="color-value" width="200" height="200"
-        onmousedown="valueThumb(event);valueDrag(event);"
-        onmousemove="valueDrag(event)" onmouseup="valueEndDrag(event)"
-        ontouchstart="valueThumb(event);valueDrag(event);"
-        ontouchmove="valueDrag(event)" ontouchend="valueEndDrag(event)">
-        <div id="color-value-thumb"
+      <div class="color-selector-wrap">
+        <div class="color-selector" id="color-value" width="200" height="200"
           onmousedown="valueThumb(event);valueDrag(event);"
           onmousemove="valueDrag(event)" onmouseup="valueEndDrag(event)"
-          ontouchstart="valueThumb(event);valueDrag(event);"
-          ontouchmove="valueDrag(event)" ontouchend="valueEndDrag(event)"></div>
-      </div><!--
-      --><div class="color-selector" id="color-hue" width="40"
-        height="200"
-        onmousedown="hueThumb(event);hueDrag(event);"
-        onmousemove="hueDrag(event)" onmouseup="hueEndDrag(event)"
-        ontouchstart="hueThumb(event);hueDrag(event);"
-        ontouchmove="hueDrag(event)" ontouchend="hueEndDrag(event)">
-        <div id="color-hue-thumb" onmousedown="hueThumb(event);hueDrag(event);"
+          ontouchstart="valueThumb(event);"
+          ontouchmove="valueDrag(event)" ontouchend="valueEndDrag(event)">
+          <div id="color-value-thumb"
+            onmousedown="valueThumb(event);valueDrag(event);"
+            onmousemove="valueDrag(event)" onmouseup="valueEndDrag(event)"
+            ontouchstart="valueThumb(event);valueDrag(event);"
+            ontouchmove="valueDrag(event)" ontouchend="valueEndDrag(event)"></div>
+        </div><!--
+        --><div class="color-selector" id="color-hue" width="40"
+          height="200"
+          onmousedown="hueThumb(event);hueDrag(event);"
           onmousemove="hueDrag(event)" onmouseup="hueEndDrag(event)"
           ontouchstart="hueThumb(event);hueDrag(event);"
-          ontouchmove="hueDrag(event)" ontouchend="hueEndDrag(event)"></div>
-      </div><!--
-      --><div class="color-selector" id="color-opacity"
-        width="40" height="200"
-        onmousedown="opacityThumb(event);opacDrag(event);"
-        onmouseup="opacEndDrag(event)" onmousemove="opacDrag(event)"
-        ontouchstart="opacityThumb(event);opacDrag(event);"
-        ontouchend="opacEndDrag(event)" ontouchmove="opacDrag(event)">
-        <div id="color-opacity-thumb"
+          ontouchmove="hueDrag(event)" ontouchend="hueEndDrag(event)">
+          <div id="color-hue-thumb" onmousedown="hueThumb(event);hueDrag(event);"
+            onmousemove="hueDrag(event)" onmouseup="hueEndDrag(event)"
+            ontouchstart="hueThumb(event);hueDrag(event);"
+            ontouchmove="hueDrag(event)" ontouchend="hueEndDrag(event)"></div>
+        </div><!--
+        --><div class="color-selector" id="color-opacity"
+          width="40" height="200"
           onmousedown="opacityThumb(event);opacDrag(event);"
-          onmousemove="opacDrag(event)" onmouseup="opacEndDrag(event)"></div>
-      </div>
+          onmouseup="opacEndDrag(event)" onmousemove="opacDrag(event)"
+          ontouchstart="opacityThumb(event);opacDrag(event);"
+          ontouchend="opacEndDrag(event)" ontouchmove="opacDrag(event)">
+          <div id="color-opacity-thumb"
+            onmousedown="opacityThumb(event);opacDrag(event);"
+            onmousemove="opacDrag(event)" onmouseup="opacEndDrag(event)"></div>
+        </div></div>
       <div class="color-data">
         <div class="color-rgba">
           <p>R</p><!--

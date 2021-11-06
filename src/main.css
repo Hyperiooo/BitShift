@@ -586,6 +586,12 @@ path {
     background-color: var(--scrollTrack);
 }
 
+.color-selector-wrap {
+    height: 200px;
+    width: 100%;
+    margin-bottom: 8px;
+}
+
 .color-menu .color-selector {
     position: relative;
     margin: 8px;
@@ -595,30 +601,44 @@ path {
 }
 
 .color-menu #color-value {
+    position: absolute;
     --hue: 360;
     overflow: hidden;
     width: 200px;
     height: 200px;
-    margin-bottom: -4px;
+    z-index: 200;
+    transition: 0.2s width;
     background-image: linear-gradient(to bottom, transparent 0%, rgb(0, 0, 0) 100%), linear-gradient(to right, transparent 0%, hsl(var(--hue), 100%, 50%) 100%), linear-gradient(to bottom, white 0%, white 100%);
 }
 
+
+.color-value-expanded {
+    width: 296px !important;
+}
+.color-value-expanded ~ #color-hue, .color-value-expanded ~ #color-opacity {
+    opacity: 0;
+}
+
 .color-menu #color-hue {
+    position: absolute;
+    right: 40px;
     background-image: linear-gradient(to top, #ff0000 0%, #ffff00 17%, #00ff00 33%, #00ffff 50%, #0000ff 67%, #ff00ff 83%, #ff0000 100%);
     width: 40px;
     margin-left: 0;
-    margin-bottom: -4px;
     height: 200px;
+    transition: 0.2s opacity;
 }
 
 .color-menu #color-opacity {
+    position: absolute;
+    right: 0;
     background: white;
     background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0), var(--color)), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 8 8'%3E%3Cg fill='%23bababa' fill-opacity='0.4'%3E%3Cpath fill-rule='evenodd' d='M0 0h4v4H0V0zm4 4h4v4H4V4z'/%3E%3C/g%3E%3C/svg%3E");
     margin-left: 0;
-    margin-bottom: -4px;
     width: 40px;
     height: 200px;
     margin-right: 0;
+    transition: 0.2s opacity;
 }
 
 #color-value-thumb {

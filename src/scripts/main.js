@@ -1569,7 +1569,7 @@ class paletteGroup {
             tempNode.style.setProperty('z-index', '1000', 'important')
         }
         function mouseUpHandler(e, _self) {
-            if(tempNode)tempNode.classList.remove("color-palette-standalone-popout")
+            if (tempNode) tempNode.classList.remove("color-palette-standalone-popout")
             if (!snapped && tempNode) {
                 clearTimeout(holdTimeout)
                 mainMoving = false;
@@ -1626,11 +1626,11 @@ class paletteGroup {
             }
             var x = cX - startX || 0;
             var y = cY - startY || 0;
-            if (mainMoving && isMobile) { 
-                if(Math.abs(x) > 10 || Math.abs(y) > 10) {
+            if (mainMoving && isMobile) {
+                if (Math.abs(x) > 10 || Math.abs(y) > 10) {
                     clearTimeout(holdTimeout)
                 }
-            }else if (mainMoving && !isMobile) {
+            } else if (mainMoving && !isMobile) {
                 curX = lerp(x, 0, 0.7);
                 curY = lerp(y, 0, 0.7);
                 group.style.transform = `translate(${Math.ceil(curX)}px, ${Math.ceil(curY)}px)`;
@@ -1643,13 +1643,13 @@ class paletteGroup {
             if (!tempNode) return
             if (!subMoving) return;
             if (subMoving) {
-                if(holdMovementAllowed && isMobile) {
+                if (holdMovementAllowed && isMobile) {
                     tX = x - offsetX
                     tY = y - offsetY
                     tempNode.style.setProperty("--pX", `${startRect.x + Math.ceil(tX) - 8}px`)
                     tempNode.style.setProperty("--pY", `${startRect.y + Math.ceil(tY) - 30}px`)
                     console.log("a")
-                } else if(!isMobile) {
+                } else if (!isMobile) {
                     var timeout = setInterval(() => {
                         offsetX = lerp(0, offsetX, 0.99)
                         offsetY = lerp(0, offsetY, 0.99)
@@ -2051,15 +2051,62 @@ var valThumb
 var valueRange
 var valueRect
 
+var valueBuffer = [0, 0]
+var valueTwoFinger = false
+
+var valueMoved
+
+var valueTwoFingerDist = 0
+var valueTwoFingerStartDist = 0
+
 function valueThumb(e) {
+    var x, y
+    if (e.touches) {
+        x = e.touches[0].clientX - valueRect.left
+        y = e.touches[0].clientY - valueRect.top
+    } else {
+        x = e.clientX - valueRect.left
+        y = e.clientY - valueRect.top
+    }
+    valueBuffer = [x, y]
+    if (e.touches && e.touches.length > 1) { 
+        valueTwoFinger = true 
+        valueTwoFingerStartDist = (distance(e.touches[0].clientX, e.touches[1].clientX, e.touches[0].clientY, e.touches[1].clientY))
+    }
     valueMoving = true
 }
 
 function valueEndDrag(e) {
+    if (!valueTwoFinger && e.touches && !valueMoved) {
+        var x = valueBuffer[0], y = valueBuffer[1]
+        if (valueMoving && !valueTwoFinger) {
+            document.querySelectorAll('[data-color-input]').forEach(e => { e.blur() });
+            pickerColor[1] = clamp(x / valueRect.width * 100, 0, 100)
+            pickerColor[2] = 100 - clamp(y / valueRect.height * 100, 0, 100)
+            vThumb.style.setProperty("--posX", clamp(x / valueRect.width * 100, 0, 100) + "%")
+            vThumb.style.setProperty("--posY", clamp(y / valueRect.height * 100, 0, 100) + "%")
+            updatePickerColor()
+            var rgba = HSLToRGB(HSVToHSL(pickerColor))
+            board.setcolor(rgba, true)
+        }
+    }
+    if (valueTwoFinger) {
+        if (valueTwoFingerDist - valueTwoFingerStartDist > 50) {
+            valueRange.classList.add("color-value-expanded")
+            valueRect.width = 296
+        }
+        if (valueTwoFingerStartDist - valueTwoFingerDist  > 100) {
+            valueRange.classList.remove("color-value-expanded")
+            valueRect.width = 200
+        }
+    }
     valueMoving = false
+    valueMoved = false
+    valueTwoFinger = false
 }
 
 function valueDrag(e) {
+    valueMoved = true
     e.preventDefault()
     var x, y
     if (e.touches) {
@@ -2069,7 +2116,7 @@ function valueDrag(e) {
         x = e.clientX - valueRect.left
         y = e.clientY - valueRect.top
     }
-    if (valueMoving) {
+    if (valueMoving && !valueTwoFinger) {
         document.querySelectorAll('[data-color-input]').forEach(e => { e.blur() });
         pickerColor[1] = clamp(x / valueRect.width * 100, 0, 100)
         pickerColor[2] = 100 - clamp(y / valueRect.height * 100, 0, 100)
@@ -2078,6 +2125,9 @@ function valueDrag(e) {
         updatePickerColor()
         var rgba = HSLToRGB(HSVToHSL(pickerColor))
         board.setcolor(rgba, true)
+    }
+    if (valueTwoFinger) {
+        valueTwoFingerDist = (distance(e.touches[0].clientX, e.touches[1].clientX, e.touches[0].clientY, e.touches[1].clientY))
     }
 }
 
@@ -2189,6 +2239,10 @@ function HSVToHSL(hsva) {
     }
 
     return [h, s * 100, l * 100, a]
+}
+
+function distance(x1, x2, y1, y2) {
+    return Math.hypot(x2 - x1, y2 - y1)
 }
 
 document.onmousemove = (e) => {
