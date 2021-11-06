@@ -1569,6 +1569,7 @@ class paletteGroup {
             tempNode.style.setProperty('z-index', '1000', 'important')
         }
         function mouseUpHandler(e, _self) {
+            if(tempNode)tempNode.classList.remove("color-palette-standalone-popout")
             if (!snapped && tempNode) {
                 clearTimeout(holdTimeout)
                 mainMoving = false;
@@ -1647,6 +1648,7 @@ class paletteGroup {
                     tY = y - offsetY
                     tempNode.style.setProperty("--pX", `${startRect.x + Math.ceil(tX) - 8}px`)
                     tempNode.style.setProperty("--pY", `${startRect.y + Math.ceil(tY) - 30}px`)
+                    console.log("a")
                 } else if(!isMobile) {
                     var timeout = setInterval(() => {
                         offsetX = lerp(0, offsetX, 0.99)
@@ -2032,8 +2034,6 @@ function hueDrag(e) {
         x = e.clientX - hueRect.left
         y = e.clientY - hueRect.top
     }
-    x = e.clientX - hueRect.left
-    y = e.clientY - hueRect.top
     if (hueMoving) {
         document.querySelectorAll('[data-color-input]').forEach(e => { e.blur() });
         pickerColor[0] = clamp((1 - (y / hueRect.height)), 0, 1) * 360

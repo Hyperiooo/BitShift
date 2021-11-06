@@ -735,12 +735,12 @@ path {
     outline-style: solid;
     outline-width: 8px;
     outline-color: var(--bgMain);
-    transform: translate(var(--pX), var(--pY));
+    transform: translate(var(--pX), var(--pY)) !important;
     transition: outline-color 0.2s;
 }
 
 .color-palette-standalone.color-palette-standalone-popout {
-    transform: translate(var(--pX), var(--pY));
+    transform: translate(var(--pX), var(--pY)) !important;
     outline-color: var(--important);
 }
 
