@@ -722,6 +722,8 @@ path {
 }
 
 .color-palette-standalone {
+    --pX: -100px;
+    --pY: -100px;
     position: absolute;
     background: var(--bgLight);
     margin: 8px;
@@ -733,7 +735,13 @@ path {
     outline-style: solid;
     outline-width: 8px;
     outline-color: var(--bgMain);
-    transform: translate(-1000%, -1000%);
+    transform: translate(var(--pX), var(--pY));
+    transition: outline-color 0.2s;
+}
+
+.color-palette-standalone.color-palette-standalone-popout {
+    transform: translate(var(--pX), var(--pY));
+    outline-color: var(--important);
 }
 
 .palette-color {

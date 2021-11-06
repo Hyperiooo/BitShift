@@ -99,14 +99,15 @@ var Tools = {
 var lc = [];
 var draggableNumInputs = []
 var preview = true;
+var isMobile = false;
+if (/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|ipad|iris|kindle|Android|Silk|lge |maemo|midp|mmp|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i.test(navigator.userAgent)
+    || /1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\-(n|u)|c55\/|capi|ccwa|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i\-(20|go|ma)|i230|iac( |\-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m\-cr|me(rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(\-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h\-|oo|p\-)|sdk\/|se(c(\-|0|1)|47|mc|nd|ri)|sgh\-|shar|sie(\-|m)|sk\-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h\-|v\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\-|tdg\-|tel(i|m)|tim\-|t\-mo|to(pl|sh)|ts(70|m\-|m3|m5)|tx\-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas\-|your|zeto|zte\-/i.test(navigator.userAgent.substr(0, 4))) {
+    isMobile = true;
+}
 class Canvas {
     constructor(width, height) {
         document.documentElement.style.setProperty('--canvX', width + "px");
         document.documentElement.style.setProperty('--canvY', height + "px");
-        this.mobile = false
-        if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-            this.mobile = true
-        }
 
         this.canvasParent = document.getElementById("canvas-parent")
         this.canvasParent.addEventListener("touchmove", (e) => {
@@ -186,7 +187,6 @@ class Canvas {
 
         this.panzoom = Panzoom(this.canvas, {
             setTransform: (elem, { scale, x, y }) => {
-                console.log('asdf')
                 this.canvas.style.setProperty('transform', `scale(${scale}) translate(${x}px, ${y}px)`)
                 this.previewcanvas.style.setProperty('transform', `scale(${scale}) translate(${x}px, ${y}px)`)
                 this.bggridcanvas.style.setProperty('transform', `scale(${scale}) translate(${x}px, ${y}px)`)
@@ -236,10 +236,10 @@ class Canvas {
 
         this.moveEvent = (e) => {
             var x, y
-            if(e.touches) {
+            if (e.touches) {
                 x = e.touches[0].clientX
                 y = e.touches[0].clientY
-            }else {
+            } else {
                 x = e.clientX
                 y = e.clientY
             }
@@ -580,15 +580,15 @@ class Canvas {
             if (preview) {
                 var tempCol
                 this.previewcanvas.style.setProperty("--opac", 1)
-                
-                if (Tools.eraser) { 
+
+                if (Tools.eraser) {
                     this.previewcanvas.style.setProperty("--opac", 0.5)
                     tempCol = this.color
                     this.setcolor([125, 125, 125, 255])
                 };
                 this.pctx.globalCompositeOperation = "destination-out";
                 this.pctx.fillRect(0, 0, this.w, this.h);
-                if (this.mobile || Tools.pan) return;
+                if (isMobile || Tools.pan) return;
                 let brushSize = parseInt(settings.tools.brushSize.value)
                 let r = brushSize - 1
                 let c;
@@ -600,7 +600,7 @@ class Canvas {
                 var b;
                 for (b of c) this.pDraw(b)
 
-                if(Tools.eraser) {
+                if (Tools.eraser) {
                     this.setcolor(tempCol)
                 }
 
@@ -1346,7 +1346,7 @@ class numberDraggable {
         document.addEventListener("mousemove", e => {
             if (this.do) {
                 this.el.value = clamp(parseInt(this.startVal) + Math.floor((e.clientX - this.startX) / 10), this.el.min, this.el.max)
-                if(this.el.oninput) this.el.oninput(e)
+                if (this.el.oninput) this.el.oninput(e)
             }
         })
     }
@@ -1419,7 +1419,7 @@ window.onload = function () {
 
         window.board.steps = data.steps;
         window.board.redo_arr = data.redo_arr;
-        if(data.palettes) window.colors = data.palettes
+        if (data.palettes) window.colors = data.palettes
         preparePalette()
         window.board.setcolor(data.currColor);
         updatePrevious(data.currColor)
@@ -1464,10 +1464,10 @@ function preparePalette() {
 
 function truncate(input) {
     if (input.length > 30) {
-       return input.substring(0, 27) + '...';
+        return input.substring(0, 27) + '...';
     }
     return input;
- };
+};
 
 var setCurrent = false;
 
@@ -1518,13 +1518,19 @@ class paletteGroup {
         var subMoving = false;
         var tempOut = false
         var snapped = false
-        titleEl.onmousedown = titleEl.ontouchstart = mouseDownHandler
-        function mouseDownHandler(e) {
-            e.preventDefault()
+
+        var holdTimeout
+        var holdMovementAllowed = false
+
+
+        var _self = this
+        function mouseDownHandler(e, _self) {  //only initial press
+            if (holdMovementAllowed && !tempOut) e.preventDefault();
             if (tempOut) return;
             startRect = group.getBoundingClientRect()
             tempNode = group.cloneNode(true)
-            tempNode.style.setProperty("transform", "translate(-1000%, -1000%)")
+            tempNode.style.setProperty("--pX", "-200px")
+            tempNode.style.setProperty("--pY", "-200px")
             tempNode.querySelector(".color-palette-title").onmouseup = mouseUpHandler
             tempNode.querySelector(".color-palette-title").onmousedown = tempNode.querySelector(".color-palette-title").ontouchstart = (e) => {
                 e.preventDefault()
@@ -1543,26 +1549,36 @@ class paletteGroup {
             tempNode.classList.replace("color-palette-group", "color-palette-standalone")
             tempNode.style.width = startRect.width + "px"
             document.body.appendChild(tempNode)
-            console.log(group)
             mainMoving = true;
             startX = e.clientX || e.touches[0].clientX || 0;
             startY = e.clientY || e.touches[0].clientY || 0;
             document.querySelectorAll(".color-palette-group").forEach(e => {
                 e.style.setProperty('z-index', 'unset', 'important')
             })
+            holdTimeout = setTimeout(() => {
+                holdMovementAllowed = true
+                if (isMobile && holdMovementAllowed) {
+                    snapped = true; mouseUpHandler();
+                    alrt.log("canMove")
+                    tempNode.classList.add("color-palette-standalone-popout")
+                    moveHandler(e)
+                    e.preventDefault();
+                }
+            }, 1000);
             group.style.setProperty('z-index', '999', 'important')
             tempNode.style.setProperty('z-index', '1000', 'important')
         }
-        titleEl.onmouseup = titleEl.ontouchend = mouseUpHandler
-        function mouseUpHandler(e, c) {
+        function mouseUpHandler(e, _self) {
             if (!snapped && tempNode) {
+                clearTimeout(holdTimeout)
                 mainMoving = false;
                 subMoving = false
-                tempNode.style.setProperty("transform", "unset")
+                tempNode.style.setProperty("--pX", "-200px")
+                tempNode.style.setProperty("--pY", "-200px")
                 tempNode.remove()
             }
             if (tempOut) { mouseUpSub(); return }
-            if (tempOut == false) {
+            if (tempOut == false) { //if the node has not snapped out
                 mainMoving = false;
                 if (snapped) tempOut = true
                 subMoving = true
@@ -1588,14 +1604,17 @@ class paletteGroup {
         }
 
         function mouseUpSub() {
+            console.log('asdf')
             subMoving = false
         }
         document.addEventListener("mouseup", mouseUpHandler)
         document.addEventListener("touchend", mouseUpHandler)
-        document.addEventListener("mousemove", moveHandler)
-        document.addEventListener("touchmove", moveHandler)
-        function moveHandler(e) {
-            e.preventDefault()
+        document.addEventListener("mousemove", (e) => { moveHandler(e, _self) })
+        document.addEventListener("touchmove", (e) => { moveHandler(e, _self) })
+        titleEl.onmouseup = titleEl.ontouchend = (e) => { mouseUpHandler(e, _self) }
+        titleEl.onmousedown = titleEl.ontouchstart = (e) => { mouseDownHandler(e, _self) }
+        function moveHandler(e, _self) {
+            if (holdMovementAllowed) { e.preventDefault(); }
             var cX, cY
             if (e.touches) {
                 cX = e.touches[0].clientX
@@ -1606,28 +1625,43 @@ class paletteGroup {
             }
             var x = cX - startX || 0;
             var y = cY - startY || 0;
-            if (mainMoving) {
+            if (mainMoving && isMobile) { 
+                if(Math.abs(x) > 10 || Math.abs(y) > 10) {
+                    clearTimeout(holdTimeout)
+                }
+            }else if (mainMoving && !isMobile) {
                 curX = lerp(x, 0, 0.7);
                 curY = lerp(y, 0, 0.7);
                 group.style.transform = `translate(${Math.ceil(curX)}px, ${Math.ceil(curY)}px)`;
-                tempNode.style.transform = `translate(${startRect.x + Math.ceil(curX) - 8}px, ${startRect.y + Math.ceil(curY) - 30}px)`;
-                if (Math.abs(curX) > 100 || Math.abs(curY) > 100) { snapped = true; mouseUpHandler(); }
+                tempNode.style.setProperty("--pX", `${startRect.x + Math.ceil(curX) - 8}px`)
+                tempNode.style.setProperty("--pY", `${startRect.y + Math.ceil(curY) - 30}px`)
+                if (Math.abs(curX) > 100 || Math.abs(curY) > 100) { snapped = true; mouseUpHandler(); alrt.log("snapped") }
                 return
+
             }
             if (!tempNode) return
             if (!subMoving) return;
             if (subMoving) {
-                var timeout = setInterval(() => {
-                    offsetX = lerp(0, offsetX, 0.99)
-                    offsetY = lerp(0, offsetY, 0.99)
-                    if (Math.abs(offsetX) < 0.1 && Math.abs(offsetY) < 0.1) {
-                        offsetX = 0
-                        offsetY = 0
-                    }
-                }, 2);
-                tX = x - offsetX
-                tY = y - offsetY
-                tempNode.style.transform = `translate(${startRect.x + Math.ceil(tX) - 8}px, ${startRect.y + Math.ceil(tY) - 30}px)`;
+                if(holdMovementAllowed && isMobile) {
+                    tX = x - offsetX
+                    tY = y - offsetY
+                    tempNode.style.setProperty("--pX", `${startRect.x + Math.ceil(tX) - 8}px`)
+                    tempNode.style.setProperty("--pY", `${startRect.y + Math.ceil(tY) - 30}px`)
+                } else if(!isMobile) {
+                    var timeout = setInterval(() => {
+                        offsetX = lerp(0, offsetX, 0.99)
+                        offsetY = lerp(0, offsetY, 0.99)
+                        if (Math.abs(offsetX) < 0.1 && Math.abs(offsetY) < 0.1) {
+                            offsetX = 0
+                            offsetY = 0
+                        }
+                    }, 2);
+                    tX = x - offsetX
+                    tY = y - offsetY
+                    tempNode.style.setProperty("--pX", `${startRect.x + Math.ceil(tX) - 8}px`)
+                    tempNode.style.setProperty("--pY", `${startRect.y + Math.ceil(tY) - 30}px`)
+
+                }
 
             }
         }
@@ -1681,7 +1715,7 @@ function clearPalettes() {
 
 document.querySelector("#close").onclick = function () {
     clearPalettes()
-    if ( typeof board !== 'undefined') {
+    if (typeof board !== 'undefined') {
         board.destroy()
     }
     var width = +document.querySelector("#width").value;
@@ -1929,7 +1963,7 @@ function updateColorNum(el) {
     if (isValid) {
         setPickerColor(rgb)
         pickerColor = hsv
-        if(!pickerColor) return
+        if (!pickerColor) return
         updatePickerColor()
         var rgba = HSLToRGB(HSVToHSL(pickerColor))
         board.setcolor(rgba, true)
