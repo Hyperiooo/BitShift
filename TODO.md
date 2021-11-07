@@ -131,6 +131,7 @@ A list of all the things planned to do for BitShift
 - Make eyedropper switch to previous tool
 - add popup window for eyedropper to preview previous and next color
 - Palette popup is offset in weird amounts on firefox
+- when creating palette via preview, the palette doesnt save properly unless it is used (clicking on a swatch)
 - ~~Filler crashes when filling on a blank canvas / pixel (only found on mobile, need to test on desktop)~~
 - ~~Canvas doesnt fill on an empty canvas on mobile & crashes~~
 - ~~Eraser tool does not function as a normal brush does~~
@@ -166,12 +167,11 @@ A list of all the things planned to do for BitShift
   - little color drop follows mouse/finger
 - Make color ui responsive
 - long press on color menu button and drag over canvas to fill
-- pinch zoom in/out on value color box to resize it
-  - hide hue and opacity
 - double click/tap on color preview to make a palette based on the color
 - drag distance on palettes should only work on pc, on mobile devices it shuold be via a long press due to scrolling
 - Make mousedown/touchstart only draw when the button is lifted up/mouse is moved
   - if two finger press, disable this
 - same thing for hue/value
 - dragging palette over color swatch button when the menu is closed should open the menu
-- 
+- ~~pinch zoom in/out on value color box to resize it~~
+  - ~~hide hue and opacity~~- 

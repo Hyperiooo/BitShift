@@ -705,7 +705,7 @@ path {
     margin-bottom: -4px;
 }
 
-.color-preview {
+#color-preview {
     margin: 8px;
     margin-bottom: 0px;
     margin-right: 0;
@@ -755,12 +755,13 @@ path {
     outline-style: solid;
     outline-width: 8px;
     outline-color: var(--bgMain);
-    transform: translate(var(--pX), var(--pY)) !important;
-    transition: outline-color 0.2s;
+    top: var(--pY);
+    left: var(--pX);
+    transition: outline-color 0.2s, transform 0.2s;
 }
 
 .color-palette-standalone.color-palette-standalone-popout {
-    transform: translate(var(--pX), var(--pY)) !important;
+    transform: scale(105%, 105%) !important;
     outline-color: var(--important);
 }
 

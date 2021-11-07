@@ -1635,7 +1635,7 @@ class paletteGroup {
                 curY = lerp(y, 0, 0.7);
                 group.style.transform = `translate(${Math.ceil(curX)}px, ${Math.ceil(curY)}px)`;
                 tempNode.style.setProperty("--pX", `${startRect.x + Math.ceil(curX) - 8}px`)
-                tempNode.style.setProperty("--pY", `${startRect.y + Math.ceil(curY) - 30}px`)
+                tempNode.style.setProperty("--pY", `${startRect.y + Math.ceil(curY) - 8}px`)
                 if (Math.abs(curX) > 100 || Math.abs(curY) > 100) { snapped = true; mouseUpHandler(); alrt.log("snapped") }
                 return
 
@@ -1646,8 +1646,8 @@ class paletteGroup {
                 if (holdMovementAllowed && isMobile) {
                     tX = x - offsetX
                     tY = y - offsetY
-                    tempNode.style.setProperty("--pX", `${startRect.x + Math.ceil(tX) - 8}px`)
-                    tempNode.style.setProperty("--pY", `${startRect.y + Math.ceil(tY) - 30}px`)
+                    tempNode.style.setProperty("--pX", `${startRect.x + Math.ceil(tX) - 14}px`)
+                    tempNode.style.setProperty("--pY", `${startRect.y + Math.ceil(tY) - 12}px`)
                     console.log("a")
                 } else if (!isMobile) {
                     var timeout = setInterval(() => {
@@ -2167,6 +2167,56 @@ function updatePickerColor() {
         r: rgba[0], g: rgba[1], b: rgba[2], rgba: rgba[3], h: Math.round(hsla[0]), s: Math.round(hsla[1]), l: Math.round(hsla[2]), hsla: Math.round(hsla[3]), hex: rgbToHex(rgba[0], rgba[1], rgba[2], rgba[3])
     }
     //board.setcolor(rgba)
+}
+
+var clickedOnce = false
+var colPreviewTimeout
+
+function colorPreviewClickHandler(e) {
+    e.preventDefault()
+    if(!clickedOnce) {
+        clickedOnce = true
+        colPreviewTimeout = setTimeout(() => {
+            alrt.log("double failed")
+            clickedOnce = false
+        }, 1000);
+    } else {
+        let col = chroma(`rgb(${board.color.splice(0, 3).join(", ")})`)
+        let rgba = [col.rgba()[0], col.rgba()[1], col.rgba()[2], 255]
+        let pal
+        if(chroma.contrast(col, "black")< chroma.contrast(col, 'white')) {
+            if(col.temperature() < 10000) {
+                pal = chroma.scale([col,col.set('hsv.h', '*.35').set('hsv.v', '*2.75').set('hsv.s', '*.35').hex()])
+            }else {
+                pal = chroma.scale([col,col.set('lch.l', '*.15').set('lch.c', '*50').set('lch.h', '*10').hex()])
+            }
+        }else {
+            pal = chroma.scale([col,col])
+            if (col.hsv()[0] >= 0 && col.hsv()[0] <= 36) {
+                pal = chroma.scale([col,col.set('hsv.h', '-60').set('hsv.s', '*3').set('hsv.v', '*.3').hex()])
+            }else if(col.hsv()[0] > 36 && col.hsv()[0] <= 65) { //sunset gradient w yellow
+                pal = chroma.scale([col,col.set('hsv.h', '*5').set('hsv.v', '*.25').set('hsv.s', '*15').hex()])
+            }else if (col.hsv()[0] > 65 && col.hsv()[0] <= 120) {
+                pal = chroma.scale([col,col.set('lch.l', '*.35').set('lch.c', '*3').set('lch.h', '*20').hex()])
+            }else if (col.hsv()[0] > 120 && col.hsv()[0] <= 180) {
+                pal = chroma.scale([col,col.set('lch.l', '*.15').set('lch.c', '*3').set('lch.h', '*20').hex()])
+            }else if (col.hsv()[0] > 180 && col.hsv()[0] <= 230) {
+                pal = chroma.scale([col,col.set('hsv.h', '*1.3').set('hsv.s', '*2').set('hsv.v', '*.4').hex()])
+            }else if (col.hsv()[0] > 230 && col.hsv()[0] <= 330) {
+                pal = chroma.scale([col,col.set('hsv.h', '-50').set('hsv.s', '*3').set('hsv.v', '*.3').hex()])
+            }else if (col.hsv()[0] > 330 && col.hsv()[0] <= 360) {
+                pal = chroma.scale([col,col.set('hsv.h', '-60').set('hsv.s', '*3').set('hsv.v', '*.3').hex()])
+            }
+            alrt.log(col.hsv()[0])
+        }
+        pal = pal.mode('lch').correctLightness().colors(8)
+        let rgbPal = pal.map(e=> {
+            return (hexToRGB(e))
+        })
+        new paletteGroup(col.hex(), rgbPal, true)
+        clearTimeout(colPreviewTimeout)
+        clickedOnce = false
+    }
 }
 
 
