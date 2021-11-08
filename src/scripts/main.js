@@ -239,10 +239,10 @@ class Canvas {
 
         this.moveEvent = (e) => {
             var x, y
-            if(e.touches.length > 1) {
+            if(e.touches && e.touches.length > 1) {
                 x = (e.touches[0].clientX + e.touches[1].clientX)/2
                 y = (e.touches[0].clientY + e.touches[1].clientY)/2
-            }else {
+            }else if(e.touches) {
                 x = e.touches[0].clientX
                 y = e.touches[0].clientY
             }

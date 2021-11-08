@@ -119,19 +119,19 @@ A list of all the things planned to do for BitShift
 - ~~Give eraser outline to show where it will erase~~
 
 ## Bugs
-- Touch zoom on mobile is not functional
-- Zoom tool is not functional
 - Some event listeners use faulty `touches` detection; adapt to new way of doing it (can be based on `opacDrag()`)
-- Palette will pop off when scrolling through color window on mobile
-  - Maybe implement a delay where the cursor cant move much? 
-    - If successful, begin the pop off.
+- valueRect appears as undefined sometimes
 - Setting color via number inputs doesnt change the actual brush color
-- On iPadOS, drag import does not work, but on anypalette's website it does
-  - doesnt work on any mac device but anypalette still works
-- Make eyedropper switch to previous tool
-- add popup window for eyedropper to preview previous and next color
-- Palette popup is offset in weird amounts on firefox
 - when creating palette via preview, the palette doesnt save properly unless it is used (clicking on a swatch)
+- ~~Zoom tool is not functional~~
+- ~~Palette will pop off when scrolling through color window on mobile~~
+  - ~~Maybe implement a delay where the cursor cant move much? ~~
+    - ~~If successful, begin the pop off.~~
+- ~~On iPadOS, drag import does not work, but on anypalette's website it does~~
+  - ~~doesnt work on any mac device but anypalette still works~~
+    - ~~wasnt an issue with imports but an issue with spans being used for colors~~
+- ~~Palette popup is offset in weird amounts on firefox~~
+- ~~Touch zoom on mobile is not functional~~
 - ~~Filler crashes when filling on a blank canvas / pixel (only found on mobile, need to test on desktop)~~
 - ~~Canvas doesnt fill on an empty canvas on mobile & crashes~~
 - ~~Eraser tool does not function as a normal brush does~~
@@ -173,5 +173,7 @@ A list of all the things planned to do for BitShift
   - if two finger press, disable this
 - same thing for hue/value
 - dragging palette over color swatch button when the menu is closed should open the menu
+- Make eyedropper switch to previous tool
+- add popup window for eyedropper to preview previous and next color
 - ~~pinch zoom in/out on value color box to resize it~~
   - ~~hide hue and opacity~~- 
