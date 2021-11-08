@@ -2,8 +2,6 @@
 A list of all the things planned to do for BitShift
 
 ## Tools
-- ~~Zoom tool~~
-  - Improve zoom tool
 - Spray brush tool
   - Improve to make speed 1 not produce as many particles 
 - Smudge and scatter tools  
@@ -26,7 +24,11 @@ A list of all the things planned to do for BitShift
 - Gradient tool (Dither & No dither)
 - ~~Pan tool~~
   - ~~Improve pan tool~~
+    - ~~just removed~~
 - ~~Eyedropper~~
+- ~~Zoom tool~~
+  - ~~Improve zoom tool~~
+    - ~~just removed~~
 
 ## Palettes
 - Add color to palette
