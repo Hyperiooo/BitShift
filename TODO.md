@@ -177,5 +177,17 @@ A list of all the things planned to do for BitShift
 - dragging palette over color swatch button when the menu is closed should open the menu
 - Make eyedropper switch to previous tool
 - add popup window for eyedropper to preview previous and next color
+- add tiling
+- add mirroring
+- add custom grids n stuff of the sort
+- add reference images
+- add rulers
+- add effects (adjustments)
+  - hue
+  - saturation
+  - brightness
+  - blur
+  - grayscale
+  - outline
 - ~~pinch zoom in/out on value color box to resize it~~
   - ~~hide hue and opacity~~- 

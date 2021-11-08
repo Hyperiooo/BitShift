@@ -1335,9 +1335,12 @@ class numberDraggable {
         this.el.addEventListener('mousedown', (e) => { this.do = true; this.startX = e.clientX; this.startVal = this.el.value })
         this.el.addEventListener('mouseup', () => { this.do = false })
         document.addEventListener('mouseup', () => { this.do = false })
-        document.addEventListener("mousemove", e => {
+        this.el.addEventListener('touchstart', (e) => { this.do = true; this.startX = e.touches[0].clientX; this.startVal = this.el.value })
+        this.el.addEventListener('touchend', () => { this.do = false })
+        document.addEventListener('touchend', () => { this.do = false })
+        document.addEventListener("touchmove", e => {
             if (this.do) {
-                this.el.value = clamp(parseInt(this.startVal) + Math.floor((e.clientX - this.startX) / 10), this.el.min, this.el.max)
+                this.el.value = clamp(parseInt(this.startVal) + Math.floor((e.touches[0].clientX - this.startX) / 10), this.el.min, this.el.max)
                 if (this.el.oninput) this.el.oninput(e)
             }
         })
