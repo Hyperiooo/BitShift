@@ -91,8 +91,6 @@ var Tools = {
     "line": false,
     "ellipse": false,
     "rect": false,
-    "pan": false,
-    "zoom": false,
     "sprayPaint": false,
     "eyedropper": false,
 }
@@ -185,22 +183,31 @@ class Canvas {
 
         });
 
-        this.panzoom = Panzoom(this.canvas, {
-            setTransform: (elem, { scale, x, y }) => {
-                this.canvas.style.setProperty('transform', `scale(${scale}) translate(${x}px, ${y}px)`)
-                this.previewcanvas.style.setProperty('transform', `scale(${scale}) translate(${x}px, ${y}px)`)
-                this.bggridcanvas.style.setProperty('transform', `scale(${scale}) translate(${x}px, ${y}px)`)
-                this.setCanvScale(scale)
-                this.setCanvTransform(x, y)
+        this.panzoom = panzoom(this.canvas, {
+            smoothScroll: false,
+            initialX: this.width / 2 - (((this.canvasParent.offsetWidth / 2) - (this.width / 2)) / settings.ui.canvasScale),
+            initialY: this.height / 2 - (((this.canvasParent.offsetHeight / 2) - (this.height / 2)) / settings.ui.canvasScale),
+            initialZoom: settings.ui.canvasScale,
+            zoomSpeed: 0.15,
+            onDoubleClick: function (e) {
+                return false;
             },
-            maxScale: 150,
-            minScale: 0.125,
-            startScale: settings.ui.canvasScale,
-            startX: ((this.canvasParent.offsetWidth / 2) - (this.width / 2)) / settings.ui.canvasScale,
-            startY: ((this.canvasParent.offsetHeight / 2) - (this.height / 2)) / settings.ui.canvasScale,
-            canvas: true,
+            beforeMouseDown: function (e) {
+                return e.button != 1;
+            },
+            beforeTouchDown: function (e) {
+                return !(e.touches.length > 1);
+            },
+            zoomDoubleClickSpeed: 1,
         })
-        this.canvasParent.addEventListener('wheel', this.panzoom.zoomWithWheel)
+        var _self = this
+        this.panzoom.on('transform', function (e) {
+            // This event will be called along with events above.
+            _self.previewcanvas.style.transform = _self.bggridcanvas.style.transform = _self.canvas.style.transform
+            _self.previewcanvas.style.transformOrigin = _self.bggridcanvas.style.transformOrigin = _self.canvas.style.transformOrigin
+            _self.setCanvScale(_self.panzoom.getTransform().scale)
+            _self.setCanvTransform(_self.panzoom.getTransform().x, _self.panzoom.getTransform().y)
+        });
         this.startZoomX = 0
         this.startZoomY = 0
         this.deltaX = 0
@@ -209,13 +216,6 @@ class Canvas {
         this.deltaPanY = 0
 
         this.mouseDownEvent = (e) => {
-            if (e.button == 1 || Tools.pan) {
-                this.deltaX = e.clientX
-                this.deltaY = e.clientY
-            } else if (e.button == 1 || Tools.zoom) {
-                this.startZoomX = e.clientX
-                this.startZoomY = e.clientY
-            }
             if (e.button != 0) {
                 return
             }
@@ -227,7 +227,10 @@ class Canvas {
 
         this.touchStartEvent = (e) => {
             this.inputDown(e)
-            if (Tools.pan) {
+            if(e.touches.length > 1) {
+                this.deltaX = (e.touches[0].clientX + e.touches[1].clientX)/2
+                this.deltaY = (e.touches[0].clientY + e.touches[1].clientY)/2
+            }else {
                 this.deltaX = e.touches[0].clientX
                 this.deltaY = e.touches[0].clientY
             }
@@ -236,31 +239,20 @@ class Canvas {
 
         this.moveEvent = (e) => {
             var x, y
-            if (e.touches) {
+            if(e.touches.length > 1) {
+                x = (e.touches[0].clientX + e.touches[1].clientX)/2
+                y = (e.touches[0].clientY + e.touches[1].clientY)/2
+            }else {
                 x = e.touches[0].clientX
                 y = e.touches[0].clientY
-            } else {
-                x = e.clientX
-                y = e.clientY
             }
-            if (e.touches) {
-                if (Tools.pan) {
-                    this.panzoom.pan(((x) - this.deltaX) / this.panzoom.getScale(), (y - this.deltaY) / this.panzoom.getScale(), { relative: true })
-                    this.deltaX = x
-                    this.deltaY = y
-                } else if (Tools.zoom) {
-                    var dummy = {
-                        clientX: x,
-                        clientY: y,
-                        preventDefault: function () {
-                        },
-                        deltaY: -(this.deltaY - e.touches[0].clientY) / this.panzoom.getScale(),
-                        deltaX: -(this.deltaX - e.touches[0].clientX) / this.panzoom.getScale(),
-                    }
-                    this.panzoom.zoomWithWheel(dummy)
-                    this.deltaX = x
-                    this.deltaY = y
-                }
+
+            if (e.touches && e.touches.length != 1) {
+                this.panzoom.moveBy(-(this.deltaX - x), -(this.deltaY - y))
+                this.deltaX = (e.touches[0].clientX + e.touches[1].clientX)/2
+                this.deltaY = (e.touches[0].clientY + e.touches[1].clientY)/2
+                return
+            } else {
             }
             this.inputActive(e)
         }
@@ -588,7 +580,7 @@ class Canvas {
                 };
                 this.pctx.globalCompositeOperation = "destination-out";
                 this.pctx.fillRect(0, 0, this.w, this.h);
-                if (isMobile || Tools.pan) return;
+                if (isMobile) return;
                 let brushSize = parseInt(settings.tools.brushSize.value)
                 let r = brushSize - 1
                 let c;
@@ -1605,7 +1597,6 @@ class paletteGroup {
         }
 
         function mouseUpSub() {
-            console.log('asdf')
             subMoving = false
         }
         document.addEventListener("mouseup", mouseUpHandler)
@@ -1648,7 +1639,6 @@ class paletteGroup {
                     tY = y - offsetY
                     tempNode.style.setProperty("--pX", `${startRect.x + Math.ceil(tX) - 14}px`)
                     tempNode.style.setProperty("--pY", `${startRect.y + Math.ceil(tY) - 12}px`)
-                    console.log("a")
                 } else if (!isMobile) {
                     var timeout = setInterval(() => {
                         offsetX = lerp(0, offsetX, 0.99)
@@ -2069,8 +2059,8 @@ function valueThumb(e) {
         y = e.clientY - valueRect.top
     }
     valueBuffer = [x, y]
-    if (e.touches && e.touches.length > 1) { 
-        valueTwoFinger = true 
+    if (e.touches && e.touches.length > 1) {
+        valueTwoFinger = true
         valueTwoFingerStartDist = (distance(e.touches[0].clientX, e.touches[1].clientX, e.touches[0].clientY, e.touches[1].clientY))
     }
     valueMoving = true
@@ -2095,7 +2085,7 @@ function valueEndDrag(e) {
             valueRange.classList.add("color-value-expanded")
             valueRect.width = 296
         }
-        if (valueTwoFingerStartDist - valueTwoFingerDist  > 100) {
+        if (valueTwoFingerStartDist - valueTwoFingerDist > 100) {
             valueRange.classList.remove("color-value-expanded")
             valueRect.width = 200
         }
@@ -2174,7 +2164,7 @@ var colPreviewTimeout
 
 function colorPreviewClickHandler(e) {
     e.preventDefault()
-    if(!clickedOnce) {
+    if (!clickedOnce) {
         clickedOnce = true
         colPreviewTimeout = setTimeout(() => {
             alrt.log("double failed")
@@ -2184,33 +2174,33 @@ function colorPreviewClickHandler(e) {
         let col = chroma(`rgb(${board.color.splice(0, 3).join(", ")})`)
         let rgba = [col.rgba()[0], col.rgba()[1], col.rgba()[2], 255]
         let pal
-        if(chroma.contrast(col, "black")< chroma.contrast(col, 'white')) {
-            if(col.temperature() < 10000) {
-                pal = chroma.scale([col,col.set('hsv.h', '*.35').set('hsv.v', '*2.75').set('hsv.s', '*.35').hex()])
-            }else {
-                pal = chroma.scale([col,col.set('lch.l', '*.15').set('lch.c', '*50').set('lch.h', '*10').hex()])
+        if (chroma.contrast(col, "black") < chroma.contrast(col, 'white')) {
+            if (col.temperature() < 10000) {
+                pal = chroma.scale([col, col.set('hsv.h', '*.35').set('hsv.v', '*2.75').set('hsv.s', '*.35').hex()])
+            } else {
+                pal = chroma.scale([col, col.set('lch.l', '*.15').set('lch.c', '*50').set('lch.h', '*10').hex()])
             }
-        }else {
-            pal = chroma.scale([col,col])
+        } else {
+            pal = chroma.scale([col, col])
             if (col.hsv()[0] >= 0 && col.hsv()[0] <= 36) {
-                pal = chroma.scale([col,col.set('hsv.h', '-60').set('hsv.s', '*3').set('hsv.v', '*.3').hex()])
-            }else if(col.hsv()[0] > 36 && col.hsv()[0] <= 65) { //sunset gradient w yellow
-                pal = chroma.scale([col,col.set('hsv.h', '*5').set('hsv.v', '*.25').set('hsv.s', '*15').hex()])
-            }else if (col.hsv()[0] > 65 && col.hsv()[0] <= 120) {
-                pal = chroma.scale([col,col.set('lch.l', '*.35').set('lch.c', '*3').set('lch.h', '*20').hex()])
-            }else if (col.hsv()[0] > 120 && col.hsv()[0] <= 180) {
-                pal = chroma.scale([col,col.set('lch.l', '*.15').set('lch.c', '*3').set('lch.h', '*20').hex()])
-            }else if (col.hsv()[0] > 180 && col.hsv()[0] <= 230) {
-                pal = chroma.scale([col,col.set('hsv.h', '*1.3').set('hsv.s', '*2').set('hsv.v', '*.4').hex()])
-            }else if (col.hsv()[0] > 230 && col.hsv()[0] <= 330) {
-                pal = chroma.scale([col,col.set('hsv.h', '-50').set('hsv.s', '*3').set('hsv.v', '*.3').hex()])
-            }else if (col.hsv()[0] > 330 && col.hsv()[0] <= 360) {
-                pal = chroma.scale([col,col.set('hsv.h', '-60').set('hsv.s', '*3').set('hsv.v', '*.3').hex()])
+                pal = chroma.scale([col, col.set('hsv.h', '-60').set('hsv.s', '*3').set('hsv.v', '*.3').hex()])
+            } else if (col.hsv()[0] > 36 && col.hsv()[0] <= 65) { //sunset gradient w yellow
+                pal = chroma.scale([col, col.set('hsv.h', '*5').set('hsv.v', '*.25').set('hsv.s', '*15').hex()])
+            } else if (col.hsv()[0] > 65 && col.hsv()[0] <= 120) {
+                pal = chroma.scale([col, col.set('lch.l', '*.35').set('lch.c', '*3').set('lch.h', '*20').hex()])
+            } else if (col.hsv()[0] > 120 && col.hsv()[0] <= 180) {
+                pal = chroma.scale([col, col.set('lch.l', '*.15').set('lch.c', '*3').set('lch.h', '*20').hex()])
+            } else if (col.hsv()[0] > 180 && col.hsv()[0] <= 230) {
+                pal = chroma.scale([col, col.set('hsv.h', '*1.3').set('hsv.s', '*2').set('hsv.v', '*.4').hex()])
+            } else if (col.hsv()[0] > 230 && col.hsv()[0] <= 330) {
+                pal = chroma.scale([col, col.set('hsv.h', '-50').set('hsv.s', '*3').set('hsv.v', '*.3').hex()])
+            } else if (col.hsv()[0] > 330 && col.hsv()[0] <= 360) {
+                pal = chroma.scale([col, col.set('hsv.h', '-60').set('hsv.s', '*3').set('hsv.v', '*.3').hex()])
             }
             alrt.log(col.hsv()[0])
         }
         pal = pal.mode('lch').correctLightness().colors(8)
-        let rgbPal = pal.map(e=> {
+        let rgbPal = pal.map(e => {
             return (hexToRGB(e))
         })
         new paletteGroup(col.hex(), rgbPal, true)
