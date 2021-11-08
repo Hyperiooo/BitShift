@@ -170,10 +170,10 @@ A list of all the things planned to do for BitShift
 - Make color ui responsive
 - long press on color menu button and drag over canvas to fill
 - double click/tap on color preview to make a palette based on the color
-- drag distance on palettes should only work on pc, on mobile devices it shuold be via a long press due to scrolling
+- ~~drag distance on palettes should only work on pc, on mobile devices it shuold be via a long press due to scrolling~~
 - Make mousedown/touchstart only draw when the button is lifted up/mouse is moved
   - if two finger press, disable this
-- same thing for hue/value
+- ~~same thing for hue/value~~
 - dragging palette over color swatch button when the menu is closed should open the menu
 - Make eyedropper switch to previous tool
 - add popup window for eyedropper to preview previous and next color
