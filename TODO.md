@@ -45,7 +45,7 @@ A list of all the things planned to do for BitShift
 - Export to image ?
 - Export to palette formats
 - ~~Palettes are saved in account~~
-- Add error handling for imports
+- ~~Add error handling for imports~~
 
 ## Layers
 - Layer settings 
@@ -96,14 +96,16 @@ A list of all the things planned to do for BitShift
 ## Visual changes 
 - Fork remixicon to add Spray can, along with other various tools
 - Make responsive on mobile devices
+  - started
 - Enforce constant transitions on background and color across all ui
 - Theming
+  - started, no way to set in-app
 - Add min width, max height to tool settings content
 - Improve tool settings inputs to allow for input groups with proper rounding and units
   - Add new input types
-- Make canvas parent full height when closing navbar on mobile
-  - Take functionality from Delta
 - Add full screen to phone to avoid annoying scroll issue
+- ~~Make canvas parent full height when closing navbar on mobile~~
+  - ~~Take functionality from Delta~~
 - ~~Make canvas resize based on the canvas parent, not the entire document~~
 - ~~Dont include toolbar with the canvasParent height~~
 - ~~Transition between tool settings better; Change height smoothly, fade opacity at 0.1s~~
