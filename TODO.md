@@ -164,6 +164,7 @@ A list of all the things planned to do for BitShift
   - ~~Prevent Defaults~~
   
 ## Enhancements
+- ***Restructure everything***
 - Hold on a color in a palette -> reorder & delete
   - Delete by moving swatch on to a delete bar that shows on the bottom of the color menu
 - Drag the color preview in the hue/value area over a palette
