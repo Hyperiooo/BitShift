@@ -122,9 +122,9 @@ A list of all the things planned to do for BitShift
 
 ## Bugs
 - Some event listeners use faulty `touches` detection; adapt to new way of doing it (can be based on `opacDrag()`)
-- valueRect appears as undefined sometimes
 - Setting color via number inputs doesnt change the actual brush color
 - when creating palette via preview, the palette doesnt save properly unless it is used (clicking on a swatch)
+- ~~valueRect appears as undefined sometimes~~
 - ~~Zoom tool is not functional~~
 - ~~Palette will pop off when scrolling through color window on mobile~~
   - ~~Maybe implement a delay where the cursor cant move much? ~~

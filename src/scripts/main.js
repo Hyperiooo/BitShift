@@ -1996,11 +1996,11 @@ function opacDrag(e) {
 
     var x, y
     if (e.touches) {
-        x = e.touches[0].clientX - opacRect.left
-        y = e.touches[0].clientY - opacRect.top
+        x = e.touches[0].clientX - (opacRect ? opacRect.left : 0)
+        y = e.touches[0].clientY - (opacRect ? opacRect.top : 0)
     } else {
-        x = e.clientX - opacRect.left
-        y = e.clientY - opacRect.top
+        x = e.clientX - (opacRect ? opacRect.left : 0)
+        y = e.clientY - (opacRect ? opacRect.top : 0)
     }
     if (opacMoving) {
         document.querySelectorAll('[data-color-input]').forEach(e => { e.blur() });
@@ -2032,11 +2032,11 @@ function hueDrag(e) {
     e.preventDefault()
     var x, y
     if (e.touches) {
-        x = e.touches[0].clientX - hueRect.left
-        y = e.touches[0].clientY - hueRect.top
+        x = e.touches[0].clientX - (hueRect ? hueRect.left : 0)
+        y = e.touches[0].clientY - (hueRect ? hueRect.top : 0)
     } else {
-        x = e.clientX - hueRect.left
-        y = e.clientY - hueRect.top
+        x = e.clientX - (hueRect ? hueRect.left : 0)
+        y = e.clientY - (hueRect ? hueRect.top : 0)
     }
     if (hueMoving) {
         document.querySelectorAll('[data-color-input]').forEach(e => { e.blur() });
@@ -2066,11 +2066,11 @@ var valueTwoFingerStartDist = 0
 function valueThumb(e) {
     var x, y
     if (e.touches) {
-        x = e.touches[0].clientX - valueRect.left
-        y = e.touches[0].clientY - valueRect.top
+        x = e.touches[0].clientX - (valueRect ? valueRect.left : 0)
+        y = e.touches[0].clientY - (valueRect ? valueRect.top : 0)
     } else {
-        x = e.clientX - valueRect.left
-        y = e.clientY - valueRect.top
+        x = e.clientX - (valueRect ? valueRect.left : 0)
+        y = e.clientY - (valueRect ? valueRect.top : 0)
     }
     valueBuffer = [x, y]
     if (e.touches && e.touches.length > 1) {
@@ -2114,11 +2114,11 @@ function valueDrag(e) {
     e.preventDefault()
     var x, y
     if (e.touches) {
-        x = e.touches[0].clientX - valueRect.left
-        y = e.touches[0].clientY - valueRect.top
+        x = e.touches[0].clientX - (valueRect ? valueRect.left : 0)
+        y = e.touches[0].clientY - (valueRect ? valueRect.top : 0)
     } else {
-        x = e.clientX - valueRect.left
-        y = e.clientY - valueRect.top
+        x = e.clientX - (valueRect ? valueRect.left : 0)
+        y = e.clientY - (valueRect ? valueRect.top : 0)
     }
     if (valueMoving && !valueTwoFinger) {
         document.querySelectorAll('[data-color-input]').forEach(e => { e.blur() });
