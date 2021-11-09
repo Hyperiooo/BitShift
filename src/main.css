@@ -1,5 +1,5 @@
 * {
-    font-family: sans-serif;
+    font-family: 'Roboto', sans-serif;
 }
 
 body {
@@ -8,7 +8,7 @@ body {
     min-height: 100vh;
     height: 100%;
     overflow: hidden;
-    -webkit-tap-highlight-color:  rgba(255, 255, 255, 0); 
+    -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
 }
 
 :root {
@@ -23,14 +23,14 @@ body {
 
 .ui-theme-black {
     --bgMain: #070b10;
-    --canvasBg:#101317;
+    --canvasBg: #101317;
     --bgLight: #181b1e;
     --textMain: #bcbec4;
     --textDim: #a8abb0;
     --important: #0034ab;
     --importantT: #0034aba9;
     --error: #e0002c;
-    --errorT:#e0002ca9;
+    --errorT: #e0002ca9;
     --importantText: #ffffff;
     --scrollTrack: #000007;
     --scrollHover: #222529;
@@ -45,9 +45,9 @@ body {
     --textMain: #ffffff;
     --textDim: #cacaca;
     --important: #2741ff;
-    --importantT:#2740ffa9;
+    --importantT: #2740ffa9;
     --error: #ff163d;
-    --errorT:#ff163da9;
+    --errorT: #ff163da9;
     --importantText: #ffffff;
     --scrollTrack: #201F22;
     --scrollHover: #3B3A3D;
@@ -57,14 +57,14 @@ body {
 
 .ui-theme-gray {
     --bgMain: #6c6e71;
-    --canvasBg:#86888c;
+    --canvasBg: #86888c;
     --bgLight: #797b7e;
     --textMain: #e8ebee;
     --textDim: #dadce0;
     --important: #00beee;
     --importantT: #00beeea9;
     --error: #ffaa3a;
-    --errorT:#ffaa3aa9;
+    --errorT: #ffaa3aa9;
     --importantText: #ffffff;
     --scrollTrack: #606165;
     --scrollHover: #949699;
@@ -74,14 +74,14 @@ body {
 
 .ui-theme-light {
     --bgMain: #ffffff;
-    --canvasBg:#eaeaee;
+    --canvasBg: #eaeaee;
     --bgLight: #dbdbe0;
     --textMain: #0b0c1a;
     --textDim: #1b1c2e;
     --important: #3e88ff;
     --importantT: #3e88ffa9;
     --error: #ff2d3e;
-    --errorT:#ff2d3ea9;
+    --errorT: #ff2d3ea9;
     --importantText: #ffffff;
     --scrollTrack: #eaeaee;
     --scrollHover: #c0c2c9;
@@ -417,7 +417,11 @@ body {
     background: var(--bgMain);
 }
 
-#toolbar-right {
+.toolbar-bottom {
+    float: right;
+}
+
+.toolbar-right {
     float: right;
 }
 
@@ -455,11 +459,11 @@ body {
     fill: var(--toolBarHover) !important;
 }
 
-#toolbar .item #tool-color {
+#toolbar .item [data-tool-color-menu-button] {
     color: var(--color) !important;
 }
 
-#toolbar .item:hover #tool-color {
+#toolbar .item:hover [data-tool-color-menu-button] {
     color: var(--color) !important;
 }
 
@@ -612,11 +616,11 @@ path {
     background-image: linear-gradient(to bottom, transparent 0%, rgb(0, 0, 0) 100%), linear-gradient(to right, transparent 0%, hsl(var(--hue), 100%, 50%) 100%), linear-gradient(to bottom, white 0%, white 100%);
 }
 
-
 .color-value-expanded {
     width: 296px !important;
 }
-.color-value-expanded ~ #color-hue, .color-value-expanded ~ #color-opacity {
+
+.color-value-expanded~#color-hue, .color-value-expanded~#color-opacity {
     opacity: 0;
 }
 
@@ -1031,4 +1035,64 @@ input {
 
 .tool-settings-content-hidden {
     opacity: 0;
+}
+
+#toolbar .item.toolbar-portrait-only {
+    visibility: hidden;
+    display: none;
+}
+
+#toolbar .item.toolbar-landscape-only {
+    visibility: visible;
+    display: inline-flex;
+}
+
+
+/* media queries */
+
+@media screen and (max-width: 600px) and (orientation: portrait) {
+    #toolbar .item.toolbar-portrait-only {
+        visibility: visible;
+        display: inline-flex;
+    }
+    
+    #toolbar .item.toolbar-landscape-only {
+        visibility: hidden;
+        display: none;
+    }
+    #toolbar {
+        position: fixed;
+        top: 0;
+        padding: 0px;
+        width: 100%;
+        height: 100vh;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        background: transparent;
+        pointer-events: none;
+    }
+    .toolbar-bottom {
+        float: unset;
+        bottom: 0;
+        background: var(--bgMain);
+        width: 100vw;
+        overflow: hidden;
+        position: fixed;
+        display: block;
+        pointer-events: all;
+    }
+    .toolbar-top {
+        float: unset;
+        background: var(--bgMain);
+        width: 100vw;
+        overflow: hidden;
+        position: fixed;
+        display: block;
+        pointer-events: all;
+    }
+    #tool-settings {
+        bottom: 64px;
+    }
 }

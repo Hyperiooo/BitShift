@@ -6,17 +6,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BitShift</title>
     <!--REMOVE THESE AND REPLACE WITH ACTUAL ALRT-->
-    <script src="https://cdn.jsdelivr.net/gh/Hyperiooo/Alrt.js@main/src/alrt.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Hyperiooo/Alrt.js@main/src/alrt.css">
-
-
+    <script
+      src="https://cdn.jsdelivr.net/gh/Hyperiooo/Alrt.js@main/src/alrt.js"></script>
+    <link rel="stylesheet"
+      href="https://cdn.jsdelivr.net/gh/Hyperiooo/Alrt.js@main/src/alrt.css">
     <link rel="manifest" href="manifest.json" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/chroma-js/2.1.0/chroma.min.js"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/chroma-js/2.1.0/chroma.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/9.3.0/math.js"></script>
     <script src="./scripts/Matrix.js"></script>
     <script src="./scripts/Shapes.js"></script>
     <script src="./scripts/Transformation.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/synaptic/1.1.4/synaptic.js"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/synaptic/1.1.4/synaptic.js"></script>
     <script src="./scripts/anypalette.js"></script>
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.0/color-thief.umd.js"></script>
@@ -39,9 +41,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <script src="./scripts/PinchZoom.js"></script>
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono&display=swap"
-      rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono&family=Roboto:wght@400;500;600;700&display=swap" rel="stylesheet">
     <!--<script src="./scripts/panzoom.js"></script>
     <script src='https://unpkg.com/panzoom@9.4.0/dist/panzoom.min.js'></script>-->
     <script src="./scripts/panzoom.js"></script>
@@ -81,13 +81,15 @@
             ontouchstart="valueThumb(event);valueDrag(event);"
             ontouchmove="valueDrag(event)" ontouchend="valueEndDrag(event)"></div>
         </div><!--
-        --><div class="color-selector" id="color-hue" width="40"
+        --><div class="color-selector" id="color-hue"
+          width="40"
           height="200"
           onmousedown="hueThumb(event);hueDrag(event);"
           onmousemove="hueDrag(event)" onmouseup="hueEndDrag(event)"
           ontouchstart="hueThumb(event);hueDrag(event);"
           ontouchmove="hueDrag(event)" ontouchend="hueEndDrag(event)">
-          <div id="color-hue-thumb" onmousedown="hueThumb(event);hueDrag(event);"
+          <div id="color-hue-thumb"
+            onmousedown="hueThumb(event);hueDrag(event);"
             onmousemove="hueDrag(event)" onmouseup="hueEndDrag(event)"
             ontouchstart="hueThumb(event);hueDrag(event);"
             ontouchmove="hueDrag(event)" ontouchend="hueEndDrag(event)"></div>
@@ -127,7 +129,8 @@
             max="255" type="number"
             />
         </div>
-        <div id="color-preview" onclick="colorPreviewClickHandler(event)" ontouchstart="colorPreviewClickHandler(event)">
+        <div id="color-preview" onclick="colorPreviewClickHandler(event)"
+          ontouchstart="colorPreviewClickHandler(event)">
           <div id="color-previous"></div><div id="color-current"></div>
         </div>
       </div>
@@ -202,9 +205,23 @@
       <canvas id="bggridcanv"></canvas>
     </div>
     <div id="toolbar" class="ui">
-      <span class="item" onclick="toggleMenu()"><i
-          class="ri-menu-fill"></i></span>
-      <div id="toolbar-right">
+      <div class="toolbar-top">
+        <span class="item" onclick="toggleMenu()"><i
+            class="ri-menu-fill"></i></span>
+        <span class="item" onclick="board.undo()"><i
+            class="ri-arrow-go-back-line"></i></span>
+        <span class="item" onclick="board.redo()"><i
+            class="ri-arrow-go-forward-line"></i></span>
+        <div class="toolbar-right">
+          <span class="item toolbar-portrait-only"
+            onclick="toggleColorPicker()"><i
+              class="ri-checkbox-blank-circle-fill" data-tool-color-menu-button></i></span>
+          <span class="item toolbar-portrait-only"
+            onclick="toggleColorPicker()"><i
+              class="ri-stack-fill"></i></span>
+        </div>
+      </div>
+      <div class="toolbar-bottom">
         <span id="tool-btn-pen" class="item" onclick="setmode('pen',
           this)"><i
             class="ri-pencil-fill"></i></span>
@@ -241,13 +258,9 @@
           <span id="tool-btn-rect" class="item" onclick="setmode('rect',
             this)"><i
               class="ri-checkbox-blank-line"></i></span>
-          <span class="item" onclick="toggleColorPicker()"><i
-              class="ri-checkbox-blank-circle-fill" id="tool-color"></i></span><!--
-                <span class="item" onclick="board.undo()"><i
-                    class="ri-arrow-go-back-line"></i></span>
-                <span class="item" onclick="board.redo()"><i
-                    class="ri-arrow-go-forward-line"></i></span>
-              -->
+          <span class="item toolbar-landscape-only"
+            onclick="toggleColorPicker()"><i
+              class="ri-checkbox-blank-circle-fill" data-tool-color-menu-button></i></span>
           <span class="item" onclick="board.clear()"><i
               class="ri-delete-bin-fill"></i></span>
         </div>

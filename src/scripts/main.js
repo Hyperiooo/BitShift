@@ -227,10 +227,10 @@ class Canvas {
 
         this.touchStartEvent = (e) => {
             this.inputDown(e)
-            if(e.touches.length > 1) {
-                this.deltaX = (e.touches[0].clientX + e.touches[1].clientX)/2
-                this.deltaY = (e.touches[0].clientY + e.touches[1].clientY)/2
-            }else {
+            if (e.touches.length > 1) {
+                this.deltaX = (e.touches[0].clientX + e.touches[1].clientX) / 2
+                this.deltaY = (e.touches[0].clientY + e.touches[1].clientY) / 2
+            } else {
                 this.deltaX = e.touches[0].clientX
                 this.deltaY = e.touches[0].clientY
             }
@@ -239,18 +239,18 @@ class Canvas {
 
         this.moveEvent = (e) => {
             var x, y
-            if(e.touches && e.touches.length > 1) {
-                x = (e.touches[0].clientX + e.touches[1].clientX)/2
-                y = (e.touches[0].clientY + e.touches[1].clientY)/2
-            }else if(e.touches) {
+            if (e.touches && e.touches.length > 1) {
+                x = (e.touches[0].clientX + e.touches[1].clientX) / 2
+                y = (e.touches[0].clientY + e.touches[1].clientY) / 2
+            } else if (e.touches) {
                 x = e.touches[0].clientX
                 y = e.touches[0].clientY
             }
 
             if (e.touches && e.touches.length != 1) {
                 this.panzoom.moveBy(-(this.deltaX - x), -(this.deltaY - y))
-                this.deltaX = (e.touches[0].clientX + e.touches[1].clientX)/2
-                this.deltaY = (e.touches[0].clientY + e.touches[1].clientY)/2
+                this.deltaX = (e.touches[0].clientX + e.touches[1].clientX) / 2
+                this.deltaY = (e.touches[0].clientY + e.touches[1].clientY) / 2
                 return
             } else {
             }
@@ -901,7 +901,9 @@ class Canvas {
         if (!skipDuplicate) setPickerColor(color)
         if (skipDuplicate) updatePickerColor(color)
         this.color = color;
-        document.getElementById("tool-color").style.setProperty("--color", "rgba(" + color[0] + "," + color[1] + "," + color[2] + "," + color[3] + ")");
+        document.querySelectorAll("[data-tool-color-menu-button]").forEach(e => { 
+            e.style.setProperty("--color", "rgba(" + color[0] + "," + color[1] + "," + color[2] + "," + color[3] + ")"); 
+        })
         this.ctx.fillStyle = "rgba(" + color[0] + "," + color[1] + "," + color[2] + "," + color[3] + ")";
         this.pctx.fillStyle = "rgba(" + color[0] + "," + color[1] + "," + color[2] + "," + color[3] + ")";
         act(document.querySelectorAll(`[data-palette-color='${rgbToHex(color[0], color[1], color[2], color[3])}']`))
@@ -2534,7 +2536,6 @@ window.addEventListener('resize', () => {
     vw = window.innerWidth;
     document.documentElement.style.setProperty('--vh', `${vh}px`);
     document.documentElement.style.setProperty('--vw', `${vw}px`);
-    alrt.log(vh + "px * " + vw + "px")
 });
 
 let alrt;
