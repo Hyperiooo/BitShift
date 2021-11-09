@@ -441,8 +441,8 @@ body {
     cursor: pointer;
     font-size: 20px;
     border-radius: 5px;
-    width: 40px;
-    height: 40px;
+    min-width: 40px;
+    min-height: 40px;
     transition: 0.3s background, 0.3s color, 0.3s fill;
     display: flex;
     justify-content: center;
@@ -1078,10 +1078,12 @@ input {
         bottom: 0;
         background: var(--bgMain);
         width: 100vw;
-        overflow: hidden;
+        overflow-y: hidden;
+        overflow-x: auto;
         position: fixed;
-        display: block;
         pointer-events: all;
+        max-height: 56px;
+        display: flex;
     }
     .toolbar-top {
         float: unset;

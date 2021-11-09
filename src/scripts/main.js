@@ -168,20 +168,6 @@ class Canvas {
         this.changeBrushSize(settings.tools.brushSize.value)
         this.imageData = this.ctx.getImageData(0, 0, this.width, this.height)
         console.log(this.imageData)
-        this.canvas.addEventListener("click", e => {
-            var rect = this.canvas.getBoundingClientRect();
-            var x = (e.clientX) - rect.left;
-            var y = (e.clientY) - rect.top;
-            x = Math.floor(this.width * x / (this.canvas.clientWidth * this.canvScale));
-            y = Math.floor(this.height * y / (this.canvas.clientHeight * this.canvScale));
-            if (Tools.fillBucket && settings.tools.contiguous.value) {
-                console.log(x >= this.width)
-                this.filler(x, y, this.data[x][y]);
-            } else if (Tools.fillBucket && !settings.tools.contiguous.value) {
-                this.fillerNonContiguous(new Point(x, y));
-            }
-
-        });
 
         this.panzoom = panzoom(this.canvas, {
             smoothScroll: false,
@@ -267,6 +253,27 @@ class Canvas {
             this.inputUp(e)
         }
 
+        this.clickEvent = (e) => {
+            var rect = this.canvas.getBoundingClientRect();
+            var x, y
+            if (e.touches) {
+                x = e.touches[0].clientX
+                y = e.touches[0].clientY
+            } else {
+                x = e.clientX
+                y = e.clientY
+            }
+            x = x - rect.left;
+            y = y - rect.top;
+            x = Math.floor(this.width * x / (this.canvas.clientWidth * this.canvScale));
+            y = Math.floor(this.height * y / (this.canvas.clientHeight * this.canvScale));
+            if (Tools.fillBucket && settings.tools.contiguous.value) {
+                this.filler(x, y, this.data[x][y]);
+            } else if (Tools.fillBucket && !settings.tools.contiguous.value) {
+                this.fillerNonContiguous(new Point(x, y));
+            }
+        }
+
         this.canvasParent.addEventListener("touchmove", this.moveEvent)
         this.canvasParent.addEventListener("mousemove", this.moveEvent)
         this.canvasParent.addEventListener("touchstart", this.touchStartEvent)
@@ -274,6 +281,8 @@ class Canvas {
         this.canvasParent.addEventListener("touchstart", this.touchStartEvent);
         this.canvasParent.addEventListener("touchend", this.touchEndEvent);
         this.canvasParent.addEventListener("mouseup", this.mouseUpEvent)
+        this.canvas.addEventListener("touchstart", this.clickEvent);
+        this.canvas.addEventListener("click", this.clickEvent);
 
     }
     destroy() {
@@ -901,8 +910,8 @@ class Canvas {
         if (!skipDuplicate) setPickerColor(color)
         if (skipDuplicate) updatePickerColor(color)
         this.color = color;
-        document.querySelectorAll("[data-tool-color-menu-button]").forEach(e => { 
-            e.style.setProperty("--color", "rgba(" + color[0] + "," + color[1] + "," + color[2] + "," + color[3] + ")"); 
+        document.querySelectorAll("[data-tool-color-menu-button]").forEach(e => {
+            e.style.setProperty("--color", "rgba(" + color[0] + "," + color[1] + "," + color[2] + "," + color[3] + ")");
         })
         this.ctx.fillStyle = "rgba(" + color[0] + "," + color[1] + "," + color[2] + "," + color[3] + ")";
         this.pctx.fillStyle = "rgba(" + color[0] + "," + color[1] + "," + color[2] + "," + color[3] + ")";
@@ -1010,8 +1019,7 @@ class Canvas {
             g = this.imageData.data[pixelPos + 1],
             b = this.imageData.data[pixelPos + 2],
             a = this.imageData.data[pixelPos + 3];
-
-        if (r == this.color[0] && b == this.color[1] && g == this.color[2] && a == this.color[3]) return
+        if (r == this.color[0] && g == this.color[1] && b == this.color[2] && a == this.color[3]) return
         this.floodFill(startX, startY, r, g, b, a);
 
         this.redraw();
@@ -1343,6 +1351,12 @@ class numberDraggable {
         document.addEventListener("touchmove", e => {
             if (this.do) {
                 this.el.value = clamp(parseInt(this.startVal) + Math.floor((e.touches[0].clientX - this.startX) / 10), this.el.min, this.el.max)
+                if (this.el.oninput) this.el.oninput(e)
+            }
+        })
+        document.addEventListener("mousemove", e => {
+            if (this.do) {
+                this.el.value = clamp(parseInt(this.startVal) + Math.floor((e.clientX - this.startX) / 10), this.el.min, this.el.max)
                 if (this.el.oninput) this.el.oninput(e)
             }
         })
@@ -1838,11 +1852,6 @@ function newProject() {
     closeMenu()
     localStorage.removeItem('pc-canvas-data');
     window.dim = new Popup("#popup");
-}
-var fillCol = [0, 0, 0, 0]
-function filler(x, y, cc) {
-    fillCol = cc
-    console.log(x, y, cc)
 }
 
 function lerp(v0, v1, t) {
