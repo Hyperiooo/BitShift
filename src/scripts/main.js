@@ -1886,10 +1886,12 @@ function install() {
 
 function toggleColorPicker() {
     document.getElementById('color-menu').classList.toggle("color-open")
+    document.getElementById('layer-menu').classList.remove("layer-open")
 }
 
 function toggleLayerMenu() {
     document.getElementById('layer-menu').classList.toggle("layer-open")
+    document.getElementById('color-menu').classList.remove("color-open")
 }
 
 function toggleMenu() {

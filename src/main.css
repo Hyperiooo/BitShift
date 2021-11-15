@@ -1156,6 +1156,10 @@ input {
     align-items: center;
 }
 
+.layer-active {
+    background: var(--importantT);
+}
+
 .layer-wrap:last-of-type {
     margin-bottom: 0;
 }
