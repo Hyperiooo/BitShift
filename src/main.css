@@ -342,7 +342,6 @@ body {
 
 #canvas {
     position: absolute;
-    transform: translate(calc(-50% + var(--canvTransformX)), calc(-50% + var(--canvTransformY))) scale(var(--canvScale), var(--canvScale));
     display: block !important;
     cursor: crosshair;
     touch-action: none;
@@ -350,8 +349,17 @@ body {
     image-rendering: -webkit-crisp-edges;
     image-rendering: pixelated;
     image-rendering: crisp-edges;
-    width: var(--canvX);
-    height: var(--canvY);
+}
+
+#layers-wrap {
+    position: absolute;
+    display: block !important;
+    cursor: crosshair;
+    touch-action: none;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: -webkit-crisp-edges;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
 }
 
 #bggridcanv {

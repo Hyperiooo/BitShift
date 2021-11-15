@@ -120,6 +120,7 @@ class Canvas {
         this.previewcanvas = document.querySelector("#previewcanv");
         this.bggridcanvas = document.querySelector("#bggridcanv");
         this.eBufferCanvas = document.getElementById("eraserBrushBufferParent");
+        this.canvaslayersparent = document.getElementById("layers-wrap")
         this.ectx = this.eBufferCanvas.getContext("2d");
         document.documentElement.style.setProperty('--canvScale', this.canvScale);
         this.canvas.width = this.canvUnit * width;
@@ -130,6 +131,10 @@ class Canvas {
         this.previewcanvas.height = this.canvUnit * height;
         this.width = width;
         this.height = height;
+        this.canvaslayersparent.width = this.width
+        this.canvaslayersparent.height = this.height
+        this.canvaslayersparent.style.width = this.width + "px"
+        this.canvaslayersparent.style.height = this.height + "px"
         if (window.innerHeight / this.height / 1.25 < window.innerWidth / this.width / 1.25) {
             settings.ui.canvasScale = window.innerHeight / this.height / 1.25
         } else {
@@ -169,7 +174,7 @@ class Canvas {
         this.imageData = this.ctx.getImageData(0, 0, this.width, this.height)
         console.log(this.imageData)
 
-        this.panzoom = panzoom(this.canvas, {
+        this.panzoom = panzoom(this.canvaslayersparent, {
             smoothScroll: false,
             initialX: this.width / 2 - (((this.canvasParent.offsetWidth / 2) - (this.width / 2)) / settings.ui.canvasScale),
             initialY: this.height / 2 - (((this.canvasParent.offsetHeight / 2) - (this.height / 2)) / settings.ui.canvasScale),
@@ -189,8 +194,9 @@ class Canvas {
         var _self = this
         this.panzoom.on('transform', function (e) {
             // This event will be called along with events above.
-            _self.previewcanvas.style.transform = _self.bggridcanvas.style.transform = _self.canvas.style.transform
-            _self.previewcanvas.style.transformOrigin = _self.bggridcanvas.style.transformOrigin = _self.canvas.style.transformOrigin
+            _self.previewcanvas.style.transform = _self.bggridcanvas.style.transform = _self.canvaslayersparent.style.transform
+            console.log(_self.canvaslayersparent.style.transform.split(" "))
+            _self.previewcanvas.style.transformOrigin = _self.bggridcanvas.style.transformOrigin = _self.canvaslayersparent.style.transformOrigin
             _self.setCanvScale(_self.panzoom.getTransform().scale)
             _self.setCanvTransform(_self.panzoom.getTransform().x, _self.panzoom.getTransform().y)
         });
