@@ -1888,6 +1888,10 @@ function toggleColorPicker() {
     document.getElementById('color-menu').classList.toggle("color-open")
 }
 
+function toggleLayerMenu() {
+    document.getElementById('layer-menu').classList.toggle("layer-open")
+}
+
 function toggleMenu() {
 
     document.querySelector(".menu").classList.toggle("menu-open")

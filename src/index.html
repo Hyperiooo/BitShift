@@ -65,7 +65,7 @@
       </span>
       <div id="tool-settings-content"></div>
     </div>
-    <div class="color-menu color-open" id="color-menu"
+    <div class="color-menu" id="color-menu"
       ondrop="dropHandler(event);" ondragover="dragOverHandler(event);"
       ondragleave="dragLeaveHandler(event);"
       ondragend="dragLeaveHandler(event);">
@@ -171,6 +171,52 @@
       <div id="palettes" class="drop_zone">
       </div>
     </div>
+    <div class="layer-menu layer-open" id="layer-menu">
+      <div class="layer-main">
+        <div class="layer-wrap">
+          <div class="layer-preview"></div>
+          <div class="layer-name">Layer 1</div>
+        </div>
+        <div class="layer-wrap">
+          <div class="layer-preview"></div>
+          <div class="layer-name">Layer 1</div>
+        </div>
+        <div class="layer-wrap">
+          <div class="layer-preview"></div>
+          <div class="layer-name">Layer 1</div>
+        </div>
+        <div class="layer-wrap">
+          <div class="layer-preview"></div>
+          <div class="layer-name">Layer 1</div>
+        </div>
+        <div class="layer-wrap">
+          <div class="layer-preview"></div>
+          <div class="layer-name">Layer 1</div>
+        </div>
+        <div class="layer-wrap">
+          <div class="layer-preview"></div>
+          <div class="layer-name">Layer 1</div>
+        </div>
+        <div class="layer-wrap">
+          <div class="layer-preview"></div>
+          <div class="layer-name">Layer 1</div>
+        </div>
+      </div>
+      <div class="layer-menu-controls">
+        <button class="layer-menu-button">
+          Copy
+        </button>
+        <button class="layer-menu-button">
+          Delete
+        </button>
+        <button class="layer-menu-button">
+          Group
+        </button>
+        <button class="layer-menu-button">
+          New
+        </button>
+      </div>
+    </div>
     <div id="popup" class="popup">
       <h1>New File</h1>
       <span class="popup-input-group">
@@ -219,7 +265,7 @@
             onclick="toggleColorPicker()"><i
               class="ri-checkbox-blank-circle-fill" data-tool-color-menu-button></i></span>
           <span class="item toolbar-portrait-only"
-            onclick="toggleColorPicker()"><i
+            onclick="toggleLayerMenu()"><i
               class="ri-stack-fill"></i></span>
         </div>
       </div>
@@ -263,6 +309,9 @@
           <span class="item toolbar-landscape-only"
             onclick="toggleColorPicker()"><i
               class="ri-checkbox-blank-circle-fill" data-tool-color-menu-button></i></span>
+          <span class="item toolbar-landscape-only"
+            onclick="toggleLayerMenu()"><i
+              class="ri-stack-fill"></i></span>
           <span class="item" onclick="board.clear()"><i
               class="ri-delete-bin-fill"></i></span>
         </div>
