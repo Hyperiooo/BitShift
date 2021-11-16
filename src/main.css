@@ -1160,7 +1160,7 @@ input {
     position: relative;
     height: 55px;
     display: flex;
-    justify-content: space-between;
+    justify-content: left;
     align-items: center;
 }
 
@@ -1180,7 +1180,9 @@ input {
 }
 
 .layer-name {
-    width: 100%;
+    width: fit-content;
+    max-width: 200px;
+    overflow: hidden;
     margin: 4px;
     margin-left: 16px;
     color: var(--textDim);

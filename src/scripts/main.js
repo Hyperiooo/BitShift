@@ -195,7 +195,6 @@ class Canvas {
         this.panzoom.on('transform', function (e) {
             // This event will be called along with events above.
             _self.previewcanvas.style.transform = _self.bggridcanvas.style.transform = _self.canvaslayersparent.style.transform
-            console.log(_self.canvaslayersparent.style.transform.split(" "))
             _self.previewcanvas.style.transformOrigin = _self.bggridcanvas.style.transformOrigin = _self.canvaslayersparent.style.transformOrigin
             _self.setCanvScale(_self.panzoom.getTransform().scale)
             _self.setCanvTransform(_self.panzoom.getTransform().x, _self.panzoom.getTransform().y)
@@ -480,7 +479,6 @@ class Canvas {
                                 r = Math.abs(y - this.sY)
                             }
                         }
-                        //this.tempL = circle(Math.floor(r), c);
                         this.tempL = ellipse(c.x + (r * 2), c.y + (r * 2), c.x, c.y)
                         if (settings.tools.shapeFilled.value) this.filledData = { "r": math.floor(r), "c": c };
                         var p;
