@@ -1,48 +1,48 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
   <head>
+    <!--METADATA-->
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BitShift</title>
+    <link rel="icon"
+      type="image/svg"
+      href="../assets/logo.svg">
+    <link rel="manifest" href="manifest.json" />
+
     <!--REMOVE THESE AND REPLACE WITH ACTUAL ALRT-->
     <script
       src="https://cdn.jsdelivr.net/gh/Hyperiooo/Alrt.js@main/src/alrt.js"></script>
     <link rel="stylesheet"
       href="https://cdn.jsdelivr.net/gh/Hyperiooo/Alrt.js@main/src/alrt.css">
-    <link rel="manifest" href="manifest.json" />
+
+    <!--COLOR-->
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/chroma-js/2.1.0/chroma.min.js"></script>
-    <script src="./scripts/Matrix.js"></script>
-    <script src="./scripts/Shapes.js"></script>
-    <script src="./scripts/Transformation.js"></script>
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/synaptic/1.1.4/synaptic.js"></script>
     <script src="./scripts/anypalette.js"></script>
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.0/color-thief.umd.js"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap"
-      rel="stylesheet"
-      />
+
+    <!--SCRIPTS-->
+    <script src="./scripts/Matrix.js"></script>
+    <script src="./scripts/Shapes.js"></script>
+    <script src="./scripts/Transformation.js"></script>
     <script src="./scripts/gif.js"></script>
-    <link rel="stylesheet" href="main.css" />
+    <script src="./scripts/panzoom.js"></script>
+    <script defer type="text/javascript" src="./scripts/main.js"></script>
+
+    <!--STYLES & FONTS-->
+    <link rel="stylesheet" href="../styles/main.css" />
     <link
       href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css"
       rel="stylesheet"
       />
-    <script src="https://unpkg.com/interactjs/dist/interact.min.js"></script>
-    <link rel="icon"
-      type="image/svg"
-      href="./assets/logo.svg">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
       href="https://fonts.googleapis.com/css2?family=JetBrains+Mono&family=Roboto:wght@400;500;600;700&display=swap"
       rel="stylesheet">
-    <script src="./scripts/panzoom.js"></script>
   </head>
   <body>
     <img id="img" />
@@ -171,7 +171,8 @@
       <div class="layer-main">
         <div class="layer-wrap">
           <div class="layer-preview"></div>
-          <div class="layer-name" contenteditable onkeypress="return (this.innerText.length <= 20)">Layer 1</div>
+          <div class="layer-name" contenteditable onkeypress="return
+            (this.innerText.length <= 20)">Layer 1</div>
         </div>
         <div class="layer-wrap">
           <div class="layer-preview"></div>
@@ -316,5 +317,4 @@
 
       </div>
     </body>
-    <script type="text/javascript" src="./scripts/main.js"></script>
   </html>
