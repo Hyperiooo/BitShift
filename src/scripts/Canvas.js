@@ -142,6 +142,8 @@ class Canvas {
                 return
             } else {
             }
+
+            if(e.button != 0) return
             this.inputActive(e)
         }
 
