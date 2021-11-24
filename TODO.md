@@ -8,6 +8,7 @@ A list of all the things planned to do for BitShift
   - Effect surrounding pixels
 - Magic wand tool
 - Marquee tool
+  - add stuff to a dummy canvas and clip with either canvas built in clip or with global composite
 - General transforming and rotation
 - Tool settings
   - ~~Main Window~~
@@ -50,8 +51,10 @@ A list of all the things planned to do for BitShift
 ## Layers
 - Layer settings 
   - Image blending
+    - can be done with global composite operations when exporting, when editing can be done with css blend modes
   - opacity
   - alpha lock
+    - can be done with global composite operations
   - hidden or not
   - locked
 - Layer folders
