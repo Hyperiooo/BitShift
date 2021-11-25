@@ -195,5 +195,7 @@ A list of all the things planned to do for BitShift
   - blur
   - grayscale
   - outline
+- tile preview
+- possible recording, take snapshot of all canvases every x seconds
 - ~~pinch zoom in/out on value color box to resize it~~
   - ~~hide hue and opacity~~- 
