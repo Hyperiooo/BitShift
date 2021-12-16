@@ -176,30 +176,6 @@
     </div>
     <div class="layer-menu layer-open" id="layer-menu">
       <div id="layer-main">
-        <div class="layer-wrap">
-          <div class="layer-preview"></div>
-          <div class="layer-name">Layer 1</div>
-        </div>
-        <div class="layer-wrap">
-          <div class="layer-preview"></div>
-          <div class="layer-name">Layer 2</div>
-        </div>
-        <div class="layer-wrap">
-          <div class="layer-preview"></div>
-          <div class="layer-name">Layer 3</div>
-        </div>
-        <div class="layer-wrap">
-          <div class="layer-preview"></div>
-          <div class="layer-name">Layer 4</div>
-        </div>
-        <div class="layer-wrap">
-          <div class="layer-preview"></div>
-          <div class="layer-name">Layer 5</div>
-        </div>
-        <div class="layer-wrap layer-active">
-          <div class="layer-preview"></div>
-          <div class="layer-name">Layer 6</div>
-        </div>
       </div>
       <div class="layer-menu-controls">
         <button class="layer-menu-button">
@@ -211,7 +187,7 @@
         <button class="layer-menu-button">
           Group
         </button>
-        <button class="layer-menu-button">
+        <button onclick="newLayer(project.width, project.height)" class="layer-menu-button">
           New
         </button>
       </div>
@@ -249,7 +225,7 @@
     <div id="canvas-parent">
       <canvas id="previewcanv"></canvas>
       <div id="layers-wrap">
-        <canvas id="canvas"></canvas>
+        <canvas class="drawingCanvas" id="canvas" data-z-index="-10"></canvas>
       </div>
       <canvas id="bggridcanv"></canvas>
     </div>

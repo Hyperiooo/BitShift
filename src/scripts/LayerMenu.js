@@ -6,37 +6,25 @@ function toggleLayerMenu() {
 var container = document.querySelector("#layer-main");
 sorter = new dragSort(container, "layer-wrap");
 
-var order = [
+var layers = [
+]
+/*
     {
         "name": "Layer 1",
-        "index": 5
-    },
-    {
-        "name": "Layer 2",
-        "index": 4
+        "index": null,
+        "id": "a",
+        "previewCanvas": null,
+        "layerElement": null,
+        "canvasElement": null,
+        "ctx": null,
+        "settings": {
 
+        },
+        "data": null
     },
-    {
-        "name": "Layer 3",
-        "index": 3
+*/
 
-    },
-    {
-        "name": "Layer 4",
-        "index": 2
-
-    },
-    {
-        "name": "Layer 5",
-        "index": 1
-
-    },
-    {
-        "name": "Layer 6",
-        "index": 0
-
-    }
-]
+var activeLayer = ""
 
 
 function dragSort(container, handleClass, scrollElement = null) {
@@ -63,6 +51,7 @@ function dragSort(container, handleClass, scrollElement = null) {
 
 
     var lastClientY;
+    var lastClientX;
 
     var raf;
 
@@ -99,17 +88,17 @@ function dragSort(container, handleClass, scrollElement = null) {
 
             initIntersectionState();
 
-            initFloatingItem(targetElement, event.clientY);
+            initFloatingItem(targetElement, event.clientX, event.clientY);
 
-            container.addEventListener("pointermove", userMoved, { passive: true });
-            container.addEventListener("pointerup", userReleased, { passive: true });
-            container.addEventListener("pointercancel", userReleased, {
+            document.addEventListener("pointermove", userMoved, { passive: true });
+            document.addEventListener("pointerup", userReleased, { passive: true });
+            document.addEventListener("pointercancel", userReleased, {
                 passive: true
             });
-            container.addEventListener("pointerleave", userReleased);
+            document.addEventListener("pointerleave", userReleased);
 
-            beginScroll(event.clientY);
-            beginRenderLoop(event.clientY);
+            beginScroll(event.clientX, event.clientY);
+            beginRenderLoop(event.clientX, event.clientY);
 
             container.classList.add("active");
             targetElement.classList.add("moving");
@@ -122,19 +111,21 @@ function dragSort(container, handleClass, scrollElement = null) {
         console.log("move");
 
         lastClientY = event.clientY;
+        lastClientX = event.clientX;
     }
 
     function userReleased(event) {
         console.log("end");
+        reorderLayers()
 
         container.classList.remove("active");
 
         endRenderLoop();
 
-        container.removeEventListener("pointermove", userMoved);
-        container.removeEventListener("pointerup", userReleased);
-        container.removeEventListener("pointercancel", userReleased);
-        container.removeEventListener("pointerleave", userReleased);
+        document.removeEventListener("pointermove", userMoved);
+        document.removeEventListener("pointerup", userReleased);
+        document.removeEventListener("pointercancel", userReleased);
+        document.removeEventListener("pointerleave", userReleased);
 
         restoreFloatingItem(event.clientY);
         returnRenderLoop()
@@ -143,25 +134,20 @@ function dragSort(container, handleClass, scrollElement = null) {
         draggingElement.it.classList.remove("moving");
     }
 
-    function beginRenderLoop(clientY) {
+    function beginRenderLoop(clientX, clientY) {
         lastClientY = clientY;
+        lastClientX = clientX;
         mainRenderLoop();
     }
     var curScale = 1
     var scaleDest = 1
     var activeScale = 0.8
     var neutralScale = 1
-    var curPos = 0
-    var activePos = 0
-    var posDest = 0
-    function mainRenderLoop() {
-        curScale = lerp(curScale, scaleDest, .6)
-        draggingElement.it.style.setProperty("--s", Math.round(curScale * 100) / 100)
-        translateFloatingItem(lastClientY);
-        updateScroll(lastClientY);
-
-        raf = requestAnimationFrame(mainRenderLoop);
-    }
+    var curPosY = 0
+    var curPosX = 0
+    var activePosY = 0
+    var posDestY = 0
+    var posDestX = 0
 
     function endRenderLoop() {
         cancelAnimationFrame(raf);
@@ -170,13 +156,14 @@ function dragSort(container, handleClass, scrollElement = null) {
 
     function returnRenderLoop() {
         curScale = lerp(curScale, neutralScale, .25)
-        curPos = lerp(curPos, posDest, .25)
+        curPosY = lerp(curPosY, posDestY, .25)
+        curPosX = lerp(curPosX, posDestX, .25)
         draggingElement.it.style.setProperty("--s", curScale)
-        draggingElement.it.style["transform"] = "translateY(" + (curPos - posDest) + "px) scale(var(--s), var(--s))"
+        draggingElement.it.style["transform"] = "translate(" + (curPosX - posDestX) + "px," + (curPosY - posDestY) + "px) scale(var(--s), var(--s))"
         retRaf = requestAnimationFrame(returnRenderLoop)
-        if (Math.abs(neutralScale - curScale) < 0.01 && Math.abs(curPos - posDest) < 0.01) {
+        if (Math.abs(neutralScale - curScale) < 0.01 && Math.abs(curPosY - posDestY) < 0.01 && Math.abs(curPosX - posDestX) < 0.01) {
             draggingElement.it.style.setProperty("--s", neutralScale)
-            draggingElement.it.style["transform"] = "translateY(0px) scale(var(--s), var(--s))"
+            draggingElement.it.style["transform"] = "translate(0px, 0px) scale(var(--s), var(--s))"
             endReturnRenderLoop()
         }
     }
@@ -184,12 +171,29 @@ function dragSort(container, handleClass, scrollElement = null) {
     function endReturnRenderLoop() {
         cancelAnimationFrame(retRaf)
     }
+    function mainRenderLoop() {
+        curScale = lerp(curScale, scaleDest, .3)
+        draggingElement.it.style.setProperty("--s", Math.round(curScale * 100) / 100)
+        translateFloatingItem(lastClientX, lastClientY);
+        updateScroll(lastClientX, lastClientY);
 
-    function initFloatingItem(target, clientY) {
+        draggingElement.centerOffsetX = lerp(draggingElement.centerOffsetX, draggingElement.targetCenterOffsetX, 0.6)
+        draggingElement.centerOffsetY = lerp(draggingElement.centerOffsetY, draggingElement.targetCenterOffsetY, 0.6)
+
+        raf = requestAnimationFrame(mainRenderLoop);
+    }
+
+    function initFloatingItem(target, clientX, clientY) {
         scaleDest = activeScale
         draggingElement.it = target;
         draggingElement.bbox = draggingElement.it.getBoundingClientRect();
-        draggingElement.offset = draggingElement.bbox.top - clientY;
+        draggingElement.offsetY = draggingElement.bbox.top - clientY;
+        draggingElement.offsetX = clientX;
+        draggingElement.centerOffsetX = 0
+        draggingElement.targetCenterOffsetX = ((draggingElement.bbox.width * .5) - (clientX - draggingElement.bbox.left));
+        draggingElement.centerOffsetY = 0
+        draggingElement.targetCenterOffsetY = ((draggingElement.bbox.height * .5) - (clientY - draggingElement.bbox.top));
+
         draggingElement.index = Array.prototype.indexOf.call(
             draggingElement.it.parentNode.children,
             draggingElement.it
@@ -204,7 +208,7 @@ function dragSort(container, handleClass, scrollElement = null) {
         draggingElement.it.style.setProperty("top", '0px');
         draggingElement.it.style["width"] = (draggingElement.bbox.width - 8) + "px";
 
-        translateFloatingItem(clientY);
+        translateFloatingItem(clientX, clientY);
 
 
         var nodes = Array.prototype.slice.call(draggingElement.it.parentElement.children)
@@ -212,16 +216,18 @@ function dragSort(container, handleClass, scrollElement = null) {
         console.log()
         draggingElement.containerPadding = container.style["padding-bottom"];
         container.style["padding-bottom"] =
-            "" + (draggingElement.bbox.height + (oIndex == draggingElement.it.parentElement.children.length - 1 ? 0 : 6) ) + "px";
+            "" + (draggingElement.bbox.height + (oIndex == draggingElement.it.parentElement.children.length - 1 ? 0 : 8)) + "px";
     }
 
-    var elementPosition
-    function translateFloatingItem(clientY) {
+    var elementPositionY
+    var elementPositionX
+    function translateFloatingItem(clientX, clientY) {
         var currentScroll = getScroll();
-        elementPosition = (clientY + draggingElement.offset) - 70;
+        elementPositionY = (clientY + draggingElement.offsetY - draggingElement.centerOffsetY) - 70;
+        elementPositionX = (clientX - draggingElement.offsetX - draggingElement.centerOffsetX);
 
         draggingElement.it.style.transform =
-            "translateY(" + (elementPosition) + "px) scale(var(--s), var(--s))";
+            "translate(" + (elementPositionX) + "px, " + (elementPositionY) + "px) scale(var(--s), var(--s))";
 
         drawGap(
             calculateListIndex(clientY + currentScroll),
@@ -230,10 +236,12 @@ function dragSort(container, handleClass, scrollElement = null) {
     }
 
     function restoreFloatingItem(lastClientY) {
-        activePos = elementPosition
-        curPos = activePos
-        posDest = 69 * (calculateListIndex(lastClientY + getScroll()))
-        console.log(elementPosition, 69 * (calculateListIndex(lastClientY + getScroll())))
+        activePosY = elementPositionY
+        curPosY = activePosY
+        activePosX = elementPositionX
+        curPosX = activePosX
+        posDestY = 69 * (calculateListIndex(lastClientY + getScroll()))
+        posDestX = 0
         draggingElement.it.style["position"] = draggingElement.position;
         draggingElement.it.style["z-index"] = draggingElement.zIndex;
         clearGap();
@@ -331,7 +339,7 @@ function dragSort(container, handleClass, scrollElement = null) {
         var lastVisible = calculateListIndex(
             scrollElementTop + getScrollableArea() + getScroll()
         );
-        
+
         lastVisible += 10;
 
         if (lastVisible > container.children.length - 1) {
@@ -347,7 +355,7 @@ function dragSort(container, handleClass, scrollElement = null) {
             } else if (i < Math.floor(position + fixPosition)) {
                 it.style.transform = "";
             } else {
-                it.style.transform = "translateY(" + (size + 6) + "px) scale(var(--s), var(--s))";
+                it.style.transform = "translateY(" + (size + 8) + "px) scale(var(--s), var(--s))";
             }
         }
     }
@@ -370,12 +378,12 @@ function dragSort(container, handleClass, scrollElement = null) {
         } else {
             finalIndex = listIndex - 1
         }
-        arraymove(order, oIndex, finalIndex)
-        for (let i = 0; i < order.length; i++) {
-            const el = order[i];
-            el.index = (order.length - 1) - i
+        arraymove(layers, oIndex, finalIndex)
+        for (let i = 0; i < layers.length; i++) {
+            const el = layers[i];
+            el.index = (layers.length - 1) - i
         }
-        console.table(order)
+        console.table(layers)
 
         if (listIndex == 0) {
             container.prepend(item.it);
@@ -400,7 +408,7 @@ function dragSort(container, handleClass, scrollElement = null) {
         }
     }
 
-    function beginScroll(cursorY) {
+    function beginScroll(cursorX, cursorY) {
         var relativeCursorY = cursorY - scrollElementTop;
 
         height = getScrollableArea();
@@ -418,7 +426,7 @@ function dragSort(container, handleClass, scrollElement = null) {
         }
     }
 
-    function updateScroll(cursorY) {
+    function updateScroll(cursorX, cursorY) {
         var relativeCursorY = cursorY - scrollElementTop;
 
         var height = getScrollableArea();
@@ -506,4 +514,155 @@ function arraymove(arr, fromIndex, toIndex) {
     var element = arr[fromIndex];
     arr.splice(fromIndex, 1);
     arr.splice(toIndex, 0, element);
+}
+
+function populateLayers() {
+    layers.forEach(e => {
+        createLayer(e.name)
+    })
+}
+
+function createLayer(n, data, settings) {   //create layer with set data; e.g. load a layer from a file
+    console.log(project.width, project.height)
+    var id = randomString(10)
+    console.log(layers.length)
+    var wrap = document.createElement("div")
+    wrap.classList.add("layer-wrap")
+    wrap.id = "l-" + id
+    wrap.onclick = ()=> {
+        setLayer(id)
+    }
+    var previewWrapper = document.createElement("div")
+    previewWrapper.classList.add("layer-preview")
+    var preview = document.createElement("canvas")
+    preview.width = project.width
+    preview.height = project.height
+    var name = document.createElement("div")
+    name.classList.add("layer-name")
+    name.innerText = n
+    wrap.appendChild(previewWrapper)
+    previewWrapper.appendChild(preview)
+    wrap.appendChild(name)
+    document.getElementById('layer-main').prepend(wrap)
+
+    var drawCanvas = document.createElement("canvas");
+    drawCanvas.width = project.width;
+    drawCanvas.height = project.height;
+    drawCanvas.classList.add("drawingCanvas")
+    drawCanvas.id = "c-" + id
+    drawCanvas.style.setProperty("--zindex", layers.length);
+    var context = drawCanvas.getContext("2d")
+    document.getElementById('layers-wrap').prepend(drawCanvas)
+
+    layers.unshift({
+        "name": n,
+        "index": layers.length,
+        "id": id,
+        "previewCanvas": preview,
+        "previewCTX": preview.getContext("2d"),
+        "layerElement": wrap,
+        "canvasElement": drawCanvas,
+        "ctx": context,
+        "settings": {
+
+        },
+        "data": data
+    })
+    let img = new Image();
+    img.setAttribute('src', data);
+    img.addEventListener("load", function () {
+        context.drawImage(img, 0, 0);
+        preview.getContext("2d").drawImage(img, 0, 0)
+    });
+    setLayer(id, false)
+
+}
+
+function newLayer(width, height) {   //create a blank layer
+    console.log(project.width, project.height)
+    var id = randomString(10)
+    var n = "Layer " + (layers.length + 1)
+    console.log(layers.length)
+    var wrap = document.createElement("div")
+    wrap.classList.add("layer-wrap")
+    wrap.id = "l-" + id
+    wrap.onclick = ()=> {
+        setLayer(id)
+    }
+    var preview = document.createElement("canvas")
+    preview.classList.add("layer-preview")
+    preview.width = project.width
+    preview.height = project.height
+    var name = document.createElement("div")
+    name.classList.add("layer-name")
+    name.innerText = n
+    wrap.appendChild(preview)
+    wrap.appendChild(name)
+    document.getElementById('layer-main').prepend(wrap)
+
+    var drawCanvas = document.createElement("canvas");
+    drawCanvas.width = project.width;
+    drawCanvas.height = project.height;
+    drawCanvas.classList.add("drawingCanvas")
+    drawCanvas.id = "c-" + id
+    drawCanvas.style.setProperty("--zindex", layers.length);
+    var context = drawCanvas.getContext("2d")
+    document.getElementById('layers-wrap').prepend(drawCanvas)
+
+    layers.unshift({
+        "name": n,
+        "index": layers.length,
+        "id": id,
+        "previewCanvas": preview,
+        "previewCTX": preview.getContext("2d"),
+        "layerElement": wrap,
+        "canvasElement": drawCanvas,
+        "ctx": context,
+        "settings": {
+
+        },
+        "data": null        
+    })
+    setLayer(id, true)
+}
+
+function clearLayerMenu() {
+    document.getElementById('layer-main').innerText = ''
+
+}
+
+function setLayer(id, setColor) {
+    layer = layers.find(obj => {
+        return obj.id == id
+    })
+    document.querySelectorAll(".layer-active").forEach(e => {
+        e.classList.remove("layer-active")
+    })
+    if (layer) {
+        layer.layerElement.classList.add("layer-active")
+        activeLayer = id
+        board.ctx = layer.ctx
+        board.setcolor(board.color)
+    }
+}
+
+function updateCanvasPreview() {
+    layer = layers.find(obj => {
+        return obj.id == activeLayer
+    })
+    if (layer) {
+        console.log()
+        layer.data = layer.canvasElement.toDataURL()
+        layer.previewCTX.clearRect(0, 0, layer.canvasElement.width, layer.canvasElement.height)
+        layer.previewCTX.drawImage(layer.canvasElement, 0, 0)
+    }
+}
+
+function reorderLayers() {
+    layers.forEach(e => {
+        i = e.index
+        setTimeout(() => {
+            e.canvasElement.style.setProperty("--zindex", e.index)
+        }, 10);
+    })
 }

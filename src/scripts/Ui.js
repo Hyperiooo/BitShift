@@ -64,8 +64,11 @@ function closePopup() {
 
 document.querySelector("#close").onclick = function () {
     clearPalettes()
+    clearLayerMenu()
+    layers = []
     if (typeof board !== 'undefined') {
         board.destroy()
+        
     }
     var width = +document.querySelector("#width").value;
     var height = +document.querySelector("#height").value;
@@ -74,19 +77,16 @@ document.querySelector("#close").onclick = function () {
     preparePalette()
     board.setcolor(colors[0].colors[0]);
     window.dim.close();
-    window.gif = new GIF({
-        workers: 2,
-        quality: 10,
-        width: this.canvUnit * window.board.width,
-        height: this.canvUnit * window.board.height
-    });
-    window.gif.on('finished', function (blob) {
-        var url = URL.createObjectURL(blob);
-        var link = document.createElement('a');
-        link.download = 'canvas.gif';
-        link.href = url;
-        link.click();
-    });
+    project = {
+        'palettes': filePalettes,
+        'currColor': board.color,
+        'width': width,
+        'height': height,
+        'dim': window.dim,
+        'layers': []
+    };
+
+    newLayer(width, height)
 }
 
 function toggleMenu() {

@@ -84,6 +84,16 @@ var settings = {
         },
     }
 };
+
+var project = {
+    'palettes': null,
+    'currColor': null,
+    'width': null,
+    'height': null,
+    'dim': window.dim,
+    'layers': layers
+};
+
 var lc = [];
 var preview = true;
 var isMobile = false;
@@ -120,14 +130,14 @@ window.onload = function () {
 
     if (canvasData) {
         data = JSON.parse(canvasData);
+        project = data
         window.board = new Canvas(data.width, data.height);
-        let img = new Image();
-        img.setAttribute('src', data.url);
-        img.addEventListener("load", function () {
-            window.board.ctx.drawImage(img, 0, 0);
-            window.board.imageData = window.board.ctx.getImageData(0, 0, window.board.height, window.board.width)
-            console.log(window.board.imageData)
-        });
+        //let img = new Image();
+        //img.setAttribute('src', data.url);
+        //img.addEventListener("load", function () {
+        //    window.board.ctx.drawImage(img, 0, 0);
+        //    window.board.imageData = window.board.ctx.getImageData(0, 0, window.board.height, window.board.width)
+        //});
         /*
         window.board.frames = JSON.parse(data.frames).map(frame=>{
           let img = new Image();
@@ -146,12 +156,18 @@ window.onload = function () {
        */
 
 
+
         window.board.steps = data.steps;
         window.board.redo_arr = data.redo_arr;
         if (data.palettes) window.colors = data.palettes
         preparePalette()
+        populateLayers()
         window.board.setcolor(data.currColor);
         updatePrevious(data.currColor)
+        data.layers.forEach(e => {
+            console.log(e)
+            createLayer(e.name, e.data, e.settings)
+        })
         window.gif = new GIF({
             workers: 2,
             quality: 10,
@@ -181,6 +197,18 @@ function newProject() {
 
 
 window.onbeforeunload = function () {
-    board.saveInLocal();
+    saveData();
 };
+
+function saveData() {
+    project = {
+        'palettes': filePalettes,
+        'currColor': board.color,
+        'width': board.width,
+        'height': board.height,
+        'dim': window.dim,
+        'layers': layers.reverse()
+    }
+    localStorage.setItem('pc-canvas-data', JSON.stringify(project));    
+}
 

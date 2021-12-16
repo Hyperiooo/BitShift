@@ -340,7 +340,8 @@ body {
     text-decoration: none;
 }
 
-#canvas {
+.drawingCanvas {
+    --zindex: 0;
     position: absolute;
     display: block !important;
     cursor: crosshair;
@@ -349,6 +350,7 @@ body {
     image-rendering: -webkit-crisp-edges;
     image-rendering: pixelated;
     image-rendering: crisp-edges;
+    z-index: var(--zindex) !important;
 }
 
 #layers-wrap {
@@ -360,6 +362,11 @@ body {
     image-rendering: -webkit-crisp-edges;
     image-rendering: pixelated;
     image-rendering: crisp-edges;
+}
+
+canvas * {
+    position: absolute;
+    top:0;
 }
 
 #bggridcanv {
@@ -781,7 +788,6 @@ path {
 .palette-color {
     z-index: 1 !important;
     position: relative;
-    display: inline-block;
     width: 10%;
     padding-top: 10%;
     cursor: pointer;
@@ -1074,9 +1080,8 @@ input {
     opacity: 0;
     transform: translate(0, -10px);
     transition: 0.2s opacity, 0.2s transform, max-height 0.2s;
-    overflow-y: hidden;
-    overflow-x: hidden;
     pointer-events: none;
+    width: 335px;
 }
 
 #layer-menu.layer-open {
@@ -1086,9 +1091,9 @@ input {
 }
 
 .layer-menu-controls {
-    width: calc(100% - 12px);
-    margin: 6px;
-    border-radius: 7px;
+    width: calc(100% - 16px);
+    margin: 8px;
+    border-radius: 5px;
     overflow: hidden;
     display: flex;
     flex-direction: row;
@@ -1163,18 +1168,19 @@ input {
 .layer-wrap {
     --s: 1;
     --y: 0px;
-    width: 300px;
+    width: 302px;
     padding: 4px;
     background: var(--bgLight);
-    margin: 6px;
+    margin: 8px;
     margin-right: 0;
-    border-radius: 7px;
+    border-radius: 5px;
     position: relative;
     height: 55px;
     display: flex;
     justify-content: left;
     align-items: center;
     transform: scale(var(--s), var(--s)) translateY(var(--y));
+    transition: background 0.3s;
 }
 
 .layer-active {
@@ -1186,10 +1192,23 @@ input {
 }
 
 .layer-preview {
-    min-width: 55px;
-    min-height: 55px;
-    background: red;
+    width: 55px;
+    height: 55px;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 8 8'%3E%3Cg fill='%23bababa' fill-opacity='0.4'%3E%3Cpath fill-rule='evenodd' d='M0 0h4v4H0V0zm4 4h4v4H4V4z'/%3E%3C/g%3E%3C/svg%3E"), linear-gradient(to right, white, white);
     border-radius: 3px;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: -webkit-crisp-edges;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+    position: relative;
+}
+
+.layer-preview canvas {
+    max-width: 55px;
+    max-height: 55px;
+    position: absolute;
+    left: 50%; top:50%;
+    transform: translate(-50%, -50%);
 }
 
 .layer-name {

@@ -11,21 +11,17 @@ class Canvas {
 
 
         this.initialScale = 1
-        this.canvUnit = 1
         this.canvScale = settings.ui.canvasScale
-        this.canvas = document.querySelector("#canvas");
         this.previewcanvas = document.querySelector("#previewcanv");
         this.bggridcanvas = document.querySelector("#bggridcanv");
         this.eBufferCanvas = document.getElementById("eraserBrushBufferParent");
         this.canvaslayersparent = document.getElementById("layers-wrap")
         this.ectx = this.eBufferCanvas.getContext("2d");
         document.documentElement.style.setProperty('--canvScale', this.canvScale);
-        this.canvas.width = this.canvUnit * width;
-        this.canvas.height = this.canvUnit * height;
-        this.bggridcanvas.width = this.canvUnit * width;
-        this.bggridcanvas.height = this.canvUnit * height;
-        this.previewcanvas.width = this.canvUnit * width;
-        this.previewcanvas.height = this.canvUnit * height;
+        this.bggridcanvas.width = width;
+        this.bggridcanvas.height = height;
+        this.previewcanvas.width = width;
+        this.previewcanvas.height = height;
         this.width = width;
         this.height = height;
         this.canvaslayersparent.width = this.width
@@ -38,21 +34,13 @@ class Canvas {
             settings.ui.canvasScale = window.innerWidth / this.width / 1.25
 
         }
-        this.canvas.style.display = "block";
-        //this.canvas.style.height = Math.floor((height / width) * this.canvas.clientWidth) + "px";
-        console.log(this.canvas.clientWidth)
         this.previewcanvas.style.display = "block";
-        //this.previewcanvas.style.height = Math.floor((height / width) * this.previewcanvas.clientWidth) + "px";
         this.bggridcanvas.style.display = "block";
-        //this.bggridcanvas.style.height = Math.floor((height / width) * this.previewcanvas.clientWidth) + "px";
-        this.w = +this.canvas.width;
-        this.h = +this.canvas.height;
-        this.ctx = this.canvas.getContext("2d");
+        this.w = width;
+        this.h = height;
+        this.ctx
         this.pctx = this.previewcanvas.getContext("2d");
         this.bggctx = this.bggridcanvas.getContext("2d");
-        /*this.ctx.fillStyle = "white";
-        this.ctx.globalAlpha = 1;
-        this.ctx.fillRect(0, 0, this.w, this.h);*/
         this.data = [...Array(this.width)].map(e => Array(this.height).fill([255, 255, 255, 255]));
         this.steps = [];
         this.redo_arr = [];
@@ -67,9 +55,6 @@ class Canvas {
         this.altKey = false;
         this.wasInCanv = false;
         this.drawBgGrid()
-        this.changeBrushSize(settings.tools.brushSize.value)
-        this.imageData = this.ctx.getImageData(0, 0, this.width, this.height)
-        console.log(this.imageData)
 
         this.panzoom = panzoom(this.canvaslayersparent, {
             smoothScroll: false,
@@ -158,7 +143,7 @@ class Canvas {
         }
 
         this.clickEvent = (e) => {
-            var rect = this.canvas.getBoundingClientRect();
+            var rect = this.bggridcanvas.getBoundingClientRect();
             var x, y
             if (e.touches) {
                 x = e.touches[0].clientX
@@ -169,8 +154,8 @@ class Canvas {
             }
             x = x - rect.left;
             y = y - rect.top;
-            x = Math.floor(this.width * x / (this.canvas.clientWidth * this.canvScale));
-            y = Math.floor(this.height * y / (this.canvas.clientHeight * this.canvScale));
+            x = Math.floor(this.width * x / (this.bggridcanvas.clientWidth * this.canvScale));
+            y = Math.floor(this.height * y / (this.bggridcanvas.clientHeight * this.canvScale));
             if (Tools.fillBucket && settings.tools.contiguous.value) {
                 this.filler(x, y, this.data[x][y]);
             } else if (Tools.fillBucket && !settings.tools.contiguous.value) {
@@ -185,8 +170,8 @@ class Canvas {
         this.canvasParent.addEventListener("touchstart", this.touchStartEvent);
         this.canvasParent.addEventListener("touchend", this.touchEndEvent);
         this.canvasParent.addEventListener("mouseup", this.mouseUpEvent)
-        this.canvas.addEventListener("touchstart", this.clickEvent);
-        this.canvas.addEventListener("click", this.clickEvent);
+        this.canvasParent.addEventListener("touchstart", this.clickEvent);
+        this.canvasParent.addEventListener("click", this.clickEvent);
 
     }
     destroy() {
@@ -200,11 +185,11 @@ class Canvas {
     }
     inputDown(e) {
         updatePrevious(this.color)
-        var rect = this.canvas.getBoundingClientRect();
+        var rect = this.bggridcanvas.getBoundingClientRect();
         var x = e.clientX - rect.left || e.touches[0].clientX - rect.left;
         var y = e.clientY - rect.top || e.touches[0].clientY - rect.top;
-        x = Math.floor(this.width * x / (this.canvas.clientWidth * this.canvScale));
-        y = Math.floor(this.height * y / (this.canvas.clientHeight * this.canvScale));
+        x = Math.floor(this.width * x / (this.bggridcanvas.clientWidth * this.canvScale));
+        y = Math.floor(this.height * y / (this.bggridcanvas.clientHeight * this.canvScale));
         if (Tools.circle || Tools.ellipse || Tools.line || Tools.rect || Tools.pen || Tools.eraser) {
             this.sX = x;
             this.sY = y;
@@ -228,7 +213,7 @@ class Canvas {
         }
         this.sX = null;
         this.sY = null;
-        console.log(this.linePoints)
+        updateCanvasPreview()
         this.linePoints = [];
 
     }
@@ -236,7 +221,7 @@ class Canvas {
         this.shiftKey = e.shiftKey;
         this.ctrlKey = e.ctrlKey;
         this.altKey = e.altKey;
-        var rect = this.canvas.getBoundingClientRect();
+        var rect = this.bggridcanvas.getBoundingClientRect();
         var x = (e.clientX) - rect.left || e.touches[0].clientX - rect.left || -1;
         var y = (e.clientY) - rect.top || e.touches[0].clientY - rect.top || -1;
         x = Math.floor((x) / (this.canvScale));
@@ -517,18 +502,6 @@ class Canvas {
         var inv = 1.0 / step;
         return Math.round(value * inv) / inv;
     }
-    changeBrushSize(sz) {
-        console.log(sz)
-        //let slide = document.getElementById('brushSzSlide')
-        //let txt = document.getElementById('brushSzNum')
-        //let icon = document.getElementById('brushSzIcon')
-        //slide.value = sz
-        //txt.value = sz
-        settings.tools.brushSize.value = sz
-        //icon.style.fontSize = Math.max(Math.min(sz, 30), 5) + "px"
-        //var value = (slide.value - slide.min) / (slide.max - slide.min) * 100
-        //slide.style.background = 'linear-gradient(to right, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.15) ' + value + '%, rgba(255, 255, 255, 0.03) ' + value + '%, rgba(255, 255, 255, 0.03) 100%)'
-    }
     zoom(z) {
         this.setCanvScale(Math.max(settings.ui.canvasScale + z, 1))
     }
@@ -553,8 +526,8 @@ class Canvas {
         let nRow = Math.ceil(this.height / settings.background.height)
         var ctx = this.bggctx;
         this.clearBgGrid()
-        var w = settings.background.width * this.canvUnit;
-        var h = settings.background.height * this.canvUnit;
+        var w = settings.background.width;
+        var h = settings.background.height;
         nRow = nRow || 8;    // default number of rows
         nCol = nCol || 8;    // default number of columns
 
@@ -816,7 +789,7 @@ class Canvas {
         document.querySelectorAll("[data-tool-color-menu-button]").forEach(e => {
             e.style.setProperty("--color", "rgba(" + color[0] + "," + color[1] + "," + color[2] + "," + color[3] + ")");
         })
-        this.ctx.fillStyle = "rgba(" + color[0] + "," + color[1] + "," + color[2] + "," + color[3] + ")";
+        if (this.ctx) this.ctx.fillStyle = "rgba(" + color[0] + "," + color[1] + "," + color[2] + "," + color[3] + ")";
         this.pctx.fillStyle = "rgba(" + color[0] + "," + color[1] + "," + color[2] + "," + color[3] + ")";
         act(document.querySelectorAll(`[data-palette-color='${rgbToHex(color[0], color[1], color[2], color[3])}']`))
     }
@@ -835,6 +808,7 @@ class Canvas {
         this.ctx.fillRect(0, 0, this.w, this.h);
         this.data = [...Array(this.width)].map(e => Array(this.height).fill([255, 255, 255, 255]));
         this.setcolor(this.color);
+        updateCanvasPreview();
     }
 
     clearCanv() {
@@ -926,6 +900,7 @@ class Canvas {
         this.floodFill(startX, startY, r, g, b, a);
 
         this.redraw();
+        updateCanvasPreview();
     }
 
     floodFill(startX, startY, startR, startG, startB, startA) {
@@ -1052,22 +1027,6 @@ class Canvas {
             this.ctx.globalAlpha = step[3];
             this.draw(step[0], step[1], true);
         });
-    }
-
-    saveInLocal() {
-        /*let a = this.frames.map(frame=> [frame[0].src,frame[1]]);
-        let f =  JSON.stringify(a);*/
-        let d = {
-            'palettes': filePalettes,
-            'currColor': this.color,
-            'width': this.width,
-            'height': this.height,
-            'url': this.canvas.toDataURL(),
-            'steps': this.steps,
-            'redo_arr': this.redo_arr,
-            'dim': window.dim,
-        }
-        localStorage.setItem('pc-canvas-data', JSON.stringify(d));
     }
     /*
         addImage() {
