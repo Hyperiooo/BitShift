@@ -227,8 +227,10 @@ class Canvas {
         x = Math.floor((x) / (this.canvScale));
         y = Math.floor((y) / (this.canvScale));
         if (e.buttons != 0) {
+            if(activeLayer.settings.locked) return
             if (this.sX === null || this.sY === null) { if (!Tools.sprayPaint && !Tools.eyedropper) return }
             if (Tools.pen) {
+                console.log("a")
                 let P = line(new Point(this.sX, this.sY), new Point(x, y))
                 let p
                 for (p of P) {
@@ -249,8 +251,7 @@ class Canvas {
                 this.sX = x;
                 this.sY = y;
             }
-            else if (Tools.sprayPaint) {
-                console.log('a')
+            else if (Tools.sprayPaint && e.buttons == 1) {
                 let brushSize = parseInt(settings.tools.spraySize.value)
                 let r = brushSize - 1
                 //let c = filledEllipse(p.x, p.y, 2, 2)
@@ -466,7 +467,9 @@ class Canvas {
                 }
             }
         } else if (e.buttons == 0) {
+            
             if (preview) {
+                if(activeLayer.settings.locked) return
                 var tempCol
                 this.previewcanvas.style.setProperty("--opac", 1)
 

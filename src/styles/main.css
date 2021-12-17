@@ -1220,6 +1220,33 @@ input {
     color: var(--textDim);
 }
 
+.layer-visibility {
+    position: absolute;
+    background: none;
+    border:none;
+    font-size: 20px;
+    color: var(--textDim);
+    padding: 0;
+    margin: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 15px;
+    cursor: pointer;
+}
+.layer-locked {
+    position: absolute;
+    background: none;
+    border:none;
+    font-size: 20px;
+    color: var(--textDim);
+    padding: 0;
+    margin: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 45px;
+    cursor: pointer;
+}
+
 /* media queries */
 
 @media screen and (max-width: 600px) and (orientation: portrait) {

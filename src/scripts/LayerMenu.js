@@ -24,7 +24,7 @@ var layers = [
     },
 */
 
-var activeLayer = ""
+var activeLayer = null
 
 
 function dragSort(container, handleClass, scrollElement = null) {
@@ -141,7 +141,7 @@ function dragSort(container, handleClass, scrollElement = null) {
     }
     var curScale = 1
     var scaleDest = 1
-    var activeScale = 0.8
+    var activeScale = 0.9
     var neutralScale = 1
     var curPosY = 0
     var curPosX = 0
@@ -172,7 +172,7 @@ function dragSort(container, handleClass, scrollElement = null) {
         cancelAnimationFrame(retRaf)
     }
     function mainRenderLoop() {
-        curScale = lerp(curScale, scaleDest, .3)
+        curScale = lerp(curScale, scaleDest, .2)
         draggingElement.it.style.setProperty("--s", Math.round(curScale * 100) / 100)
         translateFloatingItem(lastClientX, lastClientY);
         updateScroll(lastClientX, lastClientY);
@@ -529,8 +529,8 @@ function createLayer(n, data, settings) {   //create layer with set data; e.g. l
     var wrap = document.createElement("div")
     wrap.classList.add("layer-wrap")
     wrap.id = "l-" + id
-    wrap.onclick = ()=> {
-        setLayer(id)
+    wrap.onclick = (e)=> {
+        if(e.target == wrap) setLayer(id)
     }
     var previewWrapper = document.createElement("div")
     previewWrapper.classList.add("layer-preview")
@@ -544,6 +544,28 @@ function createLayer(n, data, settings) {   //create layer with set data; e.g. l
     previewWrapper.appendChild(preview)
     wrap.appendChild(name)
     document.getElementById('layer-main').prepend(wrap)
+
+    var visButton = document.createElement("button")
+    visButton.classList.add("layer-visibility")
+    visButton.setAttribute("onclick", `toggleLayerVisibility('${id}', this)`)
+
+    var visIcon = document.createElement("i")
+    visIcon.classList.add("ri-eye-line")
+
+    visButton.appendChild(visIcon)
+
+    var lockButton = document.createElement("button")
+    lockButton.classList.add("layer-locked")
+    lockButton.setAttribute("onclick", `toggleLayerLock('${id}', this)`)
+
+    var lockIcon = document.createElement("i")
+    lockIcon.classList.add("ri-lock-unlock-line")
+
+    lockButton.appendChild(lockIcon)
+
+    wrap.appendChild(visButton)
+
+    wrap.appendChild(lockButton)
 
     var drawCanvas = document.createElement("canvas");
     drawCanvas.width = project.width;
@@ -564,7 +586,8 @@ function createLayer(n, data, settings) {   //create layer with set data; e.g. l
         "canvasElement": drawCanvas,
         "ctx": context,
         "settings": {
-
+            "visible": true,
+            "locked": false
         },
         "data": data
     })
@@ -586,8 +609,8 @@ function newLayer(width, height) {   //create a blank layer
     var wrap = document.createElement("div")
     wrap.classList.add("layer-wrap")
     wrap.id = "l-" + id
-    wrap.onclick = ()=> {
-        setLayer(id)
+    wrap.onclick = (e)=> {
+        if(e.target == wrap) setLayer(id)
     }
     var preview = document.createElement("canvas")
     preview.classList.add("layer-preview")
@@ -599,6 +622,28 @@ function newLayer(width, height) {   //create a blank layer
     wrap.appendChild(preview)
     wrap.appendChild(name)
     document.getElementById('layer-main').prepend(wrap)
+
+    var visButton = document.createElement("button")
+    visButton.classList.add("layer-visibility")
+    visButton.setAttribute("onclick", `toggleLayerVisibility('${id}', this)`)
+
+    var visIcon = document.createElement("i")
+    visIcon.classList.add("ri-eye-line")
+
+    visButton.appendChild(visIcon)
+
+    var lockButton = document.createElement("button")
+    lockButton.classList.add("layer-locked")
+    lockButton.setAttribute("onclick", `toggleLayerLock('${id}', this)`)
+
+    var lockIcon = document.createElement("i")
+    lockIcon.classList.add("ri-lock-unlock-line")
+
+    lockButton.appendChild(lockIcon)
+
+    wrap.appendChild(visButton)
+
+    wrap.appendChild(lockButton)
 
     var drawCanvas = document.createElement("canvas");
     drawCanvas.width = project.width;
@@ -619,7 +664,8 @@ function newLayer(width, height) {   //create a blank layer
         "canvasElement": drawCanvas,
         "ctx": context,
         "settings": {
-
+            "visible": true,
+            "locked": false
         },
         "data": null        
     })
@@ -640,7 +686,7 @@ function setLayer(id, setColor) {
     })
     if (layer) {
         layer.layerElement.classList.add("layer-active")
-        activeLayer = id
+        activeLayer = layer
         board.ctx = layer.ctx
         board.setcolor(board.color)
     }
@@ -648,10 +694,9 @@ function setLayer(id, setColor) {
 
 function updateCanvasPreview() {
     layer = layers.find(obj => {
-        return obj.id == activeLayer
+        return obj.id == activeLayer.id
     })
     if (layer) {
-        console.log()
         layer.data = layer.canvasElement.toDataURL()
         layer.previewCTX.clearRect(0, 0, layer.canvasElement.width, layer.canvasElement.height)
         layer.previewCTX.drawImage(layer.canvasElement, 0, 0)
@@ -665,4 +710,36 @@ function reorderLayers() {
             e.canvasElement.style.setProperty("--zindex", e.index)
         }, 10);
     })
+}
+
+function toggleLayerVisibility(id, el) {
+    layer = layers.find(obj => {
+        return obj.id == id
+    })
+    if(layer) {
+        if(layer.settings.visible == true) {
+            el.querySelector("i").classList.replace("ri-eye-line", "ri-eye-off-line")
+            layer.settings.visible = false
+            layer.canvasElement.style.visibility = "hidden"
+        }else if(layer.settings.visible == false) {
+            el.querySelector("i").classList.replace("ri-eye-off-line", "ri-eye-line")
+            layer.settings.visible = true
+            layer.canvasElement.style.visibility = "unset"
+        }
+    }
+}
+
+function toggleLayerLock(id, el) {
+    layer = layers.find(obj => {
+        return obj.id == id
+    })
+    if(layer) {
+        if(layer.settings.locked == true) {
+            el.querySelector("i").classList.replace("ri-lock-line", "ri-lock-unlock-line")
+            layer.settings.locked = false
+        }else if(layer.settings.locked == false) {
+            el.querySelector("i").classList.replace("ri-lock-unlock-line", "ri-lock-line")
+            layer.settings.locked = true
+        }
+    }
 }
