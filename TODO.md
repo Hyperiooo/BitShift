@@ -55,12 +55,11 @@ A list of all the things planned to do for BitShift
   - opacity
   - alpha lock
     - can be done with global composite operations
-  - hidden or not
-  - locked
+  - ~~hidden or not~~
+  - ~~locked~~
 - Layer folders
 - Reference images
-- Create new layer
-- Use masonry.js to handle the movement - https://masonry.desandro.com/ 
+- ~~Create new layer~~
 
 ## Animation
 - Add frames
@@ -115,7 +114,8 @@ A list of all the things planned to do for BitShift
 - ~~Give borders of palette windows an extra 4px~~
 
 ## Other
-- Keyboard Shortcuts
+- ~~Keyboard Shortcuts~~
+  - added framework for them
 - Undo / Redo
 - Give spray tool an outline to show the radius of possible spray locations
 - Show preview details for rectangle, line, and circle
@@ -126,8 +126,8 @@ A list of all the things planned to do for BitShift
 - ~~Give eraser outline to show where it will erase~~
 
 ## Bugs
-- Some event listeners use faulty `touches` detection; adapt to new way of doing it (can be based on `opacDrag()`)
 - when creating palette via preview, the palette doesnt save properly unless it is used (clicking on a swatch)
+- ~~Some event listeners use faulty `touches` detection; adapt to new way of doing it (can be based on `opacDrag()`)~~
 - ~~Setting color via number inputs doesnt change the actual brush color~~
 - ~~valueRect appears as undefined sometimes~~
 - ~~Zoom tool is not functional~~
