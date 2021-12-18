@@ -673,8 +673,12 @@ function newLayer(width, height) {   //create a blank layer
 }
 
 function clearLayerMenu() {
+    console.trace('a')
     document.getElementById('layer-main').innerText = ''
+}
 
+function clearLayers() {
+    document.getElementById('layers-wrap').innerText = ''
 }
 
 function setLayer(id, setColor) {

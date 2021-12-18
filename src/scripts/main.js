@@ -186,6 +186,7 @@ window.onload = function () {
         newProject();
     }
     setmode("pen")
+    populatePresets()
 }
 
 
@@ -209,6 +210,46 @@ function saveData() {
         'dim': window.dim,
         'layers': layers.reverse()
     }
-    localStorage.setItem('pc-canvas-data', JSON.stringify(project));    
+    localStorage.setItem('pc-canvas-data', JSON.stringify(project));
 }
 
+var presets = [
+    [16, 16],
+    [32, 32],
+    [64, 64],
+    [128, 128],
+    
+    [256, 256],
+    [512, 512],
+    [1024, 1024],
+    
+    [160, 144, "Gameboy"],
+    [240, 160, "GBA"],
+    [256, 240, "NES"],
+    [256, 225, "SNES"],
+    [320, 224, "Genesis"],
+    
+]
+
+
+function setPreset(w, h, el) {
+    document.querySelectorAll(".popup-preset-active").forEach(e => {
+        e.classList.remove("popup-preset-active")
+    })
+    el.classList.add("popup-preset-active")
+    document.getElementById("width").value = w
+    document.getElementById("height").value = h
+}
+
+function populatePresets() {
+    var parent = document.getElementById("popup-presets")
+
+    for(let i = 0; i < presets.length; i++) {
+        let preset = presets[i]
+        parent.innerHTML += `<button class="popup-preset" onclick="setPreset(${preset[0]}, ${preset[1]}, this)">
+          <i class="ri-file-3-line"></i>
+          ${preset[2] ? `<h1>${preset[2]}</h1>` : `<h1 style="opacity: 0; visibility: hidden">+</h1>`}
+          <h2>${preset[0]} x ${preset[1]}</h2>
+        </button>`
+    }
+}

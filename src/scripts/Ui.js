@@ -65,6 +65,7 @@ function closePopup() {
 document.querySelector("#close").onclick = function () {
     clearPalettes()
     clearLayerMenu()
+    clearLayers()
     layers = []
     if (typeof board !== 'undefined') {
         board.destroy()

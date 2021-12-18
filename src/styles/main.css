@@ -25,6 +25,7 @@ body {
     --bgMain: #070b10;
     --canvasBg: #101317;
     --bgLight: #181b1e;
+    --bgDark: #0f1216;
     --textMain: #bcbec4;
     --textDim: #a8abb0;
     --important: #0034ab;
@@ -42,6 +43,7 @@ body {
     --bgMain: #18171a;
     --canvasBg: #202022;
     --bgLight: #262628;
+    --bgDark: #131214;
     --textMain: #ffffff;
     --textDim: #cacaca;
     --important: #2741ff;
@@ -59,6 +61,7 @@ body {
     --bgMain: #6c6e71;
     --canvasBg: #86888c;
     --bgLight: #797b7e;
+    --bgDark: #5e6064;
     --textMain: #e8ebee;
     --textDim: #dadce0;
     --important: #00beee;
@@ -75,7 +78,8 @@ body {
 .ui-theme-light {
     --bgMain: #ffffff;
     --canvasBg: #eaeaee;
-    --bgLight: #dbdbe0;
+    --bgLight: #dbdde0;
+    --bgDark: #eef0f5;
     --textMain: #0b0c1a;
     --textDim: #1b1c2e;
     --important: #3e88ff;
@@ -101,33 +105,107 @@ body {
     background: var(--bgMain);
     color: var(--textMain);
     font-size: 20px;
-    position: fixed;
-    display: block;
-    max-width: 420px;
+    position: absolute;
     transition: 0.2s all;
     z-index: 2;
     border-radius: 13px;
-    min-width: 150px;
-    top: 64px;
-    left: 8px;
+    top: 50%;
+    left: 50%;
     opacity: 0;
-    transform: translate(0, -10px);
+    transform: translate(-50%, calc(-50% + 10px));
     transition: 0.2s opacity, 0.2s transform;
     pointer-events: none;
+    width: 567px;
+}
+
+.popup-content {
+    display: flex;
+    align-items: center;
+    justify-items: space-between;
 }
 
 .popup-open {
     pointer-events: all;
     opacity: 1;
-    transform: translate(0, 0);
+    transform: translate(-50%, -50%);
 }
 
-.popup h1 {
+.popup-top-bar h1 {
     margin: 0;
     font-size: 25px;
-    margin-bottom: 10px;
+}
+
+.popup-preset-group {
+    margin: 8px;
+    font-size: 25px;
+    background: var(--bgDark);
+    border-radius: 5px;
+    width: 400px;
+    height: 302px;
+    margin-top: 0;
+    display: inline-block;
+    overflow: hidden;
+}
+
+.popup-preset {
+    margin: 0;
+    background: var(--bgLight);
+    height: 90px;
+    width: 90px;
+    border-radius: 3px;
+    margin-top: 8px;
+    margin-left: 8px;
+    display: inline-flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    align-items: center;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor: pointer;
+    transition: 0.2s background;
+    border: none;
+}
+
+.popup-preset:hover, .popup-preset:focus, .popup-preset-active {
+    background: var(--importantT);
+}
+
+.popup-preset i{
+    font-size: 32px;
+    margin: 0;
+    padding: 0;
+    color: var(--textDim);
+}
+
+.popup-preset h1{
+    font-size: 16px;
+    margin: 0;
+    padding: 0;
+    flex-basis: 100%;
+    margin-top: -12px;
+    color: var(--textMain);
+}
+.popup-preset h2{
+    font-size: 12px;
+    margin: 0;
+    padding: 0;
+    flex-basis: 100%;
+    margin-top: -12px;
+    color: var(--textDim);
+}
+
+.popup-sidebar {
+    height: 300px;
+    margin: 0;
+    margin-top: -8px;
+}
+
+.popup-top-bar {
     margin: 15px 12px;
     margin-bottom: 10px;
+    width: calc(100% - 24px);
 }
 
 .popup-input-group {
@@ -135,7 +213,8 @@ body {
     justify-content: space-between;
     margin: 8px;
     margin-top: 0;
-    min-width: 200px;
+    margin-left: 0;
+    margin-right: 0;
 }
 
 .popup-input-wrap {
@@ -231,7 +310,6 @@ body {
     width: 5px;
     height: 10px;
     border: solid var(--importantText);
-    ;
     border-width: 0 3px 3px 0;
     -webkit-transform: rotate(45deg);
     -ms-transform: rotate(45deg);
@@ -288,6 +366,8 @@ body {
     float: right;
     margin: 8px;
     margin-top: 0px;
+    margin-left: 0;
+    margin-right: 0;
 }
 
 .menu {

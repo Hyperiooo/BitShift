@@ -29,7 +29,7 @@
     <script src="./scripts/Ui.js" defer></script>
     <script src="./scripts/Canvas.js" defer></script>
     <script src="./scripts/Tools.js" defer></script>
-    <script src="./scripts/LayerMenu.js" defer></script>
+    <script src="./scripts/Layers.js" defer></script>
     <script src="./scripts/ColorMenu.js" defer></script>
     <script src="./scripts/Transformation.js" defer></script>
     <script src="./scripts/KeyboardInput.js" defer></script>
@@ -191,39 +191,47 @@
       </div>
     </div>
     <div id="popup" class="popup">
-      <h1>New File</h1>
-      <span class="popup-input-group">
-        <p class="popup-input-title">Width</p>
-        <div class="popup-input-wrap">
-          <div class="popup-input-field">
-            <input data-input-num-draggable class="popup-input-num"
-              type="number" id="width" value="16"
-              />
-            <p class="popup-input-unit">px</p>
-          </div>
-        </div>
-      </span>
-      <span class="popup-input-group">
-        <p class="popup-input-title">Height</p>
-        <div class="popup-input-wrap">
-          <div class="popup-input-field">
-            <input data-input-num-draggable class="popup-input-num"
-              type="number" id="height" value="16"
-              />
-            <p class="popup-input-unit">px</p>
-          </div>
-        </div>
-      </span>
-      <div class="popup-btn-group">
-        <button id="close" class="popup-btn popup-btn-imp">OK</button>
-        <button onclick="closePopup()" class="popup-btn">Cancel</button>
+      <div class="popup-top-bar">
+        <h1>New File</h1>
       </div>
+      <div class='popup-content'>
+        <div class="popup-preset-group" id="popup-presets">
+        </div>
+        <div class="popup-sidebar">
+          <span class="popup-input-group">
+            <p class="popup-input-title">Width</p>
+            <div class="popup-input-wrap">
+              <div class="popup-input-field">
+                <input data-input-num-draggable class="popup-input-num"
+                  type="number" id="width" value="16"
+                  />
+                <p class="popup-input-unit">px</p>
+              </div>
+            </div>
+          </span>
+          <span class="popup-input-group">
+            <p class="popup-input-title">Height</p>
+            <div class="popup-input-wrap">
+              <div class="popup-input-field">
+                <input data-input-num-draggable class="popup-input-num"
+                  type="number" id="height" value="16"
+                  />
+                <p class="popup-input-unit">px</p>
+              </div>
+            </div>
+          </span>
+          <div class="popup-btn-group">
+            <button id="close" class="popup-btn popup-btn-imp">OK</button>
+            <button onclick="closePopup()" class="popup-btn">Cancel</button>
+          </div>
+        </div>
+      </div>
+
     </div>
     <canvas id="eraserBrushBufferParent"></canvas>
     <div id="canvas-parent">
       <canvas id="previewcanv"></canvas>
       <div id="layers-wrap">
-        <canvas class="drawingCanvas" id="canvas" data-z-index="-10"></canvas>
       </div>
       <canvas id="bggridcanv"></canvas>
     </div>
