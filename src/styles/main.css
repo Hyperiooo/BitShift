@@ -200,6 +200,11 @@ body {
     height: 300px;
     margin: 0;
     margin-top: -8px;
+    margin-left: -12px;
+}
+.popup-column {
+    width: 300px;
+    margin: 0;
 }
 
 .popup-top-bar {
@@ -212,9 +217,6 @@ body {
     display: flex;
     justify-content: space-between;
     margin: 8px;
-    margin-top: 0;
-    margin-left: 0;
-    margin-right: 0;
 }
 
 .popup-input-wrap {
@@ -254,6 +256,41 @@ body {
     text-align: left;
     height: 28px;
     cursor: e-resize;
+}
+
+.popup-input-text {
+    background: var(--bgLight);
+    color: var(--textMain);
+    margin: 0;
+    padding: 0 5px;
+    font-size: 14px;
+    font-weight: bolder;
+    border: none;
+    border-radius: 5px;
+    width: 120px;
+    display: block;
+    font-weight: 100;
+    text-align: left;
+    height: 28px;
+    padding-right: 40px;
+}
+
+
+.popup-input-select {
+    background: var(--bgLight);
+    color: var(--textMain);
+    margin: 0;
+    padding: 0 5px;
+    font-size: 14px;
+    font-weight: bolder;
+    font-family: 'JetBrains Mono';
+    border: none;
+    border-radius: 5px;
+    display: block;
+    font-weight: 100;
+    text-align: left;
+    height: 28px;
+    cursor: pointer;
 }
 
 .popup-input-check {
@@ -366,8 +403,31 @@ body {
     float: right;
     margin: 8px;
     margin-top: 0px;
-    margin-left: 0;
-    margin-right: 0;
+}
+
+
+.export-menu {
+    background: var(--bgMain);
+    color: var(--textMain);
+    font-size: 20px;
+    position: absolute;
+    transition: 0.2s all;
+    z-index: 2;
+    border-radius: 13px;
+    top: 50%;
+    left: 50%;
+    opacity: 0;
+    transform: translate(-50%, calc(-50% + 10px));
+    transition: 0.2s opacity, 0.2s transform;
+    pointer-events: none;
+    min-width: 20px;
+    min-height: 20px;
+}
+
+.export-open {
+    pointer-events: all;
+    opacity: 1;
+    transform: translate(-50%, -50%);
 }
 
 .menu {
@@ -1281,6 +1341,13 @@ input {
     image-rendering: pixelated;
     image-rendering: crisp-edges;
     position: relative;
+}
+canvas {
+    
+    image-rendering: -moz-crisp-edges;
+    image-rendering: -webkit-crisp-edges;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
 }
 
 .layer-preview canvas {

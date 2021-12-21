@@ -33,6 +33,7 @@
     <script src="./scripts/ColorMenu.js" defer></script>
     <script src="./scripts/Transformation.js" defer></script>
     <script src="./scripts/KeyboardInput.js" defer></script>
+    <script src="./scripts/Exporter.js" defer></script>
     <script src="./scripts/gif.js"></script>
     <script src="./scripts/panzoom.js" defer></script>
     <script defer type="text/javascript" src="./scripts/main.js"></script>
@@ -54,7 +55,7 @@
       <div class="menu-btn" onclick="newProject()">New</div>
       <div class="menu-btn" onclick="board.save()">Save</div>
       <div class="menu-btn" onclick="board.save()">Save As</div>
-      <div class="menu-btn" onclick="board.save()">Export</div>
+      <div class="menu-btn" onclick="openExportMenu()">Export</div>
       <div class="menu-btn" onclick="openSettings()">Settings</div>
     </div>
     <div id="tool-settings" class="tool-settings-open">
@@ -227,6 +228,38 @@
         </div>
       </div>
 
+    </div>
+    <div id="export-menu" class="export-menu export-open">
+      <div class="popup-top-bar">
+        <h1>Export</h1>
+      </div>
+      <div class='popup-column' class="" style="--maxHeight: 136px;">
+        <span class="popup-input-group">
+          <p class="popup-input-title">File Name</p>
+          <div class="popup-input-wrap">
+            <div class="popup-input-field">
+              <input class="popup-input-text" id="export-file-name" type="text" value="canvas">
+              <p class="popup-input-unit" id="export-name-extension">.png</p>
+            </div>
+          </div>
+        </span>
+        <span class="popup-input-group">
+          <p class="popup-input-title">File Type</p>
+          <div class="popup-input-wrap">
+            <div class="popup-input-field">
+              <select name="type" id="export-file-type" value="png" oninput="document.getElementById('export-name-extension').innerHTML = '.' + this.value" class="popup-input-select">
+                <option value="png" selected>.png</option>
+                <option value="jpeg">.jpeg</option>
+                <option value="bmp">.bmp</option>
+              </select>
+            </div>
+          </div>
+        </span>
+        <div class="popup-btn-group">
+          <button onclick="exportFile()" class="popup-btn popup-btn-imp">OK</button>
+          <button onclick="closeExportMenu()" class="popup-btn">Cancel</button>
+        </div>
+      </div>
     </div>
     <canvas id="eraserBrushBufferParent"></canvas>
     <div id="canvas-parent">
