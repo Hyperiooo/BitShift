@@ -1,11 +1,15 @@
 function exportFile() {
+    var scaleFactor = 1;
+    scaleFactor = document.getElementById('export-scale').value
     var exportCanvas = document.createElement("canvas")
-    //document.body.appendChild(exportCanvas)
+    document.body.appendChild(exportCanvas)
     exportCanvas.style.width = "500px"
-    exportCanvas.width = project.width
-    exportCanvas.height = project.height
+    exportCanvas.width = project.width * scaleFactor
+    exportCanvas.height = project.height * scaleFactor
     var eCtx = exportCanvas.getContext("2d")
     eCtx.globalCompositeOperation = "destination-over"
+    eCtx.imageSmoothingEnabled = false
+    eCtx.scale(scaleFactor, scaleFactor)
     layers.forEach(e=> {
         if(e.settings.visible) eCtx.drawImage(e.canvasElement, 0, 0)
     })
