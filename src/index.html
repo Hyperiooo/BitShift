@@ -34,6 +34,7 @@
     <script src="./scripts/Transformation.js" defer></script>
     <script src="./scripts/KeyboardInput.js" defer></script>
     <script src="./scripts/Exporter.js" defer></script>
+    <script src="./scripts/Cursor.js" defer></script>
     <script src="./scripts/gif.js"></script>
     <script src="./scripts/panzoom.js" defer></script>
     <script defer type="text/javascript" src="./scripts/main.js"></script>
@@ -50,6 +51,9 @@
       rel="stylesheet">
   </head>
   <body>
+    <div id="cursor">
+      <img id="cursorimg" src="./assets/cursors/crosshair.png">
+    </div>  
     <img id="img" />
     <div class="menu">
       <div class="menu-btn" onclick="newProject()">New</div>
@@ -229,7 +233,7 @@
       </div>
 
     </div>
-    <div id="export-menu" class="export-menu export-open">
+    <div id="export-menu" class="export-menu">
       <div class="popup-top-bar">
         <h1>Export</h1>
       </div>
@@ -282,11 +286,12 @@
       </div>
     </div>
     <canvas id="eraserBrushBufferParent"></canvas>
-    <div id="canvas-parent">
-      <canvas id="previewcanv"></canvas>
-      <div id="layers-wrap">
+    <div id="canvas-parent" customcursor>
+      <canvas id="cursorcanv"></canvas>
+      <canvas id="previewcanv" customcursor></canvas>
+      <div id="layers-wrap" customcursor>
       </div>
-      <canvas id="bggridcanv"></canvas>
+      <canvas id="bggridcanv" customcursor></canvas>
     </div>
     <div id="toolbar" class="ui">
       <div class="toolbar-top">

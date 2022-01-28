@@ -85,7 +85,7 @@ function line(p1, p2) {
 	return points;
 }
 
-function ellipse(x0, y0, x1, y1) { 
+function ellipse(x0, y0, x1, y1) {
 	var ox0 = x0
 	var oy0 = y0
 	var ox1 = x1
@@ -100,10 +100,10 @@ function ellipse(x0, y0, x1, y1) {
 	a = 8 * a * a; b1 = 8 * b * b;
 	let points = []
 	do {
-		points.push(new Point(x1, y0));                                      /*   I. Quadrant */
+		points.push(new Point(parseInt(x1), y0));                                      /*   I. Quadrant */
 		points.push(new Point(x0, y0));                                      /*  II. Quadrant */
 		points.push(new Point(x0, y1));                                      /* III. Quadrant */
-		points.push(new Point(x1, y1));                                      /*  IV. Quadrant */
+		points.push(new Point(parseInt(x1), y1));                                      /*  IV. Quadrant */
 		e2 = 2 * err;
 		if (e2 <= dy) { y0++; y1--; err += dy += a; }                 /* y step */
 		if (e2 >= dx || 2 * err > dy) { x0++; x1--; err += dx += b1; }       /* x */

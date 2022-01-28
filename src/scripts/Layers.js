@@ -568,6 +568,7 @@ function createLayer(n, data, settings) {   //create layer with set data; e.g. l
     wrap.appendChild(lockButton)
 
     var drawCanvas = document.createElement("canvas");
+    drawCanvas.setAttribute("customcursor", "")
     drawCanvas.width = project.width;
     drawCanvas.height = project.height;
     drawCanvas.classList.add("drawingCanvas")
@@ -646,6 +647,7 @@ function newLayer(width, height) {   //create a blank layer
     wrap.appendChild(lockButton)
 
     var drawCanvas = document.createElement("canvas");
+    drawCanvas.setAttribute("customcursor", "")
     drawCanvas.width = project.width;
     drawCanvas.height = project.height;
     drawCanvas.classList.add("drawingCanvas")
@@ -678,7 +680,9 @@ function clearLayerMenu() {
 }
 
 function clearLayers() {
-    document.getElementById('layers-wrap').innerText = ''
+    document.getElementById('layers-wrap').querySelectorAll("canvas").forEach(e=> {
+        e.parentElement.removeChild(e)
+    })
 }
 
 function setLayer(id, setColor) {

@@ -102,6 +102,8 @@ function setmode(tool) {
         updateToolSettings(tool)
     }
     Tools[tool] = true
+    curCursor = settings.cursors[tool] || "crosshair"
+    updateCursor()
     document.querySelectorAll("#toolbar .item").forEach((x) => {
         x.classList.remove('tool-active');
     })

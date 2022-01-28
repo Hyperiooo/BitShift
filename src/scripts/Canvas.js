@@ -13,6 +13,7 @@ class Canvas {
         this.initialScale = 1
         this.canvScale = settings.ui.canvasScale
         this.previewcanvas = document.querySelector("#previewcanv");
+        this.cursorcanvas = document.querySelector("#cursorcanv");
         this.bggridcanvas = document.querySelector("#bggridcanv");
         this.eBufferCanvas = document.getElementById("eraserBrushBufferParent");
         this.canvaslayersparent = document.getElementById("layers-wrap")
@@ -40,6 +41,7 @@ class Canvas {
         this.h = height;
         this.ctx
         this.pctx = this.previewcanvas.getContext("2d");
+        this.ccctx = this.cursorcanvas.getContext("2d");
         this.bggctx = this.bggridcanvas.getContext("2d");
         this.data = [...Array(this.width)].map(e => Array(this.height).fill([255, 255, 255, 255]));
         this.steps = [];
@@ -76,8 +78,8 @@ class Canvas {
         var _self = this
         this.panzoom.on('transform', function (e) {
             // This event will be called along with events above.
-            _self.previewcanvas.style.transform = _self.bggridcanvas.style.transform = _self.canvaslayersparent.style.transform
-            _self.previewcanvas.style.transformOrigin = _self.bggridcanvas.style.transformOrigin = _self.canvaslayersparent.style.transformOrigin
+            _self.cursorcanvas.style.transform = _self.previewcanvas.style.transform = _self.bggridcanvas.style.transform = _self.canvaslayersparent.style.transform
+            _self.cursorcanvas.style.transformOrigin = _self.previewcanvas.style.transformOrigin = _self.bggridcanvas.style.transformOrigin = _self.canvaslayersparent.style.transformOrigin
             _self.setCanvScale(_self.panzoom.getTransform().scale)
             _self.setCanvTransform(_self.panzoom.getTransform().x, _self.panzoom.getTransform().y)
         });
@@ -128,7 +130,7 @@ class Canvas {
             } else {
             }
 
-            if(e.button != 0) return
+            if (e.button != 0) return
             this.inputActive(e)
         }
 
@@ -226,8 +228,14 @@ class Canvas {
         var y = (e.clientY) - rect.top || e.touches[0].clientY - rect.top || -1;
         x = Math.floor((x) / (this.canvScale));
         y = Math.floor((y) / (this.canvScale));
+        if (Tools.eraser) {
+            drawOutline(x,y)
+        };
+        if (Tools.sprayPaint) {
+            drawSprayOutline(x,y)
+        };
         if (e.buttons != 0) {
-            if(activeLayer.settings.locked) return
+            if (activeLayer.settings.locked) return
             if (this.sX === null || this.sY === null) { if (!Tools.sprayPaint && !Tools.eyedropper) return }
             if (Tools.pen) {
                 console.log("a")
@@ -467,22 +475,21 @@ class Canvas {
                 }
             }
         } else if (e.buttons == 0) {
-            
+
             if (preview) {
-                if(activeLayer.settings.locked) return
+                if (activeLayer.settings.locked) return
                 var tempCol
                 this.previewcanvas.style.setProperty("--opac", 1)
-
+                if(Tools.eyedropper) return
                 if (Tools.eraser) {
-                    this.previewcanvas.style.setProperty("--opac", 0.5)
-                    tempCol = this.color
-                    this.setcolor([125, 125, 125, 255])
+                    return;
                 };
                 this.pctx.globalCompositeOperation = "destination-out";
                 this.pctx.fillRect(0, 0, this.w, this.h);
                 if (isMobile) return;
                 let brushSize = parseInt(settings.tools.brushSize.value)
                 let r = brushSize - 1
+                if( Tools.fillBucket) r = 0;
                 let c;
                 if (brushSize % 2 == 0) {
                     c = filledEllipse(x - (r / 2) - .5, y - (r / 2) - .5, x + (r / 2) - .5, y + (r / 2) - .5)
@@ -490,10 +497,9 @@ class Canvas {
                     c = filledEllipse(x - (r / 2), y - (r / 2), x + (r / 2), y + (r / 2))
                 }
                 var b;
-                for (b of c) this.pDraw(b)
+                for (b of c) { this.pDraw(b) }
 
                 if (Tools.eraser) {
-                    this.setcolor(tempCol)
                 }
 
             }
@@ -511,6 +517,9 @@ class Canvas {
     setCanvScale(s) {
         settings.ui.canvasScale = s;
         this.canvScale = settings.ui.canvasScale;
+        this.cursorcanvas.width = project.width * this.canvScale;
+        this.cursorcanvas.height = project.height * this.canvScale;
+
         //document.documentElement.style.setProperty('--canvScale', this.canvScale);
     }
     setCanvTransform(x, y) {

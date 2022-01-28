@@ -13,6 +13,11 @@ var settings = {
         "transformX": 0,
         "transformY": 0,
     },
+    "cursors": {
+        "pen": "crosshair",
+        "eyedropper": "eyedropper",
+        "fillBucket": "fillbucket",
+    },
     "tools": {
         "assignments": {
             "pen": ["brushSize", "brushSquare", "brushSmoothing", "brushPixelPerfect"],
@@ -28,7 +33,7 @@ var settings = {
             "min": 1,
             "max": 100,
             "unit": "px",
-            "callback": "settings.tools.brushSize.value = this.value"
+            "callback": "settings.tools.brushSize.value = this.value; createBrushPoints()"
         },
         "brushSquare": {
             "title": "Square Brush",
@@ -74,7 +79,7 @@ var settings = {
             "min": 1,
             "max": 100,
             "unit": "px",
-            "callback": "settings.tools.spraySize.value = this.value"
+            "callback": "settings.tools.spraySize.value = this.value; createSprayPoints();"
         },
         "contiguous": {
             "title": "Contiguous",
@@ -187,6 +192,10 @@ window.onload = function () {
     }
     setmode("pen")
     populatePresets()
+    updateCursor()
+    createBrushPoints()
+    createSprayPoints()
+    
 }
 
 

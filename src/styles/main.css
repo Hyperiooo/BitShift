@@ -484,7 +484,6 @@ body {
     --zindex: 0;
     position: absolute;
     display: block !important;
-    cursor: crosshair;
     touch-action: none;
     image-rendering: -moz-crisp-edges;
     image-rendering: -webkit-crisp-edges;
@@ -496,7 +495,6 @@ body {
 #layers-wrap {
     position: absolute;
     display: block !important;
-    cursor: crosshair;
     touch-action: none;
     image-rendering: -moz-crisp-edges;
     image-rendering: -webkit-crisp-edges;
@@ -513,7 +511,6 @@ canvas * {
     position: absolute;
     transform: translate(calc(-50% + var(--canvTransformX)), calc(-50% + var(--canvTransformY))) scale(var(--canvScale), var(--canvScale));
     display: none;
-    cursor: crosshair;
     touch-action: none;
     image-rendering: -moz-crisp-edges;
     image-rendering: -webkit-crisp-edges;
@@ -532,7 +529,6 @@ canvas * {
     position: absolute;
     transform: translate(var(--canvTransformX), var(--canvTransformY)) scale(var(--canvScale), var(--canvScale));
     display: none;
-    cursor: crosshair;
     touch-action: none;
     image-rendering: -moz-crisp-edges;
     image-rendering: -webkit-crisp-edges;
@@ -544,6 +540,23 @@ canvas * {
     width: var(--canvX);
     height: var(--canvY);
     opacity: var(--opac);
+}
+#cursorcanv {
+    --opac: 1;
+    position: absolute;
+    transform: translate(var(--canvTransformX), var(--canvTransformY)) scale(var(--canvScale), var(--canvScale));
+    touch-action: none;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: -webkit-crisp-edges;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+    background: transparent;
+    z-index: 100000;
+    pointer-events: none;
+    width: var(--canvX);
+    height: var(--canvY);
+    z-index: 9999999999999999999999;
+    mix-blend-mode: difference;
 }
 
 #eraserBrushBufferParent {
@@ -558,6 +571,7 @@ canvas * {
     transform: translate(-50%);
     width: 100%;
     height: calc(var(--vh) - 56px);
+    cursor: none;
 }
 
 #toolbar {
@@ -1447,4 +1461,34 @@ canvas {
     #tool-settings {
         bottom: 64px;
     }
+}
+
+.canvas-outline {
+    position: absolute;
+    z-index: 100000;
+    background: red;
+    top: 1px;
+    left: 1px;
+    height: 1px;
+    width: 1px;
+    -webkit-backdrop-filter: blur(60%);
+}
+
+
+
+
+
+
+#cursor {
+    z-index: 99999999999;
+    position: absolute;
+    cursor: none;
+    mix-blend-mode: difference;
+    pointer-events: none;
+}
+
+#cursor img {
+    margin: 0;
+    position: absolute;
+    top: 0;
 }

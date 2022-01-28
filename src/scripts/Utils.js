@@ -188,3 +188,19 @@ function drawPix(x, y) {
     <div style="background:white; width:1px; height:1px; position: absolute; top: ${y}px; left: ${x}px; "></div>
     `
 }
+
+//filters array to make unique
+function uniq_fast(a) {
+    var seen = {};
+    var out = [];
+    var len = a.length;
+    var j = 0;
+    for(var i = 0; i < len; i++) {
+         var item = a[i];
+         if(seen[item] !== 1) {
+               seen[item] = 1;
+               out[j++] = item;
+         }
+    }
+    return out;
+}
