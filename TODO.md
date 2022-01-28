@@ -2,8 +2,8 @@
 A list of all the things planned to do for BitShift
 
 ## Tools
-- Spray brush tool
-  - Improve to make speed 1 not produce as many particles 
+- ~~Spray brush tool~~
+  - ~~Improve to make speed 1 not produce as many particles ~~
 - Smudge and scatter tools  
   - Effect surrounding pixels
 - Magic wand tool
@@ -85,10 +85,10 @@ A list of all the things planned to do for BitShift
   - Use Infinite Scroll.js - https://infinite-scroll.com/
   - Tagging
 - Account 
-- Export Image
-  - Format options
-  - Location options
-  - Resize options
+- ~~Export Image~~
+  - ~~Format options~~
+  - ~~Location options~~
+  - ~~Resize options~~
 - Image options
   - Resize canvas
   - Crop
@@ -117,7 +117,7 @@ A list of all the things planned to do for BitShift
 - ~~Keyboard Shortcuts~~
   - added framework for them
 - Undo / Redo
-- Give spray tool an outline to show the radius of possible spray locations
+- ~~Give spray tool an outline to show the radius of possible spray locations~~
 - Show preview details for rectangle, line, and circle
   - Height, width, starting & end point, radius etc
   - For a singular pixel, show cursors position on canvas
@@ -177,8 +177,8 @@ A list of all the things planned to do for BitShift
 - long press on color menu button and drag over canvas to fill
 - double click/tap on color preview to make a palette based on the color
 - ~~drag distance on palettes should only work on pc, on mobile devices it shuold be via a long press due to scrolling~~
-- Make mousedown/touchstart only draw when the button is lifted up/mouse is moved
-  - if two finger press, disable this
+- ~~Make mousedown/touchstart only draw when the button is lifted up/mouse is moved~~
+  - ~~if two finger press, disable this~~
 - ~~same thing for hue/value~~
 - dragging palette over color swatch button when the menu is closed should open the menu
 - Make eyedropper switch to previous tool
