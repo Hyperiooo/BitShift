@@ -10,6 +10,8 @@ var keyboardAssignments = {
     "S": e => { setmode("sprayPaint") },
     "I": e => { setmode("eyedropper") },
     "L": e => { setmode("line") },
+    "CONTROL+Z": e => { undo() },
+    "CONTROL+SHIFT+Z": e => { redo() },
 }
 
 function keyboardInput(e) {

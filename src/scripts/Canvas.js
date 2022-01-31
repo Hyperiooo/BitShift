@@ -217,6 +217,7 @@ class Canvas {
         this.sY = null;
         updateCanvasPreview()
         this.linePoints = [];
+        addToUndoStack();
 
     }
     inputActive(e) {
@@ -238,7 +239,6 @@ class Canvas {
             if (activeLayer.settings.locked) return
             if (this.sX === null || this.sY === null) { if (!Tools.sprayPaint && !Tools.eyedropper) return }
             if (Tools.pen) {
-                console.log("a")
                 let P = line(new Point(this.sX, this.sY), new Point(x, y))
                 let p
                 for (p of P) {
@@ -504,7 +504,6 @@ class Canvas {
 
             }
         }
-
     }
     round(value, step) {
         step || (step = 1.0);
