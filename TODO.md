@@ -117,6 +117,7 @@ A list of all the things planned to do for BitShift
 - ~~Keyboard Shortcuts~~
   - added framework for them
 - Undo / Redo
+  - added for brush strokes
 - ~~Give spray tool an outline to show the radius of possible spray locations~~
 - Show preview details for rectangle, line, and circle
   - Height, width, starting & end point, radius etc

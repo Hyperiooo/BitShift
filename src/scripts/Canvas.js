@@ -9,6 +9,9 @@ class Canvas {
             e.preventDefault()
         })
 
+        this.undoBuffer = "";
+        this.redoBuffer = "";
+
 
         this.initialScale = 1
         this.canvScale = settings.ui.canvasScale
@@ -197,6 +200,7 @@ class Canvas {
             this.sY = y;
         }
 
+        this.undoBuffer = layer.canvasElement.toDataURL();
     }
     inputUp(e) {
         if (Tools.circle || Tools.ellipse || Tools.line || Tools.rect) {
@@ -217,8 +221,28 @@ class Canvas {
         this.sY = null;
         updateCanvasPreview()
         this.linePoints = [];
-        addToUndoStack();
-
+        this.redoBuffer = layer.canvasElement.toDataURL();
+        var buf = this.undoBuffer;
+        var rbuf = this.redoBuffer;
+        var curCtx = layer.ctx
+        var curCanv = layer.canvasElement
+        var uCallback = function () {
+            var img = new window.Image();
+            img.setAttribute("src", buf);
+            img.onload = function () {
+                curCtx.clearRect(0, 0, curCanv.width, curCanv.height)
+                curCtx.drawImage(img, 0, 0);
+            };
+        }
+        var rCallback = function () {
+            var img = new window.Image();
+            img.setAttribute("src", rbuf);
+            img.onload = function () {
+                curCtx.clearRect(0, 0, curCanv.width, curCanv.height)
+                curCtx.drawImage(img, 0, 0);
+            };
+        }
+        addToUndoStack(uCallback, rCallback);
     }
     inputActive(e) {
         this.shiftKey = e.shiftKey;
@@ -230,10 +254,10 @@ class Canvas {
         x = Math.floor((x) / (this.canvScale));
         y = Math.floor((y) / (this.canvScale));
         if (Tools.eraser) {
-            drawOutline(x,y)
+            drawOutline(x, y)
         };
         if (Tools.sprayPaint) {
-            drawSprayOutline(x,y)
+            drawSprayOutline(x, y)
         };
         if (e.buttons != 0) {
             if (activeLayer.settings.locked) return
@@ -480,7 +504,7 @@ class Canvas {
                 if (activeLayer.settings.locked) return
                 var tempCol
                 this.previewcanvas.style.setProperty("--opac", 1)
-                if(Tools.eyedropper) return
+                if (Tools.eyedropper) return
                 if (Tools.eraser) {
                     return;
                 };
@@ -489,7 +513,7 @@ class Canvas {
                 if (isMobile) return;
                 let brushSize = parseInt(settings.tools.brushSize.value)
                 let r = brushSize - 1
-                if( Tools.fillBucket) r = 0;
+                if (Tools.fillBucket) r = 0;
                 let c;
                 if (brushSize % 2 == 0) {
                     c = filledEllipse(x - (r / 2) - .5, y - (r / 2) - .5, x + (r / 2) - .5, y + (r / 2) - .5)
