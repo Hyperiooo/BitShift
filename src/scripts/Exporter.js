@@ -7,7 +7,7 @@ function exportFile() {
     exportCanvas.width = project.width * scaleFactor
     exportCanvas.height = project.height * scaleFactor
     var eCtx = exportCanvas.getContext("2d")
-    eCtx.globalCompositeOperation = "destination-over"
+    eCtx.globalCompositeOperation = "multiply"
     eCtx.imageSmoothingEnabled = false
     eCtx.scale(scaleFactor, scaleFactor)
     layers.forEach(e=> {

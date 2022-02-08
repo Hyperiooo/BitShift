@@ -45,6 +45,11 @@
       href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css"
       rel="stylesheet"
       />
+      <link
+        href="https://cdn.jsdelivr.net/gh/Hyperiooo/Hypericons@v0.1.6/fonts/hypericons.css"
+        rel="stylesheet"
+        type="text/css"
+        />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -297,65 +302,54 @@
     <div id="toolbar" class="ui">
       <div class="toolbar-top">
         <span class="item" onclick="toggleMenu()"><i
-            class="ri-menu-fill"></i></span>
+            class="hi-menu"></i></span>
         <span class="item" onclick="board.undo()"><i
-            class="ri-arrow-go-back-line"></i></span>
+            class="hi-undo-line"></i></span>
         <span class="item" onclick="board.redo()"><i
-            class="ri-arrow-go-forward-line"></i></span>
+            class="hi-redo-line"></i></span>
         <div class="toolbar-right">
           <span class="item toolbar-portrait-only"
             onclick="toggleColorPicker()"><i
-              class="ri-checkbox-blank-circle-fill" data-tool-color-menu-button></i></span>
+              class="hi-circle-small-fill" data-tool-color-menu-button></i></span>
           <span class="item toolbar-portrait-only"
             onclick="toggleLayerMenu()"><i
-              class="ri-stack-fill"></i></span>
+              class="hi-layer-fill"></i></span>
         </div>
       </div>
       <div class="toolbar-bottom">
         <span id="tool-btn-pen" class="item" onclick="setmode('pen',
           this)"><i
-            class="ri-pencil-fill"></i></span>
+          class="hi-pencil-mid"></i></span>
         <span id="tool-btn-eraser" class="item" onclick="setmode('eraser',
           this)"><i
-            class="ri-eraser-fill"></i></span>
+          class="hi-eraser-mid"></i></span>
         <span id="tool-btn-fillBucket" class="item"
           onclick="setmode('fillBucket', this)"><i
-            class="ri-paint-fill"></i></span>
+          class="hi-paint-bucket-mid"></i></span>
         <span id="tool-btn-sprayPaint" class="item"
           onclick="setmode('sprayPaint', this)"><i
-            class="ri-loader-2-line"></i></span>
+          class="hi-spray-mid"></i></span>
         <span id="tool-btn-eyedropper" class="item"
           onclick="setmode('eyedropper', this)"><i
-            class="ri-sip-fill"></i></span>
+          class="hi-eyedropper-mid"></i></span>
         <span id="tool-btn-line" class="item" onclick="setmode('line',
-          this)">
-          <i style="height: 20px;">
-            <svg
-              viewBox="0 0 24 24"
-              width="20"
-              height="20"
-              version="1.1"
-              id="svg6">
-              <path
-                d="M 19.071,3.515 20.485,4.929 4.93,20.485 3.516,19.071
-                19.07,3.515 Z"
-                id="path4"
-                /></svg></i>
+          this)"><i
+              class="hi-path-line"></i>
           </span>
           <span id="tool-btn-ellipse" class="item"
             onclick="setmode('ellipse', this)"><i
-              class="ri-checkbox-blank-circle-line"></i></span>
+              class="hi-circle-line"></i></span>
           <span id="tool-btn-rect" class="item" onclick="setmode('rect',
             this)"><i
-              class="ri-checkbox-blank-line"></i></span>
+              class="hi-square-line"></i></span>
           <span class="item toolbar-landscape-only"
             onclick="toggleColorPicker()"><i
-              class="ri-checkbox-blank-circle-fill" data-tool-color-menu-button></i></span>
+              class="hi-circle-small-fill" data-tool-color-menu-button></i></span>
           <span class="item toolbar-landscape-only"
             onclick="toggleLayerMenu()"><i
-              class="ri-stack-fill"></i></span>
+              class="hi-layer-fill"></i></span>
           <span class="item" onclick="board.clear()"><i
-              class="ri-delete-bin-fill"></i></span>
+              class="hi-trash-fill"></i></span>
         </div>
 
       </div>

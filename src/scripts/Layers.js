@@ -53,6 +53,8 @@ function dragSort(container, handleClass, scrollElement = null) {
     var lastClientY;
     var lastClientX;
 
+    var singleClick = false;
+
     var raf;
 
     var intersectionStructure = [];
@@ -66,9 +68,20 @@ function dragSort(container, handleClass, scrollElement = null) {
     });
 
     function userPressed(event) {
-        console.log("start");
 
-        console.log(ths.enabled);
+        if (singleClick) {
+            var layer = layers.find(element => element.layerElement == event.target);
+
+            openLayerSettings(layer)
+            console.log(event.target)
+            clearTimeout(dbtimeout)
+        }
+        if (!singleClick) {
+            singleClick = true;
+            var dbtimeout = setTimeout(() => {
+                singleClick = false;
+            }, 400);
+        }
 
         if (!ths.enabled) return;
 
@@ -529,8 +542,8 @@ function createLayer(n, data, settings) {   //create layer with set data; e.g. l
     var wrap = document.createElement("div")
     wrap.classList.add("layer-wrap")
     wrap.id = "l-" + id
-    wrap.onclick = (e)=> {
-        if(e.target == wrap) setLayer(id)
+    wrap.onclick = (e) => {
+        if (e.target == wrap) setLayer(id)
     }
     var previewWrapper = document.createElement("div")
     previewWrapper.classList.add("layer-preview")
@@ -550,7 +563,7 @@ function createLayer(n, data, settings) {   //create layer with set data; e.g. l
     visButton.setAttribute("onclick", `toggleLayerVisibility('${id}', this)`)
 
     var visIcon = document.createElement("i")
-    visIcon.classList.add("ri-eye-line")
+    visIcon.classList.add("hi-eye-line")
 
     visButton.appendChild(visIcon)
 
@@ -610,8 +623,8 @@ function newLayer(width, height) {   //create a blank layer
     var wrap = document.createElement("div")
     wrap.classList.add("layer-wrap")
     wrap.id = "l-" + id
-    wrap.onclick = (e)=> {
-        if(e.target == wrap) setLayer(id)
+    wrap.onclick = (e) => {
+        if (e.target == wrap) setLayer(id)
     }
     var preview = document.createElement("canvas")
     preview.classList.add("layer-preview")
@@ -629,7 +642,7 @@ function newLayer(width, height) {   //create a blank layer
     visButton.setAttribute("onclick", `toggleLayerVisibility('${id}', this)`)
 
     var visIcon = document.createElement("i")
-    visIcon.classList.add("ri-eye-line")
+    visIcon.classList.add("hi-eye-line")
 
     visButton.appendChild(visIcon)
 
@@ -669,7 +682,7 @@ function newLayer(width, height) {   //create a blank layer
             "visible": true,
             "locked": false
         },
-        "data": null        
+        "data": null
     })
     setLayer(id, true)
 }
@@ -680,7 +693,7 @@ function clearLayerMenu() {
 }
 
 function clearLayers() {
-    document.getElementById('layers-wrap').querySelectorAll("canvas").forEach(e=> {
+    document.getElementById('layers-wrap').querySelectorAll("canvas").forEach(e => {
         e.parentElement.removeChild(e)
     })
 }
@@ -724,13 +737,13 @@ function toggleLayerVisibility(id, el) {
     layer = layers.find(obj => {
         return obj.id == id
     })
-    if(layer) {
-        if(layer.settings.visible == true) {
-            el.querySelector("i").classList.replace("ri-eye-line", "ri-eye-off-line")
+    if (layer) {
+        if (layer.settings.visible == true) {
+            el.querySelector("i").classList.replace("hi-eye-line", "hi-eye-crossed-line")
             layer.settings.visible = false
             layer.canvasElement.style.visibility = "hidden"
-        }else if(layer.settings.visible == false) {
-            el.querySelector("i").classList.replace("ri-eye-off-line", "ri-eye-line")
+        } else if (layer.settings.visible == false) {
+            el.querySelector("i").classList.replace("hi-eye-crossed-line", "hi-eye-line")
             layer.settings.visible = true
             layer.canvasElement.style.visibility = "unset"
         }
@@ -741,13 +754,18 @@ function toggleLayerLock(id, el) {
     layer = layers.find(obj => {
         return obj.id == id
     })
-    if(layer) {
-        if(layer.settings.locked == true) {
+    if (layer) {
+        if (layer.settings.locked == true) {
             el.querySelector("i").classList.replace("ri-lock-line", "ri-lock-unlock-line")
             layer.settings.locked = false
-        }else if(layer.settings.locked == false) {
+        } else if (layer.settings.locked == false) {
             el.querySelector("i").classList.replace("ri-lock-unlock-line", "ri-lock-line")
             layer.settings.locked = true
         }
     }
+}
+
+
+function openLayerSettings(layer) {
+    console.log(layer.settings)
 }

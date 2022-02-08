@@ -608,7 +608,7 @@ canvas * {
     float: left;
     margin: 8px 2px;
     cursor: pointer;
-    font-size: 20px;
+    font-size: 18px;
     border-radius: 5px;
     min-width: 40px;
     min-height: 40px;
@@ -1379,6 +1379,7 @@ canvas {
     margin: 4px;
     margin-left: 16px;
     color: var(--textDim);
+    pointer-events: none;
 }
 
 .layer-visibility {
