@@ -442,8 +442,8 @@ body {
     padding: 0px;
     margin: 0;
     color: var(--textDim);
-    background: var(--bgMain);
-    z-index: 3;
+    background: var(--bgDark);
+    z-index: 200001;
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
@@ -576,56 +576,59 @@ canvas * {
 
 #toolbar {
     position: fixed;
-    top: 0;
+    top: 50px;
     padding: 0px;
-    width: 100%;
+    left:0;
+    height: calc(100% - 50px);
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
     background: var(--bgMain);
+    width: 50px;
+    display: flex;
+    justify-content: center;
 }
 
-.toolbar-bottom {
-    float: right;
-}
-
-.toolbar-right {
-    float: right;
-}
-
-#toolbar .item:first-of-type {
-    margin-left: 8px;
-}
-
-#toolbar .item:last-of-type {
-    margin-right: 8px;
+.toolbar-top {
+    position: absolute;
+    top: 0;
 }
 
 #toolbar .item {
-    display: inline-lock;
+    display: inline-flex;
     position: relative;
-    float: left;
-    margin: 8px 2px;
+    margin: 0px auto;
     cursor: pointer;
     font-size: 18px;
     border-radius: 5px;
-    min-width: 40px;
-    min-height: 40px;
-    transition: 0.3s background, 0.3s color, 0.3s fill;
+    width: 40px;
+    height: 40px;
+    margin-bottom: 4px;
+    transition: 0.1s background, 0.3s color, 0.3s fill;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
+#toolbar .item:first-of-type{
+    margin-top: 4px;
+}
+
 #toolbar .item i, #toolbar .item i svg path {
     color: var(--toolBarDim);
     fill: var(--toolBarDim);
+    transition:0.3s color, 0.3s fill;
 }
 
+#toolbar .item:hover, .tool-active {
+    background: var(--bgLight);
+  }
+
+
 #toolbar .item:hover i, #toolbar .item:hover i svg path {
-    color: var(--toolBarHover) !important;
-    fill: var(--toolBarHover) !important;
+    color: var(--toolBarHover) ;
+    fill: var(--toolBarHover) ;
 }
 
 #toolbar .item [data-tool-color-menu-button] {
@@ -636,12 +639,102 @@ canvas * {
     color: var(--color) !important;
 }
 
-#toolbar .item:hover, .tool-active {
+
+
+#topbar {
+    position: fixed;
+    top: 0;
+    padding: 0px;
+    left:0;
+    width: 100%;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background: var(--bgDark);
+    height: 50px;
+    display: flex;
+    align-items: center;
+}
+#topbar .item {
+    display: inline-block;
+    position: relative;
+    cursor: pointer;
+    font-size: 18px;
+    border-radius: 5px;
+    width: 50px;
+    height: 40px;
+    transition: 0.1s background, 0.3s color, 0.3s fill;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.topbar-button {
+    display: inline-block;
+    position: relative;
+    cursor: pointer;
+    font-size: 15px;
+    border-radius: 5px;
+    height: 36px;
+    padding: 0 10px;
+    margin-left: 2px;
+    transition: 0.1s background, 0.3s color, 0.3s fill;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background:none;
+    outline: none;
+    border: none;
+}
+.topbar-button:first-of-type {
+    margin-left: 8px;
+}
+
+#topbar .item i, .topbar-button {
+    color: var(--toolBarDim);
+    fill: var(--toolBarDim);
+    transition:0.1s color, 0.1s fill;
+}
+
+#topbar .item:hover i, .topbar-button:hover {
+    color: var(--toolBarHover) ;
+    fill: var(--toolBarHover) ;
+}
+#topbar-project-name {
+    display: inline-block;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    cursor: text;
+    font-size: 15px;
+    border-radius: 5px;
+    height: 36px;
+    padding: 0 10px;
+    margin-left: 2px;
+    transition: 0.1s background, 0.3s color, 0.3s fill;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background:none;
+    outline: none;
+    border: none;
+    color: var(--toolBarHover) ;
+    width: fit-content;
+    text-align: center;
+}
+
+#topbar-project-name:hover {
+    color: var(--textMain);
     background: var(--bgLight);
 }
 
+#topbar .item:hover, .tool-active, .topbar-button:hover {
+    background: var(--bgLight);
+  }
+
 .tool-active i, .tool-active i svg path {
-    color: var(--toolBarHover) !important;
+    color: var(--important) !important;
 }
 
 .ui {
@@ -1212,7 +1305,6 @@ input {
 
 #toolbar .item.toolbar-landscape-only {
     visibility: visible;
-    display: inline-flex;
 }
 
 #layer-menu {
@@ -1414,7 +1506,6 @@ canvas {
 @media screen and (max-width: 600px) and (orientation: portrait) {
     #toolbar .item.toolbar-portrait-only {
         visibility: visible;
-        display: inline-flex;
     }
 
     #toolbar .item.toolbar-landscape-only {

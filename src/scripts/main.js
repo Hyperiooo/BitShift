@@ -186,6 +186,8 @@ window.onload = function () {
             link.href = url;
             link.click();
         });
+        projName = data.name;
+        document.getElementById('topbar-project-name').value = data.name
     }
     else {
         newProject();
@@ -212,6 +214,7 @@ window.onbeforeunload = function () {
 
 function saveData() {
     project = {
+        'name': projName,
         'palettes': filePalettes,
         'currColor': board.color,
         'width': board.width,
@@ -260,5 +263,14 @@ function populatePresets() {
           ${preset[2] ? `<h1>${preset[2]}</h1>` : `<h1 style="opacity: 0; visibility: hidden">+</h1>`}
           <h2>${preset[0]} x ${preset[1]}</h2>
         </button>`
+    }
+}
+var projName = "";
+
+function renameProject(el) {
+    if(el.value == "" || el.value == null) {
+        return
+    } else {
+        projName = el.value;
     }
 }

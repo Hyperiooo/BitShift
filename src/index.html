@@ -36,6 +36,7 @@
     <script src="./scripts/Exporter.js" defer></script>
     <script src="./scripts/UndoRedoSystem.js" defer></script>
     <script src="./scripts/Cursor.js" defer></script>
+    <script src="./scripts/File.js" defer></script>
     <script src="./scripts/gif.js"></script>
     <script src="./scripts/panzoom.js" defer></script>
     <script defer type="text/javascript" src="./scripts/main.js"></script>
@@ -45,11 +46,11 @@
       href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css"
       rel="stylesheet"
       />
-      <link
-        href="https://cdn.jsdelivr.net/gh/Hyperiooo/Hypericons@v0.1.6/fonts/hypericons.css"
-        rel="stylesheet"
-        type="text/css"
-        />
+    <link
+      href="https://cdn.jsdelivr.net/gh/Hyperiooo/Hypericons@v0.1.6/fonts/hypericons.css"
+      rel="stylesheet"
+      type="text/css"
+      />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -59,15 +60,16 @@
   <body>
     <div id="cursor">
       <img id="cursorimg" src="./assets/cursors/crosshair.png">
-    </div>  
+    </div>
     <img id="img" />
     <div class="menu">
       <div class="menu-btn" onclick="newProject()">New</div>
-      <div class="menu-btn" onclick="board.save()">Save</div>
-      <div class="menu-btn" onclick="board.save()">Save As</div>
+      <div class="menu-btn" onclick="saveFile()">Save</div>
+      <div class="menu-btn" onclick="openFile()">Open</div>
       <div class="menu-btn" onclick="openExportMenu()">Export</div>
       <div class="menu-btn" onclick="openSettings()">Settings</div>
     </div>
+    <input type="file" id="fileOpenDialog" style="display: hidden; visibility: hidden; height: 0px; width: 0px; pointer-events: none;"accept=".bspr">
     <div id="tool-settings" class="tool-settings-open">
       <h1>Tool Settings</h1>
       <input class="tool-settings-toggle" type="checkbox" checked>
@@ -248,7 +250,8 @@
           <p class="popup-input-title">File Name</p>
           <div class="popup-input-wrap">
             <div class="popup-input-field">
-              <input class="popup-input-text" id="export-file-name" type="text" value="canvas">
+              <input class="popup-input-text" id="export-file-name" type="text"
+                value="canvas">
               <p class="popup-input-unit" id="export-name-extension">.png</p>
             </div>
           </div>
@@ -257,7 +260,9 @@
           <p class="popup-input-title">File Type</p>
           <div class="popup-input-wrap">
             <div class="popup-input-field">
-              <select name="type" id="export-file-type" value="png" oninput="document.getElementById('export-name-extension').innerHTML = '.' + this.value" class="popup-input-select">
+              <select name="type" id="export-file-type" value="png"
+                oninput="document.getElementById('export-name-extension').innerHTML=
+                '.' + this.value" class="popup-input-select">
                 <option value="png" selected>.png</option>
                 <option value="jpeg">.jpeg</option>
                 <option value="bmp">.bmp</option>
@@ -269,7 +274,8 @@
           <p class="popup-input-title">Scale</p>
           <div class="popup-input-wrap">
             <div class="popup-input-field">
-              <select name="type" id="export-scale" value="1" class="popup-input-select">
+              <select name="type" id="export-scale" value="1"
+                class="popup-input-select">
                 <option value="1" selected>100%</option>
                 <option value="2">200%</option>
                 <option value="3">300%</option>
@@ -299,59 +305,58 @@
       </div>
       <canvas id="bggridcanv" customcursor></canvas>
     </div>
+    <div id="topbar" class="ui">
+      <button class="topbar-button" onclick="toggleMenu()">
+        File
+      </button>
+      <button class="topbar-button" onclick="toggleMenu()">
+        Edit
+      </button>
+      <button class="topbar-button" onclick="toggleMenu()">
+        Layer
+      </button>
+      <button class="topbar-button" onclick="toggleMenu()">
+        Select
+      </button>
+      <input type="text" id="topbar-project-name" value="" onblur="renameProject(this)">
+    </div>
     <div id="toolbar" class="ui">
       <div class="toolbar-top">
-        <span class="item" onclick="toggleMenu()"><i
-            class="hi-menu"></i></span>
-        <span class="item" onclick="board.undo()"><i
-            class="hi-undo-line"></i></span>
-        <span class="item" onclick="board.redo()"><i
-            class="hi-redo-line"></i></span>
-        <div class="toolbar-right">
-          <span class="item toolbar-portrait-only"
-            onclick="toggleColorPicker()"><i
-              class="hi-circle-small-fill" data-tool-color-menu-button></i></span>
-          <span class="item toolbar-portrait-only"
-            onclick="toggleLayerMenu()"><i
-              class="hi-layer-fill"></i></span>
-        </div>
-      </div>
-      <div class="toolbar-bottom">
         <span id="tool-btn-pen" class="item" onclick="setmode('pen',
           this)"><i
-          class="hi-pencil-mid"></i></span>
+            class="hi-pencil-mid"></i></span>
         <span id="tool-btn-eraser" class="item" onclick="setmode('eraser',
           this)"><i
-          class="hi-eraser-mid"></i></span>
+            class="hi-eraser-mid"></i></span>
         <span id="tool-btn-fillBucket" class="item"
           onclick="setmode('fillBucket', this)"><i
-          class="hi-paint-bucket-mid"></i></span>
+            class="hi-paint-bucket-mid"></i></span>
         <span id="tool-btn-sprayPaint" class="item"
           onclick="setmode('sprayPaint', this)"><i
-          class="hi-spray-mid"></i></span>
+            class="hi-spray-mid"></i></span>
         <span id="tool-btn-eyedropper" class="item"
           onclick="setmode('eyedropper', this)"><i
-          class="hi-eyedropper-mid"></i></span>
+            class="hi-eyedropper-mid"></i></span>
         <span id="tool-btn-line" class="item" onclick="setmode('line',
           this)"><i
-              class="hi-path-line"></i>
-          </span>
-          <span id="tool-btn-ellipse" class="item"
-            onclick="setmode('ellipse', this)"><i
-              class="hi-circle-line"></i></span>
-          <span id="tool-btn-rect" class="item" onclick="setmode('rect',
-            this)"><i
-              class="hi-square-line"></i></span>
-          <span class="item toolbar-landscape-only"
-            onclick="toggleColorPicker()"><i
-              class="hi-circle-small-fill" data-tool-color-menu-button></i></span>
-          <span class="item toolbar-landscape-only"
-            onclick="toggleLayerMenu()"><i
-              class="hi-layer-fill"></i></span>
-          <span class="item" onclick="board.clear()"><i
-              class="hi-trash-fill"></i></span>
-        </div>
-
+            class="hi-path-line"></i>
+        </span>
+        <span id="tool-btn-ellipse" class="item"
+          onclick="setmode('ellipse', this)"><i
+            class="hi-circle-line"></i></span>
+        <span id="tool-btn-rect" class="item" onclick="setmode('rect',
+          this)"><i
+            class="hi-square-line"></i></span>
+        <span class="item toolbar-landscape-only"
+          onclick="toggleColorPicker()"><i
+            class="hi-circle-small-fill" data-tool-color-menu-button></i></span>
+        <span class="item toolbar-landscape-only"
+          onclick="toggleLayerMenu()"><i
+            class="hi-layer-fill"></i></span>
+        <span class="item" onclick="board.clear()"><i
+            class="hi-trash-fill"></i></span>
       </div>
-    </body>
-  </html>
+
+    </div>
+  </body>
+</html>

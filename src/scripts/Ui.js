@@ -79,6 +79,7 @@ document.querySelector("#close").onclick = function () {
     board.setcolor(colors[0].colors[0]);
     window.dim.close();
     project = {
+        'name': "Untitled Sprite",
         'palettes': filePalettes,
         'currColor': board.color,
         'width': width,
@@ -87,6 +88,9 @@ document.querySelector("#close").onclick = function () {
         'layers': []
     };
 
+    projName = project.name
+    
+    document.getElementById('topbar-project-name').value = projName
     newLayer(width, height)
 }
 
