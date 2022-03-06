@@ -172,14 +172,14 @@ body {
     background: var(--importantT);
 }
 
-.popup-preset i{
+.popup-preset i {
     font-size: 32px;
     margin: 0;
     padding: 0;
     color: var(--textDim);
 }
 
-.popup-preset h1{
+.popup-preset h1 {
     font-size: 16px;
     margin: 0;
     padding: 0;
@@ -187,7 +187,8 @@ body {
     margin-top: -12px;
     color: var(--textMain);
 }
-.popup-preset h2{
+
+.popup-preset h2 {
     font-size: 12px;
     margin: 0;
     padding: 0;
@@ -202,6 +203,7 @@ body {
     margin-top: -8px;
     margin-left: -12px;
 }
+
 .popup-column {
     width: 300px;
     margin: 0;
@@ -504,7 +506,7 @@ body {
 
 canvas * {
     position: absolute;
-    top:0;
+    top: 0;
 }
 
 #bggridcanv {
@@ -541,6 +543,7 @@ canvas * {
     height: var(--canvY);
     opacity: var(--opac);
 }
+
 #cursorcanv {
     --opac: 1;
     position: absolute;
@@ -578,7 +581,7 @@ canvas * {
     position: fixed;
     top: 50px;
     padding: 0px;
-    left:0;
+    left: 0;
     height: calc(100% - 50px);
     -webkit-user-select: none;
     -moz-user-select: none;
@@ -611,24 +614,24 @@ canvas * {
     align-items: center;
 }
 
-#toolbar .item:first-of-type{
+#toolbar .item:first-of-type {
     margin-top: 4px;
 }
 
 #toolbar .item i, #toolbar .item i svg path {
     color: var(--toolBarDim);
     fill: var(--toolBarDim);
-    transition:0.3s color, 0.3s fill;
+    transition: 0.3s color, 0.3s fill;
 }
 
 #toolbar .item:hover, .tool-active {
     background: var(--bgLight);
-  }
+}
 
 
 #toolbar .item:hover i, #toolbar .item:hover i svg path {
-    color: var(--toolBarHover) ;
-    fill: var(--toolBarHover) ;
+    color: var(--toolBarHover);
+    fill: var(--toolBarHover);
 }
 
 #toolbar .item [data-tool-color-menu-button] {
@@ -645,7 +648,7 @@ canvas * {
     position: fixed;
     top: 0;
     padding: 0px;
-    left:0;
+    left: 0;
     width: 100%;
     -webkit-user-select: none;
     -moz-user-select: none;
@@ -656,6 +659,7 @@ canvas * {
     display: flex;
     align-items: center;
 }
+
 #topbar .item {
     display: inline-block;
     position: relative;
@@ -683,10 +687,11 @@ canvas * {
     display: flex;
     justify-content: center;
     align-items: center;
-    background:none;
+    background: none;
     outline: none;
     border: none;
 }
+
 .topbar-button:first-of-type {
     margin-left: 8px;
 }
@@ -694,13 +699,14 @@ canvas * {
 #topbar .item i, .topbar-button {
     color: var(--toolBarDim);
     fill: var(--toolBarDim);
-    transition:0.1s color, 0.1s fill;
+    transition: 0.1s color, 0.1s fill;
 }
 
 #topbar .item:hover i, .topbar-button:hover {
-    color: var(--toolBarHover) ;
-    fill: var(--toolBarHover) ;
+    color: var(--toolBarHover);
+    fill: var(--toolBarHover);
 }
+
 #topbar-project-name {
     display: inline-block;
     position: absolute;
@@ -716,10 +722,10 @@ canvas * {
     display: flex;
     justify-content: center;
     align-items: center;
-    background:none;
+    background: none;
     outline: none;
     border: none;
-    color: var(--toolBarHover) ;
+    color: var(--toolBarHover);
     width: fit-content;
     text-align: center;
 }
@@ -731,7 +737,7 @@ canvas * {
 
 #topbar .item:hover, .tool-active, .topbar-button:hover {
     background: var(--bgLight);
-  }
+}
 
 .tool-active i, .tool-active i svg path {
     color: var(--important) !important;
@@ -1448,8 +1454,9 @@ input {
     image-rendering: crisp-edges;
     position: relative;
 }
+
 canvas {
-    
+
     image-rendering: -moz-crisp-edges;
     image-rendering: -webkit-crisp-edges;
     image-rendering: pixelated;
@@ -1460,7 +1467,8 @@ canvas {
     max-width: 55px;
     max-height: 55px;
     position: absolute;
-    left: 50%; top:50%;
+    left: 50%;
+    top: 50%;
     transform: translate(-50%, -50%);
 }
 
@@ -1477,7 +1485,7 @@ canvas {
 .layer-visibility {
     position: absolute;
     background: none;
-    border:none;
+    border: none;
     font-size: 20px;
     color: var(--textDim);
     padding: 0;
@@ -1487,10 +1495,11 @@ canvas {
     right: 15px;
     cursor: pointer;
 }
+
 .layer-locked {
     position: absolute;
     background: none;
-    border:none;
+    border: none;
     font-size: 20px;
     color: var(--textDim);
     padding: 0;
@@ -1575,7 +1584,6 @@ canvas {
     z-index: 99999999999;
     position: absolute;
     cursor: none;
-    mix-blend-mode: difference;
     pointer-events: none;
 }
 
@@ -1583,4 +1591,26 @@ canvas {
     margin: 0;
     position: absolute;
     top: 0;
+}
+
+.invertBackground {
+    background: white;
+    mix-blend-mode: difference;
+}
+
+@supports (backdrop-filter: invert(1)) {
+
+    .invertBackground {
+        background: none;
+        mix-blend-mode: none;
+        backdrop-filter: invert(1) contrast(10000) saturate(0);
+    }
+}
+
+#eraserBufferCanvas {
+    z-index: 10000000000;
+    position: absolute;
+    background: green;
+    top:50%; left:50%;
+    transform: scale(3);
 }

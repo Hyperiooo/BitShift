@@ -254,10 +254,10 @@ class Canvas {
         x = Math.floor((x) / (this.canvScale));
         y = Math.floor((y) / (this.canvScale));
         if (Tools.eraser) {
-            drawOutline(x, y)
+            drawEraserPreview(x, y)
         };
         if (Tools.sprayPaint) {
-            drawSprayOutline(x, y)
+            drawSprayPreview(x, y)
         };
         if (e.buttons != 0) {
             if (activeLayer.settings.locked) return
@@ -741,51 +741,6 @@ class Canvas {
             if (ay2 - ay1 == 0) ay2 = ay1 + 1
             this.pctx.fillRect(ax1, ay1, ax2 - ax1, ay2 - ay1);
         }
-    }
-    ePDraw(coord, x, y) {
-        var tempCol = this.color
-        this.setcolor([255, 255, 255, 255])
-        this.pctx.drawImage(this.canvas, 0, 0)
-        this.ectx.globalCompositeOperation = 'source-over'
-        this.previewcanvas.style.setProperty("--invert", 1)
-        let brushSize = parseInt(settings.tools.brushSize.value)
-        if (coord.constructor.name == "Point") {
-            var x = coord.x
-            var y = coord.y
-            this.ectx.fillRect(x, y, 1, 1);
-        } else if (coord.constructor.name == "Rect") {
-            var x1 = coord.x1
-            var y1 = coord.y1
-            var x2 = coord.x2
-            var y2 = coord.y2
-            var ax1, ax2, ay1, ay2
-            if (x1 >= x2) {
-                ax1 = x2
-                ax2 = x1
-            } else if (x1 < x2) {
-                ax1 = x1
-                ax2 = x2
-            }
-            if (y1 >= y2) {
-                ay1 = y2
-                ay2 = y1
-            } else if (y1 < y2) {
-                ay1 = y1
-                ay2 = y2
-            }
-            if (ay2 - ay1 == 0) ay2 = ay1 + 1
-            if (brushSize % 2 == 0) {
-                this.ectx.fillRect(ax1 + .5, ay1 + .5, ax2 - ax1, ay2 - ay1)
-            } else {
-                this.ectx.fillRect(ax1, ay1, ax2 - ax1, ay2 - ay1)
-            }
-        }
-        if (brushSize % 2 == 0) {
-            this.pctx.drawImage(this.eBufferCanvas, x - (brushSize / 2), y - (brushSize / 2))
-        } else {
-            this.pctx.drawImage(this.eBufferCanvas, x - (brushSize / 2) + .5, y - (brushSize / 2) + .5)
-        }
-        this.pctx.globalCompositeOperation = 'source-over'
     }
     erase(coord) {
 

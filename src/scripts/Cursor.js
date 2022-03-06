@@ -30,137 +30,109 @@ document.onmousemove = e => {
 }
 
 function updateCursor() {
-    document.getElementById("cursorimg").src = cursors[curCursor].img
+    document.getElementById("cursor").style.webkitMaskImage = "url(." + cursors[curCursor].img+ ")"
     cursor.style.width = cursors[curCursor].width + "px"
     cursor.style.height = cursors[curCursor].height + "px"
-}
-
-var outlinePoints = [];
-var outlineSprayPoints = [];
-function createBrushPoints() {
-    let brushSize = parseInt(settings.tools.brushSize.value)
-    let r = brushSize - 1
-    if(brushSize == 1) {
-        outlinePoints=[{x:0, y:0}]
-        return;
-    }
-    outlinePoints = ellipse(0, 0, r, r)
-}
-function createSprayPoints() {
-    let spraySize = parseInt(settings.tools.spraySize.value)
-    let r = spraySize - 1
-    if(spraySize == 1) {
-        outlineSprayPoints=[{x:0, y:0}]
-        return;
-    }
-    outlineSprayPoints = ellipse(0, 0, r, r)
 }
 
 var cursorCanv = document.getElementById("cursorcanv")
 var cursorcanvctx = cursorCanv.getContext('2d')
 
-function drawOutline(a,b) {
-    var offX = a - Math.floor(settings.tools.brushSize.value / 2);
-    var offY = b - Math.floor(settings.tools.brushSize.value / 2);
+
+var eraserBufferCanvas = document.createElement("canvas")
+eraserBufferCanvas.id = "eraserBufferCanvas"
+var eraserBufferCtx = eraserBufferCanvas.getContext("2d")
+
+function drawEraserPreview(x, y) {
+    eraserBufferCanvas.width = project.width
+    eraserBufferCanvas.height = project.height    
+    eraserBufferCtx.clearRect(0, 0, project.width, project.height);
+    eraserBufferCtx.fillStyle = "white";
+    let brushSize = parseInt(settings.tools.brushSize.value)
+    let r = brushSize - 1
+    if (Tools.fillBucket) r = 0;
+    let c;
+    if (brushSize % 2 == 0) {
+        c = filledEllipse(x - (r / 2) - .5, y - (r / 2) - .5, x + (r / 2) - .5, y + (r / 2) - .5)
+    } else if (brushSize % 2 != 0) {
+        c = filledEllipse(x - (r / 2), y - (r / 2), x + (r / 2), y + (r / 2))
+    }
+    var b;
+    for (b of c) { eBufDraw(b) }
+
+    cursorcanvctx.globalCompositeOperation = "source-over"
     cursorcanvctx.fillStyle = "#fff"
-    cursorcanvctx.clearRect(0, 0, cursorCanv.width, cursorCanv.height)
-    outlinePoints.forEach(e => {
-        var x = Math.floor((e.x + offX) * settings.ui.canvasScale)
-        var y = Math.floor((e.y + offY) * settings.ui.canvasScale)
-        cursorcanvctx.fillRect(x - 1, y - 1, Math.round(settings.ui.canvasScale), Math.round(settings.ui.canvasScale))
-        cursorcanvctx.fillRect(x + 1, y + 1, Math.round(settings.ui.canvasScale), Math.round(settings.ui.canvasScale))
-        cursorcanvctx.fillRect(x + 1, y - 1, Math.round(settings.ui.canvasScale), Math.round(settings.ui.canvasScale))
-        cursorcanvctx.fillRect(x - 1, y + 1, Math.round(settings.ui.canvasScale), Math.round(settings.ui.canvasScale))
-    })
-    var int = 5;
-    if(settings.tools.brushSize.value == 1) {
-        int = 0
-    }
-    if(settings.tools.brushSize.value == 3) {
-        int = 1
-    }
-    outlinePoints.forEach(e => {
-        var x = Math.floor((e.x + offX) * settings.ui.canvasScale)
-        var y = Math.floor((e.y + offY) * settings.ui.canvasScale)
-        cursorcanvctx.fillRect(x, y, Math.round(settings.ui.canvasScale), Math.round(settings.ui.canvasScale))
-        var x2 = x;
-        var y2 = y;
-        var x22 = Math.round(settings.ui.canvasScale);
-        var y22 = Math.round(settings.ui.canvasScale);
-        var b = settings.tools.brushSize.value
-        if (e.y < b / 2 && e.x < b / 2) {
-            y22 += int;
-            x22 += int;
-        } else if (e.y >= b / 2 && e.x < b / 2) {
-            y2 -= int;
-            y22 += int;
-            x22 += int;
-        } else if (e.y < b / 2 && e.x >= b / 2) {
-            y22 += int;
-            x2 -= int;
-            x22 += int;
-        } else if (e.y >= b / 2 && e.x > b / 2) {
-            y2 -= int;
-            y22 += int;
-            x2 -= int;
-            x22 += int;
-        }
-        cursorcanvctx.clearRect(x2, y2, x22, y22)
+    cursorcanvctx.imageSmoothingEnabled = false
+    cursorcanvctx.clearRect(0, 0, cursorCanv.width, cursorCanv.height);
 
-    })
-
+    cursorcanvctx.drawImage(eraserBufferCanvas, -1, 1, cursorCanv.width, cursorCanv.height)
+    cursorcanvctx.drawImage(eraserBufferCanvas, 1, -1, cursorCanv.width, cursorCanv.height)
+    cursorcanvctx.drawImage(eraserBufferCanvas, -1, -1, cursorCanv.width, cursorCanv.height)
+    cursorcanvctx.drawImage(eraserBufferCanvas, 1, 1, cursorCanv.width, cursorCanv.height)
+    cursorcanvctx.globalCompositeOperation = "destination-out"
+    cursorcanvctx.drawImage(eraserBufferCanvas, 0, 0, cursorCanv.width, cursorCanv.height)
 }
 
-function drawSprayOutline(a,b) {
-    
-    var offX = a - Math.floor(settings.tools.spraySize.value / 2);
-    var offY = b - Math.floor(settings.tools.spraySize.value / 2);
-    cursorcanvctx.fillStyle = "#fff"
-    cursorcanvctx.clearRect(0, 0, cursorCanv.width, cursorCanv.height)
-    outlineSprayPoints.forEach(e => {
-        var x = Math.floor((e.x + offX) * settings.ui.canvasScale)
-        var y = Math.floor((e.y + offY) * settings.ui.canvasScale)
-        cursorcanvctx.fillRect(x - 1, y - 1, Math.round(settings.ui.canvasScale), Math.round(settings.ui.canvasScale))
-        cursorcanvctx.fillRect(x + 1, y + 1, Math.round(settings.ui.canvasScale), Math.round(settings.ui.canvasScale))
-        cursorcanvctx.fillRect(x + 1, y - 1, Math.round(settings.ui.canvasScale), Math.round(settings.ui.canvasScale))
-        cursorcanvctx.fillRect(x - 1, y + 1, Math.round(settings.ui.canvasScale), Math.round(settings.ui.canvasScale))
-    })
-    var int = 5;
-    if(settings.tools.spraySize.value == 1) {
-        int = 0
-    }
-    if(settings.tools.spraySize.value == 3) {
-        int = 1
-    }
-    outlineSprayPoints.forEach(e => {
-        var x = Math.floor((e.x + offX) * settings.ui.canvasScale)
-        var y = Math.floor((e.y + offY) * settings.ui.canvasScale)
-        cursorcanvctx.fillRect(x, y, Math.round(settings.ui.canvasScale), Math.round(settings.ui.canvasScale))
-        var x2 = x;
-        var y2 = y;
-        var x22 = Math.round(settings.ui.canvasScale);
-        var y22 = Math.round(settings.ui.canvasScale);
-        var b = settings.tools.spraySize.value
-        if (e.y < b / 2 && e.x < b / 2) {
-            y22 += int;
-            x22 += int;
-        } else if (e.y >= b / 2 && e.x < b / 2) {
-            y2 -= int;
-            y22 += int;
-            x22 += int;
-        } else if (e.y < b / 2 && e.x >= b / 2) {
-            y22 += int;
-            x2 -= int;
-            x22 += int;
-        } else if (e.y >= b / 2 && e.x > b / 2) {
-            y2 -= int;
-            y22 += int;
-            x2 -= int;
-            x22 += int;
-        }
-        cursorcanvctx.clearRect(x2, y2, x22, y22)
 
-    })
+function drawSprayPreview(x, y) {
+    eraserBufferCanvas.width = project.width
+    eraserBufferCanvas.height = project.height    
+    eraserBufferCtx.clearRect(0, 0, project.width, project.height);
+    eraserBufferCtx.fillStyle = "white";
+    let brushSize = parseInt(settings.tools.spraySize.value)
+    let r = brushSize - 1
+    if (Tools.fillBucket) r = 0;
+    let c;
+    if (brushSize % 2 == 0) {
+        c = filledEllipse(x - (r / 2) - .5, y - (r / 2) - .5, x + (r / 2) - .5, y + (r / 2) - .5)
+    } else if (brushSize % 2 != 0) {
+        c = filledEllipse(x - (r / 2), y - (r / 2), x + (r / 2), y + (r / 2))
+    }
+    var b;
+    for (b of c) { eBufDraw(b) }
+
+    cursorcanvctx.globalCompositeOperation = "source-over"
+    cursorcanvctx.fillStyle = "#fff"
+    cursorcanvctx.imageSmoothingEnabled = false
+    cursorcanvctx.clearRect(0, 0, cursorCanv.width, cursorCanv.height);
+
+    cursorcanvctx.drawImage(eraserBufferCanvas, -1, 1, cursorCanv.width, cursorCanv.height)
+    cursorcanvctx.drawImage(eraserBufferCanvas, 1, -1, cursorCanv.width, cursorCanv.height)
+    cursorcanvctx.drawImage(eraserBufferCanvas, -1, -1, cursorCanv.width, cursorCanv.height)
+    cursorcanvctx.drawImage(eraserBufferCanvas, 1, 1, cursorCanv.width, cursorCanv.height)
+    cursorcanvctx.globalCompositeOperation = "destination-out"
+    cursorcanvctx.drawImage(eraserBufferCanvas, 0, 0, cursorCanv.width, cursorCanv.height)
+}
+
+function eBufDraw(coord){
+    eraserBufferCtx.globalCompositeOperation = 'source-over'
+    if (coord.constructor.name == "Point") {
+        var x = coord.x
+        var y = coord.y
+        eraserBufferCtx.fillRect(x, y, 1, 1);
+    } else if (coord.constructor.name == "Rect") {
+        var x1 = coord.x1
+        var y1 = coord.y1
+        var x2 = coord.x2
+        var y2 = coord.y2
+        var ax1, ax2, ay1, ay2
+        if (x1 >= x2) {
+            ax1 = x2
+            ax2 = x1
+        } else if (x1 < x2) {
+            ax1 = x1
+            ax2 = x2
+        }
+        if (y1 >= y2) {
+            ay1 = y2
+            ay2 = y1
+        } else if (y1 < y2) {
+            ay1 = y1
+            ay2 = y2
+        }
+        if (ay2 - ay1 == 0) ay2 = ay1 + 1
+        eraserBufferCtx.fillRect(ax1, ay1, ax2 - ax1, ay2 - ay1);
+    }
 }
 
 var cursor = document.getElementById("cursor")
