@@ -1,4 +1,3 @@
-
 let vh = window.innerHeight;
 let vw = window.innerWidth;
 document.documentElement.style.setProperty('--vh', `${vh}px`);
@@ -11,6 +10,13 @@ window.addEventListener('resize', () => {
 });
 
 let alrt;
+
+var Themes = {
+    light: "ui-theme-light",
+    gray: "ui-theme-gray",
+    dark: "ui-theme-dark",
+    black: "ui-theme-black"
+}
 
 function setTheme(themeName) {
     localStorage.setItem('theme', themeName);
@@ -27,10 +33,18 @@ class numberDraggable {
         this.el = el
         this.startVal = this.el.value
         self = this
-        this.el.addEventListener('mousedown', (e) => { this.do = true; this.startX = e.clientX; this.startVal = this.el.value })
+        this.el.addEventListener('mousedown', (e) => {
+            this.do = true;
+            this.startX = e.clientX;
+            this.startVal = this.el.value
+        })
         this.el.addEventListener('mouseup', () => { this.do = false })
         document.addEventListener('mouseup', () => { this.do = false })
-        this.el.addEventListener('touchstart', (e) => { this.do = true; this.startX = e.touches[0].clientX; this.startVal = this.el.value })
+        this.el.addEventListener('touchstart', (e) => {
+            this.do = true;
+            this.startX = e.touches[0].clientX;
+            this.startVal = this.el.value
+        })
         this.el.addEventListener('touchend', () => { this.do = false })
         document.addEventListener('touchend', () => { this.do = false })
         document.addEventListener("touchmove", e => {
@@ -46,8 +60,7 @@ class numberDraggable {
             }
         })
     }
-    clear() {
-    }
+    clear() {}
 }
 class Popup {
     constructor(s) {
@@ -58,18 +71,19 @@ class Popup {
         document.querySelector(this.s).classList.remove("popup-open")
     }
 }
+
 function closePopup() {
     window.dim.close()
 }
 
-document.querySelector("#close").onclick = function () {
+document.querySelector("#close").onclick = function() {
     clearPalettes()
     clearLayerMenu()
     clearLayers()
     layers = []
     if (typeof board !== 'undefined') {
         board.destroy()
-        
+
     }
     var width = +document.querySelector("#width").value;
     var height = +document.querySelector("#height").value;
@@ -89,7 +103,7 @@ document.querySelector("#close").onclick = function () {
     };
 
     projName = project.name
-    
+
     document.getElementById('topbar-project-name').value = projName
     newLayer(width, height)
 }

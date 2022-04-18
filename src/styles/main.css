@@ -168,7 +168,9 @@ body {
     border: none;
 }
 
-.popup-preset:hover, .popup-preset:focus, .popup-preset-active {
+.popup-preset:hover,
+.popup-preset:focus,
+.popup-preset-active {
     background: var(--importantT);
 }
 
@@ -276,7 +278,6 @@ body {
     height: 28px;
     padding-right: 40px;
 }
-
 
 .popup-input-select {
     background: var(--bgLight);
@@ -406,7 +407,6 @@ body {
     margin: 8px;
     margin-top: 0px;
 }
-
 
 .export-menu {
     background: var(--bgMain);
@@ -618,18 +618,20 @@ canvas * {
     margin-top: 4px;
 }
 
-#toolbar .item i, #toolbar .item i svg path {
+#toolbar .item i,
+#toolbar .item i svg path {
     color: var(--toolBarDim);
     fill: var(--toolBarDim);
     transition: 0.3s color, 0.3s fill;
 }
 
-#toolbar .item:hover, .tool-active {
+#toolbar .item:hover,
+.tool-active {
     background: var(--bgLight);
 }
 
-
-#toolbar .item:hover i, #toolbar .item:hover i svg path {
+#toolbar .item:hover i,
+#toolbar .item:hover i svg path {
     color: var(--toolBarHover);
     fill: var(--toolBarHover);
 }
@@ -641,8 +643,6 @@ canvas * {
 #toolbar .item:hover [data-tool-color-menu-button] {
     color: var(--color) !important;
 }
-
-
 
 #topbar {
     position: fixed;
@@ -696,13 +696,15 @@ canvas * {
     margin-left: 8px;
 }
 
-#topbar .item i, .topbar-button {
+#topbar .item i,
+.topbar-button {
     color: var(--toolBarDim);
     fill: var(--toolBarDim);
     transition: 0.1s color, 0.1s fill;
 }
 
-#topbar .item:hover i, .topbar-button:hover {
+#topbar .item:hover i,
+.topbar-button:hover {
     color: var(--toolBarHover);
     fill: var(--toolBarHover);
 }
@@ -735,11 +737,14 @@ canvas * {
     background: var(--bgLight);
 }
 
-#topbar .item:hover, .tool-active, .topbar-button:hover {
+#topbar .item:hover,
+.tool-active,
+.topbar-button:hover {
     background: var(--bgLight);
 }
 
-.tool-active i, .tool-active i svg path {
+.tool-active i,
+.tool-active i svg path {
     color: var(--important) !important;
 }
 
@@ -849,7 +854,8 @@ path {
     background-color: var(--scrollHover);
 }
 
-.color-menu::-webkit-scrollbar-thumb, .color-menu::-webkit-scrollbar-track {
+.color-menu::-webkit-scrollbar-thumb,
+.color-menu::-webkit-scrollbar-track {
     border: 8px solid transparent;
     background-clip: padding-box;
     border-radius: 13px;
@@ -888,7 +894,8 @@ path {
     width: 296px !important;
 }
 
-.color-value-expanded~#color-hue, .color-value-expanded~#color-opacity {
+.color-value-expanded~#color-hue,
+.color-value-expanded~#color-opacity {
     opacity: 0;
 }
 
@@ -957,7 +964,8 @@ path {
     cursor: grab;
 }
 
-#color-previous, .color-previous {
+#color-previous,
+.color-previous {
     height: 26px;
     width: 44px;
     background-size: contain;
@@ -967,7 +975,8 @@ path {
     margin-bottom: -4px;
 }
 
-#color-current, .color-current {
+#color-current,
+.color-current {
     height: 26px;
     width: 44px;
     background-size: contain;
@@ -1086,7 +1095,8 @@ path {
     user-select: none;
 }
 
-input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
 }
@@ -1111,7 +1121,8 @@ input[type=number] {
     height: 26px;
 }
 
-.color-rgba, .color-hsla {
+.color-rgba,
+.color-hsla {
     position: relative;
     margin: 8px;
     display: inline-block;
@@ -1119,7 +1130,8 @@ input[type=number] {
     margin-bottom: 0;
 }
 
-.color-rgba p, .color-hsla p {
+.color-rgba p,
+.color-hsla p {
     display: inline-block;
     margin: 0;
     width: 26px;
@@ -1173,9 +1185,9 @@ input {
 
 #tool-settings {
     position: fixed;
-    bottom: 8px;
-    right: 8px;
-    border-radius: 13px;
+    top: 50px;
+    left: 50px;
+    width: calc(100% - 50px);
     padding: 0px;
     margin: 0;
     color: var(--textDim);
@@ -1187,121 +1199,207 @@ input {
     -ms-user-select: none;
     user-select: none;
     display: block;
-    opacity: 0;
-    transform: translate(0, 10px);
     transition: 0.2s opacity, 0.2s transform;
     max-height: 450px;
     overflow-y: hidden;
     overflow-x: hidden;
-    pointer-events: none;
-}
-
-#tool-settings.tool-settings-open {
-    opacity: 1;
-    transform: translate(0, 0);
     pointer-events: all;
 }
 
-#tool-settings h1 {
-    margin: 0;
-    font-size: 20px;
-    margin: 0;
-    margin: 15px 12px;
-    margin-bottom: 11px;
-    margin-top: 10px;
+#tool-settings-content {
+    transition: 0.3s height, 0.15s opacity, 0.3s margin-bottom;
+    min-width: 240px;
 }
 
-.tool-settings-title {
-    display: flex;
-    align-items: center;
+.tool-settings-content-hidden {
+    opacity: 0;
+}
+
+.tool-settings-ui-input-group {
+    display: inline-flex;
     justify-content: space-between;
-    position: relative;
-    margin-right: 8px;
-    height: 28px;
+    margin: 8px;
 }
 
-.tool-settings-title .arrow {
-    font-size: 20px;
+.tool-settings-ui-input-wrap {
+    position: relative;
+    font-size: 0;
+}
+
+.tool-settings-ui-input-field {
+    position: relative;
+    display: inline-flex;
+    align-content: center;
+    align-items: center;
+    margin-left: 8px;
+}
+
+.tool-settings-ui-input-field-group {
+    display: block;
+    padding-bottom: 8px;
+}
+
+.tool-settings-ui-input-num {
+    background: var(--bgLight);
+    color: var(--textMain);
+    margin: 0;
+    padding: 0 5px;
+    font-size: 14px;
+    font-weight: bolder;
+    border: none;
+    border-radius: 5px;
+    max-width: 60px;
+    display: block;
+    font-weight: 100;
+    text-align: left;
+    height: 28px;
+    cursor: e-resize;
+}
+
+.tool-settings-ui-input-text {
+    background: var(--bgLight);
+    color: var(--textMain);
+    margin: 0;
+    padding: 0 5px;
+    font-size: 14px;
+    font-weight: bolder;
+    border: none;
+    border-radius: 5px;
+    width: 120px;
+    display: block;
+    font-weight: 100;
+    text-align: left;
+    height: 28px;
+    padding-right: 40px;
+}
+
+.tool-settings-ui-input-select {
+    background: var(--bgLight);
+    color: var(--textMain);
+    margin: 0;
+    padding: 0 5px;
+    font-size: 14px;
+    font-weight: bolder;
+    font-family: 'JetBrains Mono';
+    border: none;
+    border-radius: 5px;
+    display: block;
+    font-weight: 100;
+    text-align: left;
+    height: 28px;
     cursor: pointer;
 }
 
-.tool-settings-toggle {
-    position: absolute;
+.tool-settings-ui-input-check {
     cursor: pointer;
     width: 28px;
     height: 28px;
-    right: 0;
-    top: 12px;
-    right: 8px;
+    left: 0;
     margin: 0;
     opacity: 0;
 }
 
-.tool-settings-toggle:focus~.arrow {
+.tool-settings-ui-input-check:focus~.checkmark {
     outline-color: var(--important);
     outline-style: solid;
     outline-width: 2px;
 }
 
-.tool-settings-toggle~.arrow {
-    font-size: 20px;
+.tool-settings-ui-input-check~.checkmark {
     position: absolute;
-    top: 8px;
-    right: 8px;
+    top: 0;
+    left: 0;
     height: 28px;
     width: 28px;
-    text-align: center;
-    color: var(--textDim);
     background-color: var(--bgLight);
+    box-shadow: inset 0 0 0 2px var(--scrollHover);
     pointer-events: none;
+    transition: 0.2s background, 0.2s box-shadow;
     border-radius: 5px;
-    vertical-align: middle;
-    transition: 0.2s transform, 0.2s color, 0.2s background;
 }
 
-.tool-settings-toggle~.arrow i {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%) rotate(0);
-    text-align: center;
-    color: var(--textDim);
-    vertical-align: middle;
-    transition: 0.2s transform, 0.2s color, 0.2s margin-bottom;
-    display: inline-block;
-    margin-bottom: 0;
-}
-
-.tool-settings-toggle:hover~.arrow {
+.tool-settings-ui-input-check:hover~.checkmark {
     background-color: var(--scrollHover);
 }
 
-.tool-settings-toggle:checked~.arrow {
+.tool-settings-ui-input-check:checked~.checkmark {
     box-shadow: none;
+    background-color: var(--important);
+}
+
+.tool-settings-ui-input-check~.checkmark:after {
+    content: "";
+    position: absolute;
+    opacity: 0;
+    transition: 0.2s opacity;
+}
+
+.tool-settings-ui-input-check:checked~.checkmark:after {
+    opacity: 1;
+}
+
+.tool-settings-ui-input-check~.checkmark:after {
+    left: 11px;
+    top: 6px;
+    width: 5px;
+    height: 10px;
+    border: solid var(--importantText);
+    border-width: 0 3px 3px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+
+.tool-settings-ui-input-title {
+    font-size: 14px;
+    margin: 0;
+    margin-left: 5px;
+    margin-top: 6px;
+}
+
+.tool-settings-ui-input-unit {
+    font-size: 14px;
+    margin: 0;
+    position: absolute;
+    text-align: right;
+    right: 5px;
+    opacity: .5;
+    user-select: none;
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -o-user-select: none;
+    font-family: "JetBrains Mono";
+}
+
+.tool-settings-ui-btn.tool-settings-ui-btn-imp {
     background: var(--important);
-}
-
-.tool-settings-toggle:checked~.arrow i {
-    transform: translate(-50%, -50%) rotate(180deg);
     color: var(--importantText);
-    margin-bottom: -4px;
 }
 
-#tool-settings-content {
-    height: var(--maxHeight);
-    margin-bottom: 8px;
-    transition: 0.3s height, 0.15s opacity, 0.3s margin-bottom;
-    min-width: 240px;
+.tool-settings-ui-btn {
+    background-color: var(--bgLight);
+    color: var(--textMain);
+    margin: auto;
+    padding: 10px 15px 10px 15px;
+    font-size: 16px;
+    font-weight: bolder;
+    display: inline-block;
+    border: none;
+    border-radius: 5px;
+    transition: 0.2s all;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor: pointer;
+    margin-left: 4px;
 }
 
-.tool-settings-toggle:checked~#tool-settings-content {
-    height: 0px;
-    opacity: 0;
-    margin-bottom: 0;
-}
-
-.tool-settings-content-hidden {
-    opacity: 0;
+.tool-settings-ui-btn-group {
+    float: right;
+    margin: 8px;
+    margin-top: 0px;
 }
 
 #toolbar .item.toolbar-portrait-only {
@@ -1315,9 +1413,8 @@ input {
 
 #layer-menu {
     position: fixed;
-    top: 64px;
-    right: 8px;
-    border-radius: 13px;
+    top: 94px;
+    right: 0px;
     padding: 0px;
     margin: 0;
     color: var(--textDim);
@@ -1329,15 +1426,14 @@ input {
     -ms-user-select: none;
     user-select: none;
     display: block;
-    opacity: 0;
-    transform: translate(0, -10px);
+    transform: translate(335px, 0);
     transition: 0.2s opacity, 0.2s transform, max-height 0.2s;
     pointer-events: none;
     width: 335px;
+    height: calc(100% - 94px);
 }
 
 #layer-menu.layer-open {
-    opacity: 1;
     transform: translate(0, 0);
     pointer-events: all;
 }
@@ -1351,12 +1447,14 @@ input {
     flex-direction: row;
     align-items: stretch;
     gap: 3px;
+    position: absolute;
+    bottom: 0;
 }
 
 #layer-main {
     overflow-y: scroll;
     margin: 0;
-    max-height: min(450px, calc(var(--vh) - 56px - 16px));
+    height: calc(100% - 49px);
 }
 
 #layer-main.active>div {
@@ -1383,7 +1481,8 @@ input {
     background-color: var(--scrollHover);
 }
 
-#layer-main::-webkit-scrollbar-thumb, #layer-main::-webkit-scrollbar-track {
+#layer-main::-webkit-scrollbar-thumb,
+#layer-main::-webkit-scrollbar-track {
     border: 6px solid transparent;
     background-clip: padding-box;
     border-radius: 13px;
@@ -1456,7 +1555,6 @@ input {
 }
 
 canvas {
-
     image-rendering: -moz-crisp-edges;
     image-rendering: -webkit-crisp-edges;
     image-rendering: pixelated;
@@ -1510,18 +1608,17 @@ canvas {
     cursor: pointer;
 }
 
+
 /* media queries */
 
 @media screen and (max-width: 600px) and (orientation: portrait) {
     #toolbar .item.toolbar-portrait-only {
         visibility: visible;
     }
-
     #toolbar .item.toolbar-landscape-only {
         visibility: hidden;
         display: none;
     }
-
     #toolbar {
         position: fixed;
         top: 0;
@@ -1535,7 +1632,6 @@ canvas {
         background: transparent;
         pointer-events: none;
     }
-
     .toolbar-bottom {
         float: unset;
         bottom: 0;
@@ -1548,7 +1644,6 @@ canvas {
         max-height: 56px;
         display: flex;
     }
-
     .toolbar-top {
         float: unset;
         background: var(--bgMain);
@@ -1558,7 +1653,6 @@ canvas {
         display: block;
         pointer-events: all;
     }
-
     #tool-settings {
         bottom: 64px;
     }
@@ -1574,11 +1668,6 @@ canvas {
     width: 1px;
     -webkit-backdrop-filter: blur(60%);
 }
-
-
-
-
-
 
 #cursor {
     z-index: 99999999999;
@@ -1599,7 +1688,6 @@ canvas {
 }
 
 @supports (backdrop-filter: invert(1)) {
-
     .invertBackground {
         background: none;
         mix-blend-mode: none;
@@ -1611,6 +1699,7 @@ canvas {
     z-index: 10000000000;
     position: absolute;
     background: green;
-    top:50%; left:50%;
+    top: 50%;
+    left: 50%;
     transform: scale(3);
 }

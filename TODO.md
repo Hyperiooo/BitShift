@@ -96,7 +96,7 @@ A list of all the things planned to do for BitShift
 ## Animation
 
 ## Visual changes 
-- Fork remixicon to add Spray can, along with other various tools
+- ~~Fork remixicon to add Spray can, along with other various tools~~
 - Make responsive on mobile devices
   - started
 - Enforce constant transitions on background and color across all ui
@@ -127,6 +127,7 @@ A list of all the things planned to do for BitShift
 - ~~Give eraser outline to show where it will erase~~
 
 ## Bugs
+- with how the current "outline" on eraser and spray works, when zoomed in a lot the canvas gets too big on large canvas sizes, slows down performance. Make outline canvas only as big as it needs to be and move it around instead of making it the entire size of the canvas.
 - when creating palette via preview, the palette doesnt save properly unless it is used (clicking on a swatch)
 - ~~Some event listeners use faulty `touches` detection; adapt to new way of doing it (can be based on `opacDrag()`)~~
 - ~~Setting color via number inputs doesnt change the actual brush color~~

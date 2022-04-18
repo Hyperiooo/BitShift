@@ -1,4 +1,3 @@
-
 function toggleLayerMenu() {
     document.getElementById('layer-menu').classList.toggle("layer-open")
     document.getElementById('color-menu').classList.remove("color-open")
@@ -6,23 +5,7 @@ function toggleLayerMenu() {
 var container = document.querySelector("#layer-main");
 sorter = new dragSort(container, "layer-wrap");
 
-var layers = [
-]
-/*
-    {
-        "name": "Layer 1",
-        "index": null,
-        "id": "a",
-        "previewCanvas": null,
-        "layerElement": null,
-        "canvasElement": null,
-        "ctx": null,
-        "settings": {
-
-        },
-        "data": null
-    },
-*/
+var layers = []
 
 var activeLayer = null
 
@@ -184,6 +167,7 @@ function dragSort(container, handleClass, scrollElement = null) {
     function endReturnRenderLoop() {
         cancelAnimationFrame(retRaf)
     }
+
     function mainRenderLoop() {
         curScale = lerp(curScale, scaleDest, .2)
         draggingElement.it.style.setProperty("--s", Math.round(curScale * 100) / 100)
@@ -206,6 +190,7 @@ function dragSort(container, handleClass, scrollElement = null) {
         draggingElement.targetCenterOffsetX = ((draggingElement.bbox.width * .5) - (clientX - draggingElement.bbox.left));
         draggingElement.centerOffsetY = 0
         draggingElement.targetCenterOffsetY = ((draggingElement.bbox.height * .5) - (clientY - draggingElement.bbox.top));
+        console.log(draggingElement.bbox.top)
 
         draggingElement.index = Array.prototype.indexOf.call(
             draggingElement.it.parentNode.children,
@@ -234,9 +219,10 @@ function dragSort(container, handleClass, scrollElement = null) {
 
     var elementPositionY
     var elementPositionX
+
     function translateFloatingItem(clientX, clientY) {
         var currentScroll = getScroll();
-        elementPositionY = (clientY + draggingElement.offsetY - draggingElement.centerOffsetY) - 70;
+        elementPositionY = (clientY + draggingElement.offsetY - draggingElement.centerOffsetY) - 102;
         elementPositionX = (clientX - draggingElement.offsetX - draggingElement.centerOffsetX);
 
         draggingElement.it.style.transform =
@@ -503,14 +489,13 @@ function dragSort(container, handleClass, scrollElement = null) {
 
         eventTarget.addEventListener("pointermove", updateMovement);
 
-        setTimeout(function () {
+        setTimeout(function() {
             eventTarget.removeEventListener("pointerup", setCancel);
             eventTarget.removeEventListener("pointercancel", setCancel);
             eventTarget.removeEventListener("pointerleave", setCancel);
             eventTarget.removeEventListener("pointermove", updateMovement);
 
-            if (
-                !cancelAction &&
+            if (!cancelAction &&
                 Math.abs(startX - endX) < 5 &&
                 Math.abs(startY - endY) < 5
             ) {
@@ -535,7 +520,7 @@ function populateLayers() {
     })
 }
 
-function createLayer(n, data, settings) {   //create layer with set data; e.g. load a layer from a file
+function createLayer(n, data, settings) { //create layer with set data; e.g. load a layer from a file
     console.log(project.width, project.height)
     var id = randomString(10)
     console.log(layers.length)
@@ -607,7 +592,7 @@ function createLayer(n, data, settings) {   //create layer with set data; e.g. l
     })
     let img = new Image();
     img.setAttribute('src', data);
-    img.addEventListener("load", function () {
+    img.addEventListener("load", function() {
         context.drawImage(img, 0, 0);
         preview.getContext("2d").drawImage(img, 0, 0)
     });
@@ -615,7 +600,7 @@ function createLayer(n, data, settings) {   //create layer with set data; e.g. l
 
 }
 
-function newLayer(width, height) {   //create a blank layer
+function newLayer(width, height) { //create a blank layer
     console.log(project.width, project.height)
     var id = randomString(10)
     var n = "Layer " + (layers.length + 1)
