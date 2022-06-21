@@ -1,9 +1,8 @@
-
-
 function toggleColorPicker() {
     document.getElementById('color-menu').classList.toggle("color-open")
     document.getElementById('layer-menu').classList.remove("layer-open")
 }
+
 function act(clr) {
     document.querySelectorAll(".palette-color").forEach(x => {
         x.classList.add('palette-inactive')
@@ -19,7 +18,15 @@ function act(clr) {
 var pickerColor = [0, 0, 0, 100]
 
 var previousData = {
-    r: 0, g: 0, b: 0, rgba: 0, h: 0, s: 0, l: 0, hsla: 0, hex: "ffffffff"
+    r: 0,
+    g: 0,
+    b: 0,
+    rgba: 0,
+    h: 0,
+    s: 0,
+    l: 0,
+    hsla: 0,
+    hex: "ffffffff"
 }
 document.querySelectorAll("[data-color-input]").forEach(el => {
     el.onblur = el.onkeyup = el.oninput = updateColorNum
@@ -190,7 +197,8 @@ function valueThumb(e) {
 
 function valueEndDrag(e) {
     if (!valueTwoFinger && e.touches && !valueMoved) {
-        var x = valueBuffer[0], y = valueBuffer[1]
+        var x = valueBuffer[0],
+            y = valueBuffer[1]
         if (valueMoving && !valueTwoFinger) {
             document.querySelectorAll('[data-color-input]').forEach(e => { e.blur() });
             pickerColor[1] = clamp(x / valueRect.width * 100, 0, 100)
@@ -276,9 +284,17 @@ function updatePickerColor() {
         hexEl.value = hex
     }
     previousData = {
-        r: rgba[0], g: rgba[1], b: rgba[2], rgba: rgba[3], h: Math.round(hsla[0]), s: Math.round(hsla[1]), l: Math.round(hsla[2]), hsla: Math.round(hsla[3]), hex: rgbToHex(rgba[0], rgba[1], rgba[2], rgba[3])
-    }
-    //board.setcolor(rgba)
+            r: rgba[0],
+            g: rgba[1],
+            b: rgba[2],
+            rgba: rgba[3],
+            h: Math.round(hsla[0]),
+            s: Math.round(hsla[1]),
+            l: Math.round(hsla[2]),
+            hsla: Math.round(hsla[3]),
+            hex: rgbToHex(rgba[0], rgba[1], rgba[2], rgba[3])
+        }
+        //board.setcolor(rgba)
 }
 
 var clickedOnce = false
@@ -361,6 +377,7 @@ function setPickerColor(rgba) {
     let hsla = HSVToHSL(pickerColor)
     updatePickerColor(rgba)
 }
+
 function updatePrevious(col) {
     let hsla = HSVToHSL(RGBToHSV(col))
     document.getElementById("color-previous").style.setProperty("--color", `hsla( ${hsla[0]}, ${hsla[1]}%, ${hsla[2]}%, ${hsla[3]}%)`)
@@ -455,13 +472,14 @@ function addPaletteViewsFromFiles(files) {
             }
             document.body.appendChild(el)
         } else {
-            setTimeout(function () {
-                AnyPalette.loadPalette(file, function (err, palette, formatUsed, matchedFileExtension) {
+            setTimeout(function() {
+                AnyPalette.loadPalette(file, function(err, palette, formatUsed, matchedFileExtension) {
                     if (palette) {
                         console.log(file.name.replaceArray(formatUsed.fileExtensionsPretty.split(", "), ""))
                         console.log(palette)
                         new paletteGroup(truncate(file.name.replaceArray(formatUsed.fileExtensionsPretty.split(", "), "")), formatAnyPalette(AnyPalette.uniqueColors(palette)), true)
-                    } if (err) {
+                    }
+                    if (err) {
                         document.getElementById("color-menu-drop-err").classList.add("color-menu-drop-err-on")
                         setTimeout(() => {
                             document.getElementById("color-menu-drop-err").classList.remove("color-menu-drop-err-on")
@@ -639,7 +657,8 @@ class paletteGroup {
 
 
         var _self = this
-        function mouseDownHandler(e, _self) {  //only initial press
+
+        function mouseDownHandler(e, _self) { //only initial press
             if (holdMovementAllowed && !tempOut) e.preventDefault();
             if (tempOut) return;
             startRect = group.getBoundingClientRect()
@@ -673,7 +692,8 @@ class paletteGroup {
             holdTimeout = setTimeout(() => {
                 holdMovementAllowed = true
                 if (isMobile && holdMovementAllowed) {
-                    snapped = true; mouseUpHandler();
+                    snapped = true;
+                    mouseUpHandler();
                     alrt.log("canMove")
                     tempNode.classList.add("color-palette-standalone-popout")
                     moveHandler(e)
@@ -683,6 +703,7 @@ class paletteGroup {
             group.style.setProperty('z-index', '999', 'important')
             tempNode.style.setProperty('z-index', '1000', 'important')
         }
+
         function mouseUpHandler(e, _self) {
             if (tempNode) tempNode.classList.remove("color-palette-standalone-popout")
             if (!snapped && tempNode) {
@@ -728,6 +749,7 @@ class paletteGroup {
         document.addEventListener("touchmove", (e) => { moveHandler(e, _self) })
         titleEl.onmouseup = titleEl.ontouchend = (e) => { mouseUpHandler(e, _self) }
         titleEl.onmousedown = titleEl.ontouchstart = (e) => { mouseDownHandler(e, _self) }
+
         function moveHandler(e, _self) {
             if (holdMovementAllowed) { e.preventDefault(); }
             var cX, cY
@@ -750,7 +772,9 @@ class paletteGroup {
                 group.style.transform = `translate(${Math.ceil(curX)}px, ${Math.ceil(curY)}px)`;
                 tempNode.style.setProperty("--pX", `${startRect.x + Math.ceil(curX) - 8}px`)
                 tempNode.style.setProperty("--pY", `${startRect.y + Math.ceil(curY) - 8}px`)
-                if (Math.abs(curX) > 100 || Math.abs(curY) > 100) { snapped = true; mouseUpHandler(); alrt.log("snapped") }
+                if (Math.abs(curX) > 100 || Math.abs(curY) > 100) { snapped = true;
+                    mouseUpHandler();
+                    alrt.log("snapped") }
                 return
 
             }
@@ -807,6 +831,7 @@ class paletteGroup {
         if (scroll) document.getElementById("color-menu").scrollTo({ behavior: "smooth", top: (colorMenu.scrollTop + rect.top) });
     }
 }
+
 function preparePalette() {
     colors.forEach(g => {
         var title = truncate(g.title)

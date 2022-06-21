@@ -1,18 +1,18 @@
 var cursors = {
     "crosshair": {
-        "img": "./assets/cursors/crosshair.png",
+        "img": "assets/cursors/crosshair.png",
         "width": 7,
         "height": 7,
         "origin": [0.50, 0.50]
     },
     "eyedropper": {
-        "img": "./assets/cursors/eyedropper.png",
+        "img": "assets/cursors/eyedropper.png",
         "width": 16,
         "height": 16,
         "origin": [0, 1]
     },
     "fillbucket": {
-        "img": "./assets/cursors/fillbucket.png",
+        "img": "assets/cursors/fillbucket.png",
         "width": 15,
         "height": 15,
         "origin": [0, 1]
@@ -22,7 +22,7 @@ var cursors = {
 var curCursor = "eyedropper"
 
 document.onmousemove = e => {
-    if(!e.target.getAttribute) return;
+    if (!e.target.getAttribute) return;
     if (e.target.getAttribute("customcursor") != null) {
         cursor.style.left = e.clientX - (Math.floor(cursors[curCursor].origin[0] * cursors[curCursor].width)) + "px"
         cursor.style.top = e.clientY - (Math.floor(cursors[curCursor].origin[1] * cursors[curCursor].height)) + "px"
@@ -30,7 +30,7 @@ document.onmousemove = e => {
 }
 
 function updateCursor() {
-    document.getElementById("cursor").style.webkitMaskImage = "url(." + cursors[curCursor].img+ ")"
+    document.getElementById("cursor").style.webkitMaskImage = "url(" + cursors[curCursor].img + ")"
     cursor.style.width = cursors[curCursor].width + "px"
     cursor.style.height = cursors[curCursor].height + "px"
 }
@@ -45,7 +45,7 @@ var eraserBufferCtx = eraserBufferCanvas.getContext("2d")
 
 function drawEraserPreview(x, y) {
     eraserBufferCanvas.width = project.width
-    eraserBufferCanvas.height = project.height    
+    eraserBufferCanvas.height = project.height
     eraserBufferCtx.clearRect(0, 0, project.width, project.height);
     eraserBufferCtx.fillStyle = "white";
     let brushSize = parseInt(settings.tools.brushSize.value)
@@ -76,7 +76,7 @@ function drawEraserPreview(x, y) {
 
 function drawSprayPreview(x, y) {
     eraserBufferCanvas.width = project.width
-    eraserBufferCanvas.height = project.height    
+    eraserBufferCanvas.height = project.height
     eraserBufferCtx.clearRect(0, 0, project.width, project.height);
     eraserBufferCtx.fillStyle = "white";
     let brushSize = parseInt(settings.tools.spraySize.value)
@@ -104,7 +104,7 @@ function drawSprayPreview(x, y) {
     cursorcanvctx.drawImage(eraserBufferCanvas, 0, 0, cursorCanv.width, cursorCanv.height)
 }
 
-function eBufDraw(coord){
+function eBufDraw(coord) {
     eraserBufferCtx.globalCompositeOperation = 'source-over'
     if (coord.constructor.name == "Point") {
         var x = coord.x

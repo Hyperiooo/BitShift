@@ -7,11 +7,11 @@ function exportFile() {
     exportCanvas.width = project.width * scaleFactor
     exportCanvas.height = project.height * scaleFactor
     var eCtx = exportCanvas.getContext("2d")
-    eCtx.globalCompositeOperation = "multiply"
+    eCtx.globalCompositeOperation = "overlay"
     eCtx.imageSmoothingEnabled = false
     eCtx.scale(scaleFactor, scaleFactor)
-    layers.forEach(e=> {
-        if(e.settings.visible) eCtx.drawImage(e.canvasElement, 0, 0)
+    layers.reverse().forEach(e => {
+        if (e.settings.visible) eCtx.drawImage(e.canvasElement, 0, 0)
     })
     var link = document.createElement('a');
     link.download = document.getElementById("export-file-name").value + '.' + document.getElementById("export-file-type").value;

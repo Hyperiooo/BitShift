@@ -9,6 +9,10 @@
     <title>BitShift</title>
     <link rel="icon" type="image/svg" href="./assets/logo.svg">
     <link rel="manifest" href="manifest.json" />
+    <!-- IOS SUPPORT -->
+    <meta name="apple-mobile-web-app-status-bar" content="#3386ff" />
+    <meta name="theme-color" content="#3386ff" />
+
 
     <!--REMOVE THESE AND REPLACE WITH ACTUAL ALRT-->
     <script src="https://cdn.jsdelivr.net/gh/Hyperiooo/Alrt.js@main/src/alrt.js"></script>
@@ -55,7 +59,8 @@
         <div class="menu-btn" onclick="openExportMenu()">Export</div>
         <div class="menu-btn" onclick="openSettings()">Settings</div>
     </div>
-    <input type="file" id="fileOpenDialog" style="display: hidden; visibility: hidden; height: 0px; width: 0px; pointer-events: none;" accept=".bspr">
+    <input type="file" id="fileOpenDialog" style="display: hidden; visibility:
+      hidden; height: 0px; width: 0px; pointer-events: none;" accept=".bspr">
     <div id="tool-settings">
         <div id="tool-settings-content"></div>
     </div>
@@ -268,37 +273,48 @@
         <input type="text" id="topbar-project-name" value="" onblur="renameProject(this)">
     </div>
     <div id="toolbar" class="ui">
-        <div class="toolbar-top">
-            <span id="tool-btn-pen" class="item" onclick="setmode('pen',
-          this)"><i
-            class="hi-pencil-semi"></i></span>
-            <span id="tool-btn-eraser" class="item" onclick="setmode('eraser',
-          this)"><i
-            class="hi-eraser-semi"></i></span>
-            <span id="tool-btn-fillBucket" class="item" onclick="setmode('fillBucket', this)"><i
-            class="hi-paint-bucket-semi"></i></span>
-            <span id="tool-btn-sprayPaint" class="item" onclick="setmode('sprayPaint', this)"><i
-            class="hi-spray-semi"></i></span>
-            <span id="tool-btn-eyedropper" class="item" onclick="setmode('eyedropper', this)"><i
-            class="hi-eyedropper-semi"></i></span>
-            <span id="tool-btn-line" class="item" onclick="setmode('line',
-          this)"><i
-            class="hi-path-line"></i>
+        <span id="tool-btn-pen" class="item" onclick="setmode('pen',
+        this)"><i
+          class="hi-pencil-semi"></i></span>
+        <span id="tool-btn-eraser" class="item" onclick="setmode('eraser',
+        this)"><i
+          class="hi-eraser-semi"></i></span>
+        <span id="tool-btn-fillBucket" class="item" onclick="setmode('fillBucket',
+        this)"><i
+          class="hi-paint-bucket-semi"></i></span>
+        <span id="tool-btn-sprayPaint" class="item" onclick="setmode('sprayPaint',
+        this)"><i
+          class="hi-spray-semi"></i></span>
+        <span id="tool-btn-eyedropper" class="item" onclick="setmode('eyedropper',
+        this)"><i
+          class="hi-eyedropper-semi"></i></span>
+        <span id="tool-btn-line" class="item" onclick="setmode('line',
+        this)"><i
+          class="hi-path-line"></i>
+      </span>
+        <span id="tool-btn-ellipse" class="item" onclick="setmode('ellipse',
+        this)"><i
+          class="hi-circle-line"></i></span>
+        <span id="tool-btn-rect" class="item" onclick="setmode('rect',
+        this)"><i
+          class="hi-square-line"></i></span>
+        <span class="item toolbar-landscape-only" onclick="toggleColorPicker()"><i
+          class="hi-circle-small-fill" data-tool-color-menu-button></i>
         </span>
-            <span id="tool-btn-ellipse" class="item" onclick="setmode('ellipse', this)"><i
-            class="hi-circle-line"></i></span>
-            <span id="tool-btn-rect" class="item" onclick="setmode('rect',
-          this)"><i
-            class="hi-square-line"></i></span>
-            <span class="item toolbar-landscape-only" onclick="toggleColorPicker()"><i
-            class="hi-circle-small-fill" data-tool-color-menu-button></i></span>
-            <span class="item toolbar-landscape-only" onclick="toggleLayerMenu()"><i
-            class="hi-layer-fill"></i></span>
-            <span class="item" onclick="board.clear()"><i
-            class="hi-trash-fill"></i></span>
-        </div>
+        <span class="item toolbar-landscape-only" onclick="toggleLayerMenu()"><i
+          class="hi-layer-fill"></i></span>
+        <span class="item" onclick="board.clear()"><i
+          class="hi-trash-fill"></i></span>
         <!---test-->
     </div>
+    <!---
+    <div id="debug" style="z-index: 1000000000; background-color: rgba(47, 0,
+      255, 0.548); position: absolute; bottom: 0px; right: 0; width: 100vw;
+      height: 100vh;"></div>
+
+    <div id="debug" style="z-index: 1000000000; background-color: rgba(255, 0,
+      0, 0.548); position: absolute; top: 0; left: 0; width: 100vw; height:
+      100vh;"></div>-->
 </body>
 
 </html>

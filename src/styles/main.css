@@ -2,7 +2,8 @@
     font-family: 'Roboto', sans-serif;
 }
 
-body {
+body,
+html {
     background-color: var(--canvasBg);
     margin: 0px;
     min-height: 100vh;
@@ -23,9 +24,11 @@ body {
 
 .ui-theme-black {
     --bgMain: #070b10;
+    --bgMainT: #070b10e3;
     --canvasBg: #101317;
     --bgLight: #181b1e;
     --bgDark: #0f1216;
+    --bgDarkT: #0f1216e3;
     --textMain: #bcbec4;
     --textDim: #a8abb0;
     --important: #0034ab;
@@ -41,9 +44,11 @@ body {
 
 .ui-theme-dark {
     --bgMain: #18171a;
+    --bgMainT: #18171ae3;
     --canvasBg: #202022;
     --bgLight: #262628;
     --bgDark: #131214;
+    --bgDarkT: #131214e3;
     --textMain: #ffffff;
     --textDim: #cacaca;
     --important: #2741ff;
@@ -59,9 +64,11 @@ body {
 
 .ui-theme-gray {
     --bgMain: #6c6e71;
+    --bgMainT: #6c6e71e3;
     --canvasBg: #86888c;
     --bgLight: #797b7e;
     --bgDark: #5e6064;
+    --bgDarkT: #5e6064e3;
     --textMain: #e8ebee;
     --textDim: #dadce0;
     --important: #00beee;
@@ -77,9 +84,11 @@ body {
 
 .ui-theme-light {
     --bgMain: #ffffff;
+    --bgMainT: #ffffffd5;
     --canvasBg: #eaeaee;
     --bgLight: #dbdde0;
     --bgDark: #eef0f5;
+    --bgDarkT: #eef0f5d5;
     --textMain: #0b0c1a;
     --textDim: #1b1c2e;
     --important: #3e88ff;
@@ -579,39 +588,50 @@ canvas * {
 
 #toolbar {
     position: fixed;
-    top: 50px;
-    padding: 0px;
+    top: 50%;
+    transform: translateY(-50%);
     left: 0;
-    height: calc(100% - 50px);
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
-    background: var(--bgMain);
-    width: 50px;
-    display: flex;
-    justify-content: center;
+    background: var(--bgMainT);
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    border-radius: 0px 15px 15px 0px;
 }
 
 .toolbar-top {
     position: absolute;
     top: 0;
+    height: fit-content;
 }
 
 #toolbar .item {
-    display: inline-flex;
     position: relative;
     margin: 0px auto;
     cursor: pointer;
     font-size: 18px;
     border-radius: 5px;
     width: 40px;
-    height: 40px;
+    height: 45px;
     margin-bottom: 4px;
+    margin-left: 4px;
+    margin-right: 4px;
     transition: 0.1s background, 0.3s color, 0.3s fill;
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+#toolbar .item i {
+    font-size: 18px;
+    transform: scale(100%);
+    transition: transform 0.1s ease-in-out !important;
+}
+
+#toolbar .item:active i {
+    transform: scale(80%);
 }
 
 #toolbar .item:first-of-type {
@@ -620,20 +640,9 @@ canvas * {
 
 #toolbar .item i,
 #toolbar .item i svg path {
-    color: var(--toolBarDim);
-    fill: var(--toolBarDim);
-    transition: 0.3s color, 0.3s fill;
-}
-
-#toolbar .item:hover,
-.tool-active {
-    background: var(--bgLight);
-}
-
-#toolbar .item:hover i,
-#toolbar .item:hover i svg path {
     color: var(--toolBarHover);
     fill: var(--toolBarHover);
+    transition: 0.3s color, 0.3s fill;
 }
 
 #toolbar .item [data-tool-color-menu-button] {
@@ -654,7 +663,9 @@ canvas * {
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
-    background: var(--bgDark);
+    background: var(--bgDarkT);
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
     height: 50px;
     display: flex;
     align-items: center;
@@ -738,7 +749,6 @@ canvas * {
 }
 
 #topbar .item:hover,
-.tool-active,
 .topbar-button:hover {
     background: var(--bgLight);
 }
@@ -1191,7 +1201,9 @@ input {
     padding: 0px;
     margin: 0;
     color: var(--textDim);
-    background: var(--bgMain);
+    background: var(--bgMainT);
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
     z-index: 3;
     display: none;
     -webkit-user-select: none;
@@ -1208,7 +1220,6 @@ input {
 
 #tool-settings-content {
     transition: 0.3s height, 0.15s opacity, 0.3s margin-bottom;
-    min-width: 240px;
 }
 
 .tool-settings-content-hidden {
@@ -1418,7 +1429,9 @@ input {
     padding: 0px;
     margin: 0;
     color: var(--textDim);
-    background: var(--bgMain);
+    background: var(--bgMainT);
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
     z-index: 3;
     display: none;
     -webkit-user-select: none;
@@ -1611,52 +1624,7 @@ canvas {
 
 /* media queries */
 
-@media screen and (max-width: 600px) and (orientation: portrait) {
-    #toolbar .item.toolbar-portrait-only {
-        visibility: visible;
-    }
-    #toolbar .item.toolbar-landscape-only {
-        visibility: hidden;
-        display: none;
-    }
-    #toolbar {
-        position: fixed;
-        top: 0;
-        padding: 0px;
-        width: 100%;
-        height: 100vh;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
-        user-select: none;
-        background: transparent;
-        pointer-events: none;
-    }
-    .toolbar-bottom {
-        float: unset;
-        bottom: 0;
-        background: var(--bgMain);
-        width: 100vw;
-        overflow-y: hidden;
-        overflow-x: auto;
-        position: fixed;
-        pointer-events: all;
-        max-height: 56px;
-        display: flex;
-    }
-    .toolbar-top {
-        float: unset;
-        background: var(--bgMain);
-        width: 100vw;
-        overflow: hidden;
-        position: fixed;
-        display: block;
-        pointer-events: all;
-    }
-    #tool-settings {
-        bottom: 64px;
-    }
-}
+@media screen and (max-width: 600px) and (orientation: portrait) {}
 
 .canvas-outline {
     position: absolute;
@@ -1666,7 +1634,6 @@ canvas {
     left: 1px;
     height: 1px;
     width: 1px;
-    -webkit-backdrop-filter: blur(60%);
 }
 
 #cursor {
@@ -1674,12 +1641,7 @@ canvas {
     position: absolute;
     cursor: none;
     pointer-events: none;
-}
-
-#cursor img {
-    margin: 0;
-    position: absolute;
-    top: 0;
+    image-rendering: pixelated;
 }
 
 .invertBackground {
@@ -1690,8 +1652,9 @@ canvas {
 @supports (backdrop-filter: invert(1)) {
     .invertBackground {
         background: none;
-        mix-blend-mode: none;
+        mix-blend-mode: unset;
         backdrop-filter: invert(1) contrast(10000) saturate(0);
+        -webkit-backdrop-filter: invert(1) contrast(10000) saturate(0);
     }
 }
 

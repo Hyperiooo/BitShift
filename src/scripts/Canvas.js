@@ -1,4 +1,3 @@
-
 class Canvas {
     constructor(width, height) {
         document.documentElement.style.setProperty('--canvX', width + "px");
@@ -67,19 +66,19 @@ class Canvas {
             initialY: this.height / 2 - (((this.canvasParent.offsetHeight / 2) - (this.height / 2)) / settings.ui.canvasScale),
             initialZoom: settings.ui.canvasScale,
             zoomSpeed: 0.15,
-            onDoubleClick: function (e) {
+            onDoubleClick: function(e) {
                 return false;
             },
-            beforeMouseDown: function (e) {
+            beforeMouseDown: function(e) {
                 return e.button != 1;
             },
-            beforeTouchDown: function (e) {
+            beforeTouchDown: function(e) {
                 return !(e.touches.length > 1);
             },
             zoomDoubleClickSpeed: 1,
         })
         var _self = this
-        this.panzoom.on('transform', function (e) {
+        this.panzoom.on('transform', function(e) {
             // This event will be called along with events above.
             _self.cursorcanvas.style.transform = _self.previewcanvas.style.transform = _self.bggridcanvas.style.transform = _self.canvaslayersparent.style.transform
             _self.cursorcanvas.style.transformOrigin = _self.previewcanvas.style.transformOrigin = _self.bggridcanvas.style.transformOrigin = _self.canvaslayersparent.style.transformOrigin
@@ -92,8 +91,10 @@ class Canvas {
         this.deltaY = 0
         this.deltaPanX = 0
         this.deltaPanY = 0
+        this.panning = false;
 
         this.mouseDownEvent = (e) => {
+            if (e.button == 1) this.panning = true
             if (e.button != 0) {
                 return
             }
@@ -106,6 +107,7 @@ class Canvas {
         this.touchStartEvent = (e) => {
             this.inputDown(e)
             if (e.touches.length > 1) {
+                this.panning = true;
                 this.deltaX = (e.touches[0].clientX + e.touches[1].clientX) / 2
                 this.deltaY = (e.touches[0].clientY + e.touches[1].clientY) / 2
             } else {
@@ -126,14 +128,17 @@ class Canvas {
             }
 
             if (e.touches && e.touches.length != 1) {
+                this.panning = true;
                 this.panzoom.moveBy(-(this.deltaX - x), -(this.deltaY - y))
                 this.deltaX = (e.touches[0].clientX + e.touches[1].clientX) / 2
                 this.deltaY = (e.touches[0].clientY + e.touches[1].clientY) / 2
                 return
-            } else {
+            } else {}
+
+            if (e.button) {
+                if (e.button != 0) return
             }
 
-            if (e.button != 0) return
             this.inputActive(e)
         }
 
@@ -141,10 +146,13 @@ class Canvas {
             this.prevTX = null;
             this.prevTY = null;
             this.inputUp(e)
+            this.panning = false
         }
 
         this.touchEndEvent = (e) => {
             this.inputUp(e)
+
+            if (e.touches.length == 0) this.panning = false
         }
 
         this.clickEvent = (e) => {
@@ -208,14 +216,14 @@ class Canvas {
             for (p of this.tempL) this.draw(p);
             this.clearPreview()
             this.tempL = []
-            //if (settings.tools.shapeFilled.value && Tools.ellipse) {
-            //    console.log(this.filledData)
-            //    let fillL = filledEllipse(this.filledData.c.x, this.filledData.c.y, this.filledData.x, this.filledData.y)
-            //    for (let l of fillL) this.draw(l);
-            //} else if (settings.tools.shapeFilled.value && Tools.rect) {
-            //    let fillL = filledRectangle(this.filledData.r, this.filledData.c)
-            //    for (let l of fillL) this.draw(l);
-            //}
+                //if (settings.tools.shapeFilled.value && Tools.ellipse) {
+                //    console.log(this.filledData)
+                //    let fillL = filledEllipse(this.filledData.c.x, this.filledData.c.y, this.filledData.x, this.filledData.y)
+                //    for (let l of fillL) this.draw(l);
+                //} else if (settings.tools.shapeFilled.value && Tools.rect) {
+                //    let fillL = filledRectangle(this.filledData.r, this.filledData.c)
+                //    for (let l of fillL) this.draw(l);
+                //}
         }
         this.sX = null;
         this.sY = null;
@@ -226,18 +234,18 @@ class Canvas {
         var rbuf = this.redoBuffer;
         var curCtx = layer.ctx
         var curCanv = layer.canvasElement
-        var uCallback = function () {
+        var uCallback = function() {
             var img = new window.Image();
             img.setAttribute("src", buf);
-            img.onload = function () {
+            img.onload = function() {
                 curCtx.clearRect(0, 0, curCanv.width, curCanv.height)
                 curCtx.drawImage(img, 0, 0);
             };
         }
-        var rCallback = function () {
+        var rCallback = function() {
             var img = new window.Image();
             img.setAttribute("src", rbuf);
-            img.onload = function () {
+            img.onload = function() {
                 curCtx.clearRect(0, 0, curCanv.width, curCanv.height)
                 curCtx.drawImage(img, 0, 0);
             };
@@ -259,7 +267,8 @@ class Canvas {
         if (Tools.sprayPaint) {
             drawSprayPreview(x, y)
         };
-        if (e.buttons != 0) {
+        if (e.buttons != 0) { //calls whenever there is touch
+            console.log('a')
             if (activeLayer.settings.locked) return
             if (this.sX === null || this.sY === null) { if (!Tools.sprayPaint && !Tools.eyedropper) return }
             if (Tools.pen) {
@@ -269,7 +278,7 @@ class Canvas {
                     this.draw(new Point(p.x, p.y))
                     let brushSize = parseInt(settings.tools.brushSize.value)
                     let r = brushSize - 1
-                    //let c = filledEllipse(p.x, p.y, 2, 2)
+                        //let c = filledEllipse(p.x, p.y, 2, 2)
                     let c;
                     if (brushSize % 2 == 0) {
                         c = filledEllipse(p.x - (r / 2) - .5, p.y - (r / 2) - .5, p.x + (r / 2) - .5, p.y + (r / 2) - .5)
@@ -282,11 +291,11 @@ class Canvas {
                 this.draw(new Point(x, y))
                 this.sX = x;
                 this.sY = y;
-            }
-            else if (Tools.sprayPaint && e.buttons == 1) {
+            } else if (Tools.sprayPaint) {
+                if (this.panning) return
                 let brushSize = parseInt(settings.tools.spraySize.value)
                 let r = brushSize - 1
-                //let c = filledEllipse(p.x, p.y, 2, 2)
+                    //let c = filledEllipse(p.x, p.y, 2, 2)
                 let c;
                 if (brushSize % 2 == 0) {
                     c = filledEllipse(x - (r / 2) - .5, y - (r / 2) - .5, x + (r / 2) - .5, y + (r / 2) - .5)
@@ -309,7 +318,7 @@ class Canvas {
                     this.draw(new Point(p.x, p.y))
                     let brushSize = parseInt(settings.tools.brushSize.value)
                     let r = brushSize - 1
-                    //let c = filledEllipse(p.x, p.y, 2, 2)
+                        //let c = filledEllipse(p.x, p.y, 2, 2)
                     let c;
                     if (brushSize % 2 == 0) {
                         c = filledEllipse(p.x - (r / 2) - .5, p.y - (r / 2) - .5, p.x + (r / 2) - .5, p.y + (r / 2) - .5)
@@ -319,8 +328,7 @@ class Canvas {
                     var a;
                     for (a of c) this.draw(a);
                 })
-            }
-            else if (Tools.eraser) {
+            } else if (Tools.eraser) {
                 this.ctx.globalCompositeOperation = 'destination-out'
                 let P = line(new Point(this.sX, this.sY), new Point(x, y))
                 let p
@@ -328,7 +336,7 @@ class Canvas {
                     this.erase(new Point(p.x, p.y))
                     let brushSize = parseInt(settings.tools.brushSize.value)
                     let r = brushSize - 1
-                    //let c = filledEllipse(p.x, p.y, 2, 2)
+                        //let c = filledEllipse(p.x, p.y, 2, 2)
                     let c;
                     if (brushSize % 2 == 0) {
                         c = filledEllipse(p.x - (r / 2) - .5, p.y - (r / 2) - .5, p.x + (r / 2) - .5, p.y + (r / 2) - .5)
@@ -342,8 +350,7 @@ class Canvas {
                 this.sX = x;
                 this.sY = y;
                 this.ctx.globalCompositeOperation = 'source-over'
-            }
-            else if (Tools.eyedropper) {
+            } else if (Tools.eyedropper) {
                 this.setcolor(this.getPixelCol(new Point(x, y)));
             }
             if (preview) {
@@ -373,7 +380,8 @@ class Canvas {
                                 } else if (x - this.sX <= y - this.sY) {
                                     let mid = ((this.sY + y) / 2) - this.sY
                                 }
-                            } if (x - this.sX < 0 && y - this.sY >= 0) { // bottom left
+                            }
+                            if (x - this.sX < 0 && y - this.sY >= 0) { // bottom left
                                 if (x - this.sX > y - this.sY) {
                                     let mid = ((this.sX + x) / 2) - this.sX
                                 } else if (x - this.sX <= y - this.sY) {
@@ -498,8 +506,7 @@ class Canvas {
 
                 }
             }
-        } else if (e.buttons == 0) {
-
+        } else if (e.buttons == 0) { //calls whenever there is no touch, aka previewing
             if (preview) {
                 if (activeLayer.settings.locked) return
                 var tempCol
@@ -523,8 +530,7 @@ class Canvas {
                 var b;
                 for (b of c) { this.pDraw(b) }
 
-                if (Tools.eraser) {
-                }
+                if (Tools.eraser) {}
 
             }
         }
@@ -551,8 +557,8 @@ class Canvas {
         if (!this.prevTY || !this.prevTX) { return; }
         settings.ui.transformX = settings.ui.transformX + (x - this.prevTX)
         settings.ui.transformY = settings.ui.transformY + (y - this.prevTY)
-        //document.documentElement.style.setProperty('--canvTransformX', settings.ui.transformX + "px");
-        //document.documentElement.style.setProperty('--canvTransformY', settings.ui.transformY + "px");
+            //document.documentElement.style.setProperty('--canvTransformX', settings.ui.transformX + "px");
+            //document.documentElement.style.setProperty('--canvTransformY', settings.ui.transformY + "px");
         this.prevTX = x
         this.prevTY = y
     }
@@ -563,8 +569,8 @@ class Canvas {
         this.clearBgGrid()
         var w = settings.background.width;
         var h = settings.background.height;
-        nRow = nRow || 8;    // default number of rows
-        nCol = nCol || 8;    // default number of columns
+        nRow = nRow || 8; // default number of rows
+        nCol = nCol || 8; // default number of columns
 
         //w /= nCol;            // width of a block
         //h /= nRow;            // height of a block
@@ -589,7 +595,15 @@ class Canvas {
     }
 
     ctest() {
-        let Points = [[0, 20], [20, 20], [30, 10], [40, 8], [50, 10], [60, 20], [70, 30]]
+        let Points = [
+            [0, 20],
+            [20, 20],
+            [30, 10],
+            [40, 8],
+            [50, 10],
+            [60, 20],
+            [70, 30]
+        ]
         let c = this.CatmullRomChain(Points)
         console.log(c)
         let C
@@ -631,15 +645,19 @@ class Canvas {
             nPoints = 100
         }
         console.log(nPoints)
-        //Parametric constant: 0.5 for the centripetal spline, 0.0 for the uniform spline, 1.0 for the chordal spline.
+            //Parametric constant: 0.5 for the centripetal spline, 0.0 for the uniform spline, 1.0 for the chordal spline.
         let alpha = 0.5
-        //Premultiplied power constant for the following tj() function.
+            //Premultiplied power constant for the following tj() function.
         alpha = alpha / 2
+
         function tj(ti, Pi, Pj) {
-            let xi = Pi[0]; let yi = Pi[1];
-            let xj = Pj[0]; let yj = Pj[1];
+            let xi = Pi[0];
+            let yi = Pi[1];
+            let xj = Pj[0];
+            let yj = Pj[1];
             return Math.pow((Math.pow(xj - xi, 2) + Math.pow(yj - yi, 2)), alpha) + ti
         }
+
         function linspace(startValue, stopValue, cardinality) {
             var arr = [];
             var step = (stopValue - startValue) / (cardinality - 1);
@@ -648,6 +666,7 @@ class Canvas {
             }
             return arr;
         }
+
         function newArr(le, ch) {
             let arr = []
             for (let i = 0; i < le; i++) {
@@ -664,14 +683,14 @@ class Canvas {
         let array = (newArr(t.length, 1))
         t = math.reshape(t, [t.length, 1])
         console.log(math.add(math.multiply(math.divide(math.subtract(t1, t), math.subtract(t1, t0)), P0), math.multiply(math.divide(math.subtract(t, t0), math.subtract(t1, t0)), P1)))
-        /*
-                let A1 = (t1-t)/(t1-t0)*P0 + (t-t0)/(t1-t0)*P1;
-                let A2 = (t2-t)/(t2-t1)*P1 + (t-t1)/(t2-t1)*P2;
-                let A3 = (t3-t)/(t3-t2)*P2 + (t-t2)/(t3-t2)*P3;
-                let B1 = (t2-t)/(t2-t0)*A1 + (t-t0)/(t2-t0)*A2
-                let B2 = (t3-t)/(t3-t1)*A2 + (t-t1)/(t3-t1)*A3
-                let C = (t2-t)/(t2-t1)*B1 + (t-t1)/(t2-t1)*B2
-                return C*/
+            /*
+                    let A1 = (t1-t)/(t1-t0)*P0 + (t-t0)/(t1-t0)*P1;
+                    let A2 = (t2-t)/(t2-t1)*P1 + (t-t1)/(t2-t1)*P2;
+                    let A3 = (t3-t)/(t3-t2)*P2 + (t-t2)/(t3-t2)*P3;
+                    let B1 = (t2-t)/(t2-t0)*A1 + (t-t0)/(t2-t0)*A2
+                    let B2 = (t3-t)/(t3-t1)*A2 + (t-t1)/(t3-t1)*A3
+                    let C = (t2-t)/(t2-t1)*B1 + (t-t1)/(t2-t1)*B2
+                    return C*/
     }
     clearPreview() {
         this.pctx.globalCompositeOperation = "destination-out";
@@ -784,7 +803,7 @@ class Canvas {
         act(document.querySelectorAll(`[data-palette-color='${rgbToHex(color[0], color[1], color[2], color[3])}']`))
     }
     save() {
-        this.canvas.toBlob(function (blob) {
+        this.canvas.toBlob(function(blob) {
             var url = URL.createObjectURL(blob);
             var link = document.createElement('a');
             link.download = 'canvas.png';
@@ -904,13 +923,15 @@ class Canvas {
             drawingBoundTop = 0,
             drawingBoundRight = this.width - 1,
             drawingBoundBottom = this.height - 1,
-            pixelStack = [[startX, startY]];
+            pixelStack = [
+                [startX, startY]
+            ];
 
         while (pixelStack.length) {
 
-            newPos = pixelStack.pop();	//sets newPos to start x and y in beginning
-            x = newPos[0];				//sets x to x val of newPos
-            y = newPos[1];				//sets y to y val of newPos
+            newPos = pixelStack.pop(); //sets newPos to start x and y in beginning
+            x = newPos[0]; //sets x to x val of newPos
+            y = newPos[1]; //sets y to y val of newPos
 
             // Get current pixel position
             pixelPos = (y * this.width + x) * 4;
@@ -1010,50 +1031,50 @@ class Canvas {
     }
 
     redo() {
-        this.steps.push(this.redo_arr.pop());
-        var step;
-        this.steps.forEach(step => {
-            this.setcolor(step[2]);
-            this.ctx.globalAlpha = step[3];
-            this.draw(step[0], step[1], true);
-        });
-    }
-    /*
-        addImage() {
-            var _this = this;
-            var fp = document.createElement("input");
-            fp.type = "file";
-            fp.click();
-            fp.onchange = function (e) {
-                var reader = new FileReader();
-                reader.readAsDataURL(e.target.files[0]);
-                reader.onload = function () {
-                    var uimg = new Image();
-                    uimg.src = reader.result;
-                    uimg.width = _this.w;
-                    uimg.height = _this.h;
-                    uimg.onload = function () {
-                        var pxc = document.createElement("canvas");
-                        pxc.width = _this.w;
-                        pxc.height = _this.h;
-                        var pxctx = pxc.getContext("2d");
-                        pxctx.drawImage(uimg, 0, 0, _this.w, _this.h);
-                        var i, j;
-                        for (i = 0; i < _this.width; i++) {
-                            for (j = 0; j < _this.height; j++) {
-                                var ctr = 0;
-                                var avg = [0, 0, 0, 0];
-                                var pix = pxctx.getImageData(10 * i, 10 * j, 10, 10).data;
-                                pix.forEach((x, k) => { avg[k % 4] += x; if (k % 4 == 0) ctr++; });
-                                avg = avg.map(x => ~~(x / ctr));
-                                _this.setcolor(avg);
-                                _this.draw(i, j);
+            this.steps.push(this.redo_arr.pop());
+            var step;
+            this.steps.forEach(step => {
+                this.setcolor(step[2]);
+                this.ctx.globalAlpha = step[3];
+                this.draw(step[0], step[1], true);
+            });
+        }
+        /*
+            addImage() {
+                var _this = this;
+                var fp = document.createElement("input");
+                fp.type = "file";
+                fp.click();
+                fp.onchange = function (e) {
+                    var reader = new FileReader();
+                    reader.readAsDataURL(e.target.files[0]);
+                    reader.onload = function () {
+                        var uimg = new Image();
+                        uimg.src = reader.result;
+                        uimg.width = _this.w;
+                        uimg.height = _this.h;
+                        uimg.onload = function () {
+                            var pxc = document.createElement("canvas");
+                            pxc.width = _this.w;
+                            pxc.height = _this.h;
+                            var pxctx = pxc.getContext("2d");
+                            pxctx.drawImage(uimg, 0, 0, _this.w, _this.h);
+                            var i, j;
+                            for (i = 0; i < _this.width; i++) {
+                                for (j = 0; j < _this.height; j++) {
+                                    var ctr = 0;
+                                    var avg = [0, 0, 0, 0];
+                                    var pix = pxctx.getImageData(10 * i, 10 * j, 10, 10).data;
+                                    pix.forEach((x, k) => { avg[k % 4] += x; if (k % 4 == 0) ctr++; });
+                                    avg = avg.map(x => ~~(x / ctr));
+                                    _this.setcolor(avg);
+                                    _this.draw(i, j);
+                                }
                             }
                         }
                     }
                 }
-            }
-        }*/
+            }*/
 }
 
 class Frames {
