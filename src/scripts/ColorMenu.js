@@ -305,7 +305,7 @@ function colorPreviewClickHandler(e) {
     if (!clickedOnce) {
         clickedOnce = true
         colPreviewTimeout = setTimeout(() => {
-            alrt.log("double failed")
+            debug.log("double failed")
             clickedOnce = false
         }, 1000);
     } else {
@@ -335,7 +335,7 @@ function colorPreviewClickHandler(e) {
             } else if (col.hsv()[0] > 330 && col.hsv()[0] <= 360) {
                 pal = chroma.scale([col, col.set('hsv.h', '-60').set('hsv.s', '*3').set('hsv.v', '*.3').hex()])
             }
-            alrt.log(col.hsv()[0])
+            debug.log(col.hsv()[0])
         }
         pal = pal.mode('lch').correctLightness().colors(8)
         let rgbPal = pal.map(e => {
@@ -694,7 +694,7 @@ class paletteGroup {
                 if (isMobile && holdMovementAllowed) {
                     snapped = true;
                     mouseUpHandler();
-                    alrt.log("canMove")
+                    debug.log("canMove")
                     tempNode.classList.add("color-palette-standalone-popout")
                     moveHandler(e)
                     e.preventDefault();
@@ -772,9 +772,11 @@ class paletteGroup {
                 group.style.transform = `translate(${Math.ceil(curX)}px, ${Math.ceil(curY)}px)`;
                 tempNode.style.setProperty("--pX", `${startRect.x + Math.ceil(curX) - 8}px`)
                 tempNode.style.setProperty("--pY", `${startRect.y + Math.ceil(curY) - 8}px`)
-                if (Math.abs(curX) > 100 || Math.abs(curY) > 100) { snapped = true;
+                if (Math.abs(curX) > 100 || Math.abs(curY) > 100) {
+                    snapped = true;
                     mouseUpHandler();
-                    alrt.log("snapped") }
+                    debug.log("snapped")
+                }
                 return
 
             }

@@ -1259,7 +1259,7 @@ input {
     font-weight: bolder;
     border: none;
     border-radius: 5px;
-    max-width: 60px;
+    width: 60px;
     display: block;
     font-weight: 100;
     text-align: left;
@@ -1641,7 +1641,10 @@ canvas {
     position: absolute;
     cursor: none;
     pointer-events: none;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: -webkit-crisp-edges;
     image-rendering: pixelated;
+    image-rendering: crisp-edges;
 }
 
 .invertBackground {
@@ -1665,4 +1668,8 @@ canvas {
     top: 50%;
     left: 50%;
     transform: scale(3);
+}
+
+div[id^='alrt-main'] {
+    z-index: 1000000000000000000000000000000000;
 }

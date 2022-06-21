@@ -9,7 +9,7 @@ window.addEventListener('resize', () => {
     document.documentElement.style.setProperty('--vw', `${vw}px`);
 });
 
-let alrt;
+let debug;
 
 var Themes = {
     light: "ui-theme-light",
@@ -106,6 +106,7 @@ document.querySelector("#close").onclick = function() {
 
     document.getElementById('topbar-project-name').value = projName
     newLayer(width, height)
+    initializeGestures()
 }
 
 function toggleMenu() {

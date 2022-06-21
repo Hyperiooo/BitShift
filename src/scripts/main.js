@@ -121,8 +121,16 @@ if (isMobile) {
 }
 
 window.onload = function() {
-    alrt = new Alrt({
-        position: "bottom-left"
+    debug = new Alrt({
+        position: "bottom-left",
+        duration: 2000,
+        theme: "alrt-default-light"
+    });
+    notify = new Alrt({
+        position: "top-center",
+        duration: 5000, //default duration
+        theme: "bitshift-confirmation",
+        behavior: "overwrite"
     });
     window.colors = defaultPalettes
 
@@ -201,6 +209,7 @@ window.onload = function() {
         });
         projName = data.name;
         document.getElementById('topbar-project-name').value = data.name
+        initializeGestures()
     } else {
         newProject();
     }

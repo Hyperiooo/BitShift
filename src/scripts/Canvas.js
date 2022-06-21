@@ -145,12 +145,12 @@ class Canvas {
         this.mouseUpEvent = (e) => {
             this.prevTX = null;
             this.prevTY = null;
-            this.inputUp(e)
+            this.inputUp(e, this.panning)
             this.panning = false
         }
 
         this.touchEndEvent = (e) => {
-            this.inputUp(e)
+            this.inputUp(e, this.panning)
 
             if (e.touches.length == 0) this.panning = false
         }
@@ -210,7 +210,7 @@ class Canvas {
 
         this.undoBuffer = layer.canvasElement.toDataURL();
     }
-    inputUp(e) {
+    inputUp(e, wasPanning) {
         if (Tools.circle || Tools.ellipse || Tools.line || Tools.rect) {
             var p;
             for (p of this.tempL) this.draw(p);
@@ -250,7 +250,8 @@ class Canvas {
                 curCtx.drawImage(img, 0, 0);
             };
         }
-        addToUndoStack(uCallback, rCallback);
+        debug.log("wasPanning: " + wasPanning)
+        if (!wasPanning) addToUndoStack(uCallback, rCallback);
     }
     inputActive(e) {
         this.shiftKey = e.shiftKey;
