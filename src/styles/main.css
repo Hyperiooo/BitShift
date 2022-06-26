@@ -684,14 +684,17 @@ canvas * {
 }
 
 .tool-popup {
-    display: none;
+    pointer-events: none;
     background: var(--bgMainT);
     backdrop-filter: saturate(180%) blur(20px);
     border-radius: 15px;
+    opacity: 0;
+    transition: opacity 0.3s;
 }
 
 .tool-popup[data-show] {
-    display: block;
+    pointer-events: all;
+    opacity: 1;
 }
 
 #topbar {

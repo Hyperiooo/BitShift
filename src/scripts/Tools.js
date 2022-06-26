@@ -255,6 +255,7 @@ function updateToolSettings(tool) {
 
 
 function setmode(tool, el) {
+    closeAllToolPopups()
     Object.keys(Tools).forEach(v => Tools[v] = false)
 
     updateToolSettings(tool)
