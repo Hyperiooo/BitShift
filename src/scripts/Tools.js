@@ -167,8 +167,6 @@ var toolHoldTimeout;
 function detectToolLongPress(e, popup, instance) {
     toolHoldTimeout = setTimeout(() => {
         closeAllToolPopups()
-        notify.log("held for long enough")
-
         popup.setAttribute('data-show', '');
         instance.update()
     }, 500);
