@@ -614,7 +614,7 @@ canvas * {
     font-size: 18px;
     border-radius: 5px;
     width: 40px;
-    height: 45px;
+    height: 40px;
     margin-bottom: 4px;
     margin-left: 4px;
     margin-right: 4px;
@@ -651,6 +651,47 @@ canvas * {
 
 #toolbar .item:hover [data-tool-color-menu-button] {
     color: var(--color) !important;
+}
+
+#toolbar .toolbar-divider {
+    position: relative;
+    cursor: pointer;
+    font-size: 18px;
+    border-radius: 5px;
+    width: 30px;
+    height: 2px;
+    margin-bottom: 4px;
+    margin-left: 9px;
+    margin-right: 4px;
+    transition: 0.1s background, 0.3s color, 0.3s fill;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: var(--toolBarDim);
+}
+
+.tool-multiple:after {
+    --edge: 90%;
+    --inside: 72%;
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background: var(--toolBarHover);
+    clip-path: polygon(var(--inside) var(--edge), var(--edge) var(--edge), var(--edge) var(--inside));
+}
+
+.tool-popup {
+    display: none;
+    background: var(--bgMainT);
+    backdrop-filter: saturate(180%) blur(20px);
+    border-radius: 15px;
+}
+
+.tool-popup[data-show] {
+    display: block;
 }
 
 #topbar {

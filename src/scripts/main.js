@@ -213,9 +213,10 @@ window.onload = function() {
     } else {
         newProject();
     }
-    setmode("pen")
     populatePresets()
     updateCursor()
+    createToolUI()
+    setmode("pen")
 }
 
 

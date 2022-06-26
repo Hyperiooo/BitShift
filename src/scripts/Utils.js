@@ -1,23 +1,27 @@
-
 function isValidHex(color) {
     if (!color || typeof color !== 'string') return false;
 
     if (color.substring(0, 1) === '#') color = color.substring(1);
 
     switch (color.length) {
-        case 3: return /^[0-9A-F]{3}$/i.test(color);
-        case 4: return /^[0-9A-F]{4}$/i.test(color);
-        case 6: return /^[0-9A-F]{6}$/i.test(color);
-        case 8: return /^[0-9A-F]{8}$/i.test(color);
-        default: return false;
+        case 3:
+            return /^[0-9A-F]{3}$/i.test(color);
+        case 4:
+            return /^[0-9A-F]{4}$/i.test(color);
+        case 6:
+            return /^[0-9A-F]{6}$/i.test(color);
+        case 8:
+            return /^[0-9A-F]{8}$/i.test(color);
+        default:
+            return false;
     }
 
     return false;
 }
 
 function isValidNum(str) {
-    if (typeof str != "string") return false 
-    return !isNaN(str) && !isNaN(parseFloat(str)) 
+    if (typeof str != "string") return false
+    return !isNaN(str) && !isNaN(parseFloat(str))
 }
 
 function hexToRGB(hex) {
@@ -28,7 +32,7 @@ function hexToRGB(hex) {
         hex += "ff"
     }
     var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])([a-f\d])$/i;
-    hex = hex.replace(shorthandRegex, function (m, r, g, b, a) {
+    hex = hex.replace(shorthandRegex, function(m, r, g, b, a) {
         return r + r + g + g + b + b + (a || "ff") + (a || "ff");
     });
 
@@ -37,8 +41,10 @@ function hexToRGB(hex) {
         parseInt(result[1], 16),
         parseInt(result[2], 16),
         parseInt(result[3], 16),
-        parseInt(result[4], 16)] : null;
+        parseInt(result[4], 16)
+    ] : null;
 }
+
 function HSLToHSV(hsla) {
     var h = hsla[0]
     var s = hsla[1]
@@ -49,6 +55,7 @@ function HSLToHSV(hsla) {
     const hsvV = l + hsv1;
     return [h, hsvS, hsvV, a];
 }
+
 function HSVToHSL(hsva) {
     var h = hsva[0]
     var s = hsva[1] / 100
@@ -141,15 +148,17 @@ function HSLToRGB(hsla) {
 
     return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255), Math.round(a / 100 * 255)];
 }
+
 function rgbToHex(r, g, b, a) {
     if (a) return intToHex(r) + intToHex(g) + intToHex(b) + intToHex(a);
     else if (!a) return intToHex(r) + intToHex(g) + intToHex(b);
 }
+
 function intToHex(c) {
     var hex = c.toString(16);
     return hex.length == 1 ? "0" + hex : hex;
 }
-String.prototype.replaceArray = function (find, replace) {
+String.prototype.replaceArray = function(find, replace) {
     var replaceString = this;
     var regex;
     for (var i = 0; i < find.length; i++) {
@@ -158,9 +167,11 @@ String.prototype.replaceArray = function (find, replace) {
     }
     return replaceString;
 };
+
 function lerp(v0, v1, t) {
     return v0 * (1 - t) + v1 * t;
 }
+
 function distance(x1, x2, y1, y2) {
     return Math.hypot(x2 - x1, y2 - y1)
 }
@@ -183,6 +194,7 @@ function randomString(l) {
     }
     return result;
 }
+
 function drawPix(x, y) {
     document.body.innerHTML += `
     <div style="background:white; width:1px; height:1px; position: absolute; top: ${y}px; left: ${x}px; "></div>
@@ -195,20 +207,20 @@ function uniq_fast(a) {
     var out = [];
     var len = a.length;
     var j = 0;
-    for(var i = 0; i < len; i++) {
-         var item = a[i];
-         if(seen[item] !== 1) {
-               seen[item] = 1;
-               out[j++] = item;
-         }
+    for (var i = 0; i < len; i++) {
+        var item = a[i];
+        if (seen[item] !== 1) {
+            seen[item] = 1;
+            out[j++] = item;
+        }
     }
     return out;
 }
 
 strToAB = str =>
-  new Uint8Array(str.split('')
-    .map(c => c.charCodeAt(0))).buffer;
+    new Uint8Array(str.split('')
+        .map(c => c.charCodeAt(0))).buffer;
 
-ABToStr = ab => 
-  new Uint8Array(ab).reduce((p, c) =>
-  p + String.fromCharCode(c), '');
+ABToStr = ab =>
+    new Uint8Array(ab).reduce((p, c) =>
+        p + String.fromCharCode(c), '');

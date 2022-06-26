@@ -22,6 +22,7 @@
     <script src="./scripts/anypalette.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.0/color-thief.umd.js"></script>
     <!--SCRIPTS-->
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
     <script src="./scripts/Matrix.js" defer></script>
     <script src="./scripts/Shapes.js" defer></script>
     <script src="./scripts/Utils.js" defer></script>
@@ -275,42 +276,25 @@
         <input type="text" id="topbar-project-name" value="" onblur="renameProject(this)">
     </div>
     <div id="toolbar" class="ui">
-        <span id="tool-btn-pen" class="item" onclick="setmode('pen',
-        this)"><i
-          class="hi-pencil-semi"></i></span>
-        <span id="tool-btn-eraser" class="item" onclick="setmode('eraser',
-        this)"><i
-          class="hi-eraser-semi"></i></span>
-        <span id="tool-btn-fillBucket" class="item" onclick="setmode('fillBucket',
-        this)"><i
-          class="hi-paint-bucket-semi"></i></span>
-        <span id="tool-btn-sprayPaint" class="item" onclick="setmode('sprayPaint',
-        this)"><i
-          class="hi-spray-semi"></i></span>
-        <span id="tool-btn-eyedropper" class="item" onclick="setmode('eyedropper',
-        this)"><i
-          class="hi-eyedropper-semi"></i></span>
-        <span id="tool-btn-line" class="item" onclick="setmode('line',
-        this)"><i
-          class="hi-path-line"></i>
-      </span>
-        <span id="tool-btn-ellipse" class="item" onclick="setmode('ellipse',
-        this)"><i
-          class="hi-circle-line"></i></span>
-        <span id="tool-btn-rect" class="item" onclick="setmode('rect',
-        this)"><i
-          class="hi-square-line"></i></span>
+        <div id="dynamic-tool-wrap">
+        </div>
+        <span class="toolbar-divider"></span>
         <span class="item toolbar-landscape-only" onclick="toggleColorPicker()"><i
           class="hi-circle-small-fill" data-tool-color-menu-button></i>
       </span>
-        <span class="item toolbar-landscape-only" onclick="toggleLayerMenu()"><i
-          class="hi-layer-fill"></i></span>
+        <span id="tool-btn-eyedropper" class="item" onclick="setmode('eyedropper',
+        this)"><i
+          class="hi-eyedropper-semi"></i></span>
+        <span class="toolbar-divider"></span>
+        <span class="item" onclick="undo()"><i
+          class="hi-undo-line"></i></span>
+        <span class="item" onclick="redo()"><i
+          class="hi-redo-line"></i></span>
+        <span class="toolbar-divider"></span>
         <span class="item" onclick="board.clear()"><i
           class="hi-trash-fill"></i></span>
-        <span class="item" onclick="undo()"><i
-            class="hi-undo-line"></i></span>
-        <span class="item" onclick="redo()"><i
-                class="hi-redo-line"></i></span>
+        <span class="item toolbar-landscape-only" onclick="toggleLayerMenu()"><i
+          class="hi-layer-fill"></i></span>
         <!---test-->
     </div>
     <!---

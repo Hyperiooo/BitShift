@@ -3,7 +3,7 @@ var undoIndex = 0;
 var undoMax = 500;
 
 function addToUndoStack(undoCallback, redoCallback) {
-    debug.log('added')
+    //debug.log('added')
     if (undoIndex < undoStack.length - 1) {
         undoStack.splice(undoIndex + 1)
     }

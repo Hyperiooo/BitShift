@@ -106,13 +106,13 @@ class TapGesture {
         console.log(_self.totalTouches)
         var pass = true;
         if (_self.totalTouches != _self.options.inputs) {
-            debug.log("gesture failed - incnum")
+            //debug.log("gesture failed - incnum")
             pass = false
         }
 
 
         if (pass) {
-            debug.log("gesture passed")
+            //debug.log("gesture passed")
             _self.callback(_self)
         }
         _self.resetGesture(_self)

@@ -197,13 +197,14 @@ class Canvas {
         this.canvasParent.removeEventListener("mouseup", this.mouseUpEvent)
     }
     inputDown(e) {
+        closeAllToolPopups()
         updatePrevious(this.color)
         var rect = this.bggridcanvas.getBoundingClientRect();
         var x = e.clientX - rect.left || e.touches[0].clientX - rect.left;
         var y = e.clientY - rect.top || e.touches[0].clientY - rect.top;
         x = Math.floor(this.width * x / (this.bggridcanvas.clientWidth * this.canvScale));
         y = Math.floor(this.height * y / (this.bggridcanvas.clientHeight * this.canvScale));
-        if (Tools.circle || Tools.ellipse || Tools.line || Tools.rect || Tools.pen || Tools.eraser) {
+        if (Tools.circle || Tools.ellipse || Tools.line || Tools.rectangle || Tools.pen || Tools.eraser) {
             this.sX = x;
             this.sY = y;
         }
@@ -211,7 +212,7 @@ class Canvas {
         this.undoBuffer = layer.canvasElement.toDataURL();
     }
     inputUp(e, wasPanning) {
-        if (Tools.circle || Tools.ellipse || Tools.line || Tools.rect) {
+        if (Tools.circle || Tools.ellipse || Tools.line || Tools.rectangle) {
             var p;
             for (p of this.tempL) this.draw(p);
             this.clearPreview()
@@ -220,7 +221,7 @@ class Canvas {
                 //    console.log(this.filledData)
                 //    let fillL = filledEllipse(this.filledData.c.x, this.filledData.c.y, this.filledData.x, this.filledData.y)
                 //    for (let l of fillL) this.draw(l);
-                //} else if (settings.tools.shapeFilled.value && Tools.rect) {
+                //} else if (settings.tools.shapeFilled.value && Tools.rectangle) {
                 //    let fillL = filledRectangle(this.filledData.r, this.filledData.c)
                 //    for (let l of fillL) this.draw(l);
                 //}
@@ -243,14 +244,14 @@ class Canvas {
             };
         }
         var rCallback = function() {
-            var img = new window.Image();
-            img.setAttribute("src", rbuf);
-            img.onload = function() {
-                curCtx.clearRect(0, 0, curCanv.width, curCanv.height)
-                curCtx.drawImage(img, 0, 0);
-            };
-        }
-        debug.log("wasPanning: " + wasPanning)
+                var img = new window.Image();
+                img.setAttribute("src", rbuf);
+                img.onload = function() {
+                    curCtx.clearRect(0, 0, curCanv.width, curCanv.height)
+                    curCtx.drawImage(img, 0, 0);
+                };
+            }
+            //debug.log("wasPanning: " + wasPanning)
         if (!wasPanning) addToUndoStack(uCallback, rCallback);
     }
     inputActive(e) {
@@ -429,7 +430,7 @@ class Canvas {
                     for (p of this.tempL) this.pDraw(new Point(p.x, p.y));
 
                 }
-                if (Tools.rect) {
+                if (Tools.rectangle) {
                     if (this.shiftKey) {
                         let c = 0
                         let e = new Point(x, y)
