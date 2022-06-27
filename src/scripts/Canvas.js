@@ -204,7 +204,7 @@ class Canvas {
         var y = e.clientY - rect.top || e.touches[0].clientY - rect.top;
         x = Math.floor(this.width * x / (this.bggridcanvas.clientWidth * this.canvScale));
         y = Math.floor(this.height * y / (this.bggridcanvas.clientHeight * this.canvScale));
-        if (Tools.circle || Tools.ellipse || Tools.line || Tools.rectangle || Tools.pen || Tools.eraser) {
+        if (Tools.circle || Tools.ellipse || Tools.line || Tools.rectangle || Tools.filledRectangle || Tools.pen || Tools.eraser) {
             this.sX = x;
             this.sY = y;
         }
@@ -212,7 +212,7 @@ class Canvas {
         this.undoBuffer = layer.canvasElement.toDataURL();
     }
     inputUp(e, wasPanning) {
-        if (Tools.circle || Tools.ellipse || Tools.line || Tools.rectangle) {
+        if (Tools.circle || Tools.ellipse || Tools.line || Tools.rectangle || Tools.filledRectangle) {
             var p;
             for (p of this.tempL) this.draw(p);
             this.clearPreview()
@@ -430,7 +430,7 @@ class Canvas {
                     for (p of this.tempL) this.pDraw(new Point(p.x, p.y));
 
                 }
-                if (Tools.rectangle) {
+                if (Tools.rectangle || Tools.filledRectangle) {
                     if (this.shiftKey) {
                         let c = 0
                         let e = new Point(x, y)
@@ -492,18 +492,19 @@ class Canvas {
                             }
                         }
 
-                        this.tempL = rectangle(c, e);
+                        if (Tools.rectangle) this.tempL = rectangle(c, e);
+                        if (Tools.filledRectangle) this.tempL = filledRectangle(c, e);
                         var p;
                         for (p of this.tempL) this.pDraw(new Point(p.x, p.y));
 
                     } else if (!this.shiftKey) {
-                        //var radius = +prompt("radius?");
                         let c = new Point(this.sX, this.sY)
                         if (this.ctrlKey) { c = new Point(this.sX - (x - this.sX), this.sY - (y - this.sY)) }
                         let e = new Point(x, y)
-                        this.tempL = rectangle(c, e);
+                        if (Tools.rectangle) this.tempL = rectangle(c, e);
+                        if (Tools.filledRectangle) this.tempL = filledRectangle(c, e);
                         let aa = []
-                        for (let p of this.tempL) this.pDraw(new Point(p.x, p.y));
+                        for (let p of this.tempL) this.pDraw(p);
                     }
 
                 }

@@ -228,8 +228,12 @@ function newProject() {
 
 
 window.onbeforeunload = function() {
-    saveData();
-};
+    saveData()
+}
+
+window.onpagehide = function() {
+    saveData()
+}
 
 function saveData() {
     project = {

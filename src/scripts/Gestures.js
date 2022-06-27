@@ -13,51 +13,6 @@ var gestureAssignments = {
 }
 
 
-function keyboardInput(e) {
-    var activeElement = document.activeElement;
-    var inputs = ['input', 'select', 'button', 'textarea'];
-
-    if (activeElement && inputs.indexOf(activeElement.tagName.toLowerCase()) == -1) {
-        e.preventDefault()
-        e.stopPropagation()
-        var input = []
-        var inputString = ""
-        if (e.ctrlKey) input.push("CONTROL")
-        if (e.altKey) input.push("ALT")
-        if (e.shiftKey) input.push("SHIFT")
-        if (e.key != "Control" && e.key != "Alt" && e.key != "Shift") input.push(e.key.toUpperCase())
-        inputString = input.join("+")
-        if (keyboardAssignments[inputString]) keyboardAssignments[inputString]()
-    }
-}
-
-var gestureTimeout;
-var gestureStarted = false;
-
-var gestureTouches = ""
-
-
-function initializeGesture(e) {
-    if (!gestureStarted) gestureStarted = true
-    if (gestureStarted) {
-        clearTimeout(gestureTimeout)
-    }
-
-    gestureTouches = gestureTouches + "S"
-    gestureTimeout = setTimeout(() => {
-        //debug.log(gestureTouches)
-        gestureTouches = ""
-    }, 100)
-}
-
-function endTouch(e) {
-
-}
-
-function cancelGesture(e) {
-
-}
-
 
 class TapGesture {
     /**
@@ -67,16 +22,29 @@ class TapGesture {
      * @param {Function} callback 
      */
     constructor(options, element, callback) {
-        this.options = options
+        this.options = {
+            inputs: options.inputs || 1,
+            maxDelay: options.maxDelay || 300,
+            threshold: options.threshold || 10,
+            duration: options.duration || 1000
+        }
+        console.log(options, this.options)
         this.callback = callback
         this.totalTouches = 0
         this.currentTouches = 0
         this.touchStarts = []
+        this.touchEnds = []
+        this.beginningPositions = {}
+        this.previousPositions = {}
+        this.positionDeltas = {}
         console.log(element)
 
         var _self = this
         element.addEventListener('touchstart', function(e) {
             _self.touchStart(e, _self);
+        });
+        element.addEventListener('touchmove', function(e) {
+            _self.touchMove(e, _self);
         });
         element.addEventListener('touchend', function(e) {
             _self.touchEnd(e, _self);
@@ -86,28 +54,80 @@ class TapGesture {
     }
 
     touchStart(e, _self) {
-        for (let i = 0; i < e.targetTouches.length; i++) {
+        console.groupCollapsed()
+        for (let i = 0; i < e.changedTouches.length; i++) {
+            _self.touchStarts.push(Date.now())
             _self.totalTouches += 1
+            _self.beginningPositions[e.changedTouches[i].identifier.toString()] = {
+                x: e.changedTouches[i].clientX,
+                y: e.changedTouches[i].clientY
+            }
+            _self.previousPositions[e.changedTouches[i].identifier.toString()] = {
+                x: e.changedTouches[i].clientX,
+                y: e.changedTouches[i].clientY
+            }
+            _self.positionDeltas[e.changedTouches[i].identifier.toString()] = {
+                x: 0,
+                y: 0
+            }
+        }
+        _self.currentTouches = e.touches.length
+            //console.log('Touch Started', e, e.targetTouches.length)
+        console.groupEnd()
+            //console.log(_self.beginningPositions)
+    }
+    touchEnd(e, _self) {
+        console.groupCollapsed()
+        for (let i = 0; i < e.changedTouches.length; i++) {
+            _self.touchEnds.push(Date.now())
+        }
+        _self.currentTouches = e.touches.length
+            //console.log("Touch Ended", e) /
+            //console.log(_self.touchStarts) /
+            //console.log(_self.currentTouches)
+        if (_self.currentTouches == 0) _self.evaluateGesture(_self)
+        console.groupEnd()
+    }
+    touchMove(e, _self) {
+        console.groupCollapsed()
+
+        for (let i = 0; i < e.changedTouches.length; i++) {
+            _self.positionDeltas[e.changedTouches[i].identifier.toString()].x += (e.changedTouches[i].clientX - _self.previousPositions[e.changedTouches[i].identifier.toString()].x)
+            _self.positionDeltas[e.changedTouches[i].identifier.toString()].y += (e.changedTouches[i].clientY - _self.previousPositions[e.changedTouches[i].identifier.toString()].y)
+            _self.previousPositions[e.changedTouches[i].identifier.toString()] = {
+                x: e.changedTouches[i].clientX,
+                y: e.changedTouches[i].clientY
+            }
         }
         _self.touchStarts.push(Date.now())
         _self.currentTouches = e.touches.length
-        console.log('Touch Started', e, e.targetTouches.length)
-    }
-    touchEnd(e, _self) {
-        _self.currentTouches = e.touches.length
-        console.log("Touch Ended", e)
-        console.log(_self.touchStarts)
-        console.log(_self.currentTouches)
-        if (_self.currentTouches == 0) _self.evaluateGesture(_self)
+            //console.log('Touch Started', e, e.targetTouches.length)
+        console.groupEnd()
     }
 
     evaluateGesture(_self) {
-        console.log("evaluating gesture")
-        console.log(_self.totalTouches)
+        //console.log("evaluating gesture")
+        //console.log(_self.totalTouches)
         var pass = true;
+        if (_self.touchStarts[_self.touchStarts.length - 1] - _self.touchStarts[0] > _self.options.maxDelay || _self.touchEnds[_self.touchEnds.length - 1] - _self.touchEnds[0] > _self.options.maxDelay) {
+
+            pass = false
+        }
+        if (_self.touchEnds[0] - _self.touchStarts[_self.touchStarts.length - 1] > _self.options.duration) {
+
+            pass = false
+        }
         if (_self.totalTouches != _self.options.inputs) {
             //debug.log("gesture failed - incnum")
             pass = false
+        }
+        for (const key in _self.positionDeltas) {
+            if (Object.hasOwnProperty.call(_self.positionDeltas, key)) {
+                const element = _self.positionDeltas[key];
+                if (Math.abs(element.x) > _self.options.threshold || Math.abs(element.y) > _self.options.threshold) {
+                    pass = false;
+                }
+            }
         }
 
 
@@ -122,16 +142,17 @@ class TapGesture {
         _self.totalTouches = 0
         _self.currentTouches = 0
         _self.touchStarts = []
+        _self.touchEnds = []
+        _self.beginningPositions = {}
+        _self.positionDeltas = {}
+        _self.previousPositions = {}
     }
 }
 
 function initializeGestures() {
     console.log("board")
-    board.canvasParent.ontouchstart = initializeGesture
-    document.onmousedown = initializeGesture
-    document.ontouchend = endTouch
-    var doubleTapGesture = new TapGesture({ inputs: 2, minDelay: 0, maxDelay: 300, tolerance: 10 }, board.canvasParent, undo)
-    var doubleTapGesture = new TapGesture({ inputs: 3, minDelay: 0, maxDelay: 300, tolerance: 10 }, board.canvasParent, redo)
+    var doubleTapGesture = new TapGesture({ inputs: 2, maxDelay: 300, threshold: 10 }, board.canvasParent, undo)
+    new TapGesture({ inputs: 3, maxDelay: 300, threshold: 10 }, board.canvasParent, redo)
 }
 
 function doubleTapCallback(e) {
