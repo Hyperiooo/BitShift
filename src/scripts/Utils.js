@@ -224,3 +224,8 @@ strToAB = str =>
 ABToStr = ab =>
     new Uint8Array(ab).reduce((p, c) =>
         p + String.fromCharCode(c), '');
+
+
+function normalize(n, p) {
+    return parseFloat(n.toFixed(p))
+}

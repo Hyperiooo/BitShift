@@ -1,5 +1,5 @@
 .alrt-wrap[data-theme="bitshift-confirmation"] {
-    color: white;
+    color: var(--textMain);
     background: var(--bgMainT);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
@@ -9,7 +9,7 @@
 
 div[id^='alrt-main'].alrt-top-center,
 div[id*='alrt-main'].alrt-top-center {
-    top: 90px;
+    top: 46px;
     left: 50%;
     transform: translateX(-50%);
 }
@@ -21,7 +21,7 @@ div[id*='alrt-main'].alrt-top-center {
 
 .alrt-wrap[data-theme="bitshift-confirmation"] p i {
     font-size: 15px;
-    color: #a7a7a7;
+    color: var(--textDim);
     margin-right: 5px;
 }
 
@@ -40,17 +40,6 @@ div[id*='alrt-main'].alrt-top-center {
     color: transparent;
     cursor: pointer;
     margin-left: 5px;
-}
-
-.alrt-wrap[data-theme="bitshift-confirmation"]:hover .alrt-close-button {
-    color: rgb(36, 35, 35);
-}
-
-.alrt-wrap[data-theme="bitshift-confirmation"] .alrt-close-button:hover,
-.alrt-wrap[data-theme="bitshift-confirmation"] .alrt-close-button:focus {
-    background: rgb(36, 35, 35);
-    color: rgb(66, 64, 64) !important;
-    border-radius: 5px;
 }
 
 @keyframes bitshift-top-in {

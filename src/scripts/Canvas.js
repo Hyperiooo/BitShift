@@ -276,6 +276,7 @@ class Canvas {
             if (Tools.pen) {
                 let P = line(new Point(this.sX, this.sY), new Point(x, y))
                 let p
+                    //notify.log(Math.floor(normalize(e.changedTouches[0].force, 10) * 5))
                 for (p of P) {
                     this.draw(new Point(p.x, p.y))
                     let brushSize = parseInt(settings.tools.brushSize.value)

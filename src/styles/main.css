@@ -721,8 +721,6 @@ canvas * {
     cursor: pointer;
     font-size: 18px;
     border-radius: 5px;
-    width: 50px;
-    height: 40px;
     transition: 0.1s background, 0.3s color, 0.3s fill;
     display: flex;
     justify-content: center;
@@ -751,14 +749,12 @@ canvas * {
     margin-left: 8px;
 }
 
-#topbar .item i,
 .topbar-button {
     color: var(--toolBarDim);
     fill: var(--toolBarDim);
     transition: 0.1s color, 0.1s fill;
 }
 
-#topbar .item:hover i,
 .topbar-button:hover {
     color: var(--toolBarHover);
     fill: var(--toolBarHover);
@@ -792,7 +788,31 @@ canvas * {
     background: var(--bgLight);
 }
 
-#topbar .item:hover,
+#topbar-right {
+    display: inline-block;
+    position: absolute;
+    right: 15px;
+    cursor: text;
+    font-size: 15px;
+    border-radius: 5px;
+    margin-left: 2px;
+    transition: 0.1s background, 0.3s color, 0.3s fill;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: none;
+    outline: none;
+    border: none;
+    color: var(--toolBarHover);
+    text-align: center;
+    background: var(--bgMain);
+}
+
+#topbar-right .item {
+    width: 36px;
+    height: 36px;
+}
+
 .topbar-button:hover {
     background: var(--bgLight);
 }
@@ -1263,6 +1283,7 @@ input {
 }
 
 #tool-settings-content {
+    color: var(--textDim);
     transition: 0.3s height, 0.15s opacity, 0.3s margin-bottom;
 }
 
@@ -1468,7 +1489,7 @@ input {
 
 #layer-menu {
     position: fixed;
-    top: 94px;
+    top: 50px;
     right: 0px;
     padding: 0px;
     margin: 0;
@@ -1487,7 +1508,7 @@ input {
     transition: 0.2s opacity, 0.2s transform, max-height 0.2s;
     pointer-events: none;
     width: 335px;
-    height: calc(100% - 94px);
+    height: calc(100% - 50px);
 }
 
 #layer-menu.layer-open {

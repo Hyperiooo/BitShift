@@ -1,6 +1,7 @@
 function toggleLayerMenu() {
     document.getElementById('layer-menu').classList.toggle("layer-open")
     document.getElementById('color-menu').classList.remove("color-open")
+    document.getElementById('layer-toggle-button').classList.toggle("tool-active")
 }
 var container = document.querySelector("#layer-main");
 sorter = new dragSort(container, "layer-wrap");

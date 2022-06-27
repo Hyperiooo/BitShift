@@ -22,7 +22,7 @@
     <script src="./scripts/anypalette.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.0/color-thief.umd.js"></script>
     <!--SCRIPTS-->
-    <script src="https://unpkg.com/@popperjs/core@2"></script>
+    <script src="./scripts/popper.min.js"></script>
     <script src="./scripts/Matrix.js" defer></script>
     <script src="./scripts/Shapes.js" defer></script>
     <script src="./scripts/Utils.js" defer></script>
@@ -65,7 +65,6 @@
     <input type="file" id="fileOpenDialog" style="display: hidden; visibility:
       hidden; height: 0px; width: 0px; pointer-events: none;" accept=".bspr">
     <div id="tool-settings">
-        <div id="tool-settings-content"></div>
     </div>
     <div class="color-menu" id="color-menu" ondrop="dropHandler(event);" ondragover="dragOverHandler(event);" ondragleave="dragLeaveHandler(event);" ondragend="dragLeaveHandler(event);">
         <div id="color-menu-drop-effect">Import Palette</div>
@@ -264,16 +263,13 @@
         <button class="topbar-button" onclick="toggleMenu()">
         File
       </button>
-        <button class="topbar-button" onclick="toggleMenu()">
-        Edit
-      </button>
-        <button class="topbar-button" onclick="toggleMenu()">
-        Layer
-      </button>
-        <button class="topbar-button" onclick="toggleMenu()">
-        Select
-      </button>
-        <input type="text" id="topbar-project-name" value="" onblur="renameProject(this)">
+        <input style="visibility: hidden;display: none;" type="text" id="topbar-project-name" value="" onblur="renameProject(this)">
+
+        <div id="tool-settings-content"></div>
+        <div id="topbar-right">
+            <span id="layer-toggle-button" class="item" onclick="toggleLayerMenu()"><i
+            class="hi-layer-fill"></i></span>
+        </div>
     </div>
     <div id="toolbar" class="ui">
         <div id="dynamic-tool-wrap">
@@ -293,8 +289,6 @@
         <span class="toolbar-divider"></span>
         <span class="item" onclick="board.clear()"><i
           class="hi-trash-fill"></i></span>
-        <span class="item toolbar-landscape-only" onclick="toggleLayerMenu()"><i
-          class="hi-layer-fill"></i></span>
         <!---test-->
     </div>
     <!---
