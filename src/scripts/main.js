@@ -20,9 +20,9 @@ var settings = {
     },
     "tools": {
         "assignments": {
-            "pen": ["brushSize", "brushSquare", "brushSmoothing", "brushPixelPerfect"],
-            "eraser": ["brushSize", "brushSquare", "brushSmoothing", "brushPixelPerfect"],
-            "sprayPaint": ["brushSize", "brushSquare", "brushSmoothing", "spraySpeed", "spraySize"],
+            "pen": ["brushSize", "brushSquare", "brushPixelPerfect"],
+            "eraser": ["brushSize", "brushSquare", "brushPixelPerfect"],
+            "sprayPaint": ["brushSize", "brushSquare", "spraySpeed", "spraySize"],
             "fillBucket": ["contiguous"],
         },
         "brushSize": {

@@ -66,7 +66,36 @@ var ToolParams = {
         "icon": "hi-spray-semi",
         "action": "setmode('sprayPaint')",
     },
-
+    "rectangleMarquee": {
+        "name": "rectangleMarquee",
+        "id": "tool-btn-rectangleMarquee",
+        "icon": "hi-marquee-line",
+        "action": "setmode('sprayPaint')",
+    },
+    "ellipseMarquee": {
+        "name": "ellipseMarquee",
+        "id": "tool-btn-ellipseMarquee",
+        "icon": "hi-circle-marquee-line",
+        "action": "setmode('sprayPaint')",
+    },
+    "freehandSelect": {
+        "name": "freehandSelect",
+        "id": "tool-btn-freehandSelect",
+        "icon": "hi-lasso-line",
+        "action": "setmode('sprayPaint')",
+    },
+    "brushSelect": {
+        "name": "brushSelect",
+        "id": "tool-btn-brushSelect",
+        "icon": "hi-freehand-select-line",
+        "action": "setmode('sprayPaint')",
+    },
+    "magicWand": {
+        "name": "magicWand",
+        "id": "tool-btn-magicWand",
+        "icon": "hi-magic-wand-line",
+        "action": "setmode('sprayPaint')",
+    },
 }
 
 
@@ -93,6 +122,12 @@ var ToolbarAssignments = [{
     {
         "type": "single",
         "tool": "line"
+    },
+    {
+        "type": "multiple",
+        "name": "selection",
+        "default": "rectangleMarquee",
+        "tools": ["rectangleMarquee", "ellipseMarquee", "freehandSelect", "brushSelect", "magicWand"]
     },
 
 ]
