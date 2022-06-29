@@ -81,6 +81,7 @@ var svgOffset = 0;
 
 
 function drawEraserPreview(x, y) {
+    notify.log(svgOffset)
     cursorSVG.innerHTML = ""
     eraserBufferCanvas.width = project.width
     eraserBufferCanvas.height = project.height
@@ -166,7 +167,6 @@ function eBufDraw(coord) {
 var cursor = document.getElementById("cursor")
 
 function canvasResized() {
-    notify.log('resize')
     svgOffset = 1 / board.canvScale
     if (Tools.eraser) {
         drawEraserPreview(board.currentX, board.currentY)

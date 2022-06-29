@@ -179,6 +179,7 @@ class Canvas {
                 this.fillerNonContiguous(new Point(x, y));
             }
         }
+        this.touching = false
 
         this.canvasParent.addEventListener("touchmove", this.moveEvent)
         this.canvasParent.addEventListener("mousemove", this.moveEvent)
@@ -212,6 +213,7 @@ class Canvas {
             this.sX = x;
             this.sY = y;
         }
+        this.touching = true
 
         this.undoBuffer = layer.canvasElement.toDataURL();
     }
@@ -257,8 +259,10 @@ class Canvas {
             }
             //debug.log("wasPanning: " + wasPanning)
         if (!wasPanning) addToUndoStack(uCallback, rCallback);
+        this.touching = false
     }
     inputActive(e) {
+        this.touching = true
         this.shiftKey = e.shiftKey;
         this.ctrlKey = e.ctrlKey;
         this.altKey = e.altKey;
