@@ -36,6 +36,7 @@ function updateCursor() {
 }
 
 var cursorCanv = document.getElementById("cursorcanv")
+var cursorSVG = document.getElementById("cursorSVG")
 var cursorcanvctx = cursorCanv.getContext('2d')
 
 
@@ -43,7 +44,44 @@ var eraserBufferCanvas = document.createElement("canvas")
 eraserBufferCanvas.id = "eraserBufferCanvas"
 var eraserBufferCtx = eraserBufferCanvas.getContext("2d")
 
+
+function drawOnSVGCanvas(outlinePath, antiPath) {
+    cursorSVG.innerHTML = ""
+    var svgOffset = 1 / board.canvScale
+    var box = document.createElementNS('http://www.w3.org/2000/svg', "path");
+    var anti = document.createElementNS('http://www.w3.org/2000/svg', "path");
+    var mask = document.createElementNS('http://www.w3.org/2000/svg', "mask");
+    mask.setAttributeNS(null, "id", "mask")
+        //box.setAttributeNS(null, "d", "M 0 0 H 1 V 1 H 0 Z");
+    box.setAttributeNS(null, "d", outlinePath);
+    anti.setAttributeNS(null, "d", antiPath);
+    box.setAttributeNS(null, "fill", "white")
+    anti.setAttributeNS(null, "fill", "black")
+    var fill = document.createElementNS('http://www.w3.org/2000/svg', "rect");
+    fill.setAttributeNS(null, "x", 0)
+    fill.setAttributeNS(null, "y", 0)
+    fill.setAttributeNS(null, "width", board.width)
+    fill.setAttributeNS(null, "height", board.height)
+    fill.setAttributeNS(null, "fill", "white")
+    var group = document.createElementNS('http://www.w3.org/2000/svg', "g");
+    group.setAttributeNS(null, "mask", "url(#mask)")
+    group.appendChild(fill)
+
+
+    mask.appendChild(box)
+    mask.appendChild(anti)
+    cursorSVG.appendChild(mask)
+    cursorSVG.appendChild(group)
+}
+
+function pathString(x, y, x2, y2, offset) {
+    return `M ${x - (offset)} ${y - offset} H ${x2 + offset} V ${y2 + 1+ offset} H ${x - offset} Z `
+}
+var svgOffset = 0;
+
+
 function drawEraserPreview(x, y) {
+    cursorSVG.innerHTML = ""
     eraserBufferCanvas.width = project.width
     eraserBufferCanvas.height = project.height
     eraserBufferCtx.clearRect(0, 0, project.width, project.height);
@@ -58,19 +96,15 @@ function drawEraserPreview(x, y) {
         c = filledEllipse(x - (r / 2), y - (r / 2), x + (r / 2), y + (r / 2))
     }
     var b;
-    for (b of c) { eBufDraw(b) }
+    //for (b of c) { eBufDraw(b) }
+    var outlinePath = ""
+    var antiPath = ""
+    for (b of c) {
+        outlinePath += pathString(b.x1, b.y1, b.x2, b.y2, svgOffset)
+        antiPath += pathString(b.x1, b.y1, b.x2, b.y2, 0)
+    }
 
-    cursorcanvctx.globalCompositeOperation = "source-over"
-    cursorcanvctx.fillStyle = "#fff"
-    cursorcanvctx.imageSmoothingEnabled = false
-    cursorcanvctx.clearRect(0, 0, cursorCanv.width, cursorCanv.height);
-
-    cursorcanvctx.drawImage(eraserBufferCanvas, -1, 1, cursorCanv.width, cursorCanv.height)
-    cursorcanvctx.drawImage(eraserBufferCanvas, 1, -1, cursorCanv.width, cursorCanv.height)
-    cursorcanvctx.drawImage(eraserBufferCanvas, -1, -1, cursorCanv.width, cursorCanv.height)
-    cursorcanvctx.drawImage(eraserBufferCanvas, 1, 1, cursorCanv.width, cursorCanv.height)
-    cursorcanvctx.globalCompositeOperation = "destination-out"
-    cursorcanvctx.drawImage(eraserBufferCanvas, 0, 0, cursorCanv.width, cursorCanv.height)
+    drawOnSVGCanvas(outlinePath, antiPath)
 }
 
 
@@ -89,19 +123,13 @@ function drawSprayPreview(x, y) {
         c = filledEllipse(x - (r / 2), y - (r / 2), x + (r / 2), y + (r / 2))
     }
     var b;
-    for (b of c) { eBufDraw(b) }
-
-    cursorcanvctx.globalCompositeOperation = "source-over"
-    cursorcanvctx.fillStyle = "#fff"
-    cursorcanvctx.imageSmoothingEnabled = false
-    cursorcanvctx.clearRect(0, 0, cursorCanv.width, cursorCanv.height);
-
-    cursorcanvctx.drawImage(eraserBufferCanvas, -1, 1, cursorCanv.width, cursorCanv.height)
-    cursorcanvctx.drawImage(eraserBufferCanvas, 1, -1, cursorCanv.width, cursorCanv.height)
-    cursorcanvctx.drawImage(eraserBufferCanvas, -1, -1, cursorCanv.width, cursorCanv.height)
-    cursorcanvctx.drawImage(eraserBufferCanvas, 1, 1, cursorCanv.width, cursorCanv.height)
-    cursorcanvctx.globalCompositeOperation = "destination-out"
-    cursorcanvctx.drawImage(eraserBufferCanvas, 0, 0, cursorCanv.width, cursorCanv.height)
+    var outlinePath = ""
+    var antiPath = ""
+    for (b of c) {
+        outlinePath += pathString(b.x1, b.y1, b.x2, b.y2, svgOffset)
+        antiPath += pathString(b.x1, b.y1, b.x2, b.y2, 0)
+    }
+    drawOnSVGCanvas(outlinePath, antiPath)
 }
 
 function eBufDraw(coord) {
@@ -136,3 +164,14 @@ function eBufDraw(coord) {
 }
 
 var cursor = document.getElementById("cursor")
+
+function canvasResized() {
+    notify.log('resize')
+    svgOffset = 1 / board.canvScale
+    if (Tools.eraser) {
+        drawEraserPreview(board.currentX, board.currentY)
+    }
+    if (Tools.sprayPaint) {
+        drawSprayPreview(board.currentX, board.currentY)
+    }
+}

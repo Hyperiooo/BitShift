@@ -16,6 +16,8 @@ class Canvas {
         this.canvScale = settings.ui.canvasScale
         this.previewcanvas = document.querySelector("#previewcanv");
         this.cursorcanvas = document.querySelector("#cursorcanv");
+        this.cursorSVG = document.querySelector("#cursorSVG");
+        this.cursorSVG.setAttribute("viewBox", "0 0 " + width + " " + height)
         this.bggridcanvas = document.querySelector("#bggridcanv");
         this.eBufferCanvas = document.getElementById("eraserBrushBufferParent");
         this.canvaslayersparent = document.getElementById("layers-wrap")
@@ -59,6 +61,8 @@ class Canvas {
         this.altKey = false;
         this.wasInCanv = false;
         this.drawBgGrid()
+        this.currentX = 0
+        this.currentY = 0
 
         this.panzoom = panzoom(this.canvaslayersparent, {
             smoothScroll: false,
@@ -80,8 +84,8 @@ class Canvas {
         var _self = this
         this.panzoom.on('transform', function(e) {
             // This event will be called along with events above.
-            _self.cursorcanvas.style.transform = _self.previewcanvas.style.transform = _self.bggridcanvas.style.transform = _self.canvaslayersparent.style.transform
-            _self.cursorcanvas.style.transformOrigin = _self.previewcanvas.style.transformOrigin = _self.bggridcanvas.style.transformOrigin = _self.canvaslayersparent.style.transformOrigin
+            _self.cursorSVG.style.transform = _self.cursorcanvas.style.transform = _self.previewcanvas.style.transform = _self.bggridcanvas.style.transform = _self.canvaslayersparent.style.transform
+            _self.cursorSVG.style.transformOrigin = _self.cursorcanvas.style.transformOrigin = _self.previewcanvas.style.transformOrigin = _self.bggridcanvas.style.transformOrigin = _self.canvaslayersparent.style.transformOrigin
             _self.setCanvScale(_self.panzoom.getTransform().scale)
             _self.setCanvTransform(_self.panzoom.getTransform().x, _self.panzoom.getTransform().y)
         });
@@ -263,6 +267,8 @@ class Canvas {
         var y = (e.clientY) - rect.top || e.touches[0].clientY - rect.top || -1;
         x = Math.floor((x) / (this.canvScale));
         y = Math.floor((y) / (this.canvScale));
+        this.currentX = x
+        this.currentY = y
         if (Tools.eraser) {
             drawEraserPreview(x, y)
         };
@@ -552,8 +558,8 @@ class Canvas {
         this.canvScale = settings.ui.canvasScale;
         this.cursorcanvas.width = project.width * this.canvScale;
         this.cursorcanvas.height = project.height * this.canvScale;
-
-        //document.documentElement.style.setProperty('--canvScale', this.canvScale);
+        canvasResized()
+            //document.documentElement.style.setProperty('--canvScale', this.canvScale);
     }
     setCanvTransform(x, y) {
         if (!this.prevTX) { this.prevTX = x; }

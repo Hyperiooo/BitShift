@@ -571,6 +571,24 @@ canvas * {
     mix-blend-mode: difference;
 }
 
+#cursorSVG {
+    --opac: 1;
+    position: absolute;
+    top: 0;
+    transform: translate(var(--canvTransformX), var(--canvTransformY)) scale(var(--canvScale), var(--canvScale));
+    touch-action: none;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: -webkit-crisp-edges;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+    z-index: 100000;
+    pointer-events: none;
+    width: var(--canvX);
+    height: var(--canvY);
+    z-index: 9999999999999999999999;
+    mix-blend-mode: difference;
+}
+
 #eraserBrushBufferParent {
     display: none;
     pointer-events: none;
@@ -824,10 +842,6 @@ canvas * {
 
 .ui {
     z-index: 200000;
-}
-
-path {
-    fill: var(--textMain);
 }
 
 .color-menu {

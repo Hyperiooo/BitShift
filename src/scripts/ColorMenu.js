@@ -341,7 +341,9 @@ function colorPreviewClickHandler(e) {
         let rgbPal = pal.map(e => {
             return (hexToRGB(e))
         })
-        new paletteGroup(col.hex(), rgbPal, true)
+        console.log(col.hex(), rgbPal, true)
+        console.log(rgbPal)
+        new paletteGroup("col.hex()", rgbPal, true)
         clearTimeout(colPreviewTimeout)
         clickedOnce = false
     }
@@ -810,7 +812,6 @@ class paletteGroup {
         palette.forEach((x, i) => {
             if (!setCurrent && typeof board !== 'undefined') {
                 setCurrent = true
-                board.setcolor(x)
             }
             var rgba = `rgba(${x[0]},${x[1]},${x[2]}, ${x[3] / 256 * 100}%)`
             let e = document.createElement("div")
@@ -828,6 +829,8 @@ class paletteGroup {
             colorMenu.appendChild(e)
         })
         console.log(palette)
+
+        board.setcolor(palette[0])
         var rect = colorMenu.getBoundingClientRect()
         var colorMenu = document.getElementById("color-menu")
         if (scroll) document.getElementById("color-menu").scrollTo({ behavior: "smooth", top: (colorMenu.scrollTop + rect.top) });

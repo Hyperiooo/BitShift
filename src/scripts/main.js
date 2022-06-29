@@ -188,6 +188,7 @@ window.onload = function() {
         if (data.palettes) window.colors = data.palettes
         preparePalette()
         populateLayers()
+        console.log(data)
         window.board.setcolor(data.currColor);
         updatePrevious(data.currColor)
         data.layers.forEach(e => {
