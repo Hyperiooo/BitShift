@@ -96,7 +96,7 @@ var project = {
     'width': null,
     'height': null,
     'dim': window.dim,
-    'layers': layers
+    'layers': null
 };
 
 var lc = [];
@@ -107,18 +107,6 @@ if (/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elain
     isMobile = true;
 }
 
-if (isMobile) {
-    var docElm = document.documentElement;
-    if (docElm.requestFullscreen) {
-        docElm.requestFullscreen();
-    } else if (docElm.msRequestFullscreen) {
-        docElm.msRequestFullscreen();
-    } else if (docElm.mozRequestFullScreen) {
-        docElm.mozRequestFullScreen();
-    } else if (docElm.webkitRequestFullScreen) {
-        docElm.webkitRequestFullScreen();
-    }
-}
 
 window.onload = function() {
     debug = new Alrt({
@@ -135,16 +123,6 @@ window.onload = function() {
     window.colors = defaultPalettes
 
 
-    opacThumb = document.getElementById("color-opacity-thumb")
-    opacRange = document.getElementById("color-opacity")
-    opacRect = opacRange.getBoundingClientRect()
-    hThumb = document.getElementById("color-hue-thumb")
-    hueRange = document.getElementById("color-hue")
-    hueRect = hueRange.getBoundingClientRect()
-    vThumb = document.getElementById("color-value-thumb")
-    valueRange = document.getElementById("color-value")
-    valueRect = valueRange.getBoundingClientRect()
-
     var numDraggable = document.querySelectorAll("[data-input-num-draggable]")
     numDraggable.forEach(e => {
         draggableNumInputs.push(new numberDraggable(e))
@@ -157,67 +135,10 @@ window.onload = function() {
     if (canvasData) {
         data = JSON.parse(canvasData);
         project = data
-        window.board = new Canvas(data.width, data.height);
-        //let img = new Image();
-        //img.setAttribute('src', data.url);
-        //img.addEventListener("load", function () {
-        //    window.board.ctx.drawImage(img, 0, 0);
-        //    window.board.imageData = window.board.ctx.getImageData(0, 0, window.board.height, window.board.width)
-        //});
-        /*
-        window.board.frames = JSON.parse(data.frames).map(frame=>{
-          let img = new Image();
-          img.src = frame[0]
-          return [img, frame[1]]
-        });
-        
-        for(let f in data.frames){
-          let c = document.createElement('canvas');
-          c.width = data.width;
-          c.height = data.height;
-          let c_ctx = c.getContext('2d');
-          c_ctx.drawImage(f[0], 0, 0);
-          window.board.addFrame(c.toDataURL());
-        }
-       */
-
-
-
-        window.board.steps = data.steps;
-        window.board.redo_arr = data.redo_arr;
-        if (data.palettes) window.colors = data.palettes
-        preparePalette()
-        populateLayers()
-        console.log(data)
-        window.board.setcolor(data.currColor);
-        updatePrevious(data.currColor)
-        data.layers.forEach(e => {
-            console.log(e)
-            createLayer(e.name, e.data, e.settings)
-        })
-        window.gif = new GIF({
-            workers: 2,
-            quality: 10,
-            width: this.canvUnit * window.board.width,
-            height: this.canvUnit * window.board.height
-        });
-        window.gif.on('finished', function(blob) {
-            var url = URL.createObjectURL(blob);
-            var link = document.createElement('a');
-            link.download = 'canvas.gif';
-            link.href = url;
-            link.click();
-        });
         projName = data.name;
-        document.getElementById('topbar-project-name').value = data.name
-        initializeGestures()
     } else {
         newProject();
     }
-    populatePresets()
-    updateCursor()
-    createToolUI()
-    setmode("pen")
 }
 
 
@@ -237,6 +158,8 @@ window.onpagehide = function() {
 }
 
 function saveData() {
+
+    /*
     project = {
         'name': projName,
         'palettes': filePalettes,
@@ -246,7 +169,7 @@ function saveData() {
         'dim': window.dim,
         'layers': layers.reverse()
     }
-    localStorage.setItem('pc-canvas-data', JSON.stringify(project));
+    localStorage.setItem('pc-canvas-data', JSON.stringify(project));*/
 }
 
 var presets = [

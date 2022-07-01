@@ -76,7 +76,8 @@ function closePopup() {
     window.dim.close()
 }
 
-document.querySelector("#close").onclick = function() {
+function confirmNewProject() {
+
     clearPalettes()
     clearLayerMenu()
     clearLayers()
@@ -108,6 +109,7 @@ document.querySelector("#close").onclick = function() {
     newLayer(width, height)
     initializeGestures()
 }
+
 
 function toggleMenu() {
 

@@ -763,10 +763,6 @@ canvas * {
     border: none;
 }
 
-.topbar-button:first-of-type {
-    margin-left: 8px;
-}
-
 .topbar-button {
     color: var(--toolBarDim);
     fill: var(--toolBarDim);
@@ -807,7 +803,6 @@ canvas * {
 }
 
 #topbar-right {
-    display: inline-block;
     position: absolute;
     right: 15px;
     cursor: text;
@@ -824,11 +819,60 @@ canvas * {
     color: var(--toolBarHover);
     text-align: center;
     background: var(--bgMain);
+    height: 36px;
 }
 
-#topbar-right .item {
-    width: 36px;
+#topbar-left {
+    display: inline-flex;
+    cursor: text;
+    font-size: 15px;
+    border-radius: 5px;
+    margin-left: 15px;
+    transition: 0.1s background, 0.3s color, 0.3s fill;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: none;
+    outline: none;
+    border: none;
+    color: var(--toolBarHover);
+    text-align: center;
+    background: var(--bgMain);
     height: 36px;
+}
+
+#topbar-right .toolbar-divider,
+#topbar-left .toolbar-divider {
+    position: relative;
+    cursor: pointer;
+    font-size: 18px;
+    border-radius: 5px;
+    width: 2px;
+    height: 20px;
+    transition: 0.1s background, 0.3s color, 0.3s fill;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: var(--toolBarDim);
+}
+
+#accountName {
+    font-size: 14px;
+    margin-left: 6px;
+}
+
+#accountWidget {
+    color: var(--important);
+}
+
+#topbar-right .item,
+#topbar-left .item {
+    padding: 12px;
+}
+
+#topbar-right .item i,
+#topbar-left .item i {
+    font-size: 18px;
 }
 
 .topbar-button:hover {
@@ -1751,4 +1795,12 @@ canvas {
 
 div[id^='alrt-main'] {
     z-index: 1000000000000000000000000000000000;
+}
+
+#topbar-logo {
+    width: 50px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
