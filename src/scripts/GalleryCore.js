@@ -206,7 +206,7 @@ function populatePresets() {
     for (let i = 0; i < presets.length; i++) {
         let preset = presets[i]
         parent.innerHTML += `<button class="popup-preset" onclick="setPreset(${preset[0]}, ${preset[1]}, this)">
-          <i class="ri-file-3-line"></i>
+          <i class="hi-file-line"></i>
           ${preset[2] ? `<h1>${preset[2]}</h1>` : `<h1 style="opacity: 0; visibility: hidden">+</h1>`}
           <h2>${preset[0]} x ${preset[1]}</h2>
         </button>`

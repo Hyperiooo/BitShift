@@ -558,7 +558,7 @@ function createLayer(n, data, settings) { //create layer with set data; e.g. loa
     lockButton.setAttribute("onclick", `toggleLayerLock('${id}', this)`)
 
     var lockIcon = document.createElement("i")
-    lockIcon.classList.add("ri-lock-unlock-line")
+    lockIcon.classList.add("hi-lock-open-line")
 
     lockButton.appendChild(lockIcon)
 
@@ -637,7 +637,7 @@ function newLayer(width, height) { //create a blank layer
     lockButton.setAttribute("onclick", `toggleLayerLock('${id}', this)`)
 
     var lockIcon = document.createElement("i")
-    lockIcon.classList.add("ri-lock-unlock-line")
+    lockIcon.classList.add("hi-lock-open-line")
 
     lockButton.appendChild(lockIcon)
 
@@ -742,10 +742,10 @@ function toggleLayerLock(id, el) {
     })
     if (layer) {
         if (layer.settings.locked == true) {
-            el.querySelector("i").classList.replace("ri-lock-line", "ri-lock-unlock-line")
+            el.querySelector("i").classList.replace("hi-lock-line", "hi-lock-open-line")
             layer.settings.locked = false
         } else if (layer.settings.locked == false) {
-            el.querySelector("i").classList.replace("ri-lock-unlock-line", "ri-lock-line")
+            el.querySelector("i").classList.replace("hi-lock-open-line", "hi-lock-line")
             layer.settings.locked = true
         }
     }
