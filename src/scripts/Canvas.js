@@ -16,8 +16,13 @@ class Canvas {
         this.canvScale = settings.ui.canvasScale
         this.previewcanvas = document.querySelector("#previewcanv");
         this.cursorcanvas = document.querySelector("#cursorcanv");
+        this.selectionCanvas = document.createElement("canvas")
+        this.sctx = this.selectionCanvas.getContext("2d")
+        document.body.appendChild(this.selectionCanvas)
         this.cursorSVG = document.querySelector("#cursorSVG");
         this.cursorSVG.setAttribute("viewBox", "0 0 " + width + " " + height)
+        this.selectionSVG = document.querySelector("#selectionSVG");
+        this.selectionSVG.setAttribute("viewBox", "0 0 " + width + " " + height)
         this.bggridcanvas = document.querySelector("#bggridcanv");
         this.eBufferCanvas = document.getElementById("eraserBrushBufferParent");
         this.canvaslayersparent = document.getElementById("layers-wrap")
@@ -27,6 +32,10 @@ class Canvas {
         this.bggridcanvas.height = height;
         this.previewcanvas.width = width;
         this.previewcanvas.height = height;
+        this.selectionCanvas.width = width
+        this.selectionCanvas.height = height
+        this.selectionCanvas.style.width = "500px"
+        this.selectionCanvas.classList.add('bufferCanvas')
         this.width = width;
         this.height = height;
         this.canvaslayersparent.width = this.width
@@ -84,8 +93,8 @@ class Canvas {
         var _self = this
         this.panzoom.on('transform', function(e) {
             // This event will be called along with events above.
-            _self.cursorSVG.style.transform = _self.cursorcanvas.style.transform = _self.previewcanvas.style.transform = _self.bggridcanvas.style.transform = _self.canvaslayersparent.style.transform
-            _self.cursorSVG.style.transformOrigin = _self.cursorcanvas.style.transformOrigin = _self.previewcanvas.style.transformOrigin = _self.bggridcanvas.style.transformOrigin = _self.canvaslayersparent.style.transformOrigin
+            _self.selectionSVG.style.transform = _self.cursorSVG.style.transform = _self.cursorcanvas.style.transform = _self.previewcanvas.style.transform = _self.bggridcanvas.style.transform = _self.canvaslayersparent.style.transform
+            _self.selectionSVG.style.transformOrigin = _self.cursorSVG.style.transformOrigin = _self.cursorcanvas.style.transformOrigin = _self.previewcanvas.style.transformOrigin = _self.bggridcanvas.style.transformOrigin = _self.canvaslayersparent.style.transformOrigin
             _self.setCanvScale(_self.panzoom.getTransform().scale)
             _self.setCanvTransform(_self.panzoom.getTransform().x, _self.panzoom.getTransform().y)
         });
@@ -209,7 +218,7 @@ class Canvas {
         var y = e.clientY - rect.top || e.touches[0].clientY - rect.top;
         x = Math.floor(this.width * x / (this.bggridcanvas.clientWidth * this.canvScale));
         y = Math.floor(this.height * y / (this.bggridcanvas.clientHeight * this.canvScale));
-        if (Tools.circle || Tools.ellipse || Tools.line || Tools.rectangle || Tools.filledRectangle || Tools.pen || Tools.eraser) {
+        if (Tools.circle || Tools.ellipse || Tools.line || Tools.rectangle || Tools.filledRectangle || Tools.rectangleMarquee || Tools.pen || Tools.eraser) {
             this.sX = x;
             this.sY = y;
         }
@@ -223,14 +232,17 @@ class Canvas {
             for (p of this.tempL) this.draw(p);
             this.clearPreview()
             this.tempL = []
-                //if (settings.tools.shapeFilled.value && Tools.ellipse) {
-                //    console.log(this.filledData)
-                //    let fillL = filledEllipse(this.filledData.c.x, this.filledData.c.y, this.filledData.x, this.filledData.y)
-                //    for (let l of fillL) this.draw(l);
-                //} else if (settings.tools.shapeFilled.value && Tools.rectangle) {
-                //    let fillL = filledRectangle(this.filledData.r, this.filledData.c)
-                //    for (let l of fillL) this.draw(l);
-                //}
+        }
+        if (Tools.rectangleMarquee) {
+            var p;
+            for (p of this.tempL) {
+                this.sBufferDraw(p)
+                if (p.constructor.name == "Rect") {
+                    modifySelectionPath(p.x1, p.y1, p.x2, p.y2, settings.tools.selectionMode.value)
+                }
+            };
+            this.clearPreview()
+            this.tempL = []
         }
         this.sX = null;
         this.sY = null;
@@ -280,7 +292,6 @@ class Canvas {
             drawSprayPreview(x, y)
         };
         if (e.buttons != 0) { //calls whenever there is touch
-            console.log('a')
             if (activeLayer.settings.locked) return
             if (this.sX === null || this.sY === null) { if (!Tools.sprayPaint && !Tools.eyedropper) return }
             if (Tools.pen) {
@@ -441,7 +452,7 @@ class Canvas {
                     for (p of this.tempL) this.pDraw(new Point(p.x, p.y));
 
                 }
-                if (Tools.rectangle || Tools.filledRectangle) {
+                if (Tools.rectangle || Tools.filledRectangle || Tools.rectangleMarquee) {
                     if (this.shiftKey) {
                         let c = 0
                         let e = new Point(x, y)
@@ -504,7 +515,7 @@ class Canvas {
                         }
 
                         if (Tools.rectangle) this.tempL = rectangle(c, e);
-                        if (Tools.filledRectangle) this.tempL = filledRectangle(c, e);
+                        if (Tools.filledRectangle || Tools.rectangleMarquee) this.tempL = filledRectangle(c, e);
                         var p;
                         for (p of this.tempL) this.pDraw(new Point(p.x, p.y));
 
@@ -513,7 +524,7 @@ class Canvas {
                         if (this.ctrlKey) { c = new Point(this.sX - (x - this.sX), this.sY - (y - this.sY)) }
                         let e = new Point(x, y)
                         if (Tools.rectangle) this.tempL = rectangle(c, e);
-                        if (Tools.filledRectangle) this.tempL = filledRectangle(c, e);
+                        if (Tools.filledRectangle || Tools.rectangleMarquee) this.tempL = filledRectangle(c, e);
                         let aa = []
                         for (let p of this.tempL) this.pDraw(p);
                     }
@@ -744,9 +755,55 @@ class Canvas {
 
         }
     }
+    sBufferDraw(coord) {
+        this.sctx.fillStyle = 'red';
+        if (settings.tools.selectionMode.value == "replace") {
+            this.sctx.clearRect(0, 0, this.width, this.height)
+            this.sctx.globalCompositeOperation = 'source-over'
+        } else if (settings.tools.selectionMode.value == "add") {
+            this.sctx.globalCompositeOperation = 'source-over'
+        } else if (settings.tools.selectionMode.value == "subtract") {
+            this.sctx.globalCompositeOperation = 'destination-out'
+        }
+        if (coord.constructor.name == "Point") {
+            var x = coord.x
+            var y = coord.y
+            if (x === undefined || y === undefined) return
+            this.sctx.fillRect(x, y, 1, 1);
+        } else if (coord.constructor.name == "Rect") {
+            var x1 = coord.x1
+            var y1 = coord.y1
+            var x2 = coord.x2
+            var y2 = coord.y2
+            if (x1 === undefined || y1 === undefined || x2 === undefined || y2 === undefined) return
+            var ax1, ax2, ay1, ay2
+            if (x1 >= x2) {
+                ax1 = x2
+                ax2 = x1
+            } else if (x1 < x2) {
+                ax1 = x1
+                ax2 = x2
+            }
+            if (y1 >= y2) {
+                ay1 = y2
+                ay2 = y1
+            } else if (y1 < y2) {
+                ay1 = y1
+                ay2 = y2
+            }
+            if (ay2 - ay1 == 0) ay2 = ay1 + 1
+            this.sctx.fillRect(ax1, ay1, ax2 - ax1, ay2 - ay1);
+
+        }
+    }
     pDraw(coord) {
+        this.pctx.fillStyle = "rgba(" + this.color[0] + "," + this.color[1] + "," + this.color[2] + "," + this.color[3] + ")";
         this.pctx.globalCompositeOperation = 'source-over'
-        this.previewcanvas.style.setProperty("--invert", 0)
+        this.previewcanvas.style.opacity = 1;
+        if (Tools.rectangleMarquee) {
+            this.previewcanvas.style.opacity = 0.5;
+            this.pctx.fillStyle = "rgba(" + 61 + "," + 135 + "," + 255 + "," + 255 + ")";
+        }
         if (coord.constructor.name == "Point") {
             var x = coord.x
             var y = coord.y

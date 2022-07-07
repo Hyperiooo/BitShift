@@ -9,6 +9,11 @@ var Tools = {
     "filledRectangle": false,
     "sprayPaint": false,
     "eyedropper": false,
+    "rectangleMarquee": false,
+    "ellipseMarquee": false,
+    "freehandSelect": false,
+    "brushSelect": false,
+    "magicWand": false,
 }
 
 var ToolParams = {
@@ -70,31 +75,31 @@ var ToolParams = {
         "name": "rectangleMarquee",
         "id": "tool-btn-rectangleMarquee",
         "icon": "hi-marquee-line",
-        "action": "setmode('sprayPaint')",
+        "action": "setmode('rectangleMarquee')",
     },
     "ellipseMarquee": {
         "name": "ellipseMarquee",
         "id": "tool-btn-ellipseMarquee",
         "icon": "hi-circle-marquee-line",
-        "action": "setmode('sprayPaint')",
+        "action": "setmode('ellipseMarquee')",
     },
     "freehandSelect": {
         "name": "freehandSelect",
         "id": "tool-btn-freehandSelect",
         "icon": "hi-lasso-line",
-        "action": "setmode('sprayPaint')",
+        "action": "setmode('freehandSelect')",
     },
     "brushSelect": {
         "name": "brushSelect",
         "id": "tool-btn-brushSelect",
         "icon": "hi-freehand-select-line",
-        "action": "setmode('sprayPaint')",
+        "action": "setmode('brushSelect')",
     },
     "magicWand": {
         "name": "magicWand",
         "id": "tool-btn-magicWand",
         "icon": "hi-magic-wand-line",
-        "action": "setmode('sprayPaint')",
+        "action": "setmode('magicWand')",
     },
 }
 
@@ -253,6 +258,21 @@ function updateToolSettings(tool) {
                 <div class="tool-settings-ui-input-field">
                   <input class="tool-settings-ui-input-check" oninput="${setting.callback}" type="checkbox" ${(setting.value) ? "checked" : ""} />
                   <span class="checkmark"></span>
+                </div>
+              </div>
+            </span>`
+        } else if (setting.type == "iconArray") {
+            var content = ""
+            setting.values.forEach(e => {
+                content += `<span class="input-group-item ${setting.value == e.name ? "tool-active" : ""}" id="input-button-${e.name}" onclick="${e.callback}"><i class="${e.icon}"></i></span>`
+            })
+            toolCont += `
+            <span class="tool-settings-ui-input-group">
+              <div class="tool-settings-ui-input-wrap">
+                <div class="tool-settings-ui-input-field">
+                  ${
+                    content
+                  }
                 </div>
               </div>
             </span>`

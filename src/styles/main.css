@@ -31,8 +31,8 @@ html {
     --bgDarkT: #0f1216e3;
     --textMain: #bcbec4;
     --textDim: #a8abb0;
-    --important: #0034ab;
-    --importantT: #0034aba9;
+    --important: #2741ff;
+    --importantT: #2741ffa9;
     --error: #e0002c;
     --errorT: #e0002ca9;
     --importantText: #ffffff;
@@ -62,26 +62,6 @@ html {
     --toolBarHover: #7f7f80;
 }
 
-.ui-theme-gray {
-    --bgMain: #6c6e71;
-    --bgMainT: #6c6e71e3;
-    --canvasBg: #86888c;
-    --bgLight: #797b7e;
-    --bgDark: #5e6064;
-    --bgDarkT: #5e6064e3;
-    --textMain: #e8ebee;
-    --textDim: #dadce0;
-    --important: #00beee;
-    --importantT: #00beeea9;
-    --error: #ffaa3a;
-    --errorT: #ffaa3aa9;
-    --importantText: #ffffff;
-    --scrollTrack: #606165;
-    --scrollHover: #949699;
-    --toolBarDim: #3c3d40;
-    --toolBarHover: #1b1c1f;
-}
-
 .ui-theme-light {
     --bgMain: #ffffff;
     --bgMainT: #ffffffd5;
@@ -91,8 +71,8 @@ html {
     --bgDarkT: #eef0f5d5;
     --textMain: #0b0c1a;
     --textDim: #1b1c2e;
-    --important: #3e88ff;
-    --importantT: #3e88ffa9;
+    --important: #2741ff;
+    --importantT: #2741ffa9;
     --error: #ff2d3e;
     --errorT: #ff2d3ea9;
     --importantText: #ffffff;
@@ -571,7 +551,8 @@ canvas * {
     mix-blend-mode: difference;
 }
 
-#cursorSVG {
+#cursorSVG,
+#selectionSVG {
     --opac: 1;
     position: absolute;
     top: 0;
@@ -733,7 +714,8 @@ canvas * {
     align-items: center;
 }
 
-#topbar .item {
+#topbar .item,
+.input-group-item {
     display: inline-block;
     position: relative;
     cursor: pointer;
@@ -866,18 +848,22 @@ canvas * {
 }
 
 #topbar-right .item,
-#topbar-left .item {
+#topbar-left .item,
+.input-group-item {
     padding: 12px;
 }
 
 #topbar-right .item i,
-#topbar-left .item i {
+#topbar-left .item i,
+.input-group-item i {
     font-size: 18px;
 }
 
 .topbar-button:hover {
     background: var(--bgLight);
 }
+
+.input-group-item {}
 
 .tool-active i,
 .tool-active i svg path {
@@ -1784,13 +1770,14 @@ canvas {
     }
 }
 
-#eraserBufferCanvas {
+.bufferCanvas {
     z-index: 10000000000;
     position: absolute;
-    background: green;
+    background: rgba(255, 255, 255, 0.219);
     top: 50%;
     left: 50%;
-    transform: scale(3);
+    pointer-events: none;
+    transform: scale(1) translate(-50%, -50%);
 }
 
 div[id^='alrt-main'] {

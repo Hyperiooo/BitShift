@@ -24,6 +24,7 @@ var settings = {
             "eraser": ["brushSize", "brushSquare", "brushPixelPerfect"],
             "sprayPaint": ["brushSize", "brushSquare", "spraySpeed", "spraySize"],
             "fillBucket": ["contiguous"],
+            "rectangleMarquee": ["selectionMode"]
         },
         "brushSize": {
             "title": "Brush Size",
@@ -87,6 +88,25 @@ var settings = {
             "type": "bool",
             "callback": "settings.tools.contiguous.value = this.checked"
         },
+        "selectionMode": {
+            "title": "Selection Mode",
+            "value": "replace",
+            "type": "iconArray",
+            "initialCallback": "setSelectionMode('replace')",
+            "values": [{
+                "name": "replace",
+                "icon": "hi-replace-selection-fill",
+                "callback": "setSelectionMode('replace')"
+            }, {
+                "name": "add",
+                "icon": "hi-add-selection-fill",
+                "callback": "setSelectionMode('add')"
+            }, {
+                "name": "subtract",
+                "icon": "hi-subtract-selection-fill",
+                "callback": "setSelectionMode('subtract')"
+            }]
+        }
     }
 };
 
@@ -292,7 +312,7 @@ function populatePresets() {
 var projName = "";
 
 function renameProject(el) {
-    if(el.value == "" || el.value == null) {
+    if (el.value == "" || el.value == null) {
         return
     } else {
         projName = el.value;

@@ -74,6 +74,7 @@ function drawOnSVGCanvas(outlinePath, antiPath) {
     cursorSVG.appendChild(group)
 }
 
+
 function pathString(x, y, x2, y2, offset) {
     return `M ${x - (offset)} ${y - offset} H ${x2 + offset} V ${y2 + 1+ offset} H ${x - offset} Z `
 }

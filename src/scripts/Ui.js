@@ -13,7 +13,6 @@ let debug;
 
 var Themes = {
     light: "ui-theme-light",
-    gray: "ui-theme-gray",
     dark: "ui-theme-dark",
     black: "ui-theme-black"
 }
@@ -129,4 +128,10 @@ function openMenu() {
 
 function toggleFile() {
 
+}
+
+function setSelectionMode(m) {
+    settings.tools.selectionMode.value = m
+    document.querySelectorAll(".input-group-item").forEach(e => { e.classList.remove("tool-active") })
+    document.getElementById("input-button-" + m).classList.add("tool-active")
 }

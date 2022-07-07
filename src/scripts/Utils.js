@@ -229,3 +229,16 @@ ABToStr = ab =>
 function normalize(n, p) {
     return parseFloat(n.toFixed(p))
 }
+
+Array.prototype.findArray = function(needle) {
+    for (let i = 0; i < this.length; i++) {
+        if (JSON.stringify(needle) == JSON.stringify(this[i])) {
+            return i
+        }
+    }
+    return false
+}
+
+Array.prototype.remove = function(index) {
+    return this.splice(index, 1)
+}
