@@ -24,7 +24,8 @@ var settings = {
             "eraser": ["brushSize", "brushSquare", "brushPixelPerfect"],
             "sprayPaint": ["brushSize", "brushSquare", "spraySpeed", "spraySize"],
             "fillBucket": ["contiguous"],
-            "rectangleMarquee": ["selectionMode"]
+            "rectangleMarquee": ["selectionMode"],
+            "ellipseMarquee": ["selectionMode"]
         },
         "brushSize": {
             "title": "Brush Size",
@@ -231,6 +232,7 @@ window.onload = function() {
         projName = data.name;
         document.getElementById('topbar-project-name').value = data.name
         initializeGestures()
+        setUpSelectionSVG()
     } else {
         newProject();
     }

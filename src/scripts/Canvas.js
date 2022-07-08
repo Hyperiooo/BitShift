@@ -17,8 +17,11 @@ class Canvas {
         this.previewcanvas = document.querySelector("#previewcanv");
         this.cursorcanvas = document.querySelector("#cursorcanv");
         this.selectionCanvas = document.createElement("canvas")
+        this.selectionBufferCanvas = document.createElement("canvas")
         this.sctx = this.selectionCanvas.getContext("2d")
-        document.body.appendChild(this.selectionCanvas)
+            //document.body.appendChild(this.selectionCanvas)
+        this.sbctx = this.selectionBufferCanvas.getContext("2d")
+            //document.body.appendChild(this.selectionBufferCanvas)
         this.cursorSVG = document.querySelector("#cursorSVG");
         this.cursorSVG.setAttribute("viewBox", "0 0 " + width + " " + height)
         this.selectionSVG = document.querySelector("#selectionSVG");
@@ -36,6 +39,10 @@ class Canvas {
         this.selectionCanvas.height = height
         this.selectionCanvas.style.width = "500px"
         this.selectionCanvas.classList.add('bufferCanvas')
+        this.selectionBufferCanvas.width = width
+        this.selectionBufferCanvas.height = height
+        this.selectionBufferCanvas.style.width = "500px"
+        this.selectionBufferCanvas.classList.add('bufferCanvas')
         this.width = width;
         this.height = height;
         this.canvaslayersparent.width = this.width
@@ -218,7 +225,7 @@ class Canvas {
         var y = e.clientY - rect.top || e.touches[0].clientY - rect.top;
         x = Math.floor(this.width * x / (this.bggridcanvas.clientWidth * this.canvScale));
         y = Math.floor(this.height * y / (this.bggridcanvas.clientHeight * this.canvScale));
-        if (Tools.circle || Tools.ellipse || Tools.line || Tools.rectangle || Tools.filledRectangle || Tools.rectangleMarquee || Tools.pen || Tools.eraser) {
+        if (Tools.circle || Tools.ellipse || Tools.filledEllipse || Tools.ellipseMarquee || Tools.line || Tools.rectangle || Tools.filledRectangle || Tools.rectangleMarquee || Tools.pen || Tools.eraser) {
             this.sX = x;
             this.sY = y;
         }
@@ -227,23 +234,70 @@ class Canvas {
         this.undoBuffer = layer.canvasElement.toDataURL();
     }
     inputUp(e, wasPanning) {
-        if (Tools.circle || Tools.ellipse || Tools.line || Tools.rectangle || Tools.filledRectangle) {
+        if (Tools.circle || Tools.ellipse || Tools.filledEllipse || Tools.line || Tools.rectangle || Tools.filledRectangle) {
             var p;
             for (p of this.tempL) this.draw(p);
+            console.log(this.tempL)
             this.clearPreview()
             this.tempL = []
         }
         if (Tools.rectangleMarquee) {
             var p;
+            if (settings.tools.selectionMode.value == "replace") {
+
+                selectionPath = []
+                this.sctx.clearRect(0, 0, this.width, this.height)
+            }
             for (p of this.tempL) {
                 this.sBufferDraw(p)
                 if (p.constructor.name == "Rect") {
-                    modifySelectionPath(p.x1, p.y1, p.x2, p.y2, settings.tools.selectionMode.value)
+                    console.log(p)
+                    var q = {}
+                    if (p.x1 > p.x2) {
+                        q.x1 = p.x2
+                        q.x2 = p.x1 + 1
+                    } else if (p.x1 < p.x2) {
+                        q.x1 = p.x1
+                        q.x2 = p.x2 + 1
+                    } else if (p.x1 == p.x2) {
+                        q.x1 = p.x1
+                        q.x2 = p.x2 + 1
+                    }
+                    if (p.y1 > p.y2) {
+                        q.y1 = p.y2
+                        q.y2 = p.y1 + 1
+                    } else if (p.y1 < p.y2) {
+                        q.y1 = p.y1
+                        q.y2 = p.y2 + 1
+                    } else if (p.y1 == p.y2) {
+                        q.y1 = p.y1
+                        q.y2 = p.y2 + 1
+                    }
+                    modifySelectionPath(q.x1, q.y1, q.x2, q.y2, settings.tools.selectionMode.value)
                 }
             };
             this.clearPreview()
             this.tempL = []
         }
+        if (Tools.ellipseMarquee) {
+            var p;
+            if (settings.tools.selectionMode.value == "replace") {
+
+                selectionPath = []
+                this.sctx.clearRect(0, 0, this.width, this.height)
+            }
+            for (p of this.tempL) {
+                this.sBufferDraw(p)
+                if (p.constructor.name == "Rect") {
+                    console.log(p)
+                    var q = {}
+                    modifySelectionPath(p.x1, p.y1, p.x2, p.y2 + 1, settings.tools.selectionMode.value)
+                }
+            };
+            this.clearPreview()
+            this.tempL = []
+        }
+        this.sbctx.clearRect(0, 0, this.width, this.height)
         this.sX = null;
         this.sY = null;
         updateCanvasPreview()
@@ -378,9 +432,8 @@ class Canvas {
                 this.setcolor(this.getPixelCol(new Point(x, y)));
             }
             if (preview) {
-                this.pctx.globalCompositeOperation = "destination-out";
-                this.pctx.fillRect(0, 0, this.w, this.h);
-                if (Tools.ellipse) {
+                this.clearPreview()
+                if (Tools.ellipse || Tools.filledEllipse || Tools.ellipseMarquee) {
                     if (this.shiftKey) {
                         var centre = new Point(this.sX, this.sY);
                         //var radius = +prompt("radius?");
@@ -428,18 +481,67 @@ class Canvas {
                                 r = Math.abs(y - this.sY)
                             }
                         }
-                        this.tempL = ellipse(c.x + (r * 2), c.y + (r * 2), c.x, c.y)
+
+                        var q = {}
+                        if (c.x + (r * 2) > c.x) {
+                            q.x1 = c.x
+                            q.x2 = c.x + (r * 2)
+                        } else if (c.x + (r * 2) < c.x) {
+                            q.x1 = c.x + (r * 2)
+                            q.x2 = c.x
+                        } else if (c.x + (r * 2) == c.x) {
+                            q.x1 = c.x + (r * 2)
+                            q.x2 = c.x
+                        }
+                        if (c.y + (r * 2) > c.y) {
+                            q.y1 = c.y
+                            q.y2 = c.y + (r * 2)
+                        } else if (c.y + (r * 2) < c.y) {
+                            q.y1 = c.y + (r * 2)
+                            q.y2 = c.y
+                        } else if (c.y + (r * 2) == c.y) {
+                            q.y1 = c.y + (r * 2)
+                            q.y2 = c.y
+                        }
+                        if (Tools.ellipse) this.tempL = ellipse(q.x1, q.y1, q.x2, q.y2);
+                        if (Tools.filledEllipse || Tools.ellipseMarquee) this.tempL = filledEllipse(q.x1, q.y1, q.x2, q.y2);
+
+
+                        //if (Tools.ellipse) this.tempL = ellipse(c.x + (r * 2), c.y + (r * 2), c.x, c.y)
+                        //if (Tools.filledEllipse || Tools.ellipseMarquee) this.tempL = filledEllipse(c.x + (r * 2), c.y + (r * 2), c.x, c.y)
                         if (settings.tools.shapeFilled.value) this.filledData = { "r": math.floor(r), "c": c };
                         var p;
-                        for (p of this.tempL) this.pDraw(new Point(p.x, p.y));
+                        for (p of this.tempL) this.pDraw(p);
                     } else if (!this.shiftKey) {
                         let c = new Point(this.sX, this.sY)
                         if (this.ctrlKey) { c = new Point(this.sX - (x - this.sX), this.sY - (y - this.sY)) }
                         //this.tempL = ellipse(this.round(Math.abs(x - c.x) / 2, .5), this.round(Math.abs(y - c.y) / 2, .5), c);
-                        this.tempL = ellipse(x, y, c.x, c.y)
-                        if (settings.tools.shapeFilled.value) this.filledData = { "x": x, "y": y, "c": c };
+
+                        var q = {}
+                        if (c.x > x) {
+                            q.x1 = x
+                            q.x2 = c.x
+                        } else if (c.x < x) {
+                            q.x1 = c.x
+                            q.x2 = x
+                        } else if (c.x == x) {
+                            q.x1 = c.x
+                            q.x2 = x
+                        }
+                        if (c.y > y) {
+                            q.y1 = y
+                            q.y2 = c.y
+                        } else if (c.y < y) {
+                            q.y1 = c.y
+                            q.y2 = y
+                        } else if (c.y == y) {
+                            q.y1 = c.y
+                            q.y2 = y
+                        }
+                        if (Tools.ellipse) this.tempL = ellipse(q.x1, q.y1, q.x2, q.y2);
+                        if (Tools.filledEllipse || Tools.ellipseMarquee) this.tempL = filledEllipse(q.x1, q.y1, q.x2, q.y2);
                         var p;
-                        for (p of this.tempL) this.pDraw(new Point(p.x, p.y));
+                        for (p of this.tempL) this.pDraw(p);
                         //if(this.ctrlKey) console.log('control hehe')
                     }
 
@@ -540,8 +642,7 @@ class Canvas {
                 if (Tools.eraser) {
                     return;
                 };
-                this.pctx.globalCompositeOperation = "destination-out";
-                this.pctx.fillRect(0, 0, this.w, this.h);
+                this.clearPreview()
                 if (isMobile) return;
                 let brushSize = parseInt(settings.tools.brushSize.value)
                 let r = brushSize - 1
@@ -718,8 +819,8 @@ class Canvas {
                     return C*/
     }
     clearPreview() {
-        this.pctx.globalCompositeOperation = "destination-out";
-        this.pctx.fillRect(0, 0, this.w, this.h);
+        this.pctx.clearRect(0, 0, this.width, this.height)
+            //this.sbctx.clearRect(0, 0, this.width, this.height)
     }
     draw(coord) {
         if (coord.constructor.name == "Point") {
@@ -727,7 +828,24 @@ class Canvas {
             var y = coord.y
             if (x === undefined || y === undefined) return
             this.ctx.globalCompositeOperation = 'source-over'
-            this.ctx.fillRect(x, y, 1, 1);
+            if (isSelected()) {
+
+                this.ctx.save()
+                var clipPath = new Path2D()
+                selectionPath.forEach(e => {
+                    clipPath.moveTo(e[0].X, e[0].Y)
+                    for (let i = 0; i < e.length - 1; i++) {
+                        const pt = e[i + 1];
+                        clipPath.lineTo(pt.X, pt.Y)
+                    }
+                    clipPath.closePath()
+                })
+                this.ctx.clip(clipPath, "evenodd");
+                this.ctx.fillRect(x, y, 1, 1);
+                this.ctx.restore()
+            } else {
+                this.ctx.fillRect(x, y, 1, 1);
+            }
         } else if (coord.constructor.name == "Rect") {
             var x1 = coord.x1
             var y1 = coord.y1
@@ -751,14 +869,29 @@ class Canvas {
                 ay2 = y2
             }
             if (ay2 - ay1 == 0) ay2 = ay1 + 1
-            this.ctx.fillRect(ax1, ay1, ax2 - ax1, ay2 - ay1);
+            if (isSelected()) {
+                this.ctx.save()
+                var clipPath = new Path2D()
+                selectionPath.forEach(e => {
+                    clipPath.moveTo(e[0].X, e[0].Y)
+                    for (let i = 0; i < e.length - 1; i++) {
+                        const pt = e[i + 1];
+                        clipPath.lineTo(pt.X, pt.Y)
+                    }
+                    clipPath.closePath()
+                })
+                this.ctx.clip(clipPath, "evenodd");
+                this.ctx.fillRect(ax1, ay1, ax2 - ax1, ay2 - ay1);
+                this.ctx.restore()
+            } else {
+                this.ctx.fillRect(ax1, ay1, ax2 - ax1, ay2 - ay1);
+            }
 
         }
     }
     sBufferDraw(coord) {
         this.sctx.fillStyle = 'red';
         if (settings.tools.selectionMode.value == "replace") {
-            this.sctx.clearRect(0, 0, this.width, this.height)
             this.sctx.globalCompositeOperation = 'source-over'
         } else if (settings.tools.selectionMode.value == "add") {
             this.sctx.globalCompositeOperation = 'source-over'
@@ -796,11 +929,15 @@ class Canvas {
 
         }
     }
+    clearPreviews() {
+        this.pctx.clearRect(0, 0, this.width, this.height)
+
+    }
     pDraw(coord) {
         this.pctx.fillStyle = "rgba(" + this.color[0] + "," + this.color[1] + "," + this.color[2] + "," + this.color[3] + ")";
         this.pctx.globalCompositeOperation = 'source-over'
         this.previewcanvas.style.opacity = 1;
-        if (Tools.rectangleMarquee) {
+        if (Tools.rectangleMarquee || Tools.ellipseMarquee) {
             this.previewcanvas.style.opacity = 0.5;
             this.pctx.fillStyle = "rgba(" + 61 + "," + 135 + "," + 255 + "," + 255 + ")";
         }
@@ -830,6 +967,7 @@ class Canvas {
             }
             if (ay2 - ay1 == 0) ay2 = ay1 + 1
             this.pctx.fillRect(ax1, ay1, ax2 - ax1, ay2 - ay1);
+
         }
     }
     erase(coord) {
@@ -837,7 +975,23 @@ class Canvas {
         if (coord.constructor.name == "Point") {
             var x = coord.x
             var y = coord.y
-            this.ctx.fillRect(x, y, 1, 1);
+            if (isSelected()) {
+                this.ctx.save()
+                var clipPath = new Path2D()
+                selectionPath.forEach(e => {
+                    clipPath.moveTo(e[0].X, e[0].Y)
+                    for (let i = 0; i < e.length - 1; i++) {
+                        const pt = e[i + 1];
+                        clipPath.lineTo(pt.X, pt.Y)
+                    }
+                    clipPath.closePath()
+                })
+                this.ctx.clip(clipPath, "evenodd");
+                this.ctx.fillRect(x, y, 1, 1);
+                this.ctx.restore()
+            } else {
+                this.ctx.fillRect(x, y, 1, 1);
+            }
         } else if (coord.constructor.name == "Rect") {
             var x1 = coord.x1
             var y1 = coord.y1
@@ -859,7 +1013,23 @@ class Canvas {
                 ay2 = y2
             }
             if (ay2 - ay1 == 0) ay2 = ay1 + 1
-            this.ctx.fillRect(ax1, ay1, ax2 - ax1, ay2 - ay1);
+            if (isSelected()) {
+                this.ctx.save()
+                var clipPath = new Path2D()
+                selectionPath.forEach(e => {
+                    clipPath.moveTo(e[0].X, e[0].Y)
+                    for (let i = 0; i < e.length - 1; i++) {
+                        const pt = e[i + 1];
+                        clipPath.lineTo(pt.X, pt.Y)
+                    }
+                    clipPath.closePath()
+                })
+                this.ctx.clip(clipPath, "evenodd");
+                this.ctx.fillRect(ax1, ay1, ax2 - ax1, ay2 - ay1);
+                this.ctx.restore()
+            } else {
+                this.ctx.fillRect(ax1, ay1, ax2 - ax1, ay2 - ay1);
+            }
         }
     }
     setcolor(color, skipDuplicate) {
@@ -871,6 +1041,7 @@ class Canvas {
         })
         if (this.ctx) this.ctx.fillStyle = "rgba(" + color[0] + "," + color[1] + "," + color[2] + "," + color[3] + ")";
         this.pctx.fillStyle = "rgba(" + color[0] + "," + color[1] + "," + color[2] + "," + color[3] + ")";
+        this.sbctx.fillStyle = "rgba(" + color[0] + "," + color[1] + "," + color[2] + "," + color[3] + ")";
         act(document.querySelectorAll(`[data-palette-color='${rgbToHex(color[0], color[1], color[2], color[3])}']`))
     }
     save() {

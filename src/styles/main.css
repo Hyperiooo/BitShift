@@ -570,6 +570,10 @@ canvas * {
     mix-blend-mode: difference;
 }
 
+#selectionSVG {
+    mix-blend-mode: unset !important;
+}
+
 #eraserBrushBufferParent {
     display: none;
     pointer-events: none;
@@ -1551,7 +1555,7 @@ input {
     transform: translate(335px, 0);
     transition: 0.2s opacity, 0.2s transform, max-height 0.2s;
     pointer-events: none;
-    width: 335px;
+    width: 250px;
     height: calc(100% - 50px);
 }
 
@@ -1641,7 +1645,7 @@ input {
 .layer-wrap {
     --s: 1;
     --y: 0px;
-    width: 302px;
+    width: calc(100% - 16px);
     padding: 4px;
     background: var(--bgLight);
     margin: 8px;
