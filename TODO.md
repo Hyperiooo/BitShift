@@ -7,8 +7,8 @@ A list of all the things planned to do for BitShift
 - Smudge and scatter tools  
   - Effect surrounding pixels
 - Magic wand tool
-- Marquee tool
-  - add stuff to a dummy canvas and clip with either canvas built in clip or with global composite
+- ~~Marquee tool~~
+  - ~~add stuff to a dummy canvas and clip with either canvas built in clip or with global composite~~
 - General transforming and rotation
 - Tool settings
   - ~~Main Window~~
@@ -21,7 +21,7 @@ A list of all the things planned to do for BitShift
     - ~~Spray Speed~~
     - ~~Spray Size~~
       - ~~How big each pixel in the spray is~~
-  - Filled shapes
+  - ~~Filled shapes~~
 - Gradient tool (Dither & No dither)
 - ~~Pan tool~~
   - ~~Improve pan tool~~
@@ -127,8 +127,9 @@ A list of all the things planned to do for BitShift
 - ~~Give eraser outline to show where it will erase~~
 
 ## Bugs
-- with how the current "outline" on eraser and spray works, when zoomed in a lot the canvas gets too big on large canvas sizes, slows down performance. Make outline canvas only as big as it needs to be and move it around instead of making it the entire size of the canvas.
-- when creating palette via preview, the palette doesnt save properly unless it is used (clicking on a swatch)
+- Document doesnt perfectly center
+- ~~with how the current "outline" on eraser and spray works, when zoomed in a lot the canvas gets too big on large canvas sizes, slows down performance. Make outline canvas only as big as it needs to be and move it around instead of making it the entire size of the canvas.~~
+- ~~when creating palette via preview, the palette doesnt save properly unless it is used (clicking on a swatch)~~
 - ~~Some event listeners use faulty `touches` detection; adapt to new way of doing it (can be based on `opacDrag()`)~~
 - ~~Setting color via number inputs doesnt change the actual brush color~~
 - ~~valueRect appears as undefined sometimes~~

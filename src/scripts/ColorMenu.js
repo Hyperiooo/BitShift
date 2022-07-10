@@ -1,6 +1,7 @@
 function toggleColorPicker() {
     document.getElementById('color-menu').classList.toggle("color-open")
     document.getElementById('layer-menu').classList.remove("layer-open")
+    document.getElementById('layer-toggle-button').classList.remove("tool-active")
 }
 
 function act(clr) {
