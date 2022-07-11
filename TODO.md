@@ -31,6 +31,7 @@ A list of all the things planned to do for BitShift
   - ~~Improve zoom tool~~
     - ~~just removed~~
 
+
 ## Palettes
 - Add color to palette
 - ~~Rewrite to make class based~~
