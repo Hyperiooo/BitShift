@@ -84,6 +84,7 @@ A list of all the things planned to do for BitShift
   - export
   - Use Infinite Scroll.js - https://infinite-scroll.com/
   - Tagging
+  
 - Account 
 - ~~Export Image~~
   - ~~Format options~~
