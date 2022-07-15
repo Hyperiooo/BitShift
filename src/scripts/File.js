@@ -5,7 +5,6 @@ function packFile() {
         'currColor': board.color,
         'width': board.width,
         'height': board.height,
-        'dim': window.dim,
         'layers': layers.reverse()
     }
     var packedData = btoa(JSON.stringify(project))
@@ -26,13 +25,13 @@ function parseFile() {
     if (curFiles.length === 0) {
         console.error("no files selected")
     } else {
-        console.log(curFiles)
         for (let i = 0; i < curFiles.length; i++) {
             const file = curFiles[i];
 
             let reader = new FileReader();
             reader.addEventListener('load', (event) => {
-                console.log(JSON.parse(atob(event.target.result)));
+                var file = JSON.parse(atob(event.target.result))
+                loadFile(file);
             });
 
             reader.readAsText(file);
@@ -41,8 +40,42 @@ function parseFile() {
     }
 }
 
+function loadFile(file) {
+    clearPalettes()
+    clearLayerMenu()
+    clearLayers()
+    layers = []
+    if (typeof board !== 'undefined') {
+        board.destroy()
+
+    }
+    var width = +file.width;
+    var height = +file.height;
+    window.board = new Canvas(file.width, file.height);
+    window.colors = defaultPalettes
+    preparePalette()
+    board.setcolor(file.currColor);
+    project = {
+        'name': file.name,
+        'palettes': filePalettes,
+        'currColor': file.currColor,
+        'width': width,
+        'height': height,
+        'layers': file.layers
+    };
+
+    projName = project.name
+
+    document.getElementById('topbar-project-name').value = projName
+    file.layers.forEach(e => {
+        console.log(e)
+        createLayer(e.name, e.data, e.settings)
+    })
+    initializeGestures()
+}
+
 function openFile() {
     document.getElementById("fileOpenDialog").click()
 }
 
-document.getElementById("fileOpenDialog").onchange = parseFile
+if (document.getElementById("fileOpenDialog")) document.getElementById("fileOpenDialog").onchange = parseFile

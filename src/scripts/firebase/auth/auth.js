@@ -57,26 +57,6 @@ export async function googleSignIn() {
         console.log(authState())
     } else {
         signInWithRedirect(auth, provider)
-            /*signInWithPopup(auth, provider).then((result) => {
-                // This gives you a Google Access Token. You can use it to access the Google API.
-                const credential = GoogleAuthProvider.credentialFromResult(result);
-                const token = credential.accessToken;
-                // The signed-in user info.
-                const user = result.user;
-        
-                console.log("User logged in: ")
-                console.log(user)
-                // ...
-            }).catch((error) => {
-                // Handle Errors here.
-                const errorCode = error.code;
-                const errorMessage = error.message;
-                // The email of the user's account used.
-                const email = error.email;
-                // The AuthCredential type that was used.
-                const credential = GoogleAuthProvider.credentialFromError(error);
-                // ...
-            });*/
     }
 
 }
@@ -84,21 +64,9 @@ export async function googleSignIn() {
 export function signOutUser() {
     signOut(auth).then(() => {
         console.log('user signed out')
-    }).catch((error) => {
-        // An error happened.
-    });
+    }).catch((error) => {});
 }
 
 export function authState() {
-    /*onAuthStateChanged(auth, (user) => {
-        if (user) {
-            // User is signed in, see docs for a list of available properties
-            // https://firebase.google.com/docs/reference/js/firebase.User
-            const uid = user.uid;
-            return user
-        } else {
-            return false
-        }
-    });*/
     return auth.currentUser;
 }

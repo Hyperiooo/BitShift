@@ -95,7 +95,6 @@ var project = {
     'currColor': null,
     'width': null,
     'height': null,
-    'dim': window.dim,
     'layers': null
 };
 
@@ -166,7 +165,6 @@ function saveData() {
         'currColor': board.color,
         'width': board.width,
         'height': board.height,
-        'dim': window.dim,
         'layers': layers.reverse()
     }
     localStorage.setItem('pc-canvas-data', JSON.stringify(project));*/
@@ -221,3 +219,12 @@ function renameProject(el) {
         projName = el.value;
     }
 }
+
+
+var ev = new Event("build")
+
+document.dispatchEvent(ev)
+
+document.addEventListener("asdfasdf", e=> {
+    console.alert("asdfasdfasdfa")
+})

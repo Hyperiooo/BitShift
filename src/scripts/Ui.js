@@ -98,7 +98,6 @@ function confirmNewProject() {
         'currColor': board.color,
         'width': width,
         'height': height,
-        'dim': window.dim,
         'layers': []
     };
 

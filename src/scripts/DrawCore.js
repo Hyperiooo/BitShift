@@ -116,7 +116,6 @@ var project = {
     'currColor': null,
     'width': null,
     'height': null,
-    'dim': window.dim,
     'layers': layers
 };
 
@@ -179,30 +178,6 @@ window.onload = function() {
         data = JSON.parse(canvasData);
         project = data
         window.board = new Canvas(data.width, data.height);
-        //let img = new Image();
-        //img.setAttribute('src', data.url);
-        //img.addEventListener("load", function () {
-        //    window.board.ctx.drawImage(img, 0, 0);
-        //    window.board.imageData = window.board.ctx.getImageData(0, 0, window.board.height, window.board.width)
-        //});
-        /*
-        window.board.frames = JSON.parse(data.frames).map(frame=>{
-          let img = new Image();
-          img.src = frame[0]
-          return [img, frame[1]]
-        });
-        
-        for(let f in data.frames){
-          let c = document.createElement('canvas');
-          c.width = data.width;
-          c.height = data.height;
-          let c_ctx = c.getContext('2d');
-          c_ctx.drawImage(f[0], 0, 0);
-          window.board.addFrame(c.toDataURL());
-        }
-       */
-
-
 
         window.board.steps = data.steps;
         window.board.redo_arr = data.redo_arr;
@@ -265,7 +240,6 @@ function saveData() {
         'currColor': board.color,
         'width': board.width,
         'height': board.height,
-        'dim': window.dim,
         'layers': layers.reverse()
     }
     localStorage.setItem('pc-canvas-data', JSON.stringify(project));

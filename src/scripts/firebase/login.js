@@ -34,7 +34,7 @@ export async function authChangeHandler(signedIn, user) {
         var userExists = await checkNewUserId(userId)
         console.log(userExists)
         if (!userExists) isNewAccount();
-        window.location.href = "./"
+        //window.location.href = "./"
 
     } else if (!signedIn) {
         console.log("signed out")

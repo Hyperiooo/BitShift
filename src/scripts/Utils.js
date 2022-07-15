@@ -242,3 +242,146 @@ Array.prototype.findArray = function(needle) {
 Array.prototype.remove = function(index) {
     return this.splice(index, 1)
 }
+
+class Color {
+    constructor(data) {
+        this.rgba = {}
+        this.hsva = {}
+        this.hsla = {}
+        this.hex = ""
+        console.log(data.r != undefined)
+        if (data.r != undefined) {
+            console.log("rgb")
+            this.rgba = {
+                r: clamp(data.r, 0, 255) || 0,
+                g: clamp(data.g, 0, 255) || 0,
+                b: clamp(data.b, 0, 255) || 0,
+                a: clamp(data.a, 0, 255) || 255
+            }
+            var hexFromRGB = rgbToHex(this.rgba.r, this.rgba.g, this.rgba.b, this.rgba.a)
+            var hsvFromRGB = RGBToHSV([this.rgba.r, this.rgba.g, this.rgba.b, this.rgba.a])
+            var hslFromHSV = HSVToHSL(hsvFromRGB)
+            this.hex = hexFromRGB
+            this.hsva = {
+                h: hsvFromRGB[0],
+                s: hsvFromRGB[1],
+                v: hsvFromRGB[2],
+                a: hsvFromRGB[3],
+            }
+            this.hsla = {
+                h: hslFromHSV[0],
+                s: hslFromHSV[1],
+                l: hslFromHSV[2],
+                a: hslFromHSV[3],
+            }
+        }
+        if (data.v != undefined) {
+            this.hsva = {
+                h: clamp(data.h, 0, 360) || 0,
+                s: clamp(data.s, 0, 100) || 0,
+                v: clamp(data.v, 0, 100) || 0,
+                a: clamp(data.a, 0, 100) || 100
+            }
+            var hslFromHSV = HSVToHSL([this.hsva.h, this.hsva.s, this.hsva.v, this.hsva.a])
+            var rgbFromHSL = HSLToRGB(hslFromHSV);
+            var hexFromRGB = rgbToHex(rgbFromHSL[0], rgbFromHSL[1], rgbFromHSL[2], rgbFromHSL[3])
+            this.hsla = {
+                h: hslFromHSV[0],
+                s: hslFromHSV[1],
+                l: hslFromHSV[2],
+                a: hslFromHSV[3],
+            }
+            this.rgba = {
+                r: rgbFromHSL[0],
+                g: rgbFromHSL[1],
+                b: rgbFromHSL[2],
+                a: rgbFromHSL[3]
+            }
+            this.hex = hexFromRGB
+        }
+        if (data.l) {
+            console.log("hsl")
+            this.hsla = {
+                h: clamp(data.h, 0, 360) || 0,
+                s: clamp(data.s, 0, 100) || 0,
+                l: clamp(data.l, 0, 100) || 0,
+                a: clamp(data.a, 0, 100) || 100
+            }
+            var hsvFromHSL = HSLToHSV([this.hsla.h, this.hsla.s, this.hsla.l, this.hsla.a])
+            var rgbFromHSL = HSLToRGB([this.hsla.h, this.hsla.s, this.hsla.l, this.hsla.a]);
+            var hexFromRGB = rgbToHex(rgbFromHSL[0], rgbFromHSL[1], rgbFromHSL[2], rgbFromHSL[3])
+            this.hsva = {
+                h: hsvFromHSL[0],
+                s: hsvFromHSL[1],
+                v: hsvFromHSL[2],
+                a: hsvFromHSL[3]
+            }
+            this.rgba = {
+                r: rgbFromHSL[0],
+                g: rgbFromHSL[1],
+                b: rgbFromHSL[2],
+                a: rgbFromHSL[3]
+            }
+            this.hex = hexFromRGB
+        }
+        if (typeof data === "string") {
+            console.log("hex")
+            if (isValidHex(data)) {
+                this.hex = data
+                var rgbFromHex = hexToRGB(this.hex)
+                var hsvFromRGB = RGBToHSV(rgbFromHex)
+                var hslFromHSV = HSVToHSL(hsvFromRGB)
+                this.rgba = {
+                    r: rgbFromHex[0],
+                    g: rgbFromHex[1],
+                    b: rgbFromHex[2],
+                    a: rgbFromHex[3]
+                }
+                this.hsva = {
+                    h: hsvFromRGB[0],
+                    s: hsvFromRGB[1],
+                    v: hsvFromRGB[2],
+                    a: hsvFromRGB[3],
+                }
+                this.hsla = {
+                    h: hslFromHSV[0],
+                    s: hslFromHSV[1],
+                    l: hslFromHSV[2],
+                    a: hslFromHSV[3],
+                }
+            }
+        }
+        if (!this.hex.startsWith("#")) { this.hex = "#" + this.hex }
+        this.hex = convertToVerboseHex(this.hex)
+        this.rgb = {
+            r: this.rgba.r,
+            g: this.rgba.g,
+            b: this.rgba.b
+        }
+        this.hsv = {
+            h: this.hsva.h,
+            s: this.hsva.s,
+            v: this.hsva.v
+        }
+        this.hsl = {
+            h: this.hsla.h,
+            s: this.hsla.s,
+            l: this.hsla.l
+        }
+    }
+}
+
+function convertToVerboseHex(hex) {
+    hex = hex.replace("#", "")
+    if (hex.length == 3) {
+        return "#" + hex.charAt(0) + hex.charAt(0) + hex.charAt(1) + hex.charAt(1) + hex.charAt(2) + hex.charAt(2) + "ff"
+    } else if (hex.length == 4) {
+        return "#" + hex.charAt(0) + hex.charAt(0) + hex.charAt(1) + hex.charAt(1) + hex.charAt(2) + hex.charAt(2) + hex.charAt(3) + hex.charAt(3)
+    } else if (hex.length == 6) {
+        return "#" + hex + "ff"
+    } else if (hex.length == 8) {
+        return "#" + hex
+    } else {
+        return "#" + hex
+    }
+}

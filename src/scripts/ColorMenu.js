@@ -302,6 +302,7 @@ var clickedOnce = false
 var colPreviewTimeout
 
 function colorPreviewClickHandler(e) {
+    return //makes palette based off current color
     e.preventDefault()
     if (!clickedOnce) {
         clickedOnce = true
@@ -596,6 +597,104 @@ var defaultPalettes = [{
         [253, 234, 254, 255],
         [103, 228, 255, 255],
         [94, 255, 254, 255]
+    ]
+}]
+
+var defaultHexPalettes = [{
+    title: "Default",
+    colors: [
+        "#243d7eff",
+        "#1c3d60ff",
+        "#116066ff",
+        "#1f7e76ff",
+        "#32a68bff",
+        "#17df78ff",
+        "#0df57dff",
+        "#01ffaaff",
+        "#91ffe7ff",
+        "#d9fffdff",
+        "#aaf7ffff",
+        "#8cdcffff",
+        "#73b7ffff",
+        "#4a89ffff",
+        "#2945feff",
+        "#2032a4ff",
+        "#7629c3ff",
+        "#b02468ff",
+        "#d21856ff",
+        "#ed1f4cff",
+        "#ff4d2eff",
+        "#ff8d54ff",
+        "#f9c083ff",
+        "#fffbd6ff",
+        "#ffffffff",
+        "#b48c6cff",
+        "#8e6849ff",
+        "#633a29ff",
+        "#4e2419ff",
+        "#2a0d09ff"
+    ]
+}, {
+    title: "dont remember",
+    colors: [
+        "#5ba675ff",
+        "#6bc96cff",
+        "#abdd64ff",
+        "#fcef8dff",
+        "#ffb879ff",
+        "#ea6262ff",
+        "#cc425eff",
+        "#a32858ff",
+        "#751756ff",
+        "#390947ff",
+        "#611851ff",
+        "#873555ff",
+        "#a6555fff",
+        "#c97373ff",
+        "#f2ae99ff",
+        "#ffc3f2ff",
+        "#ee8fcbff",
+        "#d46eb3ff",
+        "#873e84ff",
+        "#1f102aff",
+        "#4a3052ff",
+        "#7b5480ff",
+        "#a6859fff",
+        "#d9bdc8ff",
+        "#ffffffff",
+        "#aee2ffff",
+        "#8db7ffff",
+        "#6d80faff",
+        "#8465ecff",
+        "#834dc4ff",
+        "#7d2da0ff",
+        "#4e187cff"
+    ]
+}, {
+    title: "Astralae",
+    colors: [
+        "#fff1aaff",
+        "#fff7dbff",
+        "#ffffffff",
+        "#e0feffff",
+        "#c1f0ffff",
+        "#aee0f7ff",
+        "#71d7fdff",
+        "#14afffff",
+        "#395effff",
+        "#5245e0ff",
+        "#483a99ff",
+        "#7a63f6ff",
+        "#9685fbff",
+        "#bc89fcff",
+        "#d49bf3ff",
+        "#fd8ef1ff",
+        "#ffa9fbff",
+        "#fdbffeff",
+        "#fecdffff",
+        "#fdeafeff",
+        "#67e4ffff",
+        "#5efffeff"
     ]
 }]
 
