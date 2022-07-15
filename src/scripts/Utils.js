@@ -150,8 +150,8 @@ function HSLToRGB(hsla) {
 }
 
 function rgbToHex(r, g, b, a) {
-    if (a) return intToHex(r) + intToHex(g) + intToHex(b) + intToHex(a);
-    else if (!a) return intToHex(r) + intToHex(g) + intToHex(b);
+    if (a != undefined) return intToHex(r) + intToHex(g) + intToHex(b) + intToHex(a);
+    else return intToHex(r) + intToHex(g) + intToHex(b);
 }
 
 function intToHex(c) {
@@ -249,18 +249,19 @@ class Color {
         this.hsva = {}
         this.hsla = {}
         this.hex = ""
-        console.log(data.r != undefined)
         if (data.r != undefined) {
             console.log("rgb")
+            if (data.a == undefined) { data.a = 255 }
             this.rgba = {
-                r: clamp(data.r, 0, 255) || 0,
-                g: clamp(data.g, 0, 255) || 0,
-                b: clamp(data.b, 0, 255) || 0,
-                a: clamp(data.a, 0, 255) || 255
+                r: clamp(data.r, 0, 255),
+                g: clamp(data.g, 0, 255),
+                b: clamp(data.b, 0, 255),
+                a: clamp(data.a, 0, 255)
             }
             var hexFromRGB = rgbToHex(this.rgba.r, this.rgba.g, this.rgba.b, this.rgba.a)
             var hsvFromRGB = RGBToHSV([this.rgba.r, this.rgba.g, this.rgba.b, this.rgba.a])
             var hslFromHSV = HSVToHSL(hsvFromRGB)
+            console.log(this.rgba, hexFromRGB)
             this.hex = hexFromRGB
             this.hsva = {
                 h: hsvFromRGB[0],
@@ -276,11 +277,12 @@ class Color {
             }
         }
         if (data.v != undefined) {
+            if (data.a == undefined) { data.a = 100 }
             this.hsva = {
-                h: clamp(data.h, 0, 360) || 0,
-                s: clamp(data.s, 0, 100) || 0,
-                v: clamp(data.v, 0, 100) || 0,
-                a: clamp(data.a, 0, 100) || 100
+                h: clamp(data.h, 0, 360),
+                s: clamp(data.s, 0, 100),
+                v: clamp(data.v, 0, 100),
+                a: clamp(data.a, 0, 100)
             }
             var hslFromHSV = HSVToHSL([this.hsva.h, this.hsva.s, this.hsva.v, this.hsva.a])
             var rgbFromHSL = HSLToRGB(hslFromHSV);
@@ -301,6 +303,7 @@ class Color {
         }
         if (data.l) {
             console.log("hsl")
+            if (data.a == undefined) { data.a = 100 }
             this.hsla = {
                 h: clamp(data.h, 0, 360) || 0,
                 s: clamp(data.s, 0, 100) || 0,
@@ -368,6 +371,7 @@ class Color {
             s: this.hsla.s,
             l: this.hsla.l
         }
+        this.hexh = this.hex.replace("#", '')
     }
 }
 

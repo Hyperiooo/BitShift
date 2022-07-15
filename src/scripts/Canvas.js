@@ -429,7 +429,7 @@ class Canvas {
                 this.sY = y;
                 this.ctx.globalCompositeOperation = 'source-over'
             } else if (Tools.eyedropper) {
-                this.setcolor(this.getPixelCol(new Point(x, y)));
+                this.setColor(this.getPixelCol(new Point(x, y)));
             }
             if (preview) {
                 this.clearPreview()
@@ -1032,17 +1032,17 @@ class Canvas {
             }
         }
     }
-    setcolor(color, skipDuplicate) {
+    setColor(color, skipDuplicate) {
         if (!skipDuplicate) setPickerColor(color)
         if (skipDuplicate) updatePickerColor(color)
         this.color = color;
         document.querySelectorAll("[data-tool-color-menu-button]").forEach(e => {
-            e.style.setProperty("--color", "rgba(" + color[0] + "," + color[1] + "," + color[2] + "," + color[3] + ")");
+            e.style.setProperty("--color", color.hex);
         })
-        if (this.ctx) this.ctx.fillStyle = "rgba(" + color[0] + "," + color[1] + "," + color[2] + "," + color[3] + ")";
-        this.pctx.fillStyle = "rgba(" + color[0] + "," + color[1] + "," + color[2] + "," + color[3] + ")";
-        this.sbctx.fillStyle = "rgba(" + color[0] + "," + color[1] + "," + color[2] + "," + color[3] + ")";
-        act(document.querySelectorAll(`[data-palette-color='${rgbToHex(color[0], color[1], color[2], color[3])}']`))
+        if (this.ctx) this.ctx.fillStyle = color.hex;
+        this.pctx.fillStyle = color.hex;
+        this.sbctx.fillStyle = color.hex;
+        act(document.querySelectorAll(`[data-palette-color='${color.hexh}']`))
     }
     save() {
         this.canvas.toBlob(function(blob) {
@@ -1058,7 +1058,7 @@ class Canvas {
         this.ctx.globalCompositeOperation = "destination-out";
         this.ctx.fillRect(0, 0, this.w, this.h);
         this.data = [...Array(this.width)].map(e => Array(this.height).fill([255, 255, 255, 255]));
-        this.setcolor(this.color);
+        this.setColor(this.color);
         updateCanvasPreview();
     }
 
@@ -1068,10 +1068,10 @@ class Canvas {
     }
 
     colorPixel(pos) {
-        this.imageData.data[pos] = this.color[0];
-        this.imageData.data[pos + 1] = this.color[1];
-        this.imageData.data[pos + 2] = this.color[2];
-        this.imageData.data[pos + 3] = this.color[3] !== undefined ? this.color[3] : 255;
+        this.imageData.data[pos] = this.color.rgba.r;
+        this.imageData.data[pos + 1] = this.color.rgba.g;
+        this.imageData.data[pos + 2] = this.color.rgba.b;
+        this.imageData.data[pos + 3] = this.color.rgba.a;
     }
 
     matchStartColor(pos, sR, sG, sB, sA) {
@@ -1109,30 +1109,31 @@ class Canvas {
         var imgData = this.ctx.getImageData(0, 0, this.width, this.height)
 
         var pixel = (p.y * this.width + p.x) * 4
-
-        return [
-            imgData.data[pixel],
-            imgData.data[pixel + 1],
-            imgData.data[pixel + 2],
-            imgData.data[pixel + 3],
-        ]
+        console.log(imgData.data[pixel + 3])
+        return new Color({
+            r: imgData.data[pixel],
+            g: imgData.data[pixel + 1],
+            b: imgData.data[pixel + 2],
+            a: imgData.data[pixel + 3],
+        })
     }
 
     fillerNonContiguous(p) {
-        var src = this.getPixelCol(p)
+        var src = this.getPixelCol(p).rgba
+        console.log(src)
         var im = this.ctx.getImageData(0, 0, this.width, this.height);
         console.log(im.data[0], im.data[1], im.data[2], im.data[3])
         for (var i = 0; i < im.data.length; i += 4) {
             if (
-                im.data[i] === src[0] &&
-                im.data[i + 1] === src[1] &&
-                im.data[i + 2] === src[2] &&
-                im.data[i + 3] === src[3]
+                im.data[i] === src.r &&
+                im.data[i + 1] === src.g &&
+                im.data[i + 2] === src.b &&
+                im.data[i + 3] === src.a
             ) {
-                im.data[i] = this.color[0];
-                im.data[i + 1] = this.color[1];
-                im.data[i + 2] = this.color[2];
-                im.data[i + 3] = this.color[3];
+                im.data[i] = this.color.rgba.r;
+                im.data[i + 1] = this.color.rgba.g;
+                im.data[i + 2] = this.color.rgba.b;
+                im.data[i + 3] = this.color.rgba.a;
             }
         }
         this.ctx.putImageData(im, 0, 0);
@@ -1193,7 +1194,7 @@ class Canvas {
             while (y <= drawingBoundBottom && this.matchStartColor(pixelPos, startR, startG, startB, startA)) {
                 y += 1;
 
-                this.colorPixel(pixelPos, this.color[0], this.color[1], this.color[2], 255, [startX, startY]);
+                this.colorPixel(pixelPos);
 
                 if (x > drawingBoundLeft) {
                     if (this.matchStartColor(pixelPos - 4, startR, startG, startB, startA)) {
@@ -1243,11 +1244,11 @@ class Canvas {
         var i, j;
         for (i = 0; i < this.width; i++) {
             for (j = 0; j < this.height; j++) {
-                this.setcolor(img[i][j]);
+                this.setColor(img[i][j]);
                 this.draw(i, j);
             }
         }
-        this.setcolor(tmp_color);
+        this.setColor(tmp_color);
         this.ctx.globalAlpha = tmp_alpha;
     }
 
@@ -1261,62 +1262,42 @@ class Canvas {
         gif.render();
     }
 
-    undo() {
-        this.clear();
-        this.redo_arr.push(this.steps.pop());
-        var step;
-        this.steps.forEach(step => {
-            this.setcolor(step[2]);
-            this.ctx.globalAlpha = step[3];
-            this.draw(step[0], step[1], true);
-        });
-    }
-
-    redo() {
-            this.steps.push(this.redo_arr.pop());
-            var step;
-            this.steps.forEach(step => {
-                this.setcolor(step[2]);
-                this.ctx.globalAlpha = step[3];
-                this.draw(step[0], step[1], true);
-            });
-        }
-        /*
-            addImage() {
-                var _this = this;
-                var fp = document.createElement("input");
-                fp.type = "file";
-                fp.click();
-                fp.onchange = function (e) {
-                    var reader = new FileReader();
-                    reader.readAsDataURL(e.target.files[0]);
-                    reader.onload = function () {
-                        var uimg = new Image();
-                        uimg.src = reader.result;
-                        uimg.width = _this.w;
-                        uimg.height = _this.h;
-                        uimg.onload = function () {
-                            var pxc = document.createElement("canvas");
-                            pxc.width = _this.w;
-                            pxc.height = _this.h;
-                            var pxctx = pxc.getContext("2d");
-                            pxctx.drawImage(uimg, 0, 0, _this.w, _this.h);
-                            var i, j;
-                            for (i = 0; i < _this.width; i++) {
-                                for (j = 0; j < _this.height; j++) {
-                                    var ctr = 0;
-                                    var avg = [0, 0, 0, 0];
-                                    var pix = pxctx.getImageData(10 * i, 10 * j, 10, 10).data;
-                                    pix.forEach((x, k) => { avg[k % 4] += x; if (k % 4 == 0) ctr++; });
-                                    avg = avg.map(x => ~~(x / ctr));
-                                    _this.setcolor(avg);
-                                    _this.draw(i, j);
-                                }
+    /*
+        addImage() {
+            var _this = this;
+            var fp = document.createElement("input");
+            fp.type = "file";
+            fp.click();
+            fp.onchange = function (e) {
+                var reader = new FileReader();
+                reader.readAsDataURL(e.target.files[0]);
+                reader.onload = function () {
+                    var uimg = new Image();
+                    uimg.src = reader.result;
+                    uimg.width = _this.w;
+                    uimg.height = _this.h;
+                    uimg.onload = function () {
+                        var pxc = document.createElement("canvas");
+                        pxc.width = _this.w;
+                        pxc.height = _this.h;
+                        var pxctx = pxc.getContext("2d");
+                        pxctx.drawImage(uimg, 0, 0, _this.w, _this.h);
+                        var i, j;
+                        for (i = 0; i < _this.width; i++) {
+                            for (j = 0; j < _this.height; j++) {
+                                var ctr = 0;
+                                var avg = [0, 0, 0, 0];
+                                var pix = pxctx.getImageData(10 * i, 10 * j, 10, 10).data;
+                                pix.forEach((x, k) => { avg[k % 4] += x; if (k % 4 == 0) ctr++; });
+                                avg = avg.map(x => ~~(x / ctr));
+                                _this.setColor(avg);
+                                _this.draw(i, j);
                             }
                         }
                     }
                 }
-            }*/
+            }
+        }*/
 }
 
 class Frames {

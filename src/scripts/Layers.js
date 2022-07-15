@@ -695,7 +695,7 @@ function setLayer(id, setColor) {
         layer.layerElement.classList.add("layer-active")
         activeLayer = layer
         board.ctx = layer.ctx
-        board.setcolor(board.color)
+        board.setColor(board.color)
     }
 }
 

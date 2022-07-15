@@ -90,7 +90,7 @@ function confirmNewProject() {
     window.board = new Canvas(width, height);
     window.colors = defaultPalettes
     preparePalette()
-    board.setcolor(colors[0].colors[0]);
+    board.setColor(new Color(colors[0].colors[0]));
     window.dim.close();
     project = {
         'name': "Untitled Sprite",

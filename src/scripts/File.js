@@ -54,7 +54,7 @@ function loadFile(file) {
     window.board = new Canvas(file.width, file.height);
     window.colors = defaultPalettes
     preparePalette()
-    board.setcolor(file.currColor);
+    board.setColor(file.currColor);
     project = {
         'name': file.name,
         'palettes': filePalettes,

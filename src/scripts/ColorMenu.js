@@ -18,23 +18,12 @@ function act(clr) {
 }
 var pickerColor = [0, 0, 0, 100]
 
-var previousData = {
-    r: 0,
-    g: 0,
-    b: 0,
-    rgba: 0,
-    h: 0,
-    s: 0,
-    l: 0,
-    hsla: 0,
-    hex: "ffffffff"
-}
 document.querySelectorAll("[data-color-input]").forEach(el => {
     el.onblur = el.onkeyup = el.oninput = updateColorNum
 })
 
 
-
+//TODO: fix this
 function updateColorNum(el) {
     if (el.keyCode != null) {
         if (el.keyCode != 13) return;
@@ -88,7 +77,7 @@ function updateColorNum(el) {
         if (!pickerColor) return
         updatePickerColor()
         var rgba = HSLToRGB(HSVToHSL(pickerColor))
-        board.setcolor(rgba, true)
+        board.setColor(rgba, true)
     } else {
         updatePickerColor()
     }
@@ -120,12 +109,17 @@ function opacDrag(e) {
     }
     if (opacMoving) {
         document.querySelectorAll('[data-color-input]').forEach(e => { e.blur() });
-        pickerColor[3] = clamp(y / opacRect.height * 100, 0, 100)
+        //pickerColor[3] = clamp(y / opacRect.height * 100, 0, 100)
+        pickerColor = new Color({
+            h: pickerColor.hsva.h,
+            s: pickerColor.hsva.s,
+            v: pickerColor.hsva.v,
+            a: clamp(y / opacRect.height * 100, 0, 100)
+        })
         opacThumb.style.setProperty("--pos", clamp(y / opacRect.height * 100, 0, 100) + "%")
         opacThumb.style.setProperty("--posp", clamp(y / opacRect.height, 0, 1))
         updatePickerColor()
-        var rgba = HSLToRGB(HSVToHSL(pickerColor))
-        board.setcolor(rgba, true)
+        board.setColor(pickerColor, true)
     }
 }
 
@@ -156,12 +150,18 @@ function hueDrag(e) {
     }
     if (hueMoving) {
         document.querySelectorAll('[data-color-input]').forEach(e => { e.blur() });
-        pickerColor[0] = clamp((1 - (y / hueRect.height)), 0, 1) * 360
+        //pickerColor[0] = clamp((1 - (y / hueRect.height)), 0, 1) * 360
+
+        pickerColor = new Color({
+            h: pickerColor[0] = clamp((1 - (y / hueRect.height)), 0, 1) * 360,
+            s: pickerColor.hsva.s,
+            v: pickerColor.hsva.v,
+            a: pickerColor.hsva.a
+        })
         hThumb.style.setProperty("--pos", clamp(y / hueRect.height * 100, 0, 100) + "%")
         hThumb.style.setProperty("--posp", clamp(y / hueRect.height, 0, 1))
         updatePickerColor()
-        var rgba = HSLToRGB(HSVToHSL(pickerColor))
-        board.setcolor(rgba, true)
+        board.setColor(pickerColor, true)
     }
 }
 
@@ -202,13 +202,18 @@ function valueEndDrag(e) {
             y = valueBuffer[1]
         if (valueMoving && !valueTwoFinger) {
             document.querySelectorAll('[data-color-input]').forEach(e => { e.blur() });
-            pickerColor[1] = clamp(x / valueRect.width * 100, 0, 100)
-            pickerColor[2] = 100 - clamp(y / valueRect.height * 100, 0, 100)
+            //pickerColor[1] = clamp(x / valueRect.width * 100, 0, 100)
+            //pickerColor[2] = 100 - clamp(y / valueRect.height * 100, 0, 100)
+            pickerColor = new Color({
+                h: pickerColor.hsva.h,
+                s: clamp(x / valueRect.width * 100, 0, 100),
+                v: 100 - clamp(y / valueRect.height * 100, 0, 100),
+                a: pickerColor.hsva.a
+            })
             vThumb.style.setProperty("--posX", clamp(x / valueRect.width * 100, 0, 100) + "%")
             vThumb.style.setProperty("--posY", clamp(y / valueRect.height * 100, 0, 100) + "%")
             updatePickerColor()
-            var rgba = HSLToRGB(HSVToHSL(pickerColor))
-            board.setcolor(rgba, true)
+            board.setColor(pickerColor, true)
         }
     }
     if (valueTwoFinger) {
@@ -239,13 +244,18 @@ function valueDrag(e) {
     }
     if (valueMoving && !valueTwoFinger) {
         document.querySelectorAll('[data-color-input]').forEach(e => { e.blur() });
-        pickerColor[1] = clamp(x / valueRect.width * 100, 0, 100)
-        pickerColor[2] = 100 - clamp(y / valueRect.height * 100, 0, 100)
+        //pickerColor[1] = clamp(x / valueRect.width * 100, 0, 100)
+        //pickerColor[2] = 100 - clamp(y / valueRect.height * 100, 0, 100)
+        pickerColor = new Color({
+            h: pickerColor.hsva.h,
+            s: clamp(x / valueRect.width * 100, 0, 100),
+            v: 100 - clamp(y / valueRect.height * 100, 0, 100),
+            a: pickerColor.hsva.a
+        })
         vThumb.style.setProperty("--posX", clamp(x / valueRect.width * 100, 0, 100) + "%")
         vThumb.style.setProperty("--posY", clamp(y / valueRect.height * 100, 0, 100) + "%")
         updatePickerColor()
-        var rgba = HSLToRGB(HSVToHSL(pickerColor))
-        board.setcolor(rgba, true)
+        board.setColor(pickerColor, true)
     }
     if (valueTwoFinger) {
         valueTwoFingerDist = (distance(e.touches[0].clientX, e.touches[1].clientX, e.touches[0].clientY, e.touches[1].clientY))
@@ -264,38 +274,19 @@ function updatePickerColor() {
     var lEl = document.getElementById("color-hsla-l")
     var hslAEl = document.getElementById("color-hsla-a")
     var hexEl = document.getElementById("color-data-hex")
-    opacRange.style.setProperty("--hue", pickerColor[0])
-    valueRange.style.setProperty("--hue", pickerColor[0])
-    let hsla = HSVToHSL(pickerColor)
-    var rgba = HSLToRGB(hsla)
-    opacRange.style.setProperty("--color", `hsl( ${hsla[0]}, ${hsla[1]}%, ${hsla[2]}%)`)
-    colorCurrent.style.setProperty("--color", `hsla( ${hsla[0]}, ${hsla[1]}%, ${hsla[2]}%, ${hsla[3]}%)`)
-    rEl.value = rgba[0]
-    gEl.value = rgba[1]
-    bEl.value = rgba[2]
-    rgbAEl.value = rgba[3]
-    hEl.value = Math.round(hsla[0])
-    sEl.value = Math.round(hsla[1])
-    lEl.value = Math.round(hsla[2])
-    hslAEl.value = Math.round(hsla[3])
-    var hex = rgbToHex(rgba[0], rgba[1], rgba[2], rgba[3])
-    if (hex.endsWith("ff")) {
-        hexEl.value = hex.substring(0, hex.length - 2)
-    } else {
-        hexEl.value = hex
-    }
-    previousData = {
-            r: rgba[0],
-            g: rgba[1],
-            b: rgba[2],
-            rgba: rgba[3],
-            h: Math.round(hsla[0]),
-            s: Math.round(hsla[1]),
-            l: Math.round(hsla[2]),
-            hsla: Math.round(hsla[3]),
-            hex: rgbToHex(rgba[0], rgba[1], rgba[2], rgba[3])
-        }
-        //board.setcolor(rgba)
+    opacRange.style.setProperty("--hue", pickerColor.hsv.h)
+    valueRange.style.setProperty("--hue", pickerColor.hsv.h)
+    opacRange.style.setProperty("--color", `hsl( ${pickerColor.hsl.h}, ${pickerColor.hsl.s}%, ${pickerColor.hsl.l}%)`)
+    colorCurrent.style.setProperty("--color", `hsla( ${pickerColor.hsla.h}, ${pickerColor.hsla.s}%, ${pickerColor.hsla.l}%, ${pickerColor.hsla.a}%)`)
+    rEl.value = pickerColor.rgba.r
+    gEl.value = pickerColor.rgba.g
+    bEl.value = pickerColor.rgba.b
+    rgbAEl.value = pickerColor.rgba.a
+    hEl.value = Math.round(pickerColor.hsla.h)
+    sEl.value = Math.round(pickerColor.hsla.s)
+    lEl.value = Math.round(pickerColor.hsla.l)
+    hslAEl.value = Math.round(pickerColor.hsla.a)
+    var hex = pickerColor.hexh
 }
 
 var clickedOnce = false
@@ -367,24 +358,22 @@ document.onmouseup = (e) => {
 
 
 
-function setPickerColor(rgba) {
-    if (!rgba) return false;
-    let convHSV = RGBToHSV(rgba)
-    var newPickerColor = [convHSV[0], convHSV[1], convHSV[2], convHSV[3]]
-    vThumb.style.setProperty("--posX", convHSV[1] + "%")
-    vThumb.style.setProperty("--posY", 100 - convHSV[2] + "%")
-    hThumb.style.setProperty("--pos", ((1 - (convHSV[0] / 360)) * 100) + "%")
-    hThumb.style.setProperty("--posp", 1 - convHSV[0] / 360)
-    opacThumb.style.setProperty("--pos", convHSV[3] + "%")
-    opacThumb.style.setProperty("--posp", convHSV[3] / 100)
-    pickerColor = newPickerColor
-    let hsla = HSVToHSL(pickerColor)
-    updatePickerColor(rgba)
+function setPickerColor(color) {
+    //let convHSV = RGBToHSV(rgba)
+    console.trace(color)
+    var newPickerColor = [color.hsva.h, color.hsva.s, color.hsva.v, color.hsva.a]
+    vThumb.style.setProperty("--posX", color.hsva.s + "%")
+    vThumb.style.setProperty("--posY", 100 - color.hsva.v + "%")
+    hThumb.style.setProperty("--pos", ((1 - (color.hsva.h / 360)) * 100) + "%")
+    hThumb.style.setProperty("--posp", 1 - color.hsva.h / 360)
+    opacThumb.style.setProperty("--pos", color.hsva.a + "%")
+    opacThumb.style.setProperty("--posp", color.hsva.a / 100)
+    pickerColor = color
+    updatePickerColor()
 }
 
 function updatePrevious(col) {
-    let hsla = HSVToHSL(RGBToHSV(col))
-    document.getElementById("color-previous").style.setProperty("--color", `hsla( ${hsla[0]}, ${hsla[1]}%, ${hsla[2]}%, ${hsla[3]}%)`)
+    document.getElementById("color-previous").style.setProperty("--color", col.hex)
 }
 
 
@@ -464,7 +453,10 @@ function addPaletteViewsFromFiles(files) {
                         e.push(255)
                         finCol.push({ red: e[0] / 255, green: e[1] / 255, blue: e[2] / 255 })
                     })
-                    new paletteGroup(truncate(el.alt), formatAnyPalette(AnyPalette.uniqueColors(finCol)), true)
+                    var palette = formatAnyPalette(AnyPalette.uniqueColors(finCol)).map(e => {
+                        return (new Color({ r: e[0], g: e[1], b: e[2], a: e[3] })).hex
+                    })
+                    new paletteGroup(truncate(el.alt), palette, true)
                 } else {
                     document.getElementById("color-menu-drop-err").classList.add("color-menu-drop-err-on")
                     setTimeout(() => {
@@ -481,7 +473,10 @@ function addPaletteViewsFromFiles(files) {
                     if (palette) {
                         console.log(file.name.replaceArray(formatUsed.fileExtensionsPretty.split(", "), ""))
                         console.log(palette)
-                        new paletteGroup(truncate(file.name.replaceArray(formatUsed.fileExtensionsPretty.split(", "), "")), formatAnyPalette(AnyPalette.uniqueColors(palette)), true)
+                        var finPalette = formatAnyPalette(AnyPalette.uniqueColors(palette)).map(e => {
+                            return (new Color({ r: e[0], g: e[1], b: e[2], a: e[3] })).hex
+                        })
+                        new paletteGroup(truncate(file.name.replaceArray(formatUsed.fileExtensionsPretty.split(", "), "")), finPalette, true)
                     }
                     if (err) {
                         document.getElementById("color-menu-drop-err").classList.add("color-menu-drop-err-on")
@@ -502,7 +497,7 @@ function formatAnyPalette(palette) {
     })
     return pal
 }
-var defaultPalettes = [{
+var olddefaultPalettes = [{
     title: "Default",
     colors: [
         [36, 61, 126, 255],
@@ -600,7 +595,7 @@ var defaultPalettes = [{
     ]
 }]
 
-var defaultHexPalettes = [{
+var defaultPalettes = [{
     title: "Default",
     colors: [
         "#243d7eff",
@@ -910,12 +905,12 @@ class paletteGroup {
         }
 
         palette.forEach((x, i) => {
+            var color = new Color(x)
             if (!setCurrent && typeof board !== 'undefined') {
                 setCurrent = true
             }
-            var rgba = `rgba(${x[0]},${x[1]},${x[2]}, ${x[3] / 256 * 100}%)`
             let e = document.createElement("div")
-            e.setAttribute("data-palette-color", `${rgbToHex(x[0], x[1], x[2], x[3])}`)
+            e.setAttribute("data-palette-color", color.hexh)
             if (scroll) {
                 e.style.opacity = 0;
                 e.style.transitionDelay = (1000 / palette.length / 3) * i + "ms"
@@ -924,13 +919,16 @@ class paletteGroup {
                 }, 200);
             }
             e.classList.add('palette-color')
-            e.style.setProperty("--color", rgba)
-            e.setAttribute("onclick", `board.setcolor([${x}]); updatePrevious([${x}])`)
+            e.style.setProperty("--color", color.hex)
+            e.addEventListener("click", () => {
+                console.log('asdfaf')
+                window.board.setColor(color)
+                updatePrevious(color)
+            })
             colorMenu.appendChild(e)
         })
-        console.log(palette)
-
-        board.setcolor(palette[0])
+        console.log(palette[0])
+        board.setColor(new Color(palette[0]))
         var rect = colorMenu.getBoundingClientRect()
         var colorMenu = document.getElementById("color-menu")
         if (scroll) document.getElementById("color-menu").scrollTo({ behavior: "smooth", top: (colorMenu.scrollTop + rect.top) });
