@@ -29,32 +29,30 @@ function updateColorNum(el) {
         if (el.keyCode != 13) return;
     }
     var isValid = true;
-    var rgb, hsv
+    var color
     document.querySelectorAll("[data-color-input]").forEach(e => {
         if (e.type == "number") {
             if (e == el.target) {
                 if (e.id.includes("rgba")) {
-                    if (isValidNum(e.value)) {
-                        rgb = [
-                            clamp(document.getElementById("color-rgba-r").value, 0, 255),
-                            clamp(document.getElementById("color-rgba-g").value, 0, 255),
-                            clamp(document.getElementById("color-rgba-b").value, 0, 255),
-                            clamp(document.getElementById("color-rgba-a").value, 0, 255),
-                        ]
-                        hsv = RGBToHSV(rgb)
+                    if (isValidNum(e.value) || e.value == "") {
+                        color = new Color({
+                            r: clamp(document.getElementById("color-rgba-r").value || 0, 0, 255),
+                            g: clamp(document.getElementById("color-rgba-g").value || 0, 0, 255),
+                            b: clamp(document.getElementById("color-rgba-b").value || 0, 0, 255),
+                            a: clamp(document.getElementById("color-rgba-a").value || 0, 0, 255),
+                        })
                     } else {
+                        console.log("isntvalid")
                         isValid = false
                     }
                 } else if (e.id.includes("hsla")) {
-                    if (isValidNum(e.value)) {
-                        var hsl = [
-                            clamp(document.getElementById("color-hsla-h").value, 0, 360),
-                            clamp(document.getElementById("color-hsla-s").value, 0, 100),
-                            clamp(document.getElementById("color-hsla-l").value, 0, 100),
-                            clamp(document.getElementById("color-hsla-a").value, 0, 100),
-                        ]
-                        rgb = HSLToRGB(hsl)
-                        hsv = RGBToHSV(rgb)
+                    if (isValidNum(e.value) || e.value == "") {
+                        color = new Color({
+                            h: clamp(document.getElementById("color-hsla-h").value, 0, 360),
+                            s: clamp(document.getElementById("color-hsla-s").value, 0, 100),
+                            l: clamp(document.getElementById("color-hsla-l").value, 0, 100),
+                            a: clamp(document.getElementById("color-hsla-a").value, 0, 100),
+                        })
                     } else {
                         isValid = false
                     }
@@ -63,8 +61,7 @@ function updateColorNum(el) {
         } else if (e.type == "text") {
             if (e == el.target) {
                 if (isValidHex(e.value)) {
-                    rgb = hexToRGB(e.value)
-                    hsv = RGBToHSV(rgb)
+                    color = new Color(e.value)
                 } else {
                     isValid = false
                 }
@@ -72,12 +69,11 @@ function updateColorNum(el) {
         }
     })
     if (isValid) {
-        setPickerColor(rgb)
-        pickerColor = hsv
+        setPickerColor(color)
+        pickerColor = color
         if (!pickerColor) return
         updatePickerColor()
-        var rgba = HSLToRGB(HSVToHSL(pickerColor))
-        board.setColor(rgba, true)
+        board.setColor(color, true)
     } else {
         updatePickerColor()
     }
@@ -343,14 +339,13 @@ function colorPreviewClickHandler(e) {
 }
 
 
-
-document.onmousemove = (e) => {
+document.body.onmousemove = (e) => {
     valueDrag(e)
     hueDrag(e)
     opacDrag(e)
 }
 
-document.onmouseup = (e) => {
+document.body.onmouseup = (e) => {
     valueEndDrag(e)
     opacEndDrag(e)
     hueEndDrag(e)
@@ -360,7 +355,6 @@ document.onmouseup = (e) => {
 
 function setPickerColor(color) {
     //let convHSV = RGBToHSV(rgba)
-    console.trace(color)
     var newPickerColor = [color.hsva.h, color.hsva.s, color.hsva.v, color.hsva.a]
     vThumb.style.setProperty("--posX", color.hsva.s + "%")
     vThumb.style.setProperty("--posY", 100 - color.hsva.v + "%")
@@ -497,104 +491,6 @@ function formatAnyPalette(palette) {
     })
     return pal
 }
-var olddefaultPalettes = [{
-    title: "Default",
-    colors: [
-        [36, 61, 126, 255],
-        [28, 61, 96, 255],
-        [17, 96, 102, 255],
-        [31, 126, 118, 255],
-        [50, 166, 139, 255],
-        [23, 223, 120, 255],
-        [13, 245, 125, 255],
-        [1, 255, 170, 255],
-        [145, 255, 231, 255],
-        [217, 255, 253, 255],
-        [170, 247, 255, 255],
-        [140, 220, 255, 255],
-        [115, 183, 255, 255],
-        [74, 137, 255, 255],
-        [41, 69, 254, 255],
-        [32, 50, 164, 255],
-        [118, 41, 195, 255],
-        [176, 36, 104, 255],
-        [210, 24, 86, 255],
-        [237, 31, 76, 255],
-        [255, 77, 46, 255],
-        [255, 141, 84, 255],
-        [249, 192, 131, 255],
-        [255, 251, 214, 255],
-        [255, 255, 255, 255],
-        [180, 140, 108, 255],
-        [142, 104, 73, 255],
-        [99, 58, 41, 255],
-        [78, 36, 25, 255],
-        [42, 13, 9, 255]
-    ]
-}, {
-    title: "dont remember",
-    colors: [
-        [91, 166, 117, 255],
-        [107, 201, 108, 255],
-        [171, 221, 100, 255],
-        [252, 239, 141, 255],
-        [255, 184, 121, 255],
-        [234, 98, 98, 255],
-        [204, 66, 94, 255],
-        [163, 40, 88, 255],
-        [117, 23, 86, 255],
-        [57, 9, 71, 255],
-        [97, 24, 81, 255],
-        [135, 53, 85, 255],
-        [166, 85, 95, 255],
-        [201, 115, 115, 255],
-        [242, 174, 153, 255],
-        [255, 195, 242, 255],
-        [238, 143, 203, 255],
-        [212, 110, 179, 255],
-        [135, 62, 132, 255],
-        [31, 16, 42, 255],
-        [74, 48, 82, 255],
-        [123, 84, 128, 255],
-        [166, 133, 159, 255],
-        [217, 189, 200, 255],
-        [255, 255, 255, 255],
-        [174, 226, 255, 255],
-        [141, 183, 255, 255],
-        [109, 128, 250, 255],
-        [132, 101, 236, 255],
-        [131, 77, 196, 255],
-        [125, 45, 160, 255],
-        [78, 24, 124, 255]
-    ]
-}, {
-    title: "Astralae",
-    colors: [
-        [255, 241, 170, 255],
-        [255, 247, 219, 255],
-        [255, 255, 255, 255],
-        [224, 254, 255, 255],
-        [193, 240, 255, 255],
-        [174, 224, 247, 255],
-        [113, 215, 253, 255],
-        [20, 175, 255, 255],
-        [57, 94, 255, 255],
-        [82, 69, 224, 255],
-        [72, 58, 153, 255],
-        [122, 99, 246, 255],
-        [150, 133, 251, 255],
-        [188, 137, 252, 255],
-        [212, 155, 243, 255],
-        [253, 142, 241, 255],
-        [255, 169, 251, 255],
-        [253, 191, 254, 255],
-        [254, 205, 255, 255],
-        [253, 234, 254, 255],
-        [103, 228, 255, 255],
-        [94, 255, 254, 255]
-    ]
-}]
-
 var defaultPalettes = [{
     title: "Default",
     colors: [

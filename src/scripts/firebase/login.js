@@ -1,5 +1,5 @@
 import { initAuth, attemptSignIn, signOutUser, initPersist, setAuthStateHandler, googleSignIn } from "./auth/auth.js"
-import { initFirestore, getCities, checkNewUserId, setupNewAccount } from "./firestore/firestore.js"
+import { initFirestore, checkNewUserId, setupNewAccount } from "./firestore/firestore.js"
 
 import { app } from "./FirebaseInitialization.js"
 
@@ -17,7 +17,6 @@ window.onload = function() {
         })
     })
     initFirestore(app)
-    getCities()
 }
 
 document.getElementById("signIn").onclick = attemptSignIn
@@ -33,8 +32,8 @@ export async function authChangeHandler(signedIn, user) {
         userId = user.uid
         var userExists = await checkNewUserId(userId)
         console.log(userExists)
-        if (!userExists) isNewAccount();
-        //window.location.href = "./"
+        if (!userExists) await isNewAccount();
+        window.location.href = "./"
 
     } else if (!signedIn) {
         console.log("signed out")
@@ -43,7 +42,9 @@ export async function authChangeHandler(signedIn, user) {
     }
 }
 
-function isNewAccount() {
+async function isNewAccount() {
     console.log("this is a new account")
-    setupNewAccount(userId, userObj)
+    await setupNewAccount(userId, userObj).then(e => {
+        return false
+    })
 }

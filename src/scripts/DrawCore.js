@@ -157,12 +157,12 @@ window.onload = function() {
 
     opacThumb = document.getElementById("color-opacity-thumb")
     opacRange = document.getElementById("color-opacity")
-    opacRect = opacRange.getBoundingClientRect()
     hThumb = document.getElementById("color-hue-thumb")
     hueRange = document.getElementById("color-hue")
-    hueRect = hueRange.getBoundingClientRect()
     vThumb = document.getElementById("color-value-thumb")
     valueRange = document.getElementById("color-value")
+    opacRect = opacRange.getBoundingClientRect()
+    hueRect = hueRange.getBoundingClientRect()
     valueRect = valueRange.getBoundingClientRect()
 
     var numDraggable = document.querySelectorAll("[data-input-num-draggable]")

@@ -148,13 +148,6 @@ function newProject() {
 }
 
 
-window.onbeforeunload = function() {
-    saveData()
-}
-
-window.onpagehide = function() {
-    saveData()
-}
 
 function saveData() {
 
@@ -228,3 +221,7 @@ document.dispatchEvent(ev)
 document.addEventListener("asdfasdf", e=> {
     console.alert("asdfasdfasdfa")
 })
+function f() { 
+    document.getElementById("galleryContent").classList.toggle("visible");
+    document.getElementById("editorContent").classList.toggle("visible");
+    }
