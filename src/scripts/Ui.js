@@ -130,7 +130,16 @@ function toggleFile() {
 }
 
 function setSelectionMode(m) {
-    settings.tools.selectionMode.value = m
+                 settings.tools.selectionMode.value = m
     document.querySelectorAll(".input-group-item").forEach(e => { e.classList.remove("tool-active") })
     document.getElementById("input-button-" + m).classList.add("tool-active")
 }
+
+function openGallery() {
+    window.location.href = "./"
+}
+
+function openEditor() {
+    window.location.href = "./draw"
+}
+

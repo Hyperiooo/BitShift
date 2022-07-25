@@ -294,8 +294,3 @@ function renameProject(el) {
         projName = el.value;
     }
 }
-
-
-function openGallery() {
-    window.location.href = "./"
-}
