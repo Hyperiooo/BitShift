@@ -6,7 +6,7 @@
     <link rel="icon" type="image/svg+xml" href="./assets/logo.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>HyperID Login</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Hyperiooo/HyperID@v0.0.9/style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Hyperiooo/HyperID@v0.1.1/style.css">
     <link rel="stylesheet" href="./styles/main.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="apple-mobile-web-app-status-bar" />
@@ -22,13 +22,14 @@
         body,
         html {
             background-color: unset !important;
-            height: 100vh;
+            height: 100vh !important;
+            min-height: 0 !important;
             width: 100vw;
-            overflow: hidden;
+            overflow: hidden !important;
         }
     </style>
-    <script src="https://cdn.jsdelivr.net/gh/Hyperiooo/HyperID@v0.0.9/scripts/injectDOM.js" defer></script>
-    <div w3-include-html="https://cdn.jsdelivr.net/gh/Hyperiooo/HyperID@v0.0.9/loginTemplate.html"></div>
+    <script src="https://cdn.jsdelivr.net/gh/Hyperiooo/HyperID@v0.1.1/scripts/injectDOM.js" defer></script>
+    <div w3-include-html="https://cdn.jsdelivr.net/gh/Hyperiooo/HyperID@v0.1.1/loginTemplate.html"></div>
     <link href="https://cdn.jsdelivr.net/gh/Hyperiooo/Hypericons@v0.2.6/fonts/hypericons.css" rel="stylesheet"
         type="text/css" />
 
