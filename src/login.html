@@ -3,15 +3,31 @@
 
 <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <link rel="icon" type="image/svg+xml" href="./assets/logo.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>HyperID Login</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Hyperiooo/HyperID@v0.0.7/style.css">
-    <script src="https://cdn.jsdelivr.net/gh/Hyperiooo/HyperID@v0.0.7/scripts/injectDOM.js" defer></script>
-    <div w3-include-html="https://cdn.jsdelivr.net/gh/Hyperiooo/HyperID@v0.0.7/loginTemplate.html"></div>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Hyperiooo/HyperID@v0.0.9/style.css">
+    <link rel="stylesheet" href="./styles/main.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-status-bar" />
+    <meta name="theme-color" />
+    <meta name="apple-mobile-web-app-status-bar-style">
+    <script src="./scripts/Ui.js" defer></script>
+    <script defer>
+        setTimeout(() => {
+            setTheme(localStorage.getItem('theme') || "ui-theme-dark");
+        }, 100);
+    </script>
+    <style>
+        body,
+        html {
+            background-color: unset !important
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/gh/Hyperiooo/HyperID@v0.0.9/scripts/injectDOM.js" defer></script>
+    <div w3-include-html="https://cdn.jsdelivr.net/gh/Hyperiooo/HyperID@v0.0.9/loginTemplate.html"></div>
     <link href="https://cdn.jsdelivr.net/gh/Hyperiooo/Hypericons@v0.2.6/fonts/hypericons.css" rel="stylesheet"
         type="text/css" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
 </head>
 
