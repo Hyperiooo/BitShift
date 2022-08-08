@@ -31,7 +31,11 @@ window.onload = function () {
 };
 
 //document.getElementById("signIn").onclick = attemptSignIn;
-document.getElementById("google-login").onclick = attemptGoogleSignIn;
+//document.getElementById("google-login").onclick = attemptGoogleSignIn;
+
+window.addEventListener("attempt-google-login", (e) => {
+	attemptGoogleSignIn();
+});
 
 function initContent() {}
 

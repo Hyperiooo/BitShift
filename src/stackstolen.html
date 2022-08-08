@@ -1,0 +1,1054 @@
+<html class="application theme-dark" lang="en">
+
+<head>
+    <title>StackBlitz</title>
+    <meta charset="utf-8">
+    <script type="text/javascript"
+        src="https://bam.nr-data.net/1/NRJS-703e25b2978c2fd54f3?a=502027659&amp;v=1216.487a282&amp;to=IQ1dRhFbD1pdRBlcVREKUV0CRgcZS15ZTw%3D%3D&amp;rst=1616&amp;ck=0&amp;ref=https://stackblitz.com/&amp;ap=100&amp;be=404&amp;fe=1535&amp;dc=870&amp;af=err,xhr,stn,ins,spa&amp;perf=%7B%22timing%22:%7B%22of%22:1659988775467,%22n%22:0,%22f%22:9,%22dn%22:53,%22dne%22:53,%22c%22:55,%22s%22:63,%22ce%22:132,%22rq%22:132,%22rp%22:332,%22rpe%22:359,%22dl%22:347,%22di%22:867,%22ds%22:868,%22de%22:893,%22dc%22:1534,%22l%22:1534,%22le%22:1535%7D,%22navigation%22:%7B%7D%7D&amp;fcp=917&amp;jsonp=NREUM.setToken"></script>
+    <script type="text/javascript" async="" src="https://cdn.mxpnl.com/libs/mixpanel-2-latest.min.js"></script>
+    <script type="text/javascript" async="" src="https://www.google-analytics.com/analytics.js"></script>
+    <script src="https://js-agent.newrelic.com/nr-spa-1216.min.js"></script>
+    <script type="text/javascript"
+        src="https://cdn.segment.com/next-integrations/integrations/vendor/commons.54701049fd6fb8497e9e.js.gz" async=""
+        status="loaded"></script>
+    <script type="text/javascript"
+        src="https://cdn.segment.com/next-integrations/integrations/mixpanel/3.2.1/mixpanel.dynamic.js.gz" async=""
+        status="loaded"></script>
+    <script type="text/javascript"
+        src="https://cdn.segment.com/next-integrations/integrations/google-analytics/2.18.5/google-analytics.dynamic.js.gz"
+        async="" status="loaded"></script>
+    <script type="text/javascript" async=""
+        src="https://cdn.segment.com/analytics.js/v1/ta1kDK49qdEDEfd8KYxI37mW0GPkLKn1/analytics.min.js"></script>
+    <script
+        type="text/javascript">window.NREUM || (NREUM = {}); NREUM.info = { "beacon": "bam.nr-data.net", "errorBeacon": "bam.nr-data.net", "licenseKey": "NRJS-703e25b2978c2fd54f3", "applicationID": "502027659", "transactionName": "IQ1dRhFbD1pdRBlcVREKUV0CRgcZS15ZTw==", "queueTime": 0, "applicationTime": 100, "agent": "" }</script>
+    <script
+        type="text/javascript">(window.NREUM || (NREUM = {})).init = { privacy: { cookies_enabled: false }, ajax: { deny_list: ["bam.nr-data.net"] } }; (window.NREUM || (NREUM = {})).loader_config = { xpid: "VwcPUldXCRAFVFNSBQYBU10=", licenseKey: "NRJS-703e25b2978c2fd54f3", applicationID: "502027659" }; window.NREUM || (NREUM = {}), __nr_require = function (t, e, n) { function r(n) { if (!e[n]) { var o = e[n] = { exports: {} }; t[n][0].call(o.exports, function (e) { var o = t[n][1][e]; return r(o || e) }, o, o.exports) } return e[n].exports } if ("function" == typeof __nr_require) return __nr_require; for (var o = 0; o < n.length; o++)r(n[o]); return r }({ 1: [function (t, e, n) { function r(t) { try { s.console && console.log(t) } catch (e) { } } var o, i = t("ee"), a = t(31), s = {}; try { o = localStorage.getItem("__nr_flags").split(","), console && "function" == typeof console.log && (s.console = !0, o.indexOf("dev") !== -1 && (s.dev = !0), o.indexOf("nr_dev") !== -1 && (s.nrDev = !0)) } catch (c) { } s.nrDev && i.on("internal-error", function (t) { r(t.stack) }), s.dev && i.on("fn-err", function (t, e, n) { r(n.stack) }), s.dev && (r("NR AGENT IN DEVELOPMENT MODE"), r("flags: " + a(s, function (t, e) { return t }).join(", "))) }, {}], 2: [function (t, e, n) { function r(t, e, n, r, s) { try { l ? l -= 1 : o(s || new UncaughtException(t, e, n), !0) } catch (f) { try { i("ierr", [f, c.now(), !0]) } catch (d) { } } return "function" == typeof u && u.apply(this, a(arguments)) } function UncaughtException(t, e, n) { this.message = t || "Uncaught error with no additional information", this.sourceURL = e, this.line = n } function o(t, e) { var n = e ? null : c.now(); i("err", [t, n]) } var i = t("handle"), a = t(32), s = t("ee"), c = t("loader"), f = t("gos"), u = window.onerror, d = !1, p = "nr@seenError"; if (!c.disabled) { var l = 0; c.features.err = !0, t(1), window.onerror = r; try { throw new Error } catch (h) { "stack" in h && (t(14), t(13), "addEventListener" in window && t(7), c.xhrWrappable && t(15), d = !0) } s.on("fn-start", function (t, e, n) { d && (l += 1) }), s.on("fn-err", function (t, e, n) { d && !n[p] && (f(n, p, function () { return !0 }), this.thrown = !0, o(n)) }), s.on("fn-end", function () { d && !this.thrown && l > 0 && (l -= 1) }), s.on("internal-error", function (t) { i("ierr", [t, c.now(), !0]) }) } }, {}], 3: [function (t, e, n) { var r = t("loader"); r.disabled || (r.features.ins = !0) }, {}], 4: [function (t, e, n) { function r() { U++, L = g.hash, this[u] = y.now() } function o() { U--, g.hash !== L && i(0, !0); var t = y.now(); this[h] = ~~this[h] + t - this[u], this[d] = t } function i(t, e) { E.emit("newURL", ["" + g, e]) } function a(t, e) { t.on(e, function () { this[e] = y.now() }) } var s = "-start", c = "-end", f = "-body", u = "fn" + s, d = "fn" + c, p = "cb" + s, l = "cb" + c, h = "jsTime", m = "fetch", v = "addEventListener", w = window, g = w.location, y = t("loader"); if (w[v] && y.xhrWrappable && !y.disabled) { var x = t(11), b = t(12), E = t(9), R = t(7), O = t(14), T = t(8), S = t(15), P = t(10), M = t("ee"), C = M.get("tracer"), N = t(23); t(17), y.features.spa = !0; var L, U = 0; M.on(u, r), b.on(p, r), P.on(p, r), M.on(d, o), b.on(l, o), P.on(l, o), M.buffer([u, d, "xhr-resolved"]), R.buffer([u]), O.buffer(["setTimeout" + c, "clearTimeout" + s, u]), S.buffer([u, "new-xhr", "send-xhr" + s]), T.buffer([m + s, m + "-done", m + f + s, m + f + c]), E.buffer(["newURL"]), x.buffer([u]), b.buffer(["propagate", p, l, "executor-err", "resolve" + s]), C.buffer([u, "no-" + u]), P.buffer(["new-jsonp", "cb-start", "jsonp-error", "jsonp-end"]), a(T, m + s), a(T, m + "-done"), a(P, "new-jsonp"), a(P, "jsonp-end"), a(P, "cb-start"), E.on("pushState-end", i), E.on("replaceState-end", i), w[v]("hashchange", i, N(!0)), w[v]("load", i, N(!0)), w[v]("popstate", function () { i(0, U > 1) }, N(!0)) } }, {}], 5: [function (t, e, n) { function r() { var t = new PerformanceObserver(function (t, e) { var n = t.getEntries(); s(v, [n]) }); try { t.observe({ entryTypes: ["resource"] }) } catch (e) { } } function o(t) { if (s(v, [window.performance.getEntriesByType(w)]), window.performance["c" + p]) try { window.performance[h](m, o, !1) } catch (t) { } else try { window.performance[h]("webkit" + m, o, !1) } catch (t) { } } function i(t) { } if (window.performance && window.performance.timing && window.performance.getEntriesByType) { var a = t("ee"), s = t("handle"), c = t(14), f = t(13), u = t(6), d = t(23), p = "learResourceTimings", l = "addEventListener", h = "removeEventListener", m = "resourcetimingbufferfull", v = "bstResource", w = "resource", g = "-start", y = "-end", x = "fn" + g, b = "fn" + y, E = "bstTimer", R = "pushState", O = t("loader"); if (!O.disabled) { O.features.stn = !0, t(9), "addEventListener" in window && t(7); var T = NREUM.o.EV; a.on(x, function (t, e) { var n = t[0]; n instanceof T && (this.bstStart = O.now()) }), a.on(b, function (t, e) { var n = t[0]; n instanceof T && s("bst", [n, e, this.bstStart, O.now()]) }), c.on(x, function (t, e, n) { this.bstStart = O.now(), this.bstType = n }), c.on(b, function (t, e) { s(E, [e, this.bstStart, O.now(), this.bstType]) }), f.on(x, function () { this.bstStart = O.now() }), f.on(b, function (t, e) { s(E, [e, this.bstStart, O.now(), "requestAnimationFrame"]) }), a.on(R + g, function (t) { this.time = O.now(), this.startPath = location.pathname + location.hash }), a.on(R + y, function (t) { s("bstHist", [location.pathname + location.hash, this.startPath, this.time]) }), u() ? (s(v, [window.performance.getEntriesByType("resource")]), r()) : l in window.performance && (window.performance["c" + p] ? window.performance[l](m, o, d(!1)) : window.performance[l]("webkit" + m, o, d(!1))), document[l]("scroll", i, d(!1)), document[l]("keypress", i, d(!1)), document[l]("click", i, d(!1)) } } }, {}], 6: [function (t, e, n) { e.exports = function () { return "PerformanceObserver" in window && "function" == typeof window.PerformanceObserver } }, {}], 7: [function (t, e, n) { function r(t) { for (var e = t; e && !e.hasOwnProperty(u);)e = Object.getPrototypeOf(e); e && o(e) } function o(t) { s.inPlace(t, [u, d], "-", i) } function i(t, e) { return t[1] } var a = t("ee").get("events"), s = t("wrap-function")(a, !0), c = t("gos"), f = XMLHttpRequest, u = "addEventListener", d = "removeEventListener"; e.exports = a, "getPrototypeOf" in Object ? (r(document), r(window), r(f.prototype)) : f.prototype.hasOwnProperty(u) && (o(window), o(f.prototype)), a.on(u + "-start", function (t, e) { var n = t[1]; if (null !== n && ("function" == typeof n || "object" == typeof n)) { var r = c(n, "nr@wrapped", function () { function t() { if ("function" == typeof n.handleEvent) return n.handleEvent.apply(n, arguments) } var e = { object: t, "function": n }[typeof n]; return e ? s(e, "fn-", null, e.name || "anonymous") : n }); this.wrapped = t[1] = r } }), a.on(d + "-start", function (t) { t[1] = this.wrapped || t[1] }) }, {}], 8: [function (t, e, n) { function r(t, e, n) { var r = t[e]; "function" == typeof r && (t[e] = function () { var t = i(arguments), e = {}; o.emit(n + "before-start", [t], e); var a; e[m] && e[m].dt && (a = e[m].dt); var s = r.apply(this, t); return o.emit(n + "start", [t, a], s), s.then(function (t) { return o.emit(n + "end", [null, t], s), t }, function (t) { throw o.emit(n + "end", [t], s), t }) }) } var o = t("ee").get("fetch"), i = t(32), a = t(31); e.exports = o; var s = window, c = "fetch-", f = c + "body-", u = ["arrayBuffer", "blob", "json", "text", "formData"], d = s.Request, p = s.Response, l = s.fetch, h = "prototype", m = "nr@context"; d && p && l && (a(u, function (t, e) { r(d[h], e, f), r(p[h], e, f) }), r(s, "fetch", c), o.on(c + "end", function (t, e) { var n = this; if (e) { var r = e.headers.get("content-length"); null !== r && (n.rxSize = r), o.emit(c + "done", [null, e], n) } else o.emit(c + "done", [t], n) })) }, {}], 9: [function (t, e, n) { var r = t("ee").get("history"), o = t("wrap-function")(r); e.exports = r; var i = window.history && window.history.constructor && window.history.constructor.prototype, a = window.history; i && i.pushState && i.replaceState && (a = i), o.inPlace(a, ["pushState", "replaceState"], "-") }, {}], 10: [function (t, e, n) { function r(t) { function e() { f.emit("jsonp-end", [], l), t.removeEventListener("load", e, c(!1)), t.removeEventListener("error", n, c(!1)) } function n() { f.emit("jsonp-error", [], l), f.emit("jsonp-end", [], l), t.removeEventListener("load", e, c(!1)), t.removeEventListener("error", n, c(!1)) } var r = t && "string" == typeof t.nodeName && "script" === t.nodeName.toLowerCase(); if (r) { var o = "function" == typeof t.addEventListener; if (o) { var a = i(t.src); if (a) { var d = s(a), p = "function" == typeof d.parent[d.key]; if (p) { var l = {}; u.inPlace(d.parent, [d.key], "cb-", l), t.addEventListener("load", e, c(!1)), t.addEventListener("error", n, c(!1)), f.emit("new-jsonp", [t.src], l) } } } } } function o() { return "addEventListener" in window } function i(t) { var e = t.match(d); return e ? e[1] : null } function a(t, e) { var n = t.match(l), r = n[1], o = n[3]; return o ? a(o, e[r]) : e[r] } function s(t) { var e = t.match(p); return e && e.length >= 3 ? { key: e[2], parent: a(e[1], window) } : { key: t, parent: window } } var c = t(23), f = t("ee").get("jsonp"), u = t("wrap-function")(f); if (e.exports = f, o()) { var d = /[?&](?:callback|cb)=([^&#]+)/, p = /(.*)\.([^.]+)/, l = /^(\w+)(\.|$)(.*)$/, h = ["appendChild", "insertBefore", "replaceChild"]; Node && Node.prototype && Node.prototype.appendChild ? u.inPlace(Node.prototype, h, "dom-") : (u.inPlace(HTMLElement.prototype, h, "dom-"), u.inPlace(HTMLHeadElement.prototype, h, "dom-"), u.inPlace(HTMLBodyElement.prototype, h, "dom-")), f.on("dom-start", function (t) { r(t[0]) }) } }, {}], 11: [function (t, e, n) { var r = t("ee").get("mutation"), o = t("wrap-function")(r), i = NREUM.o.MO; e.exports = r, i && (window.MutationObserver = function (t) { return this instanceof i ? new i(o(t, "fn-")) : i.apply(this, arguments) }, MutationObserver.prototype = i.prototype) }, {}], 12: [function (t, e, n) { function r(t) { var e = i.context(), n = s(t, "executor-", e, null, !1), r = new f(n); return i.context(r).getCtx = function () { return e }, r } var o = t("wrap-function"), i = t("ee").get("promise"), a = t("ee").getOrSetContext, s = o(i), c = t(31), f = NREUM.o.PR; e.exports = i, f && (window.Promise = r, ["all", "race"].forEach(function (t) { var e = f[t]; f[t] = function (n) { function r(t) { return function () { i.emit("propagate", [null, !o], a, !1, !1), o = o || !t } } var o = !1; c(n, function (e, n) { Promise.resolve(n).then(r("all" === t), r(!1)) }); var a = e.apply(f, arguments), s = f.resolve(a); return s } }), ["resolve", "reject"].forEach(function (t) { var e = f[t]; f[t] = function (t) { var n = e.apply(f, arguments); return t !== n && i.emit("propagate", [t, !0], n, !1, !1), n } }), f.prototype["catch"] = function (t) { return this.then(null, t) }, f.prototype = Object.create(f.prototype, { constructor: { value: r } }), c(Object.getOwnPropertyNames(f), function (t, e) { try { r[e] = f[e] } catch (n) { } }), o.wrapInPlace(f.prototype, "then", function (t) { return function () { var e = this, n = o.argsToArray.apply(this, arguments), r = a(e); r.promise = e, n[0] = s(n[0], "cb-", r, null, !1), n[1] = s(n[1], "cb-", r, null, !1); var c = t.apply(this, n); return r.nextPromise = c, i.emit("propagate", [e, !0], c, !1, !1), c } }), i.on("executor-start", function (t) { t[0] = s(t[0], "resolve-", this, null, !1), t[1] = s(t[1], "resolve-", this, null, !1) }), i.on("executor-err", function (t, e, n) { t[1](n) }), i.on("cb-end", function (t, e, n) { i.emit("propagate", [n, !0], this.nextPromise, !1, !1) }), i.on("propagate", function (t, e, n) { this.getCtx && !e || (this.getCtx = function () { if (t instanceof Promise) var e = i.context(t); return e && e.getCtx ? e.getCtx() : this }) }), r.toString = function () { return "" + f }) }, {}], 13: [function (t, e, n) { var r = t("ee").get("raf"), o = t("wrap-function")(r), i = "equestAnimationFrame"; e.exports = r, o.inPlace(window, ["r" + i, "mozR" + i, "webkitR" + i, "msR" + i], "raf-"), r.on("raf-start", function (t) { t[0] = o(t[0], "fn-") }) }, {}], 14: [function (t, e, n) { function r(t, e, n) { t[0] = a(t[0], "fn-", null, n) } function o(t, e, n) { this.method = n, this.timerDuration = isNaN(t[1]) ? 0 : +t[1], t[0] = a(t[0], "fn-", this, n) } var i = t("ee").get("timer"), a = t("wrap-function")(i), s = "setTimeout", c = "setInterval", f = "clearTimeout", u = "-start", d = "-"; e.exports = i, a.inPlace(window, [s, "setImmediate"], s + d), a.inPlace(window, [c], c + d), a.inPlace(window, [f, "clearImmediate"], f + d), i.on(c + u, r), i.on(s + u, o) }, {}], 15: [function (t, e, n) { function r(t, e) { d.inPlace(e, ["onreadystatechange"], "fn-", s) } function o() { var t = this, e = u.context(t); t.readyState > 3 && !e.resolved && (e.resolved = !0, u.emit("xhr-resolved", [], t)), d.inPlace(t, y, "fn-", s) } function i(t) { x.push(t), m && (E ? E.then(a) : w ? w(a) : (R = -R, O.data = R)) } function a() { for (var t = 0; t < x.length; t++)r([], x[t]); x.length && (x = []) } function s(t, e) { return e } function c(t, e) { for (var n in t) e[n] = t[n]; return e } t(7); var f = t("ee"), u = f.get("xhr"), d = t("wrap-function")(u), p = t(23), l = NREUM.o, h = l.XHR, m = l.MO, v = l.PR, w = l.SI, g = "readystatechange", y = ["onload", "onerror", "onabort", "onloadstart", "onloadend", "onprogress", "ontimeout"], x = []; e.exports = u; var b = window.XMLHttpRequest = function (t) { var e = new h(t); try { u.emit("new-xhr", [e], e), e.addEventListener(g, o, p(!1)) } catch (n) { try { u.emit("internal-error", [n]) } catch (r) { } } return e }; if (c(h, b), b.prototype = h.prototype, d.inPlace(b.prototype, ["open", "send"], "-xhr-", s), u.on("send-xhr-start", function (t, e) { r(t, e), i(e) }), u.on("open-xhr-start", r), m) { var E = v && v.resolve(); if (!w && !v) { var R = 1, O = document.createTextNode(R); new m(a).observe(O, { characterData: !0 }) } } else f.on("fn-end", function (t) { t[0] && t[0].type === g || a() }) }, {}], 16: [function (t, e, n) { function r(t) { if (!s(t)) return null; var e = window.NREUM; if (!e.loader_config) return null; var n = (e.loader_config.accountID || "").toString() || null, r = (e.loader_config.agentID || "").toString() || null, f = (e.loader_config.trustKey || "").toString() || null; if (!n || !r) return null; var h = l.generateSpanId(), m = l.generateTraceId(), v = Date.now(), w = { spanId: h, traceId: m, timestamp: v }; return (t.sameOrigin || c(t) && p()) && (w.traceContextParentHeader = o(h, m), w.traceContextStateHeader = i(h, v, n, r, f)), (t.sameOrigin && !u() || !t.sameOrigin && c(t) && d()) && (w.newrelicHeader = a(h, m, v, n, r, f)), w } function o(t, e) { return "00-" + e + "-" + t + "-01" } function i(t, e, n, r, o) { var i = 0, a = "", s = 1, c = "", f = ""; return o + "@nr=" + i + "-" + s + "-" + n + "-" + r + "-" + t + "-" + a + "-" + c + "-" + f + "-" + e } function a(t, e, n, r, o, i) { var a = "btoa" in window && "function" == typeof window.btoa; if (!a) return null; var s = { v: [0, 1], d: { ty: "Browser", ac: r, ap: o, id: t, tr: e, ti: n } }; return i && r !== i && (s.d.tk = i), btoa(JSON.stringify(s)) } function s(t) { return f() && c(t) } function c(t) { var e = !1, n = {}; if ("init" in NREUM && "distributed_tracing" in NREUM.init && (n = NREUM.init.distributed_tracing), t.sameOrigin) e = !0; else if (n.allowed_origins instanceof Array) for (var r = 0; r < n.allowed_origins.length; r++) { var o = h(n.allowed_origins[r]); if (t.hostname === o.hostname && t.protocol === o.protocol && t.port === o.port) { e = !0; break } } return e } function f() { return "init" in NREUM && "distributed_tracing" in NREUM.init && !!NREUM.init.distributed_tracing.enabled } function u() { return "init" in NREUM && "distributed_tracing" in NREUM.init && !!NREUM.init.distributed_tracing.exclude_newrelic_header } function d() { return "init" in NREUM && "distributed_tracing" in NREUM.init && NREUM.init.distributed_tracing.cors_use_newrelic_header !== !1 } function p() { return "init" in NREUM && "distributed_tracing" in NREUM.init && !!NREUM.init.distributed_tracing.cors_use_tracecontext_headers } var l = t(28), h = t(18); e.exports = { generateTracePayload: r, shouldGenerateTrace: s } }, {}], 17: [function (t, e, n) { function r(t) { var e = this.params, n = this.metrics; if (!this.ended) { this.ended = !0; for (var r = 0; r < p; r++)t.removeEventListener(d[r], this.listener, !1); return e.protocol && "data" === e.protocol ? void g("Ajax/DataUrl/Excluded") : void (e.aborted || (n.duration = a.now() - this.startTime, this.loadCaptureCalled || 4 !== t.readyState ? null == e.status && (e.status = 0) : i(this, t), n.cbTime = this.cbTime, s("xhr", [e, n, this.startTime, this.endTime, "xhr"], this))) } } function o(t, e) { var n = c(e), r = t.params; r.hostname = n.hostname, r.port = n.port, r.protocol = n.protocol, r.host = n.hostname + ":" + n.port, r.pathname = n.pathname, t.parsedOrigin = n, t.sameOrigin = n.sameOrigin } function i(t, e) { t.params.status = e.status; var n = v(e, t.lastSize); if (n && (t.metrics.rxSize = n), t.sameOrigin) { var r = e.getResponseHeader("X-NewRelic-App-Data"); r && (t.params.cat = r.split(", ").pop()) } t.loadCaptureCalled = !0 } var a = t("loader"); if (a.xhrWrappable && !a.disabled) { var s = t("handle"), c = t(18), f = t(16).generateTracePayload, u = t("ee"), d = ["load", "error", "abort", "timeout"], p = d.length, l = t("id"), h = t(24), m = t(22), v = t(19), w = t(23), g = t(25).recordSupportability, y = NREUM.o.REQ, x = window.XMLHttpRequest; a.features.xhr = !0, t(15), t(8), u.on("new-xhr", function (t) { var e = this; e.totalCbs = 0, e.called = 0, e.cbTime = 0, e.end = r, e.ended = !1, e.xhrGuids = {}, e.lastSize = null, e.loadCaptureCalled = !1, e.params = this.params || {}, e.metrics = this.metrics || {}, t.addEventListener("load", function (n) { i(e, t) }, w(!1)), h && (h > 34 || h < 10) || t.addEventListener("progress", function (t) { e.lastSize = t.loaded }, w(!1)) }), u.on("open-xhr-start", function (t) { this.params = { method: t[0] }, o(this, t[1]), this.metrics = {} }), u.on("open-xhr-end", function (t, e) { "loader_config" in NREUM && "xpid" in NREUM.loader_config && this.sameOrigin && e.setRequestHeader("X-NewRelic-ID", NREUM.loader_config.xpid); var n = f(this.parsedOrigin); if (n) { var r = !1; n.newrelicHeader && (e.setRequestHeader("newrelic", n.newrelicHeader), r = !0), n.traceContextParentHeader && (e.setRequestHeader("traceparent", n.traceContextParentHeader), n.traceContextStateHeader && e.setRequestHeader("tracestate", n.traceContextStateHeader), r = !0), r && (this.dt = n) } }), u.on("send-xhr-start", function (t, e) { var n = this.metrics, r = t[0], o = this; if (n && r) { var i = m(r); i && (n.txSize = i) } this.startTime = a.now(), this.listener = function (t) { try { "abort" !== t.type || o.loadCaptureCalled || (o.params.aborted = !0), ("load" !== t.type || o.called === o.totalCbs && (o.onloadCalled || "function" != typeof e.onload)) && o.end(e) } catch (n) { try { u.emit("internal-error", [n]) } catch (r) { } } }; for (var s = 0; s < p; s++)e.addEventListener(d[s], this.listener, w(!1)) }), u.on("xhr-cb-time", function (t, e, n) { this.cbTime += t, e ? this.onloadCalled = !0 : this.called += 1, this.called !== this.totalCbs || !this.onloadCalled && "function" == typeof n.onload || this.end(n) }), u.on("xhr-load-added", function (t, e) { var n = "" + l(t) + !!e; this.xhrGuids && !this.xhrGuids[n] && (this.xhrGuids[n] = !0, this.totalCbs += 1) }), u.on("xhr-load-removed", function (t, e) { var n = "" + l(t) + !!e; this.xhrGuids && this.xhrGuids[n] && (delete this.xhrGuids[n], this.totalCbs -= 1) }), u.on("xhr-resolved", function () { this.endTime = a.now() }), u.on("addEventListener-end", function (t, e) { e instanceof x && "load" === t[0] && u.emit("xhr-load-added", [t[1], t[2]], e) }), u.on("removeEventListener-end", function (t, e) { e instanceof x && "load" === t[0] && u.emit("xhr-load-removed", [t[1], t[2]], e) }), u.on("fn-start", function (t, e, n) { e instanceof x && ("onload" === n && (this.onload = !0), ("load" === (t[0] && t[0].type) || this.onload) && (this.xhrCbStart = a.now())) }), u.on("fn-end", function (t, e) { this.xhrCbStart && u.emit("xhr-cb-time", [a.now() - this.xhrCbStart, this.onload, e], e) }), u.on("fetch-before-start", function (t) { function e(t, e) { var n = !1; return e.newrelicHeader && (t.set("newrelic", e.newrelicHeader), n = !0), e.traceContextParentHeader && (t.set("traceparent", e.traceContextParentHeader), e.traceContextStateHeader && t.set("tracestate", e.traceContextStateHeader), n = !0), n } var n, r = t[1] || {}; "string" == typeof t[0] ? n = t[0] : t[0] && t[0].url ? n = t[0].url : window.URL && t[0] && t[0] instanceof URL && (n = t[0].href), n && (this.parsedOrigin = c(n), this.sameOrigin = this.parsedOrigin.sameOrigin); var o = f(this.parsedOrigin); if (o && (o.newrelicHeader || o.traceContextParentHeader)) if ("string" == typeof t[0] || window.URL && t[0] && t[0] instanceof URL) { var i = {}; for (var a in r) i[a] = r[a]; i.headers = new Headers(r.headers || {}), e(i.headers, o) && (this.dt = o), t.length > 1 ? t[1] = i : t.push(i) } else t[0] && t[0].headers && e(t[0].headers, o) && (this.dt = o) }), u.on("fetch-start", function (t, e) { this.params = {}, this.metrics = {}, this.startTime = a.now(), this.dt = e, t.length >= 1 && (this.target = t[0]), t.length >= 2 && (this.opts = t[1]); var n, r = this.opts || {}, i = this.target; if ("string" == typeof i ? n = i : "object" == typeof i && i instanceof y ? n = i.url : window.URL && "object" == typeof i && i instanceof URL && (n = i.href), o(this, n), "data" !== this.params.protocol) { var s = ("" + (i && i instanceof y && i.method || r.method || "GET")).toUpperCase(); this.params.method = s, this.txSize = m(r.body) || 0 } }), u.on("fetch-done", function (t, e) { if (this.endTime = a.now(), this.params || (this.params = {}), "data" === this.params.protocol) return void g("Ajax/DataUrl/Excluded"); this.params.status = e ? e.status : 0; var n; "string" == typeof this.rxSize && this.rxSize.length > 0 && (n = +this.rxSize); var r = { txSize: this.txSize, rxSize: n, duration: a.now() - this.startTime }; s("xhr", [this.params, r, this.startTime, this.endTime, "fetch"], this) }) } }, {}], 18: [function (t, e, n) { var r = {}; e.exports = function (t) { if (t in r) return r[t]; if (0 === (t || "").indexOf("data:")) return { protocol: "data" }; var e = document.createElement("a"), n = window.location, o = {}; e.href = t, o.port = e.port; var i = e.href.split("://"); !o.port && i[1] && (o.port = i[1].split("/")[0].split("@").pop().split(":")[1]), o.port && "0" !== o.port || (o.port = "https" === i[0] ? "443" : "80"), o.hostname = e.hostname || n.hostname, o.pathname = e.pathname, o.protocol = i[0], "/" !== o.pathname.charAt(0) && (o.pathname = "/" + o.pathname); var a = !e.protocol || ":" === e.protocol || e.protocol === n.protocol, s = e.hostname === document.domain && e.port === n.port; return o.sameOrigin = a && (!e.hostname || s), "/" === o.pathname && (r[t] = o), o } }, {}], 19: [function (t, e, n) { function r(t, e) { var n = t.responseType; return "json" === n && null !== e ? e : "arraybuffer" === n || "blob" === n || "json" === n ? o(t.response) : "text" === n || "" === n || void 0 === n ? o(t.responseText) : void 0 } var o = t(22); e.exports = r }, {}], 20: [function (t, e, n) { function r() { } function o(t, e, n, r) { return function () { return u.recordSupportability("API/" + e + "/called"), i(t + e, [f.now()].concat(s(arguments)), n ? null : this, r), n ? void 0 : this } } var i = t("handle"), a = t(31), s = t(32), c = t("ee").get("tracer"), f = t("loader"), u = t(25), d = NREUM; "undefined" == typeof window.newrelic && (newrelic = d); var p = ["setPageViewName", "setCustomAttribute", "setErrorHandler", "finished", "addToTrace", "inlineHit", "addRelease"], l = "api-", h = l + "ixn-"; a(p, function (t, e) { d[e] = o(l, e, !0, "api") }), d.addPageAction = o(l, "addPageAction", !0), d.setCurrentRouteName = o(l, "routeName", !0), e.exports = newrelic, d.interaction = function () { return (new r).get() }; var m = r.prototype = { createTracer: function (t, e) { var n = {}, r = this, o = "function" == typeof e; return i(h + "tracer", [f.now(), t, n], r), function () { if (c.emit((o ? "" : "no-") + "fn-start", [f.now(), r, o], n), o) try { return e.apply(this, arguments) } catch (t) { throw c.emit("fn-err", [arguments, this, t], n), t } finally { c.emit("fn-end", [f.now()], n) } } } }; a("actionText,setName,setAttribute,save,ignore,onEnd,getContext,end,get".split(","), function (t, e) { m[e] = o(h, e) }), newrelic.noticeError = function (t, e) { "string" == typeof t && (t = new Error(t)), u.recordSupportability("API/noticeError/called"), i("err", [t, f.now(), !1, e]) } }, {}], 21: [function (t, e, n) { function r(t) { if (NREUM.init) { for (var e = NREUM.init, n = t.split("."), r = 0; r < n.length - 1; r++)if (e = e[n[r]], "object" != typeof e) return; return e = e[n[n.length - 1]] } } e.exports = { getConfiguration: r } }, {}], 22: [function (t, e, n) { e.exports = function (t) { if ("string" == typeof t && t.length) return t.length; if ("object" == typeof t) { if ("undefined" != typeof ArrayBuffer && t instanceof ArrayBuffer && t.byteLength) return t.byteLength; if ("undefined" != typeof Blob && t instanceof Blob && t.size) return t.size; if (!("undefined" != typeof FormData && t instanceof FormData)) try { return JSON.stringify(t).length } catch (e) { return } } } }, {}], 23: [function (t, e, n) { var r = !1; try { var o = Object.defineProperty({}, "passive", { get: function () { r = !0 } }); window.addEventListener("testPassive", null, o), window.removeEventListener("testPassive", null, o) } catch (i) { } e.exports = function (t) { return r ? { passive: !0, capture: !!t } : !!t } }, {}], 24: [function (t, e, n) { var r = 0, o = navigator.userAgent.match(/Firefox[\/\s](\d+\.\d+)/); o && (r = +o[1]), e.exports = r }, {}], 25: [function (t, e, n) { function r(t, e) { var n = [a, t, { name: t }, e]; return i("storeMetric", n, null, "api"), n } function o(t, e) { var n = [s, t, { name: t }, e]; return i("storeEventMetrics", n, null, "api"), n } var i = t("handle"), a = "sm", s = "cm"; e.exports = { constants: { SUPPORTABILITY_METRIC: a, CUSTOM_METRIC: s }, recordSupportability: r, recordCustom: o } }, {}], 26: [function (t, e, n) { function r() { return s.exists && performance.now ? Math.round(performance.now()) : (i = Math.max((new Date).getTime(), i)) - a } function o() { return i } var i = (new Date).getTime(), a = i, s = t(33); e.exports = r, e.exports.offset = a, e.exports.getLastTimestamp = o }, {}], 27: [function (t, e, n) { function r(t, e) { var n = t.getEntries(); n.forEach(function (t) { "first-paint" === t.name ? l("timing", ["fp", Math.floor(t.startTime)]) : "first-contentful-paint" === t.name && l("timing", ["fcp", Math.floor(t.startTime)]) }) } function o(t, e) { var n = t.getEntries(); if (n.length > 0) { var r = n[n.length - 1]; if (f && f < r.startTime) return; var o = [r], i = a({}); i && o.push(i), l("lcp", o) } } function i(t) { t.getEntries().forEach(function (t) { t.hadRecentInput || l("cls", [t]) }) } function a(t) { var e = navigator.connection || navigator.mozConnection || navigator.webkitConnection; if (e) return e.type && (t["net-type"] = e.type), e.effectiveType && (t["net-etype"] = e.effectiveType), e.rtt && (t["net-rtt"] = e.rtt), e.downlink && (t["net-dlink"] = e.downlink), t } function s(t) { if (t instanceof w && !y) { var e = Math.round(t.timeStamp), n = { type: t.type }; a(n), e <= h.now() ? n.fid = h.now() - e : e > h.offset && e <= Date.now() ? (e -= h.offset, n.fid = h.now() - e) : e = h.now(), y = !0, l("timing", ["fi", e, n]) } } function c(t) { "hidden" === t && (f = h.now(), l("pageHide", [f])) } if (!("init" in NREUM && "page_view_timing" in NREUM.init && "enabled" in NREUM.init.page_view_timing && NREUM.init.page_view_timing.enabled === !1)) { var f, u, d, p, l = t("handle"), h = t("loader"), m = t(30), v = t(23), w = NREUM.o.EV; if ("PerformanceObserver" in window && "function" == typeof window.PerformanceObserver) { u = new PerformanceObserver(r); try { u.observe({ entryTypes: ["paint"] }) } catch (g) { } d = new PerformanceObserver(o); try { d.observe({ entryTypes: ["largest-contentful-paint"] }) } catch (g) { } p = new PerformanceObserver(i); try { p.observe({ type: "layout-shift", buffered: !0 }) } catch (g) { } } if ("addEventListener" in document) { var y = !1, x = ["click", "keydown", "mousedown", "pointerdown", "touchstart"]; x.forEach(function (t) { document.addEventListener(t, s, v(!1)) }) } m(c) } }, {}], 28: [function (t, e, n) { function r() { function t() { return e ? 15 & e[n++] : 16 * Math.random() | 0 } var e = null, n = 0, r = window.crypto || window.msCrypto; r && r.getRandomValues && (e = r.getRandomValues(new Uint8Array(31))); for (var o, i = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx", a = "", s = 0; s < i.length; s++)o = i[s], "x" === o ? a += t().toString(16) : "y" === o ? (o = 3 & t() | 8, a += o.toString(16)) : a += o; return a } function o() { return a(16) } function i() { return a(32) } function a(t) { function e() { return n ? 15 & n[r++] : 16 * Math.random() | 0 } var n = null, r = 0, o = window.crypto || window.msCrypto; o && o.getRandomValues && Uint8Array && (n = o.getRandomValues(new Uint8Array(t))); for (var i = [], a = 0; a < t; a++)i.push(e().toString(16)); return i.join("") } e.exports = { generateUuid: r, generateSpanId: o, generateTraceId: i } }, {}], 29: [function (t, e, n) { function r(t, e) { if (!o) return !1; if (t !== o) return !1; if (!e) return !0; if (!i) return !1; for (var n = i.split("."), r = e.split("."), a = 0; a < r.length; a++)if (r[a] !== n[a]) return !1; return !0 } var o = null, i = null, a = /Version\/(\S+)\s+Safari/; if (navigator.userAgent) { var s = navigator.userAgent, c = s.match(a); c && s.indexOf("Chrome") === -1 && s.indexOf("Chromium") === -1 && (o = "Safari", i = c[1]) } e.exports = { agent: o, version: i, match: r } }, {}], 30: [function (t, e, n) { function r(t) { function e() { t(s && document[s] ? document[s] : document[i] ? "hidden" : "visible") } "addEventListener" in document && a && document.addEventListener(a, e, o(!1)) } var o = t(23); e.exports = r; var i, a, s; "undefined" != typeof document.hidden ? (i = "hidden", a = "visibilitychange", s = "visibilityState") : "undefined" != typeof document.msHidden ? (i = "msHidden", a = "msvisibilitychange") : "undefined" != typeof document.webkitHidden && (i = "webkitHidden", a = "webkitvisibilitychange", s = "webkitVisibilityState") }, {}], 31: [function (t, e, n) { function r(t, e) { var n = [], r = "", i = 0; for (r in t) o.call(t, r) && (n[i] = e(r, t[r]), i += 1); return n } var o = Object.prototype.hasOwnProperty; e.exports = r }, {}], 32: [function (t, e, n) { function r(t, e, n) { e || (e = 0), "undefined" == typeof n && (n = t ? t.length : 0); for (var r = -1, o = n - e || 0, i = Array(o < 0 ? 0 : o); ++r < o;)i[r] = t[e + r]; return i } e.exports = r }, {}], 33: [function (t, e, n) { e.exports = { exists: "undefined" != typeof window.performance && window.performance.timing && "undefined" != typeof window.performance.timing.navigationStart } }, {}], ee: [function (t, e, n) { function r() { } function o(t) { function e(t) { return t && t instanceof r ? t : t ? f(t, c, a) : a() } function n(n, r, o, i, a) { if (a !== !1 && (a = !0), !l.aborted || i) { t && a && t(n, r, o); for (var s = e(o), c = m(n), f = c.length, u = 0; u < f; u++)c[u].apply(s, r); var p = d[y[n]]; return p && p.push([x, n, r, s]), s } } function i(t, e) { g[t] = m(t).concat(e) } function h(t, e) { var n = g[t]; if (n) for (var r = 0; r < n.length; r++)n[r] === e && n.splice(r, 1) } function m(t) { return g[t] || [] } function v(t) { return p[t] = p[t] || o(n) } function w(t, e) { l.aborted || u(t, function (t, n) { e = e || "feature", y[n] = e, e in d || (d[e] = []) }) } var g = {}, y = {}, x = { on: i, addEventListener: i, removeEventListener: h, emit: n, get: v, listeners: m, context: e, buffer: w, abort: s, aborted: !1 }; return x } function i(t) { return f(t, c, a) } function a() { return new r } function s() { (d.api || d.feature) && (l.aborted = !0, d = l.backlog = {}) } var c = "nr@context", f = t("gos"), u = t(31), d = {}, p = {}, l = e.exports = o(); e.exports.getOrSetContext = i, l.backlog = d }, {}], gos: [function (t, e, n) { function r(t, e, n) { if (o.call(t, e)) return t[e]; var r = n(); if (Object.defineProperty && Object.keys) try { return Object.defineProperty(t, e, { value: r, writable: !0, enumerable: !1 }), r } catch (i) { } return t[e] = r, r } var o = Object.prototype.hasOwnProperty; e.exports = r }, {}], handle: [function (t, e, n) { function r(t, e, n, r) { o.buffer([t], r), o.emit(t, e, n) } var o = t("ee").get("handle"); e.exports = r, r.ee = o }, {}], id: [function (t, e, n) { function r(t) { var e = typeof t; return !t || "object" !== e && "function" !== e ? -1 : t === window ? 0 : a(t, i, function () { return o++ }) } var o = 1, i = "nr@id", a = t("gos"); e.exports = r }, {}], loader: [function (t, e, n) { function r() { if (!T++) { var t = O.info = NREUM.info, e = m.getElementsByTagName("script")[0]; if (setTimeout(f.abort, 3e4), !(t && t.licenseKey && t.applicationID && e)) return f.abort(); c(E, function (e, n) { t[e] || (t[e] = n) }); var n = a(); s("mark", ["onload", n + O.offset], null, "api"), s("timing", ["load", n]); var r = m.createElement("script"); 0 === t.agent.indexOf("http://") || 0 === t.agent.indexOf("https://") ? r.src = t.agent : r.src = l + "://" + t.agent, e.parentNode.insertBefore(r, e) } } function o() { "complete" === m.readyState && i() } function i() { s("mark", ["domContent", a() + O.offset], null, "api") } var a = t(26), s = t("handle"), c = t(31), f = t("ee"), u = t(29), d = t(21), p = t(23), l = d.getConfiguration("ssl") === !1 ? "http" : "https", h = window, m = h.document, v = "addEventListener", w = "attachEvent", g = h.XMLHttpRequest, y = g && g.prototype, x = !1; NREUM.o = { ST: setTimeout, SI: h.setImmediate, CT: clearTimeout, XHR: g, REQ: h.Request, EV: h.Event, PR: h.Promise, MO: h.MutationObserver }; var b = "" + location, E = { beacon: "bam.nr-data.net", errorBeacon: "bam.nr-data.net", agent: "js-agent.newrelic.com/nr-spa-1216.min.js" }, R = g && y && y[v] && !/CriOS/.test(navigator.userAgent), O = e.exports = { offset: a.getLastTimestamp(), now: a, origin: b, features: {}, xhrWrappable: R, userAgent: u, disabled: x }; if (!x) { t(20), t(27), m[v] ? (m[v]("DOMContentLoaded", i, p(!1)), h[v]("load", r, p(!1))) : (m[w]("onreadystatechange", o), h[w]("onload", r)), s("mark", ["firstbyte", a.getLastTimestamp()], null, "api"); var T = 0 } }, {}], "wrap-function": [function (t, e, n) { function r(t, e) { function n(e, n, r, c, f) { function nrWrapper() { var i, a, u, p; try { a = this, i = d(arguments), u = "function" == typeof r ? r(i, a) : r || {} } catch (l) { o([l, "", [i, a, c], u], t) } s(n + "start", [i, a, c], u, f); try { return p = e.apply(a, i) } catch (h) { throw s(n + "err", [i, a, h], u, f), h } finally { s(n + "end", [i, a, p], u, f) } } return a(e) ? e : (n || (n = ""), nrWrapper[p] = e, i(e, nrWrapper, t), nrWrapper) } function r(t, e, r, o, i) { r || (r = ""); var s, c, f, u = "-" === r.charAt(0); for (f = 0; f < e.length; f++)c = e[f], s = t[c], a(s) || (t[c] = n(s, u ? c + r : r, o, c, i)) } function s(n, r, i, a) { if (!h || e) { var s = h; h = !0; try { t.emit(n, r, i, e, a) } catch (c) { o([c, n, r, i], t) } h = s } } return t || (t = u), n.inPlace = r, n.flag = p, n } function o(t, e) { e || (e = u); try { e.emit("internal-error", t) } catch (n) { } } function i(t, e, n) { if (Object.defineProperty && Object.keys) try { var r = Object.keys(t); return r.forEach(function (n) { Object.defineProperty(e, n, { get: function () { return t[n] }, set: function (e) { return t[n] = e, e } }) }), e } catch (i) { o([i], n) } for (var a in t) l.call(t, a) && (e[a] = t[a]); return e } function a(t) { return !(t && t instanceof Function && t.apply && !t[p]) } function s(t, e) { var n = e(t); return n[p] = t, i(t, n, u), n } function c(t, e, n) { var r = t[e]; t[e] = s(r, n) } function f() { for (var t = arguments.length, e = new Array(t), n = 0; n < t; ++n)e[n] = arguments[n]; return e } var u = t("ee"), d = t(32), p = "nr@original", l = Object.prototype.hasOwnProperty, h = !1; e.exports = r, e.exports.wrapFunction = s, e.exports.wrapInPlace = c, e.exports.argsToArray = f }, {}] }, {}, ["loader", 2, 17, 5, 3, 4]);</script>
+    <meta name="og:image"
+        content="https://c.staticblitz.com/assets/social_general-46c72e351133f2b4d1352d8d870ce851ab16a59b0b2f10e41e11e036a88b7273.jpg">
+    <meta name="og:title" content="StackBlitz">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="StackBlitz">
+    <meta name="twitter:image"
+        content="https://c.staticblitz.com/assets/social_general-46c72e351133f2b4d1352d8d870ce851ab16a59b0b2f10e41e11e036a88b7273.jpg">
+    <meta name="twitter:site" content="@StackBlitz">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="color-scheme" content="dark">
+    <meta name="theme-color" content="hsl(220 10% 20%)">
+    <meta name="csrf-param" content="authenticity_token">
+    <meta name="csrf-token"
+        content="ubq2j6UJSU5-TSbWgObzR8u24w-iymBqGB4Lg2i-7uDTmKq0FloUnLkBOjHpSWiiJhcOHIgcYQkHRdJQRpzY_w">
+    <meta name="action-cable-url" content="/cable">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="icon" type="image/png"
+        href="https://c.staticblitz.com/assets/favicon-7453cf0c12d349fb64b7aa2b69cc69c026f083a27f139f0839b1f4948bed6811.png">
+    <link rel="apple-touch-icon"
+        href="https://c.staticblitz.com/assets/pwa-icon-f559737e5eae9b3544e5cc1291118bf758ee20873d496f1ce2052859fb3b72d6.png">
+
+    <style>
+        html {
+            color: #ccc;
+            background-color: #202327
+        }
+    </style>
+    <link rel="stylesheet" href="https://c.staticblitz.com/assets/css/client-a9c306a00bcaa.css">
+    <script>
+        !function () { var analytics = window.analytics = window.analytics || []; if (!analytics.initialize) if (analytics.invoked) window.console && console.error && console.error("Segment snippet included twice."); else { analytics.invoked = !0; analytics.methods = ["trackSubmit", "trackClick", "trackLink", "trackForm", "pageview", "identify", "reset", "group", "track", "ready", "alias", "debug", "page", "once", "off", "on"]; analytics.factory = function (t) { return function () { var e = Array.prototype.slice.call(arguments); e.unshift(t); analytics.push(e); return analytics } }; for (var t = 0; t < analytics.methods.length; t++) { var e = analytics.methods[t]; analytics[e] = analytics.factory(e) } analytics.load = function (t) { var e = document.createElement("script"); e.type = "text/javascript"; e.async = !0; e.src = ("https:" === document.location.protocol ? "https://" : "http://") + "cdn.segment.com/analytics.js/v1/" + t + "/analytics.min.js"; var n = document.getElementsByTagName("script")[0]; n.parentNode.insertBefore(e, n) }; analytics.SNIPPET_VERSION = "4.0.0"; analytics.load("ta1kDK49qdEDEfd8KYxI37mW0GPkLKn1"); } }();
+    </script>
+    <script type="text/javascript">
+        (function (d, u, h, s) {
+            h = d.getElementsByTagName('head')[0];
+            s = d.createElement('script');
+            s.async = 1;
+            s.src = u + new Date().getTime();
+            h.appendChild(s);
+        })(document, 'https://grow.clearbitjs.com/api/pixel.js?v=');
+    </script>
+    <script async="" src="https://grow.clearbitjs.com/api/pixel.js?v=1659988776001"></script>
+    <script src="https://w.staticblitz.com/webcontainer.1f021b18268b32e6c6b2095e039ac8c9f88b0d52.js"></script>
+    <script src="https://c.staticblitz.com/assets/js/application-66390233ab10a.js"></script>
+    <script src="https://v-corp.staticblitz.com/npm/monaco-editor@0.26.1/min/vs/loader.js"></script>
+    <script src="https://c.staticblitz.com/assets/js/ext-29bad67a8ce9a.js"></script>
+    <script src="https://c.staticblitz.com/assets/js/client-8d0c1d8ced07a.js"></script>
+
+    <style id="themes">
+        :root {
+            --sb-ui-font-family: system-ui, -apple-system, Segoe UI, Roboto, Cantarell, sans-serif;
+            --sb-code-font-family: Menlo, Cascadia Code, Consolas, Liberation Mono, monospace;
+            --sb-alert-background: hsl(220, 70%, 40%);
+            --sb-alert-foreground: hsl(0, 0%, 100%);
+            --sb-brand-stackblitz-blue: #1389fd;
+            --sb-card-background: hsl(220 12% 20%);
+            --sb-card-shadow: hsl(0 0% 0% / 50%);
+            --sb-control-active-background: hsl(205 100% 40%);
+            --sb-control-active-pressed-background: hsl(205 100% 45%);
+            --sb-control-active-thumb: hsl(0 0% 96%);
+            --sb-control-border-alt: transparent;
+            --sb-control-border-focus: hsl(205 100% 50%);
+            --sb-control-border-strong: hsl(220 10% 80%);
+            --sb-control-border: hsl(220 10% 45%);
+            --sb-dialog-backdrop: hsl(220 10% 20% / 0.75);
+            --sb-error-background: hsl(355 100% 20%);
+            --sb-error-border: hsl(355 100% 60%);
+            --sb-error-foreground: hsl(0 0% 100%);
+            --sb-foreground-active: hsl(0 0% 94%);
+            --sb-foreground-alt: hsl(0 0% 62%);
+            --sb-foreground-disabled: hsl(0 0% 45%);
+            --sb-foreground-highlight-high: hsl(165 100% 60%);
+            --sb-foreground-highlight: hsl(191 91% 69%);
+            --sb-foreground-inverted: hsl(220 18% 10%);
+            --sb-foreground-negative: hsl(355 80% 65%);
+            --sb-foreground-warning: hsl(55 65% 60%);
+            --sb-foreground: hsl(0 0% 80%);
+            --sb-icon-foreground: hsl(0 0% 80%);
+            --sb-luminosity-minus1: hsl(0 0% 0% / 0.15);
+            --sb-luminosity-minus2: hsl(0 0% 0% / 0.25);
+            --sb-luminosity-plus1: hsl(220 60% 95% / 0.06);
+            --sb-luminosity-plus2: hsl(220 60% 95% / 0.1);
+            --sb-luminosity-plus3: hsl(220 60% 95% / 0.14);
+            --sb-menu-active-background: hsl(205 100% 35%);
+            --sb-menu-active-foreground: hsl(0 0% 100%);
+            --sb-menu-background: hsl(220 15% 24%);
+            --sb-menu-border: transparent;
+            --sb-menu-shadow: hsl(0 0% 0% / 0.25);
+            --sb-page-alt-background: hsl(220 18% 10%);
+            --sb-page-background: hsl(220 10% 14%);
+            --sb-selection-background: hsl(205 100% 35%);
+            --sb-selection-foreground: hsl(0 0% 100%);
+            --sb-separator-base: hsl(220 10% 30%);
+            --sb-separator-strong: hsl(220 10% 35%);
+            --sb-sidebar-background: hsl(220 18% 10%);
+            --sb-toolbar-background: hsl(220 10% 20%);
+            --sb-tooltip-background: hsl(220 15% 24%);
+            --sb-tooltip-border: transparent;
+            --sb-tooltip-shadow: hsl(0 0% 0% / 0.25);
+            --foreground: #cccccc;
+            --errorForeground: #f48771;
+            --descriptionForeground: #ccccccb3;
+            --icon-foreground: #c5c5c5;
+            --focusBorder: #4288fdcc;
+            --textSeparator-foreground: #ffffff2e;
+            --textLink-foreground: #3794ff;
+            --textLink-activeForeground: #3794ff;
+            --textPreformat-foreground: #d7ba7d;
+            --textBlockQuote-background: #7f7f7f1a;
+            --textBlockQuote-border: #007acc80;
+            --textCodeBlock-background: #0a0a0a66;
+            --widget-shadow: #000000;
+            --input-background: hsl(220 60% 95% / 0.1);
+            --input-foreground: #cccccc;
+            --inputOption-activeBorder: #007acc00;
+            --inputOption-activeBackground: #4288fd66;
+            --input-placeholderForeground: #a6a6a6;
+            --inputValidation-infoBackground: #063b49;
+            --inputValidation-infoBorder: #007acc;
+            --inputValidation-warningBackground: #352a05;
+            --inputValidation-warningBorder: #b89500;
+            --inputValidation-errorBackground: #5a1d1d;
+            --inputValidation-errorBorder: #be1100;
+            --dropdown-background: #3c3c3c;
+            --dropdown-foreground: #f0f0f0;
+            --dropdown-border: #3c3c3c;
+            --checkbox-background: #3c3c3c;
+            --checkbox-foreground: #f0f0f0;
+            --checkbox-border: #3c3c3c;
+            --pickerGroup-foreground: #3794ff;
+            --pickerGroup-border: #3f3f46;
+            --button-foreground: hsl(0 0% 94%);
+            --button-background: hsl(220 55% 48%);
+            --button-hoverBackground: hsl(220 55% 56%);
+            --badge-background: #4d4d4d;
+            --badge-foreground: #ffffff;
+            --scrollbar-shadow: #000000;
+            --scrollbarSlider-background: #79797966;
+            --scrollbarSlider-hoverBackground: #646464b3;
+            --scrollbarSlider-activeBackground: #bfbfbf66;
+            --progressBar-background: #0e70c0;
+            --editorError-foreground: #f48771;
+            --editorWarning-foreground: #cca700;
+            --editorInfo-foreground: #75beff;
+            --editorHint-foreground: #eeeeeeb3;
+            --editor-background: hsl(220 18% 10%);
+            --editor-foreground: hsl(0 0% 80%);
+            --editorWidget-background: #252526;
+            --editorWidget-foreground: #cccccc;
+            --editorWidget-border: #454545;
+            --editor-selectionBackground: #264f78;
+            --editor-inactiveSelectionBackground: #3a3d41;
+            --editor-selectionHighlightBackground: #add6ff26;
+            --editor-findMatchBackground: #515c6a;
+            --editor-findMatchHighlightBackground: #ea5c0055;
+            --editor-findRangeHighlightBackground: #3a3d4166;
+            --searchEditor-findMatchBackground: #ea5c0038;
+            --editor-hoverHighlightBackground: #264f7840;
+            --editorHoverWidget-background: #252526;
+            --editorHoverWidget-foreground: #cccccc;
+            --editorHoverWidget-border: #454545;
+            --editorHoverWidget-statusBarBackground: #2c2c2d;
+            --editorLink-activeForeground: #4e94ce;
+            --editorLightBulb-foreground: #ffcc00;
+            --editorLightBulbAutoFix-foreground: #75beff;
+            --diffEditor-insertedTextBackground: #9bb95533;
+            --diffEditor-removedTextBackground: #ff000033;
+            --list-focusBackground: hsl(205 80% 20%);
+            --list-activeSelectionBackground: hsl(205 100% 35%);
+            --list-activeSelectionForeground: #ffffff;
+            --list-inactiveSelectionBackground: hsl(220 16% 28%);
+            --list-hoverBackground: hsl(220 12% 20%);
+            --list-dropBackground: #383b3d;
+            --list-highlightForeground: #0097fb;
+            --list-invalidItemForeground: #b89500;
+            --list-errorForeground: #f88070;
+            --list-warningForeground: #cca700;
+            --listFilterWidget-background: #653723;
+            --listFilterWidget-outline: #00000000;
+            --listFilterWidget-noMatchesOutline: #be1100;
+            --list-filterMatchBackground: #ea5c0055;
+            --tree-indentGuidesStroke: #585858;
+            --menu-foreground: #cccccc;
+            --menu-background: #252526;
+            --menu-selectionForeground: #ffffff;
+            --menu-selectionBackground: #094771;
+            --menu-separatorBackground: #bbbbbb;
+            --editor-snippetTabstopHighlightBackground: #7c7c7c4d;
+            --editor-snippetFinalTabstopHighlightBorder: #525252;
+            --breadcrumb-foreground: #cccccccc;
+            --breadcrumb-background: #1e1e1e;
+            --breadcrumb-focusForeground: #e0e0e0;
+            --breadcrumb-activeSelectionForeground: #e0e0e0;
+            --breadcrumbPicker-background: #252526;
+            --merge-currentHeaderBackground: #40c8ae80;
+            --merge-currentContentBackground: #40c8ae33;
+            --merge-incomingHeaderBackground: #40a6ff80;
+            --merge-incomingContentBackground: #40a6ff33;
+            --merge-commonHeaderBackground: #60606066;
+            --merge-commonContentBackground: #60606029;
+            --editorOverviewRuler-currentContentForeground: #40c8ae80;
+            --editorOverviewRuler-incomingContentForeground: #40a6ff80;
+            --editorOverviewRuler-commonContentForeground: #60606066;
+            --editorOverviewRuler-findMatchForeground: #d186167e;
+            --editorOverviewRuler-selectionHighlightForeground: #a0a0a0cc;
+            --minimap-findMatchHighlight: #d18616;
+            --minimap-selectionHighlight: #264f78;
+            --minimap-errorHighlight: #ff1212b3;
+            --minimap-warningHighlight: #cca700;
+            --problemsErrorIcon-foreground: #f48771;
+            --problemsWarningIcon-foreground: #cca700;
+            --problemsInfoIcon-foreground: #75beff;
+            --activityBarBadge-background: #007acc;
+            --editorIndentGuide-activeBackground: #707070;
+            --editorIndentGuide-background: #404040;
+            --settings-numberInputBackground: #292929;
+            --settings-textInputBackground: #292929;
+            --sideBarTitle-foreground: #bbbbbb;
+            --statusBarItem-remoteBackground: #16825d;
+            --statusBarItem-remoteForeground: #ffffff;
+            --activityBar-activeBorder: #ffffff;
+            --activityBar-background: hsl(220 10% 20%);
+            --activityBar-dropBackground: #ffffff1f;
+            --activityBar-foreground: hsl(0 0% 94%);
+            --activityBar-inactiveForeground: #ffffff66;
+            --activityBarBadge-foreground: #ffffff;
+            --debugExceptionWidget-background: #420b0d;
+            --debugExceptionWidget-border: #a31515;
+            --debugIcon-breakpointCurrentStackframeForeground: #ffcc00;
+            --debugIcon-breakpointDisabledForeground: #848484;
+            --debugIcon-breakpointForeground: #e51400;
+            --debugIcon-breakpointStackframeForeground: #89d185;
+            --debugIcon-breakpointUnverifiedForeground: #848484;
+            --debugIcon-continueForeground: #75beff;
+            --debugIcon-disconnectForeground: #f48771;
+            --debugIcon-pauseForeground: #75beff;
+            --debugIcon-restartForeground: #89d185;
+            --debugIcon-startForeground: #89d185;
+            --debugIcon-stepBackForeground: #75beff;
+            --debugIcon-stepIntoForeground: #75beff;
+            --debugIcon-stepOutForeground: #75beff;
+            --debugIcon-stepOverForeground: #75beff;
+            --debugIcon-stopForeground: #f48771;
+            --debugToolBar-background: #333333;
+            --editor-focusedStackFrameHighlightBackground: #7abd7a4d;
+            --editor-foldBackground: #264f784d;
+            --editor-lineHighlightBorder: #282828;
+            --editor-rangeHighlightBackground: #ffffff0b;
+            --editor-stackFrameHighlightBackground: #ffff0033;
+            --editor-symbolHighlightBackground: #ea5c0055;
+            --editor-wordHighlightBackground: #575757b8;
+            --editor-wordHighlightStrongBackground: #004972b8;
+            --editorActiveLineNumber-foreground: #c6c6c6;
+            --editorBracketMatch-background: #0064001a;
+            --editorBracketMatch-border: #888888;
+            --editorCodeLens-foreground: #999999;
+            --editorCursor-foreground: #aeafad;
+            --editorGroup-border: #444444;
+            --editorGroup-dropBackground: #53595d80;
+            --editorGroupHeader-noTabsBackground: #1e1e1e;
+            --editorGroupHeader-tabsBackground: #252526;
+            --editorGutter-addedBackground: #587c0c;
+            --editorGutter-background: #1e1e1e;
+            --editorGutter-commentRangeForeground: #c5c5c5;
+            --editorGutter-deletedBackground: #94151b;
+            --editorGutter-modifiedBackground: #0c7d9d;
+            --editorLineNumber-activeForeground: #c6c6c6;
+            --editorLineNumber-foreground: #858585;
+            --editorMarkerNavigation-background: #2d2d30;
+            --editorMarkerNavigationError-background: #f48771;
+            --editorMarkerNavigationInfo-background: #75beff;
+            --editorMarkerNavigationWarning-background: #cca700;
+            --editorOverviewRuler-addedForeground: #587c0c99;
+            --editorOverviewRuler-border: #7f7f7f4d;
+            --editorOverviewRuler-bracketMatchForeground: #a0a0a0;
+            --editorOverviewRuler-deletedForeground: #94151b99;
+            --editorOverviewRuler-errorForeground: #ff1212b3;
+            --editorOverviewRuler-infoForeground: #75beff;
+            --editorOverviewRuler-modifiedForeground: #0c7d9d99;
+            --editorOverviewRuler-rangeHighlightForeground: #007acc99;
+            --editorOverviewRuler-warningForeground: #cca700;
+            --editorOverviewRuler-wordHighlightForeground: #a0a0a0cc;
+            --editorOverviewRuler-wordHighlightStrongForeground: #c0a0c0cc;
+            --editorPane-background: #1e1e1e;
+            --editorRuler-foreground: #5a5a5a;
+            --editorSuggestWidget-background: #252526;
+            --editorSuggestWidget-border: #454545;
+            --editorSuggestWidget-foreground: #d4d4d4;
+            --editorSuggestWidget-highlightForeground: #0097fb;
+            --editorSuggestWidget-selectedBackground: #062f4a;
+            --editorUnnecessaryCode-opacity: #000000aa;
+            --editorWhitespace-foreground: #e3e4e229;
+            --extensionBadge-remoteBackground: #007acc;
+            --extensionBadge-remoteForeground: #ffffff;
+            --extensionButton-prominentBackground: #327e36;
+            --extensionButton-prominentForeground: #ffffff;
+            --extensionButton-prominentHoverBackground: #28632b;
+            --gitDecoration-addedResourceForeground: #81b88b;
+            --gitDecoration-conflictingResourceForeground: #6c6cc4;
+            --gitDecoration-deletedResourceForeground: #c74e39;
+            --gitDecoration-ignoredResourceForeground: #8c8c8c;
+            --gitDecoration-modifiedResourceForeground: #e2c08d;
+            --gitDecoration-submoduleResourceForeground: #8db9e2;
+            --gitDecoration-untrackedResourceForeground: #73c991;
+            --imagePreview-border: #80808059;
+            --menubar-selectionBackground: #ffffff1a;
+            --menubar-selectionForeground: #cccccc;
+            --minimapGutter-addedBackground: #587c0c;
+            --minimapGutter-deletedBackground: #94151b;
+            --minimapGutter-modifiedBackground: #0c7d9d;
+            --notificationCenterHeader-background: #303031;
+            --notificationLink-foreground: #3794ff;
+            --notifications-background: #252526;
+            --notifications-border: #303031;
+            --notifications-foreground: #cccccc;
+            --notificationsErrorIcon-foreground: #f48771;
+            --notificationsInfoIcon-foreground: #75beff;
+            --notificationsWarningIcon-foreground: #cca700;
+            --panel-background: #1e1e1e;
+            --panel-border: #80808059;
+            --panel-dropBackground: #ffffff1f;
+            --panelTitle-activeBorder: #e7e7e7;
+            --panelTitle-activeForeground: #e7e7e7;
+            --panelTitle-inactiveForeground: #e7e7e799;
+            --peekView-border: #007acc;
+            --peekViewEditor-background: #001f33;
+            --peekViewEditor-matchHighlightBackground: #ff8f0099;
+            --peekViewEditorGutter-background: #001f33;
+            --peekViewResult-background: #252526;
+            --peekViewResult-fileForeground: #ffffff;
+            --peekViewResult-lineForeground: #bbbbbb;
+            --peekViewResult-matchHighlightBackground: #ea5c004d;
+            --peekViewResult-selectionBackground: #3399ff33;
+            --peekViewResult-selectionForeground: #ffffff;
+            --peekViewTitle-background: #1e1e1e;
+            --peekViewTitleDescription-foreground: #ccccccb3;
+            --peekViewTitleLabel-foreground: #ffffff;
+            --quickInput-background: #252526;
+            --settings-checkboxBackground: #3c3c3c;
+            --settings-checkboxBorder: #3c3c3c;
+            --settings-checkboxForeground: #f0f0f0;
+            --settings-dropdownBackground: #3c3c3c;
+            --settings-dropdownBorder: #3c3c3c;
+            --settings-dropdownForeground: #f0f0f0;
+            --settings-dropdownListBorder: #454545;
+            --settings-headerForeground: #e7e7e7;
+            --settings-modifiedItemIndicator: #0c7d9d;
+            --settings-numberInputForeground: #cccccc;
+            --settings-textInputForeground: #cccccc;
+            --sideBar-background: hsl(220 10% 14%);
+            --sideBar-dropBackground: #ffffff1f;
+            --sideBarSectionHeader-background: hsl(220 12% 20%);
+            --statusBar-background: #007acc;
+            --statusBar-debuggingBackground: #cc6633;
+            --statusBar-debuggingForeground: #ffffff;
+            --statusBar-foreground: #ffffff;
+            --statusBar-noFolderBackground: #68217a;
+            --statusBar-noFolderForeground: #ffffff;
+            --statusBarItem-activeBackground: #ffffff2e;
+            --statusBarItem-hoverBackground: #ffffff1f;
+            --statusBarItem-prominentBackground: #00000080;
+            --statusBarItem-prominentForeground: #ffffff;
+            --statusBarItem-prominentHoverBackground: #0000004d;
+            --symbolIcon-arrayForeground: #cccccc;
+            --symbolIcon-booleanForeground: #cccccc;
+            --symbolIcon-classForeground: #ee9d28;
+            --symbolIcon-colorForeground: #cccccc;
+            --symbolIcon-constantForeground: #cccccc;
+            --symbolIcon-constructorForeground: #b180d7;
+            --symbolIcon-enumeratorForeground: #ee9d28;
+            --symbolIcon-enumeratorMemberForeground: #75beff;
+            --symbolIcon-eventForeground: #ee9d28;
+            --symbolIcon-fieldForeground: #75beff;
+            --symbolIcon-fileForeground: #cccccc;
+            --symbolIcon-folderForeground: #cccccc;
+            --symbolIcon-functionForeground: #b180d7;
+            --symbolIcon-interfaceForeground: #75beff;
+            --symbolIcon-keyForeground: #cccccc;
+            --symbolIcon-keywordForeground: #cccccc;
+            --symbolIcon-methodForeground: #b180d7;
+            --symbolIcon-moduleForeground: #cccccc;
+            --symbolIcon-namespaceForeground: #cccccc;
+            --symbolIcon-nullForeground: #cccccc;
+            --symbolIcon-numberForeground: #cccccc;
+            --symbolIcon-objectForeground: #cccccc;
+            --symbolIcon-operatorForeground: #cccccc;
+            --symbolIcon-packageForeground: #cccccc;
+            --symbolIcon-propertyForeground: #cccccc;
+            --symbolIcon-referenceForeground: #cccccc;
+            --symbolIcon-snippetForeground: #cccccc;
+            --symbolIcon-stringForeground: #cccccc;
+            --symbolIcon-structForeground: #cccccc;
+            --symbolIcon-textForeground: #cccccc;
+            --symbolIcon-typeParameterForeground: #cccccc;
+            --symbolIcon-unitForeground: #cccccc;
+            --symbolIcon-variableForeground: #75beff;
+            --tab-activeBackground: hsl(220 18% 10%);
+            --tab-activeForeground: #ffffff;
+            --tab-activeModifiedBorder: #3399cc;
+            --tab-border: #252526;
+            --tab-inactiveBackground: hsl(220 10% 16.5%);
+            --tab-inactiveForeground: #ffffff80;
+            --tab-inactiveModifiedBorder: #3399cc80;
+            --tab-unfocusedActiveBackground: #1e1e1e;
+            --tab-unfocusedActiveForeground: #ffffff80;
+            --tab-unfocusedActiveModifiedBorder: #3399cc80;
+            --tab-unfocusedInactiveForeground: #ffffff40;
+            --tab-unfocusedInactiveModifiedBorder: #3399cc40;
+            --terminal-ansiBlack: hsl(220 18% 10%);
+            --terminal-ansiBlue: #57c7ff;
+            --terminal-ansiBrightBlack: #686868;
+            --terminal-ansiBrightBlue: #57c7ff;
+            --terminal-ansiBrightCyan: #9aedfe;
+            --terminal-ansiBrightGreen: #5af78e;
+            --terminal-ansiBrightMagenta: #ff6ac1;
+            --terminal-ansiBrightRed: #ff5c57;
+            --terminal-ansiBrightWhite: #eff0eb;
+            --terminal-ansiBrightYellow: #f3f99d;
+            --terminal-ansiCyan: #9aedfe;
+            --terminal-ansiGreen: #5af78e;
+            --terminal-ansiMagenta: #ff6ac1;
+            --terminal-ansiRed: #ff5c57;
+            --terminal-ansiWhite: #f1f1f0;
+            --terminal-ansiYellow: #f3f99d;
+            --terminal-background: hsl(220 18% 10%);
+            --terminal-border: #80808059;
+            --terminal-foreground: #eff0eb;
+            --terminal-selectionBackground: rgba(151, 151, 155, 0.2);
+            --titleBar-activeBackground: #3c3c3c;
+            --titleBar-activeForeground: #cccccc;
+            --titleBar-inactiveBackground: #3c3c3c99;
+            --titleBar-inactiveForeground: #cccccc99;
+        }
+    </style>
+    <style data-jss="" data-meta="MuiModal">
+        .jss1 {
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 1300;
+            position: fixed;
+        }
+
+        .jss2 {
+            visibility: hidden;
+        }
+    </style>
+</head>
+
+<body>
+    <script>
+        Analytics.page();
+    </script>
+
+    <script type="application/json"
+        data-js-react-on-rails-store="appStore">{"auth":{"loggedIn":true,"user":{"id":560936,"username":"FakeDazon","name":"dazon","email":"gamerpenguin2005@gmail.com","membershipLevel":0,"avatar":"https://ghavatars.staticblitz.com/FakeDazon.png","roles":[]},"guest":{}},"features":{},"config":{"staticAssetHost":"v-corp.staticblitz.com"},"webcontainer":{"version":"1f021b18268b32e6c6b2095e039ac8c9f88b0d52","serverVersion":"1f021b18268b32e6c6b2095e039ac8c9f88b0d52","baseUrl":"https://w.staticblitz.com","serverUrl":"https://local.webcontainer.io","isolationPolicy":null,"exportName":null},"starters":{"projects":[]},"collections":{"collections":[],"ownerName":"FakeDazon","perPage":3,"page":1,"filterQuery":null,"total":0,"hydrated":true}}</script>
+
+    <div class="user-page fixed w-full h-full overflow-hidden flex flex-col">
+        <script type="application/json" class="js-react-on-rails-component" data-component-name="ThemeInitializer"
+            data-dom-id="ThemeInitializer-react-component-d8390dbd-0069-4d3d-82fd-49a0f76c56f2">{}</script>
+        <div id="ThemeInitializer-react-component-d8390dbd-0069-4d3d-82fd-49a0f76c56f2"></div>
+
+
+        <script type="application/json" class="js-react-on-rails-component" data-component-name="HeaderTw"
+            data-dom-id="HeaderTw-react-component-2ecb1cc9-66e9-4a7f-9c34-268f24fc43a4">{}</script>
+        <div id="HeaderTw-react-component-2ecb1cc9-66e9-4a7f-9c34-268f24fc43a4">
+            <header class="HeaderTw-module-Root-h5Xo4"><a href="/" class="HeaderTw-module-HomeLink-LE0yG"
+                    aria-label="Dashboard Home"><span aria-hidden="true" class="StackBlitzLogo-module-container-GxXhZ"
+                        style="--logo-gap: 2px;"><svg viewBox="0 0 28 28" aria-hidden="true"
+                            class="StackBlitzLogo-module-boltIcon-ikC1X StackBlitzLogo-module-boltIcon_blue-fHH35"
+                            height="24" width="24">
+                            <path d="M12.747 16.273h-7.46L18.925 1.5l-3.671 10.227h7.46L9.075 26.5l3.671-10.227z">
+                            </path>
+                        </svg></span></a>
+                <form class="flex w-64 h-8 font-normal mx-4 relative" id="projectSearch" method="GET" action="/"><span
+                        class="SearchInput-module-container-H5QR9"><svg xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 512 512" width="1em" height="1em" class="action-icon" aria-hidden="true">
+                            <path
+                                d="M337.509 305.372h-17.501l-6.571-5.486c20.791-25.232 33.922-57.054 33.922-93.257C347.358 127.632 283.896 64 205.135 64 127.452 64 64 127.632 64 206.629s63.452 142.628 142.225 142.628c35.011 0 67.831-13.167 92.991-34.008l6.561 5.487v17.551L415.18 448 448 415.086 337.509 305.372zm-131.284 0c-54.702 0-98.463-43.887-98.463-98.743 0-54.858 43.761-98.742 98.463-98.742 54.7 0 98.462 43.884 98.462 98.742 0 54.856-43.762 98.743-98.462 98.743z">
+                            </path>
+                        </svg><input type="search" autocomplete="off" autocapitalize="none" autocorrect="off"
+                            class="SearchInput-module-input-HFzQx" name="q" placeholder="Search projects…"
+                            aria-label="Search projects" value=""></span></form>
+                <nav class="HeaderTw-module-Menu-XgyMP"><a class="HeaderTw-module-MenuItem-CLQFf" target="_blank"
+                        rel="noopener" href="https://developer.stackblitz.com">Docs</a><a
+                        class="HeaderTw-module-MenuItem-CLQFf" href="/enterprise">Enterprise</a><a
+                        class="HeaderTw-module-MenuItem-CLQFf" href="/membership">Memberships</a>
+                    <div class="relative flex-none "><button aria-expanded="false"
+                            class="HeaderTw-module-MenuItem-CLQFf"><span class="mr-1">More</span><svg
+                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="12" height="12"
+                                class="action-icon">
+                                <path d="M128 192l128 128 128-128z"></path>
+                            </svg></button></div><a target="_blank" href="https://viteconf.org">
+                        <div class="ViteConfAdMenu-module-Badge-gbM_V"><span
+                                class="ViteConfAdMenu-module-InnerBadge-Z91xc">NEW</span><span
+                                class="ViteConfAdMenu-module-ViteConf-s8R3W">ViteConf</span></div>
+                    </a>
+                </nav>
+                <div class="HeaderTw-module-HeaderRight-Ue9xK">
+                    <div class="NewProjectDropdown-module-container-PA5pN"><button
+                            class="HeaderTw-module-MenuItem-CLQFf HeaderTw-module-MenuItem_highlight-GUkWJ"><svg
+                                width="12" height="12" viewBox="0 0 16 16" fill="none"
+                                xmlns="http://www.w3.org/2000/svg" class="vscode-icon">
+                                <path d="M14 7v1H8v6H7V8H1V7h6V1h1v6h6z" fill="#C5C5C5"></path>
+                            </svg><span class="ml-1">New Project</span></button></div>
+                    <div class="relative flex-none"><button class="HeaderTw-module-ProfileMenuItem-qD1W8"><img
+                                src="https://ghavatars.staticblitz.com/FakeDazon.png?size=50" alt=""
+                                class="HeaderTw-module-ProfileMenuAvatar-gHTva" crossorigin="anonymous"
+                                style=""></button></div>
+                </div>
+            </header>
+        </div>
+
+
+
+        <div class="overflow-y-auto h-full">
+
+
+            <script type="application/json"
+                id="js-react-on-rails-context">{"inMailer":false,"i18nLocale":"en","i18nDefaultLocale":"en","href":"https://stackblitz.com/","location":"/","scheme":"https","host":"stackblitz.com","port":null,"pathname":"/","search":null,"httpAcceptLanguage":"en-US,en;q=0.5","serverSide":false}</script>
+            <script type="application/json" class="js-react-on-rails-component" data-component-name="DashboardPage"
+                data-dom-id="DashboardPage-react-component-4869ef12-16cc-4463-a963-9d98d13c08cd">{"username":"FakeDazon","projects":[{"canAdministrate":true,"canChangeVisibility":true,"canFork":true,"canMakePrivate":false,"canManage":true,"canView":true,"currentUserIsOwner":true,"description":"The default SvelteKit template, generated with create-svelte","forks":0,"id":14355510,"preset":"node","private":false,"slug":"sveltejs-kit-template-default-fgfmt9","strippedDescription":"The default SvelteKit template, generated with create-svelte\n","title":"Sveltejs - Kit Template Default (forked)","updatedAt":"2022-08-07T04:21:53.086Z","userIsParticipant":false,"views":1,"visibility":"public"},{"canAdministrate":true,"canChangeVisibility":true,"canFork":true,"canMakePrivate":false,"canManage":true,"canView":true,"currentUserIsOwner":true,"description":"The default SvelteKit template, generated with create-svelte","forks":0,"id":14073309,"preset":"node","private":false,"slug":"sveltejs-kit-template-default-tmcca3","strippedDescription":"The default SvelteKit template, generated with create-svelte\n","title":"Sveltejs - Kit Template Default (forked)","updatedAt":"2022-07-22T02:55:26.141Z","userIsParticipant":false,"views":2,"visibility":"public"},{"canAdministrate":true,"canChangeVisibility":true,"canFork":true,"canMakePrivate":false,"canManage":true,"canView":true,"currentUserIsOwner":true,"description":"Blank starter project for building ES6 apps.","forks":0,"id":14072965,"preset":"esm","private":false,"slug":"js-icqvpw","strippedDescription":"Blank starter project for building ES6 apps.\n","title":"Js (forked)","updatedAt":"2022-07-22T02:24:30.129Z","userIsParticipant":false,"views":1,"visibility":"public"},{"canAdministrate":true,"canChangeVisibility":true,"canFork":true,"canMakePrivate":false,"canManage":true,"canView":true,"currentUserIsOwner":true,"description":"The React framework for production.","forks":0,"id":11464261,"preset":"node","private":false,"slug":"nextjs-jqmtm5","strippedDescription":"The React framework for production.\n","title":"Nextjs (forked)","updatedAt":"2022-02-20T05:50:58.279Z","userIsParticipant":false,"views":1,"visibility":"public"}],"totalProjects":4,"totalCollections":0}</script>
+            <div id="DashboardPage-react-component-4869ef12-16cc-4463-a963-9d98d13c08cd">
+                <main class="container py-8">
+                    <section class="StackLauncher-module-section-f7Dou">
+                        <header class="StackLauncher-module-header-Z4gJT">
+                            <h2 class="StackLauncher-module-headerTitle-JcW9v">Create a new project</h2>
+                            <ul class="StackLauncher-module-sectionTabs-IoVMP">
+                                <li><button type="button"
+                                        class="StackLauncher-module-tabButton-ZzcDV StackLauncher-module-tabButton_active-otuUx">Popular</button>
+                                </li>
+                                <li><button type="button" class="StackLauncher-module-tabButton-ZzcDV">Frontend</button>
+                                </li>
+                                <li><button type="button" class="StackLauncher-module-tabButton-ZzcDV">Backend</button>
+                                </li>
+                                <li><button type="button"
+                                        class="StackLauncher-module-tabButton-ZzcDV">Fullstack</button></li>
+                                <li><button type="button" class="StackLauncher-module-tabButton-ZzcDV">Vite</button>
+                                </li>
+                                <li><button type="button" class="StackLauncher-module-tabButton-ZzcDV">Docs, Blogs &amp;
+                                        Slides</button></li>
+                                <li><button type="button" class="StackLauncher-module-tabButton-ZzcDV">Vanilla</button>
+                                </li>
+                            </ul>
+                        </header>
+                        <div class="StackLauncher-module-stacks-cDGUR StackLauncher-module-stacks_big-MO5Us"><a
+                                href="/fork/nextjs"
+                                class="StackButton-module-button-F60eB StackButton-module-button_big-UjR4a">
+                                <div class="StackButton-module-buttonContent-Zi07D"><span
+                                        class="StackButton-module-image-Ej0s3"><svg xmlns="http://www.w3.org/2000/svg"
+                                            viewBox="0 0 16 16" fill="currentColor" width="1em" height="1em">
+                                            <path
+                                                d="M7.476.004l-.242.022c-2.273.205-4.402 1.43-5.75 3.315A7.918 7.918 0 00.072 6.837C.008 7.276 0 7.406 0 8.002c0 .595.008.725.072 1.165a8.032 8.032 0 005.472 6.463c.52.167 1.067.281 1.69.35.242.027 1.29.027 1.532 0 1.075-.119 1.985-.385 2.883-.843.137-.07.164-.09.145-.105-.012-.01-.599-.796-1.303-1.746l-1.279-1.728-1.603-2.373a229.468 229.468 0 00-1.614-2.37 127.97 127.97 0 00-.016 2.339c-.004 2.253-.006 2.344-.034 2.397a.284.284 0 01-.138.143c-.05.025-.094.03-.33.03h-.27l-.072-.046a.293.293 0 01-.105-.114l-.033-.07L5 8.358l.005-3.137.048-.061a.435.435 0 01.116-.095c.064-.032.09-.035.36-.035.319 0 .372.013.455.104.023.025.891 1.332 1.93 2.907a8339.43 8339.43 0 003.156 4.78l1.267 1.919.064-.042a8.208 8.208 0 001.644-1.442 7.962 7.962 0 001.883-4.09c.064-.44.072-.569.072-1.164 0-.596-.008-.726-.072-1.165A8.032 8.032 0 0010.456.373 8.404 8.404 0 008.79.025a20.54 20.54 0 00-1.314-.02zm3.275 4.839a.316.316 0 01.158.184c.013.04.016.91.013 2.87l-.005 2.812-.496-.76-.497-.76V7.145c0-1.322.006-2.065.015-2.1a.32.32 0 01.155-.198c.064-.032.088-.036.334-.036.231 0 .272.004.323.032z">
+                                            </path>
+                                        </svg></span>
+                                    <div class="StackButton-module-text-ZBK4b"><span
+                                            class="StackButton-module-title-Myqcl">Next.js</span>
+                                        <div class="StackButton-module-textSecondRow-q7j7N"><span
+                                                class="StackButton-module-subtitle-w00Qw">Node.js</span></div>
+                                    </div>
+                                </div>
+                            </a><a href="/fork/github/nuxt/starter/tree/v3-stackblitz"
+                                class="StackButton-module-button-F60eB StackButton-module-button_big-UjR4a">
+                                <div class="StackButton-module-buttonContent-Zi07D"><span
+                                        class="StackButton-module-image-Ej0s3"><svg xmlns="http://www.w3.org/2000/svg"
+                                            viewBox="0 0 256 256" width="1em" height="1em">
+                                            <path
+                                                d="M113 51.6a18.7 18.7 0 00-32.3 0L2.5 186a18.5 18.5 0 0016.2 27.8h61a17.9 17.9 0 01-3.8-22.6l59.2-101.5-22.1-38z"
+                                                fill="#80EEC0"></path>
+                                            <path
+                                                d="M162.5 81.1c6-10 20.8-10 26.7 0l64.7 110c6 10-1.5 22.7-13.3 22.7H111.2a15.1 15.1 0 01-13.4-22.7l64.7-110z"
+                                                fill="#00DC82"></path>
+                                        </svg></span>
+                                    <div class="StackButton-module-text-ZBK4b"><span
+                                            class="StackButton-module-title-Myqcl">Nuxt 3</span>
+                                        <div class="StackButton-module-textSecondRow-q7j7N"><span
+                                                class="StackButton-module-subtitle-w00Qw">Node.js</span></div>
+                                    </div>
+                                </div>
+                            </a><a href="/fork/node"
+                                class="StackButton-module-button-F60eB StackButton-module-button_big-UjR4a">
+                                <div class="StackButton-module-buttonContent-Zi07D"><span
+                                        class="StackButton-module-image-Ej0s3"><svg xmlns="http://www.w3.org/2000/svg"
+                                            viewBox="0 0 16 16" fill="#689F63" width="1em" height="1em">
+                                            <path
+                                                d="M8 15.9c-.2 0-.42-.06-.6-.17l-1.93-1.14c-.3-.17-.15-.22-.06-.26.39-.13.47-.16.88-.4.04-.02.1 0 .14.02l1.48.88a.2.2 0 00.18 0l5.79-3.34c.05-.03.08-.1.08-.16V4.66a.19.19 0 00-.09-.16L8.1 1.16a.18.18 0 00-.17 0L2.14 4.5c-.06.03-.1.1-.1.16v6.67c0 .06.04.13.1.16l1.58.91c.86.43 1.38-.08 1.38-.59V5.23c0-.1.08-.17.17-.17H6c.1 0 .17.07.17.17v6.59c0 1.14-.63 1.8-1.71 1.8-.34 0-.6 0-1.34-.36l-1.51-.87A1.22 1.22 0 011 11.33V4.66c0-.44.23-.84.6-1.06L7.4.26c.36-.2.85-.2 1.21 0l5.78 3.35A1.22 1.22 0 0115 4.66v6.67c0 .44-.23.84-.6 1.06l-5.8 3.34c-.18.1-.4.16-.6.16m1.79-4.59c-2.53 0-3.06-1.17-3.06-2.14 0-.1.07-.17.17-.17h.74c.09 0 .15.06.17.14.11.76.45 1.15 1.98 1.15 1.22 0 1.73-.28 1.73-.92 0-.38-.14-.65-2.04-.84-1.58-.15-2.56-.5-2.56-1.77 0-1.17.98-1.86 2.63-1.86 1.85 0 2.77.64 2.89 2.02a.17.17 0 01-.17.18h-.75a.17.17 0 01-.16-.13c-.18-.8-.62-1.05-1.8-1.05-1.34 0-1.5.46-1.5.8 0 .43.19.55 1.98.79 1.78.24 2.62.57 2.62 1.82 0 1.26-1.05 1.98-2.88 1.98z">
+                                            </path>
+                                        </svg></span>
+                                    <div class="StackButton-module-text-ZBK4b"><span
+                                            class="StackButton-module-title-Myqcl">Node.js</span>
+                                        <div class="StackButton-module-textSecondRow-q7j7N"><span
+                                                class="StackButton-module-subtitle-w00Qw">Blank project</span></div>
+                                    </div>
+                                </div>
+                            </a><a href="/fork/js"
+                                class="StackButton-module-button-F60eB StackButton-module-button_big-UjR4a">
+                                <div class="StackButton-module-buttonContent-Zi07D"><span
+                                        class="StackButton-module-image-Ej0s3"><svg xmlns="http://www.w3.org/2000/svg"
+                                            width="1em" height="1em" viewBox="0 0 16 16">
+                                            <path d="M0 0h16v16H0V0z" fill="#F7DF1E"></path>
+                                            <path
+                                                d="M4.2 13.37l1.23-.74c.24.42.45.77.97.77.5 0 .8-.19.8-.94V7.35h1.5v5.13c0 1.56-.9 2.27-2.24 2.27-1.2 0-1.9-.63-2.25-1.38zm5.32-.16l1.23-.7c.32.52.74.9 1.48.9.62 0 1.02-.3 1.02-.74 0-.51-.4-.7-1.1-1l-.37-.16c-1.09-.46-1.8-1.04-1.8-2.26 0-1.13.85-1.99 2.2-1.99.95 0 1.64.33 2.13 1.2l-1.17.75c-.25-.46-.53-.64-.96-.64-.44 0-.72.28-.72.64 0 .46.28.64.92.92l.38.16c1.27.55 2 1.1 2 2.36 0 1.35-1.07 2.1-2.5 2.1-1.4 0-2.3-.67-2.74-1.54">
+                                            </path>
+                                        </svg></span>
+                                    <div class="StackButton-module-text-ZBK4b"><span
+                                            class="StackButton-module-title-Myqcl">JavaScript</span>
+                                        <div class="StackButton-module-textSecondRow-q7j7N"><span
+                                                class="StackButton-module-subtitle-w00Qw">Blank project</span></div>
+                                    </div>
+                                </div>
+                            </a><a href="/fork/typescript"
+                                class="StackButton-module-button-F60eB StackButton-module-button_big-UjR4a">
+                                <div class="StackButton-module-buttonContent-Zi07D"><span
+                                        class="StackButton-module-image-Ej0s3"><svg xmlns="http://www.w3.org/2000/svg"
+                                            width="1em" height="1em" viewBox="0 0 16 16">
+                                            <path
+                                                d="M0 8v8h16V0H0v8zm12.9-.64a2 2 0 011 .58c.14.16.36.44.38.51 0 .02-.7.49-1.11.75-.02.01-.08-.05-.15-.16-.2-.3-.42-.43-.75-.45-.49-.03-.8.22-.8.65 0 .12.02.2.07.3.11.22.3.35.93.62 1.15.5 1.64.82 1.94 1.28.34.52.42 1.34.19 1.95-.26.67-.89 1.12-1.77 1.27a5 5 0 01-1.22-.01 2.94 2.94 0 01-1.63-.85 2.74 2.74 0 01-.42-.62l.15-.1.6-.34.45-.26.1.14c.13.2.43.49.6.58.52.27 1.22.23 1.56-.08.15-.13.21-.27.21-.48a.58.58 0 00-.12-.4c-.12-.18-.38-.33-1.1-.64a3.97 3.97 0 01-1.5-.93c-.2-.2-.37-.53-.45-.8-.06-.22-.07-.79-.02-1.02.17-.8.77-1.35 1.64-1.52.28-.06.94-.04 1.21.03zm-3.76.67v.66H7.06v5.91H5.59V8.7H3.5v-.65c0-.35.01-.65.02-.66h5.61v.65z"
+                                                fill="#007ACC"></path>
+                                        </svg></span>
+                                    <div class="StackButton-module-text-ZBK4b"><span
+                                            class="StackButton-module-title-Myqcl">TypeScript</span>
+                                        <div class="StackButton-module-textSecondRow-q7j7N"><span
+                                                class="StackButton-module-subtitle-w00Qw">Blank project</span></div>
+                                    </div>
+                                </div>
+                            </a><a href="/fork/react-ts"
+                                class="StackButton-module-button-F60eB StackButton-module-button_big-UjR4a">
+                                <div class="StackButton-module-buttonContent-Zi07D"><span
+                                        class="StackButton-module-image-Ej0s3"><svg xmlns="http://www.w3.org/2000/svg"
+                                            width="1em" height="1em" viewBox="0 0 16 16" fill="#3096ff">
+                                            <path
+                                                d="M16 8c0-1.06-1.32-2.06-3.36-2.68.46-2.08.26-3.72-.66-4.26a1.5 1.5 0 00-.74-.18v.72c.16 0 .28.02.38.08.44.26.64 1.22.48 2.46l-.16.96a15.5 15.5 0 00-2.08-.36c-.44-.6-.9-1.16-1.36-1.64 1.08-.96 2.08-1.5 2.76-1.5V.88c-.9 0-2.08.64-3.26 1.74C6.8 1.52 5.64.88 4.74.88v.72c.68 0 1.68.54 2.74 1.52-.46.48-.92 1.02-1.34 1.62-.74.08-1.44.2-2.08.36a5.44 5.44 0 01-.16-.94c-.16-1.24.04-2.22.48-2.48.1-.06.22-.08.38-.08V.9c-.28 0-.52.06-.74.18-.92.52-1.12 2.18-.64 4.24C1.32 5.94 0 6.94 0 8s1.32 2.06 3.36 2.68c-.46 2.08-.26 3.72.66 4.26.22.12.46.18.74.18.9 0 2.08-.64 3.26-1.74 1.18 1.1 2.36 1.74 3.26 1.74.28 0 .52-.06.74-.18.92-.52 1.12-2.18.64-4.24C14.68 10.06 16 9.06 16 8zm-4.24-2.18c-.12.42-.28.86-.44 1.28l-.42-.78c-.16-.26-.3-.52-.46-.76.44.08.88.16 1.32.26zm-1.5 3.48c-.26.44-.52.86-.78 1.24a17.94 17.94 0 01-2.94 0A16.05 16.05 0 015.08 8a16.05 16.05 0 011.46-2.54 17.94 17.94 0 012.94 0A16.05 16.05 0 0110.94 8c-.2.44-.44.88-.68 1.3zm1.06-.42c.18.44.32.88.46 1.3-.42.1-.88.2-1.34.26.16-.26.32-.5.46-.78l.42-.78zM8 12.36c-.3-.32-.6-.66-.9-1.04.3.02.6.02.9.02.3 0 .6 0 .9-.02-.28.38-.6.72-.9 1.04zm-2.42-1.92c-.46-.06-.9-.16-1.34-.26.12-.42.28-.86.44-1.28l.42.78.48.76zM8 3.64c.3.32.6.66.9 1.04-.3-.02-.6-.02-.9-.02-.3 0-.6 0-.9.02.28-.38.6-.72.9-1.04zM5.58 5.56c-.16.26-.32.5-.46.78-.16.26-.3.52-.42.78-.18-.44-.32-.88-.46-1.3.42-.1.88-.18 1.34-.26zm-2.96 4.1C1.46 9.16.72 8.52.72 8s.74-1.16 1.9-1.66c.28-.12.58-.22.9-.32.18.64.44 1.3.74 1.98-.3.68-.54 1.34-.72 1.98-.32-.1-.62-.2-.92-.32zm1.76 4.66c-.44-.26-.64-1.22-.48-2.46l.16-.96c.64.16 1.34.28 2.08.36.44.6.9 1.16 1.36 1.64-1.08.96-2.08 1.5-2.74 1.5a.98.98 0 01-.38-.08zm7.74-2.5c.16 1.24-.04 2.22-.48 2.48a.72.72 0 01-.38.08c-.68 0-1.68-.54-2.74-1.52.46-.48.92-1.02 1.34-1.62.74-.08 1.44-.2 2.08-.36.08.32.14.64.18.94zm1.26-2.16c-.28.12-.58.22-.9.32-.18-.64-.44-1.3-.74-1.98.3-.68.54-1.34.72-1.98.32.1.62.22.92.34 1.16.5 1.9 1.14 1.9 1.66 0 .5-.76 1.14-1.9 1.64zM8 9.5a1.5 1.5 0 100-3 1.5 1.5 0 000 3z">
+                                            </path>
+                                        </svg></span>
+                                    <div class="StackButton-module-text-ZBK4b"><span
+                                            class="StackButton-module-title-Myqcl">React</span>
+                                        <div class="StackButton-module-textSecondRow-q7j7N"><span
+                                                class="StackButton-module-subtitle-w00Qw">TypeScript</span></div>
+                                    </div>
+                                </div>
+                            </a><a href="/fork/angular-ivy"
+                                class="StackButton-module-button-F60eB StackButton-module-button_big-UjR4a">
+                                <div class="StackButton-module-buttonContent-Zi07D"><span
+                                        class="StackButton-module-image-Ej0s3"><svg xmlns="http://www.w3.org/2000/svg"
+                                            width="1em" height="1em" viewBox="0 0 16 16">
+                                            <path d="M8 0L.5 2.59l1.13 9.58L8 15.57l6.37-3.4 1.13-9.58L8 0z"
+                                                fill="#DD0031"></path>
+                                            <path d="M8 0v1.73-.02 13.86l6.37-3.4 1.13-9.58L8 0z" fill="#C3002F"></path>
+                                            <path
+                                                d="M8 1.71L3.3 11.87h1.76L6 9.6h4l.92 2.27h1.76L8 1.71zm1.37 6.5H6.63L8 5.02l1.37 3.2z"
+                                                fill="#fff"></path>
+                                        </svg></span>
+                                    <div class="StackButton-module-text-ZBK4b"><span
+                                            class="StackButton-module-title-Myqcl">Angular</span>
+                                        <div class="StackButton-module-textSecondRow-q7j7N"><span
+                                                class="StackButton-module-subtitle-w00Qw">TypeScript</span></div>
+                                    </div>
+                                </div>
+                            </a><a href="/fork/vue"
+                                class="StackButton-module-button-F60eB StackButton-module-button_big-UjR4a">
+                                <div class="StackButton-module-buttonContent-Zi07D"><span
+                                        class="StackButton-module-image-Ej0s3"><svg xmlns="http://www.w3.org/2000/svg"
+                                            width="1em" height="1em" viewBox="0 0 16 16">
+                                            <path d="M9.85 1.07L8 4.27l-1.85-3.2H0l8 13.86 8-13.86H9.85z"
+                                                fill="#41B883"></path>
+                                            <path d="M9.85 1.07L8 4.27l-1.85-3.2H3.2L8 9.4l4.8-8.32H9.85z"
+                                                fill="#34495E"></path>
+                                        </svg></span>
+                                    <div class="StackButton-module-text-ZBK4b"><span
+                                            class="StackButton-module-title-Myqcl">Vue 3</span>
+                                        <div class="StackButton-module-textSecondRow-q7j7N"><span
+                                                class="StackButton-module-subtitle-w00Qw">JavaScript</span></div>
+                                    </div>
+                                </div>
+                            </a><a href="/fork/rxjs?devtoolsheight=60"
+                                class="StackButton-module-button-F60eB StackButton-module-button_big-UjR4a">
+                                <div class="StackButton-module-buttonContent-Zi07D"><span
+                                        class="StackButton-module-image-Ej0s3"><svg xmlns="http://www.w3.org/2000/svg"
+                                            width="1em" height="1em" viewBox="0 0 16 16">
+                                            <path
+                                                d="M1.04 10.12C.22 5.76 2.4 1.54 7.36.98A2.2 2.2 0 005.3.34c-.76.24-.74.74-1.6 1.38-.84.48-1.28.1-1.9.62-.62.5-.2 1.66-.46 1.88-.26.46-1.06.86-1.22 1.42-.12.72.32 1.24.32 1.88.06.52-.52.82-.44 1.24.24.68.72 1.1.94 1.3.06.02.12.1.1.06z"
+                                                fill="#FF0090"></path>
+                                            <path
+                                                d="M9.9 4.08a.32.32 0 01-.32-.32c0-.18.14-.32.32-.32s.32.14.32.32-.14.32-.32.32zM1.24 10.6C.44 6.8 2.88 3.64 7.6 5.2c2.78 1.62 6.26 1.52 6.42.46.4-1.26-1.76-3.84-4.98-4.52C2.64-.1-.8 6.8 1.24 10.6z"
+                                                fill="url(#rxjs_svg__rxjs_logo_paint0)"></path>
+                                            <path
+                                                d="M11.72 11.02a3.5 3.5 0 002.68-.8 6.96 6.96 0 01-4.64 2.3c.86.74 1.7 1.06 2.5.92-2.22.62-4.08-.06-6.32-2.3-.12.6.52 1.54 1.18 2.14-3.84-1.66-4.18-6.82.48-8.1-4.82-2.32-7.56 2.2-6.22 5.9a8.52 8.52 0 008.66 4.56 7.2 7.2 0 005.78-4.56 6.56 6.56 0 01-2.88 1.4c2.16-1.08 3.32-2.92 3-5.42a5.75 5.75 0 01-1.78 2.44c1.58-2.44 1.3-3.72.14-5.1.84 2.28-.24 4.8-2.58 6.62z"
+                                                fill="url(#rxjs_svg__rxjs_logo_paint1)"></path>
+                                            <path
+                                                d="M10.6 13.64c-.16-.04.38.22-.66-.06s-2.1-.54-4.02-2.46c-.12.6.52 1.54 1.18 2.14 1.78 1.24.56.66 3.28 1.6.22-.42.22-.8.22-1.22z"
+                                                fill="url(#rxjs_svg__rxjs_logo_paint2)"></path>
+                                            <path
+                                                d="M7.16 3.9s.24-.34.32-.5c.12-.2.28-.54.28-.54s-1.82-.6-2.26-.66c-1.38.36-1.38.94-.62 1.82.1.1 2.28-.12 2.28-.12z"
+                                                fill="url(#rxjs_svg__rxjs_logo_paint3)"></path>
+                                            <defs>
+                                                <radialGradient id="rxjs_svg__rxjs_logo_paint0" cx="0" cy="0" r="1"
+                                                    gradientUnits="userSpaceOnUse"
+                                                    gradientTransform="matrix(12.0677 0 0 8.63259 11.21 4.62)">
+                                                    <stop stop-color="#F80090"></stop>
+                                                    <stop offset="1" stop-color="#4D008E"></stop>
+                                                </radialGradient>
+                                                <radialGradient id="rxjs_svg__rxjs_logo_paint1" cx="0" cy="0" r="1"
+                                                    gradientUnits="userSpaceOnUse"
+                                                    gradientTransform="matrix(12.215 0 0 9.24017 11.32 4.9)">
+                                                    <stop stop-color="#57008E"></stop>
+                                                    <stop offset="0.29" stop-color="#5C008E"></stop>
+                                                    <stop offset="1" stop-color="#F80090"></stop>
+                                                </radialGradient>
+                                                <linearGradient id="rxjs_svg__rxjs_logo_paint2" x1="6.7" y1="11.18"
+                                                    x2="8.87" y2="14.8" gradientUnits="userSpaceOnUse">
+                                                    <stop stop-color="#F70090"></stop>
+                                                    <stop offset="0.67" stop-color="#E50090"></stop>
+                                                    <stop offset="0.83" stop-color="#D6008F" stop-opacity="0.2"></stop>
+                                                    <stop offset="1" stop-color="#C10090" stop-opacity="0"></stop>
+                                                </linearGradient>
+                                                <linearGradient id="rxjs_svg__rxjs_logo_paint3" x1="6.53" y1="3.55"
+                                                    x2="6.22" y2="2.96" gradientUnits="userSpaceOnUse">
+                                                    <stop stop-color="#B2008F" stop-opacity="0.15"></stop>
+                                                    <stop offset="0.4" stop-color="#F70090" stop-opacity="0.4"></stop>
+                                                    <stop offset="0.65" stop-color="#F60090" stop-opacity="0.89"></stop>
+                                                    <stop offset="1" stop-color="#FF0090"></stop>
+                                                </linearGradient>
+                                            </defs>
+                                        </svg></span>
+                                    <div class="StackButton-module-text-ZBK4b"><span
+                                            class="StackButton-module-title-Myqcl">RxJS</span>
+                                        <div class="StackButton-module-textSecondRow-q7j7N"><span
+                                                class="StackButton-module-subtitle-w00Qw">TypeScript</span></div>
+                                    </div>
+                                </div>
+                            </a></div>
+                    </section>
+                    <section class="mb-10">
+                        <header
+                            class="flex justify-between items-center overflow-hidden w-full container my-5 flex-wrap px-3 gap-2">
+                            <h2 class="uppercase font-medium tracking-wide text-foreground">Collections</h2><a
+                                href="/@FakeDazon/collections"
+                                class="ProjectBadge-module-badge-_ZykX inline-flex items-strech justify-center rounded-sm overflow-hidden leading-4 text-center ProjectBadge-module-link-Zi3pe">
+                                <div class="border-activityBar-activeBorder m-1">
+                                    <div class="ProjectBadge-module-total-kSti0 text-foreground p-1">0</div>
+                                </div>
+                                <div class="p-2 ProjectBadge-module-hideOnMobile-p3hdh">see all</div>
+                            </a>
+                            <div class="CollectionsSection-module-actions-rkiXL">
+                                <form class="sm:ml-auto"><span class="SearchInput-module-container-H5QR9"><svg
+                                            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="1em"
+                                            height="1em" class="action-icon" aria-hidden="true">
+                                            <path
+                                                d="M337.509 305.372h-17.501l-6.571-5.486c20.791-25.232 33.922-57.054 33.922-93.257C347.358 127.632 283.896 64 205.135 64 127.452 64 64 127.632 64 206.629s63.452 142.628 142.225 142.628c35.011 0 67.831-13.167 92.991-34.008l6.561 5.487v17.551L415.18 448 448 415.086 337.509 305.372zm-131.284 0c-54.702 0-98.463-43.887-98.463-98.743 0-54.858 43.761-98.742 98.463-98.742 54.7 0 98.462 43.884 98.462 98.742 0 54.856-43.762 98.743-98.462 98.743z">
+                                            </path>
+                                        </svg><input type="search" autocomplete="off" autocapitalize="none"
+                                            autocorrect="off" class="SearchInput-module-input-HFzQx"
+                                            name="collections_filter" aria-label="Filter Collections"
+                                            placeholder="Filter Collections" value=""></span></form>
+                                <div class="ActionsGroup-module-actionsGroup-WzG0u ActionsGroup-module-size_m-EOlri">
+                                    <div class="ActionsGroup-module-actionsGroup__element-c9DzR"><button
+                                            class="ActionsGroup-module-actionsGroup__btn-Tnt3v"><svg viewBox="0 0 24 24"
+                                                fill="currentColor" xmlns="http://www.w3.org/2000/svg" width="1em"
+                                                height="1em" class="ActionsGroup-module-actionsGroup__btnIcon-NjvlB">
+                                                <path
+                                                    d="M23.312 15.982l-1.603-.69-5.016-2.156-4.56 1.96a.321.321 0 01-.255 0l-9.752-4.192 7.441-3.2a.765.765 0 00.403-1.008.775.775 0 00-1.02-.398L.698 9.847c-.42.178-.693.596-.693 1.058 0 .464.273.878.691 1.058l4.676 2.01L.698 15.98c-.42.181-.693.597-.693 1.06 0 .463.273.878.691 1.059l10.562 4.538c.237.104.492.154.746.154s.508-.05.745-.154l10.56-4.538c.422-.18.695-.596.695-1.059a1.146 1.146 0 00-.692-1.06zm-11.18 5.249a.317.317 0 01-.256 0l-9.75-4.19 5.191-2.232 3.94 1.694a1.893 1.893 0 001.492 0l3.942-1.694 5.192 2.232-9.75 4.19zM13.88 6.794h4.125v4.125c0 .208.168.375.375.375h.75a.374.374 0 00.374-.375V6.794h4.125a.376.376 0 00.376-.375V5.67a.376.376 0 00-.376-.376h-4.125V1.17a.374.374 0 00-.374-.374h-.75a.375.375 0 00-.375.374v4.125H13.88a.376.376 0 00-.375.376v.75a.374.374 0 00.375.374z">
+                                                </path>
+                                            </svg>New Collection</button></div>
+                                </div>
+                            </div>
+                        </header>
+                        <div class="px-3">
+                            <div class="Disclaimer-module-root-QB1pb Disclaimer-module-size_s-JzQYy">
+                                <div class="Disclaimer-module-title-xUO8n">No Collections found</div>
+                                <p class="Disclaimer-module-text-UYK1R">It looks like you don’t have any
+                                    Collections.<br> Add a new Collection to get started!</p><button
+                                    class="Disclaimer-module-btn-DMT9O"><svg viewBox="0 0 24 24" fill="currentColor"
+                                        xmlns="http://www.w3.org/2000/svg" width="1em" height="1em"
+                                        class="NoCollectionsDisclaimer-module-btnIcon-cet4x NoCollectionsDisclaimer-module-size_s-D1uzW">
+                                        <path
+                                            d="M23.312 15.982l-1.603-.69-5.016-2.156-4.56 1.96a.321.321 0 01-.255 0l-9.752-4.192 7.441-3.2a.765.765 0 00.403-1.008.775.775 0 00-1.02-.398L.698 9.847c-.42.178-.693.596-.693 1.058 0 .464.273.878.691 1.058l4.676 2.01L.698 15.98c-.42.181-.693.597-.693 1.06 0 .463.273.878.691 1.059l10.562 4.538c.237.104.492.154.746.154s.508-.05.745-.154l10.56-4.538c.422-.18.695-.596.695-1.059a1.146 1.146 0 00-.692-1.06zm-11.18 5.249a.317.317 0 01-.256 0l-9.75-4.19 5.191-2.232 3.94 1.694a1.893 1.893 0 001.492 0l3.942-1.694 5.192 2.232-9.75 4.19zM13.88 6.794h4.125v4.125c0 .208.168.375.375.375h.75a.374.374 0 00.374-.375V6.794h4.125a.376.376 0 00.376-.375V5.67a.376.376 0 00-.376-.376h-4.125V1.17a.374.374 0 00-.374-.374h-.75a.375.375 0 00-.375.374v4.125H13.88a.376.376 0 00-.375.376v.75a.374.374 0 00.375.374z">
+                                        </path>
+                                    </svg>New Collection</button>
+                            </div>
+                        </div>
+                    </section>
+                    <section>
+                        <header>
+                            <div class="ProjectsSection-module-FilterRow-TjsrP">
+                                <h2 class="uppercase font-medium tracking-wide text-foreground">Projects</h2>
+                                <div
+                                    class="ProjectBadge-module-badge-_ZykX inline-flex items-strech justify-center rounded-sm overflow-hidden leading-4 text-center">
+                                    <div class="border-activityBar-activeBorder m-1">
+                                        <div class="ProjectBadge-module-total-kSti0 text-foreground p-1">4</div>
+                                    </div>
+                                </div>
+                                <ul class="SegmentedControl-module-list-xOaOE">
+                                    <li><button type="button" aria-current="true" data-value="mine"
+                                            class="SegmentedControl-module-button-eCo3N SegmentedControl-module-buttonPrimary-xOX2N">Created
+                                            by me</button></li>
+                                    <li><button type="button" aria-current="false" data-value="shared"
+                                            class="SegmentedControl-module-button-eCo3N">Shared with me</button></li>
+                                </ul>
+                                <form class="sm:ml-auto"><span class="SearchInput-module-container-H5QR9"><svg
+                                            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="1em"
+                                            height="1em" class="action-icon" aria-hidden="true">
+                                            <path
+                                                d="M337.509 305.372h-17.501l-6.571-5.486c20.791-25.232 33.922-57.054 33.922-93.257C347.358 127.632 283.896 64 205.135 64 127.452 64 64 127.632 64 206.629s63.452 142.628 142.225 142.628c35.011 0 67.831-13.167 92.991-34.008l6.561 5.487v17.551L415.18 448 448 415.086 337.509 305.372zm-131.284 0c-54.702 0-98.463-43.887-98.463-98.743 0-54.858 43.761-98.742 98.463-98.742 54.7 0 98.462 43.884 98.462 98.742 0 54.856-43.762 98.743-98.462 98.743z">
+                                            </path>
+                                        </svg><input type="search" autocomplete="off" autocapitalize="none"
+                                            autocorrect="off" class="SearchInput-module-input-HFzQx" name="q"
+                                            aria-label="Filter projects" placeholder="Filter Projects" value=""></span>
+                                </form>
+                            </div>
+                        </header>
+                        <table class="ProjectsTable-module-table-lA6mO">
+                            <thead>
+                                <tr class="ProjectsTable-module-headerRow-Kk12C">
+                                    <th class="ProjectsTable-module-headerCell-CCyF4 w-64"><span>Title</span></th>
+                                    <th
+                                        class="ProjectsTable-module-headerCell-CCyF4 ProjectsTable-module-headerCell_sortable-TxVWQ w-48 ProjectsTable-module-headerCell_slug-RC99P">
+                                        <span>Slug<span class="ProjectsTable-module-orderIcon-pwJzX"></span></span></th>
+                                    <th
+                                        class="ProjectsTable-module-headerCell-CCyF4 ProjectsTable-module-headerCell_sortable-TxVWQ w-4">
+                                        <span>Views<span class="ProjectsTable-module-orderIcon-pwJzX"></span></span>
+                                    </th>
+                                    <th
+                                        class="ProjectsTable-module-headerCell-CCyF4 ProjectsTable-module-headerCell_sortable-TxVWQ w-4">
+                                        <span>Forks<span class="ProjectsTable-module-orderIcon-pwJzX"></span></span>
+                                    </th>
+                                    <th class="ProjectsTable-module-headerCell-CCyF4 ProjectsTable-module-headerCell_sortable-TxVWQ w-40"
+                                        aria-sort="descending"><span>Updated<svg xmlns="http://www.w3.org/2000/svg"
+                                                viewBox="0 0 512 512" width="1em" height="1em"
+                                                class="ProjectsTable-module-orderIcon-pwJzX">
+                                                <path d="M128 192l128 128 128-128z"></path>
+                                            </svg></span></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="ProjectsTable-module-projectRow-Ut4HZ">
+                                    <td><a href="/edit/sveltejs-kit-template-default-fgfmt9"
+                                            class="ProjectsTable-module-projectRowCell-kr7GL"><svg
+                                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="#689F63"
+                                                width="1em" height="1em"
+                                                class="ProjectsTable-module-stackIconOrSpinner-an2LD">
+                                                <path
+                                                    d="M8 15.9c-.2 0-.42-.06-.6-.17l-1.93-1.14c-.3-.17-.15-.22-.06-.26.39-.13.47-.16.88-.4.04-.02.1 0 .14.02l1.48.88a.2.2 0 00.18 0l5.79-3.34c.05-.03.08-.1.08-.16V4.66a.19.19 0 00-.09-.16L8.1 1.16a.18.18 0 00-.17 0L2.14 4.5c-.06.03-.1.1-.1.16v6.67c0 .06.04.13.1.16l1.58.91c.86.43 1.38-.08 1.38-.59V5.23c0-.1.08-.17.17-.17H6c.1 0 .17.07.17.17v6.59c0 1.14-.63 1.8-1.71 1.8-.34 0-.6 0-1.34-.36l-1.51-.87A1.22 1.22 0 011 11.33V4.66c0-.44.23-.84.6-1.06L7.4.26c.36-.2.85-.2 1.21 0l5.78 3.35A1.22 1.22 0 0115 4.66v6.67c0 .44-.23.84-.6 1.06l-5.8 3.34c-.18.1-.4.16-.6.16m1.79-4.59c-2.53 0-3.06-1.17-3.06-2.14 0-.1.07-.17.17-.17h.74c.09 0 .15.06.17.14.11.76.45 1.15 1.98 1.15 1.22 0 1.73-.28 1.73-.92 0-.38-.14-.65-2.04-.84-1.58-.15-2.56-.5-2.56-1.77 0-1.17.98-1.86 2.63-1.86 1.85 0 2.77.64 2.89 2.02a.17.17 0 01-.17.18h-.75a.17.17 0 01-.16-.13c-.18-.8-.62-1.05-1.8-1.05-1.34 0-1.5.46-1.5.8 0 .43.19.55 1.98.79 1.78.24 2.62.57 2.62 1.82 0 1.26-1.05 1.98-2.88 1.98z">
+                                                </path>
+                                            </svg><span>Sveltejs - Kit Template Default (forked)</span></a></td>
+                                    <td><span
+                                            class="ProjectsTable-module-projectRowCell-kr7GL ProjectsTable-module-projectRowCell_slug-N6L3i">sveltejs-kit-template-default-fgfmt9</span>
+                                    </td>
+                                    <td><span class="ProjectsTable-module-projectRowCell-kr7GL"><svg
+                                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="1em"
+                                                height="1em" class="action-icon">
+                                                <path
+                                                    d="M255.8 112c-80.4 0-143.8 50.6-219.6 133.3-5.5 6.1-5.6 15.2-.1 21.3C101 338.3 158.2 400 255.8 400c96.4 0 168.7-77.7 220.1-134 5.3-5.8 5.6-14.6.5-20.7C424 181.8 351.5 112 255.8 112zm4.4 233.9c-53 2.4-96.6-41.2-94.1-94.1 2.1-46.2 39.5-83.6 85.7-85.7 53-2.4 96.6 41.2 94.1 94.1-2.1 46.2-39.5 83.6-85.7 85.7z">
+                                                </path>
+                                                <path
+                                                    d="M256 209c0-6 1.1-11.7 3.1-16.9-1 0-2-.1-3.1-.1-36.9 0-66.6 31.4-63.8 68.9 2.4 31.3 27.6 56.5 58.9 58.9 37.5 2.8 68.9-26.9 68.9-63.8 0-1.3-.1-2.6-.1-3.9-5.6 2.5-11.7 3.9-18.2 3.9-25.2 0-45.7-21.1-45.7-47z">
+                                                </path>
+                                            </svg><span class="ml-1">1</span></span></td>
+                                    <td><span class="ProjectsTable-module-projectRowCell-kr7GL"><svg
+                                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="1em"
+                                                height="1em" class="action-icon">
+                                                <path
+                                                    d="M448 96c0-35.3-28.7-64-64-64s-64 28.7-64 64c0 23.6 12.9 44.3 32 55.4v52.8l-96 48-96-48v-52.8c19.1-11.1 32-31.8 32-55.4 0-35.3-28.7-64-64-64S64 60.7 64 96c0 23.6 12.9 44.3 32 55.4v92.4l128 64v52.8c-19.1 11.1-32 31.8-32 55.4 0 35.3 28.7 64 64 64s64-28.7 64-64c0-23.6-12.9-44.3-32-55.4v-52.8l128-64v-92.4c19.1-11.1 32-31.8 32-55.4zM128 56c22.1 0 40 17.9 40 40s-17.9 40-40 40-40-17.9-40-40 17.9-40 40-40zm128 400c-22.1 0-40-17.9-40-40s17.9-40 40-40 40 17.9 40 40-17.9 40-40 40zm128-320c-22.1 0-40-17.9-40-40s17.9-40 40-40 40 17.9 40 40-17.9 40-40 40z">
+                                                </path>
+                                            </svg><span class="ml-1">0</span></span></td>
+                                    <td class="flex"><span class="ProjectsTable-module-projectRowCell-kr7GL">1 day
+                                            ago</span>
+                                        <div
+                                            class="ProjectActionsDropdown-module-container-bep9Q ProjectsTable-module-actions-QjSqp">
+                                            <button
+                                                class="ProjectActionsDropdown-module-button-_Pnbo ProjectsTable-module-actionsButton-ffCZv"><svg
+                                                    width="1em" height="1em" viewBox="0 0 16 16" fill="none"
+                                                    xmlns="http://www.w3.org/2000/svg" class="vscode-icon">
+                                                    <path fill-rule="evenodd" clip-rule="evenodd"
+                                                        d="M7.444 13.832a1 1 0 101.111-1.663 1 1 0 00-1.11 1.662zM8 9a1 1 0 110-2 1 1 0 010 2zm0-5a1 1 0 110-2 1 1 0 010 2z"
+                                                        fill="#C5C5C5"></path>
+                                                </svg></button></div>
+                                    </td>
+                                </tr>
+                                <tr class="ProjectsTable-module-projectRow-Ut4HZ">
+                                    <td><a href="/edit/sveltejs-kit-template-default-tmcca3"
+                                            class="ProjectsTable-module-projectRowCell-kr7GL"><svg
+                                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="#689F63"
+                                                width="1em" height="1em"
+                                                class="ProjectsTable-module-stackIconOrSpinner-an2LD">
+                                                <path
+                                                    d="M8 15.9c-.2 0-.42-.06-.6-.17l-1.93-1.14c-.3-.17-.15-.22-.06-.26.39-.13.47-.16.88-.4.04-.02.1 0 .14.02l1.48.88a.2.2 0 00.18 0l5.79-3.34c.05-.03.08-.1.08-.16V4.66a.19.19 0 00-.09-.16L8.1 1.16a.18.18 0 00-.17 0L2.14 4.5c-.06.03-.1.1-.1.16v6.67c0 .06.04.13.1.16l1.58.91c.86.43 1.38-.08 1.38-.59V5.23c0-.1.08-.17.17-.17H6c.1 0 .17.07.17.17v6.59c0 1.14-.63 1.8-1.71 1.8-.34 0-.6 0-1.34-.36l-1.51-.87A1.22 1.22 0 011 11.33V4.66c0-.44.23-.84.6-1.06L7.4.26c.36-.2.85-.2 1.21 0l5.78 3.35A1.22 1.22 0 0115 4.66v6.67c0 .44-.23.84-.6 1.06l-5.8 3.34c-.18.1-.4.16-.6.16m1.79-4.59c-2.53 0-3.06-1.17-3.06-2.14 0-.1.07-.17.17-.17h.74c.09 0 .15.06.17.14.11.76.45 1.15 1.98 1.15 1.22 0 1.73-.28 1.73-.92 0-.38-.14-.65-2.04-.84-1.58-.15-2.56-.5-2.56-1.77 0-1.17.98-1.86 2.63-1.86 1.85 0 2.77.64 2.89 2.02a.17.17 0 01-.17.18h-.75a.17.17 0 01-.16-.13c-.18-.8-.62-1.05-1.8-1.05-1.34 0-1.5.46-1.5.8 0 .43.19.55 1.98.79 1.78.24 2.62.57 2.62 1.82 0 1.26-1.05 1.98-2.88 1.98z">
+                                                </path>
+                                            </svg><span>Sveltejs - Kit Template Default (forked)</span></a></td>
+                                    <td><span
+                                            class="ProjectsTable-module-projectRowCell-kr7GL ProjectsTable-module-projectRowCell_slug-N6L3i">sveltejs-kit-template-default-tmcca3</span>
+                                    </td>
+                                    <td><span class="ProjectsTable-module-projectRowCell-kr7GL"><svg
+                                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="1em"
+                                                height="1em" class="action-icon">
+                                                <path
+                                                    d="M255.8 112c-80.4 0-143.8 50.6-219.6 133.3-5.5 6.1-5.6 15.2-.1 21.3C101 338.3 158.2 400 255.8 400c96.4 0 168.7-77.7 220.1-134 5.3-5.8 5.6-14.6.5-20.7C424 181.8 351.5 112 255.8 112zm4.4 233.9c-53 2.4-96.6-41.2-94.1-94.1 2.1-46.2 39.5-83.6 85.7-85.7 53-2.4 96.6 41.2 94.1 94.1-2.1 46.2-39.5 83.6-85.7 85.7z">
+                                                </path>
+                                                <path
+                                                    d="M256 209c0-6 1.1-11.7 3.1-16.9-1 0-2-.1-3.1-.1-36.9 0-66.6 31.4-63.8 68.9 2.4 31.3 27.6 56.5 58.9 58.9 37.5 2.8 68.9-26.9 68.9-63.8 0-1.3-.1-2.6-.1-3.9-5.6 2.5-11.7 3.9-18.2 3.9-25.2 0-45.7-21.1-45.7-47z">
+                                                </path>
+                                            </svg><span class="ml-1">2</span></span></td>
+                                    <td><span class="ProjectsTable-module-projectRowCell-kr7GL"><svg
+                                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="1em"
+                                                height="1em" class="action-icon">
+                                                <path
+                                                    d="M448 96c0-35.3-28.7-64-64-64s-64 28.7-64 64c0 23.6 12.9 44.3 32 55.4v52.8l-96 48-96-48v-52.8c19.1-11.1 32-31.8 32-55.4 0-35.3-28.7-64-64-64S64 60.7 64 96c0 23.6 12.9 44.3 32 55.4v92.4l128 64v52.8c-19.1 11.1-32 31.8-32 55.4 0 35.3 28.7 64 64 64s64-28.7 64-64c0-23.6-12.9-44.3-32-55.4v-52.8l128-64v-92.4c19.1-11.1 32-31.8 32-55.4zM128 56c22.1 0 40 17.9 40 40s-17.9 40-40 40-40-17.9-40-40 17.9-40 40-40zm128 400c-22.1 0-40-17.9-40-40s17.9-40 40-40 40 17.9 40 40-17.9 40-40 40zm128-320c-22.1 0-40-17.9-40-40s17.9-40 40-40 40 17.9 40 40-17.9 40-40 40z">
+                                                </path>
+                                            </svg><span class="ml-1">0</span></span></td>
+                                    <td class="flex"><span class="ProjectsTable-module-projectRowCell-kr7GL">18 days
+                                            ago</span>
+                                        <div
+                                            class="ProjectActionsDropdown-module-container-bep9Q ProjectsTable-module-actions-QjSqp">
+                                            <button
+                                                class="ProjectActionsDropdown-module-button-_Pnbo ProjectsTable-module-actionsButton-ffCZv"><svg
+                                                    width="1em" height="1em" viewBox="0 0 16 16" fill="none"
+                                                    xmlns="http://www.w3.org/2000/svg" class="vscode-icon">
+                                                    <path fill-rule="evenodd" clip-rule="evenodd"
+                                                        d="M7.444 13.832a1 1 0 101.111-1.663 1 1 0 00-1.11 1.662zM8 9a1 1 0 110-2 1 1 0 010 2zm0-5a1 1 0 110-2 1 1 0 010 2z"
+                                                        fill="#C5C5C5"></path>
+                                                </svg></button></div>
+                                    </td>
+                                </tr>
+                                <tr class="ProjectsTable-module-projectRow-Ut4HZ">
+                                    <td><a href="/edit/js-icqvpw" class="ProjectsTable-module-projectRowCell-kr7GL"><svg
+                                                xmlns="http://www.w3.org/2000/svg" width="1em" height="1em"
+                                                viewBox="0 0 16 16"
+                                                class="ProjectsTable-module-stackIconOrSpinner-an2LD">
+                                                <path d="M0 0h16v16H0V0z" fill="#F7DF1E"></path>
+                                                <path
+                                                    d="M4.2 13.37l1.23-.74c.24.42.45.77.97.77.5 0 .8-.19.8-.94V7.35h1.5v5.13c0 1.56-.9 2.27-2.24 2.27-1.2 0-1.9-.63-2.25-1.38zm5.32-.16l1.23-.7c.32.52.74.9 1.48.9.62 0 1.02-.3 1.02-.74 0-.51-.4-.7-1.1-1l-.37-.16c-1.09-.46-1.8-1.04-1.8-2.26 0-1.13.85-1.99 2.2-1.99.95 0 1.64.33 2.13 1.2l-1.17.75c-.25-.46-.53-.64-.96-.64-.44 0-.72.28-.72.64 0 .46.28.64.92.92l.38.16c1.27.55 2 1.1 2 2.36 0 1.35-1.07 2.1-2.5 2.1-1.4 0-2.3-.67-2.74-1.54">
+                                                </path>
+                                            </svg><span>Js (forked)</span></a></td>
+                                    <td><span
+                                            class="ProjectsTable-module-projectRowCell-kr7GL ProjectsTable-module-projectRowCell_slug-N6L3i">js-icqvpw</span>
+                                    </td>
+                                    <td><span class="ProjectsTable-module-projectRowCell-kr7GL"><svg
+                                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="1em"
+                                                height="1em" class="action-icon">
+                                                <path
+                                                    d="M255.8 112c-80.4 0-143.8 50.6-219.6 133.3-5.5 6.1-5.6 15.2-.1 21.3C101 338.3 158.2 400 255.8 400c96.4 0 168.7-77.7 220.1-134 5.3-5.8 5.6-14.6.5-20.7C424 181.8 351.5 112 255.8 112zm4.4 233.9c-53 2.4-96.6-41.2-94.1-94.1 2.1-46.2 39.5-83.6 85.7-85.7 53-2.4 96.6 41.2 94.1 94.1-2.1 46.2-39.5 83.6-85.7 85.7z">
+                                                </path>
+                                                <path
+                                                    d="M256 209c0-6 1.1-11.7 3.1-16.9-1 0-2-.1-3.1-.1-36.9 0-66.6 31.4-63.8 68.9 2.4 31.3 27.6 56.5 58.9 58.9 37.5 2.8 68.9-26.9 68.9-63.8 0-1.3-.1-2.6-.1-3.9-5.6 2.5-11.7 3.9-18.2 3.9-25.2 0-45.7-21.1-45.7-47z">
+                                                </path>
+                                            </svg><span class="ml-1">1</span></span></td>
+                                    <td><span class="ProjectsTable-module-projectRowCell-kr7GL"><svg
+                                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="1em"
+                                                height="1em" class="action-icon">
+                                                <path
+                                                    d="M448 96c0-35.3-28.7-64-64-64s-64 28.7-64 64c0 23.6 12.9 44.3 32 55.4v52.8l-96 48-96-48v-52.8c19.1-11.1 32-31.8 32-55.4 0-35.3-28.7-64-64-64S64 60.7 64 96c0 23.6 12.9 44.3 32 55.4v92.4l128 64v52.8c-19.1 11.1-32 31.8-32 55.4 0 35.3 28.7 64 64 64s64-28.7 64-64c0-23.6-12.9-44.3-32-55.4v-52.8l128-64v-92.4c19.1-11.1 32-31.8 32-55.4zM128 56c22.1 0 40 17.9 40 40s-17.9 40-40 40-40-17.9-40-40 17.9-40 40-40zm128 400c-22.1 0-40-17.9-40-40s17.9-40 40-40 40 17.9 40 40-17.9 40-40 40zm128-320c-22.1 0-40-17.9-40-40s17.9-40 40-40 40 17.9 40 40-17.9 40-40 40z">
+                                                </path>
+                                            </svg><span class="ml-1">0</span></span></td>
+                                    <td class="flex"><span class="ProjectsTable-module-projectRowCell-kr7GL">18 days
+                                            ago</span>
+                                        <div
+                                            class="ProjectActionsDropdown-module-container-bep9Q ProjectsTable-module-actions-QjSqp">
+                                            <button
+                                                class="ProjectActionsDropdown-module-button-_Pnbo ProjectsTable-module-actionsButton-ffCZv"><svg
+                                                    width="1em" height="1em" viewBox="0 0 16 16" fill="none"
+                                                    xmlns="http://www.w3.org/2000/svg" class="vscode-icon">
+                                                    <path fill-rule="evenodd" clip-rule="evenodd"
+                                                        d="M7.444 13.832a1 1 0 101.111-1.663 1 1 0 00-1.11 1.662zM8 9a1 1 0 110-2 1 1 0 010 2zm0-5a1 1 0 110-2 1 1 0 010 2z"
+                                                        fill="#C5C5C5"></path>
+                                                </svg></button></div>
+                                    </td>
+                                </tr>
+                                <tr class="ProjectsTable-module-projectRow-Ut4HZ">
+                                    <td><a href="/edit/nextjs-jqmtm5"
+                                            class="ProjectsTable-module-projectRowCell-kr7GL"><svg
+                                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="#689F63"
+                                                width="1em" height="1em"
+                                                class="ProjectsTable-module-stackIconOrSpinner-an2LD">
+                                                <path
+                                                    d="M8 15.9c-.2 0-.42-.06-.6-.17l-1.93-1.14c-.3-.17-.15-.22-.06-.26.39-.13.47-.16.88-.4.04-.02.1 0 .14.02l1.48.88a.2.2 0 00.18 0l5.79-3.34c.05-.03.08-.1.08-.16V4.66a.19.19 0 00-.09-.16L8.1 1.16a.18.18 0 00-.17 0L2.14 4.5c-.06.03-.1.1-.1.16v6.67c0 .06.04.13.1.16l1.58.91c.86.43 1.38-.08 1.38-.59V5.23c0-.1.08-.17.17-.17H6c.1 0 .17.07.17.17v6.59c0 1.14-.63 1.8-1.71 1.8-.34 0-.6 0-1.34-.36l-1.51-.87A1.22 1.22 0 011 11.33V4.66c0-.44.23-.84.6-1.06L7.4.26c.36-.2.85-.2 1.21 0l5.78 3.35A1.22 1.22 0 0115 4.66v6.67c0 .44-.23.84-.6 1.06l-5.8 3.34c-.18.1-.4.16-.6.16m1.79-4.59c-2.53 0-3.06-1.17-3.06-2.14 0-.1.07-.17.17-.17h.74c.09 0 .15.06.17.14.11.76.45 1.15 1.98 1.15 1.22 0 1.73-.28 1.73-.92 0-.38-.14-.65-2.04-.84-1.58-.15-2.56-.5-2.56-1.77 0-1.17.98-1.86 2.63-1.86 1.85 0 2.77.64 2.89 2.02a.17.17 0 01-.17.18h-.75a.17.17 0 01-.16-.13c-.18-.8-.62-1.05-1.8-1.05-1.34 0-1.5.46-1.5.8 0 .43.19.55 1.98.79 1.78.24 2.62.57 2.62 1.82 0 1.26-1.05 1.98-2.88 1.98z">
+                                                </path>
+                                            </svg><span>Nextjs (forked)</span></a></td>
+                                    <td><span
+                                            class="ProjectsTable-module-projectRowCell-kr7GL ProjectsTable-module-projectRowCell_slug-N6L3i">nextjs-jqmtm5</span>
+                                    </td>
+                                    <td><span class="ProjectsTable-module-projectRowCell-kr7GL"><svg
+                                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="1em"
+                                                height="1em" class="action-icon">
+                                                <path
+                                                    d="M255.8 112c-80.4 0-143.8 50.6-219.6 133.3-5.5 6.1-5.6 15.2-.1 21.3C101 338.3 158.2 400 255.8 400c96.4 0 168.7-77.7 220.1-134 5.3-5.8 5.6-14.6.5-20.7C424 181.8 351.5 112 255.8 112zm4.4 233.9c-53 2.4-96.6-41.2-94.1-94.1 2.1-46.2 39.5-83.6 85.7-85.7 53-2.4 96.6 41.2 94.1 94.1-2.1 46.2-39.5 83.6-85.7 85.7z">
+                                                </path>
+                                                <path
+                                                    d="M256 209c0-6 1.1-11.7 3.1-16.9-1 0-2-.1-3.1-.1-36.9 0-66.6 31.4-63.8 68.9 2.4 31.3 27.6 56.5 58.9 58.9 37.5 2.8 68.9-26.9 68.9-63.8 0-1.3-.1-2.6-.1-3.9-5.6 2.5-11.7 3.9-18.2 3.9-25.2 0-45.7-21.1-45.7-47z">
+                                                </path>
+                                            </svg><span class="ml-1">1</span></span></td>
+                                    <td><span class="ProjectsTable-module-projectRowCell-kr7GL"><svg
+                                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="1em"
+                                                height="1em" class="action-icon">
+                                                <path
+                                                    d="M448 96c0-35.3-28.7-64-64-64s-64 28.7-64 64c0 23.6 12.9 44.3 32 55.4v52.8l-96 48-96-48v-52.8c19.1-11.1 32-31.8 32-55.4 0-35.3-28.7-64-64-64S64 60.7 64 96c0 23.6 12.9 44.3 32 55.4v92.4l128 64v52.8c-19.1 11.1-32 31.8-32 55.4 0 35.3 28.7 64 64 64s64-28.7 64-64c0-23.6-12.9-44.3-32-55.4v-52.8l128-64v-92.4c19.1-11.1 32-31.8 32-55.4zM128 56c22.1 0 40 17.9 40 40s-17.9 40-40 40-40-17.9-40-40 17.9-40 40-40zm128 400c-22.1 0-40-17.9-40-40s17.9-40 40-40 40 17.9 40 40-17.9 40-40 40zm128-320c-22.1 0-40-17.9-40-40s17.9-40 40-40 40 17.9 40 40-17.9 40-40 40z">
+                                                </path>
+                                            </svg><span class="ml-1">0</span></span></td>
+                                    <td class="flex"><span class="ProjectsTable-module-projectRowCell-kr7GL">6 months
+                                            ago</span>
+                                        <div
+                                            class="ProjectActionsDropdown-module-container-bep9Q ProjectsTable-module-actions-QjSqp">
+                                            <button
+                                                class="ProjectActionsDropdown-module-button-_Pnbo ProjectsTable-module-actionsButton-ffCZv"><svg
+                                                    width="1em" height="1em" viewBox="0 0 16 16" fill="none"
+                                                    xmlns="http://www.w3.org/2000/svg" class="vscode-icon">
+                                                    <path fill-rule="evenodd" clip-rule="evenodd"
+                                                        d="M7.444 13.832a1 1 0 101.111-1.663 1 1 0 00-1.11 1.662zM8 9a1 1 0 110-2 1 1 0 010 2zm0-5a1 1 0 110-2 1 1 0 010 2z"
+                                                        fill="#C5C5C5"></path>
+                                                </svg></button></div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="Toastify"></div>
+                    </section>
+                </main>
+            </div>
+
+
+
+
+        </div>
+    </div>
+
+
+
+</body>
+
+</html>
