@@ -25,12 +25,14 @@ window.addEventListener("pagehide", (e) => {
 	saveData();
 });
 async function beforePageUnload() {
+	console.log(window.a);
 	await addDummyData(authState().uid);
 }
 
 async function pageLoad(e) {}
 
 window.addEventListener("load", async function (e) {
+	console.log("a");
 	await pageLoad(e);
 });
 
