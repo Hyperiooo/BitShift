@@ -48,17 +48,54 @@
   <!--STYLES & FONTS-->
   <link rel="stylesheet" href="./styles/main.css" />
   <link rel="stylesheet" href="./styles/alrt-theme.css" />
-  <link href="https://cdn.jsdelivr.net/gh/Hyperiooo/Hypericons@v0.2.5/fonts/hypericons.css" rel="stylesheet"
+  <link href="https://cdn.jsdelivr.net/gh/Hyperiooo/Hypericons@v0.3.0/fonts/hypericons.css" rel="stylesheet"
     type="text/css" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono&family=Roboto:wght@400;500;600;700&display=swap"
     rel="stylesheet" />
+  <script>
+    var xhr = new XMLHttpRequest();
+    var url = "DEVENV";
+    xhr.open("GET", url, true);
+
+    xhr.onreadystatechange = function () {
+      if (this.readyState == 4 && this.status == 200) {
+        document
+          .querySelector('link[rel="apple-touch-icon"]')
+          .setAttribute(
+            "href",
+            "./assets/icon-dev.png"
+          );
+
+        document
+          .querySelector('meta[name="apple-mobile-web-app-title"]')
+          .setAttribute(
+            "content",
+            "BitShift DEV"
+          );
+        document
+          .querySelector('meta[property="og:image"]')
+          .setAttribute(
+            "content",
+            "./assets/icon-dev.png"
+          );
+        document
+          .querySelector('link[rel="manifest"]')
+          .setAttribute(
+            "href",
+            "devmanifest.json"
+          );
+      }
+    };
+    // Sending our request
+    xhr.send();
+  </script>
 </head>
 
 <body>
   <div id="galleryContent" class="visible">
-    <div id="topbar" class="ui">
+    <header id="topbar" class="ui">
       <div id="topbar-left">
         <span class="item" id="accountWidget" onclick="openGallery()">
           <i class="hi-account-fill"></i>
@@ -82,7 +119,7 @@
         <span class="item" onclick="openGallery()"><i class="hi-import-line"></i></span>
         <span class="item" onclick="openEditor()"><i class="hi-plus-large-line"></i></span>
       </div>
-    </div>
+    </header>
     <div id="galleryWrapper">
       <div class="galleryCard">
         <div class="cardImage">
@@ -396,7 +433,7 @@
           data-tool-color-menu-button></i>
       </span>
       <span id="tool-btn-eyedropper" class="item" onclick="setmode('eyedropper',
-            this)"><i class="hi-eyedropper-semi"></i></span>
+            this)"><i class="hi-eyedropper-fill"></i></span>
       <span class="toolbar-divider"></span>
       <span class="item" onclick="board.clear()"><i class="hi-trash-fill"></i></span>
       <!---test-->

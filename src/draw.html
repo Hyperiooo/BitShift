@@ -49,7 +49,7 @@
   <!--STYLES & FONTS-->
   <link rel="stylesheet" href="./styles/main.css" />
   <link rel="stylesheet" href="./styles/alrt-theme.css" />
-  <link href="https://cdn.jsdelivr.net/gh/Hyperiooo/Hypericons@v0.2.4/fonts/hypericons.css" rel="stylesheet"
+  <link href="https://cdn.jsdelivr.net/gh/Hyperiooo/Hypericons@v0.3.0/fonts/hypericons.css" rel="stylesheet"
     type="text/css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -167,21 +167,21 @@
     </div>
   </div>
   <div class="layer-menu" id="layer-menu">
-    <div id="layer-main">
-    </div>
     <div class="layer-menu-controls">
       <button class="layer-menu-button">
-        Copy
+        <i class="hi-copy-fill"></i>
       </button>
       <button class="layer-menu-button">
-        Delete
+        <i class="hi-trash-fill"></i>
       </button>
       <button class="layer-menu-button">
-        Group
+        <i class="hi-folder-fill"></i>
       </button>
       <button onclick="newLayer(project.width, project.height)" class="layer-menu-button">
-        New
+        <i class="hi-plus-large-line"></i>
       </button>
+    </div>
+    <div id="layer-main">
     </div>
   </div>
   <div id="popup" class="popup">
@@ -301,6 +301,10 @@
       <span id="layer-toggle-button" class="item" onclick="toggleLayerMenu()"><i class="hi-layer-fill"></i></span>
     </div>
   </div>
+  <button onclick="deselect()" id="actionButton" class="actionButtonHidden">
+    <i class="hi-x-large-line"></i>
+    Deselect
+  </button>
   <div id="toolbar" class="ui">
     <div id="dynamic-tool-wrap">
     </div>
@@ -309,7 +313,7 @@
         data-tool-color-menu-button></i>
     </span>
     <span id="tool-btn-eyedropper" class="item" onclick="setmode('eyedropper',
-        this)"><i class="hi-eyedropper-semi"></i></span>
+        this)"><i class="hi-eyedropper-fill"></i></span>
     <span class="toolbar-divider"></span>
     <span class="item" onclick="board.clear()"><i class="hi-trash-fill"></i></span>
     <!---test-->
