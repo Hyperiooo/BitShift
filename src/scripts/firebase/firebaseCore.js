@@ -44,6 +44,7 @@ export async function authChangeHandler(signedIn, user) {
 		userObj = user;
 		userId = user.uid;
 		var userExists = await checkNewUserId(userId);
+		window.closeSplash()
 		console.log(userExists);
 		if (!userExists) await isNewAccount();
 		if (document.getElementById("accountName")) {

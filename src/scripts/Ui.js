@@ -169,3 +169,8 @@ function openGallery() {
 function openEditor() {
 	window.location.href = "./draw";
 }
+
+
+window.closeSplash = () => {
+     document.getElementById("splash").classList.add("hidden") 
+}

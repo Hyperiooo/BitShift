@@ -1,3 +1,6 @@
+
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600&family=Roboto:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+
 * {
     font-family: 'Roboto', sans-serif;
 }
@@ -1836,15 +1839,14 @@ div[id^='alrt-main'] {
     width: 100vw;
     height: 100vh;
     position: absolute;
-    left: 50%;
-    top: 50%;
+    top:0; left:0;
     opacity: 0;
-    transform: translate(-50%, -50%) scale(var(--scale));
+    transform: scale(var(--scale));
     transition: transform 0.3s, filter 0.3s, opacity 0.3s
 }
 
 #galleryContent {
-    --scale: 75%;
+    --scale: 125%;
     filter: blur(25px);
     transition-delay: none;
     pointer-events: none;
@@ -1858,8 +1860,42 @@ div[id^='alrt-main'] {
     pointer-events: all;
 }
 
+#splash {
+    width: 100vw;
+    height: 100vh;
+    top:0;
+    left:0;
+    position: absolute;
+    z-index: 99999999999999;
+    background: var(--bgMain);
+    transition: opacity 0.4s
+}
+#splash.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+#splashContent {
+    position: inherit;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 50px
+}
+#splashLogo img {
+    width: 150px;
+}
+#splashTitle {
+    color: var(--importantText);
+    font-size: 75px;
+    font-family: 'Space Grotesk';
+    font-weight: 700;
+}
+
 #editorContent {
-    --scale: 125%;
+    --scale: 75%;
     filter: blur(25px);
     transition-delay: none;
     pointer-events: none;
