@@ -24,19 +24,19 @@ function setTheme(themeName) {
 		.querySelector('meta[name="theme-color"]')
 		.setAttribute(
 			"content",
-			getComputedStyle(document.documentElement).getPropertyValue("--bgDarkT")
+			getComputedStyle(document.documentElement).getPropertyValue("--appBarThemeColor")
 		);
 	document
 		.querySelector('meta[name="apple-mobile-web-app-status-bar"]')
 		.setAttribute(
 			"content",
-			getComputedStyle(document.documentElement).getPropertyValue("--bgDarkT")
+			getComputedStyle(document.documentElement).getPropertyValue("--appBarThemeColor")
 		);
 	document
 		.querySelector('meta[name="apple-mobile-web-app-status-bar-style"]')
 		.setAttribute(
 			"content",
-			getComputedStyle(document.documentElement).getPropertyValue("--bgDarkT")
+			getComputedStyle(document.documentElement).getPropertyValue("--appBarThemeColor")
 		);
 }
 

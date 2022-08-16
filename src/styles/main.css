@@ -46,6 +46,7 @@ html {
 }
 
 .ui-theme-dark {
+    --appBarThemeColor: #141416;
     --bgMain: #18171a;
     --bgMainT: #18171ae3;
     --canvasBg: #202022;
@@ -66,6 +67,7 @@ html {
 }
 
 .ui-theme-light {
+    --appBarThemeColor: #ffffff;
     --bgMain: #ffffff;
     --bgMainT: #ffffffd5;
     --canvasBg: #eaeaee;
