@@ -186,25 +186,50 @@
       </div>
     </div>
   </div>
-  <div class="modal-wrap">
-    <div class="modal-content">
-      <div class="modal-sidebar">
+  <div class="window-wrap">
+    <div class="window-content">
+      <div class="window-sidebar">
         <h1>Settings</h1>
-        <button class="modal-sidebar-button">
-          <i class="hi-account-line"></i>
-          <p>Account</p>
+        <button class="window-sidebar-button window-sidebar-button-active">
+          <i class="hi-settings-fill"></i>
+          <p>General</p>
         </button>
-        <button class="modal-sidebar-button">
-          <i class="hi-account-line"></i>
+        <button class="window-sidebar-button">
+          <i class="hi-ui-line"></i>
           <p>Interface</p>
         </button>
-        <button class="modal-sidebar-button">
-          <i class="hi-account-line"></i>
+        <button class="window-sidebar-button">
+          <i class="hi-pencil-fill"></i>
           <p>Input</p>
-        </button><button class="modal-sidebar-button">
-          <i class="hi-account-line"></i>
+        </button><button class="window-sidebar-button">
+          <i class="hi-lock-fill"></i>
           <p>Keybinds</p>
         </button>
+        <button class="window-sidebar-button">
+          <i class="hi-account-fill"></i>
+          <p>Account</p>
+        </button>
+        <button class="window-sidebar-button">
+          <i class="hi-account-line"></i>
+          <p>About</p>
+        </button>
+        <button class="window-sidebar-button">
+          <i class="hi-account-line"></i>
+          <p>Help</p>
+        </button>
+      </div>
+      <div class="window-header">
+        <h1>General</h1>
+        <button class="window-close">
+          <i class="hi-x-large-line"></i>
+        </button>
+      </div>
+      <div class="window-inner">
+        <div class="popup-btn-group">
+          <button onclick="setTheme(Themes.light)" class="popup-btn popup-btn-imp">Light</button>
+          <button onclick="setTheme(Themes.dark)" class="popup-btn">Dark</button>
+          <button onclick="setTheme(Themes.system)" class="popup-btn">System Theme</button>
+        </div>
       </div>
     </div>
   </div>

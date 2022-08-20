@@ -15,10 +15,19 @@ var Themes = {
 	light: "ui-theme-light",
 	dark: "ui-theme-dark",
 	black: "ui-theme-black",
+	system: "ui-theme-system-default",
 };
-
 function setTheme(themeName) {
 	localStorage.setItem("theme", themeName);
+	if (themeName === "ui-theme-system-default") {
+		//see what the system theme is
+		var systemTheme = window.matchMedia("(prefers-color-scheme: dark)").matches;
+		if (systemTheme) {
+			themeName = Themes.dark;
+		} else {
+			themeName = Themes.light;
+		}
+	}
 	document.documentElement.className = themeName;
 	document
 		.querySelector('meta[name="theme-color"]')
@@ -45,6 +54,14 @@ function setTheme(themeName) {
 			)
 		);
 }
+
+window
+	.matchMedia("(prefers-color-scheme: dark)")
+	.addEventListener("change", function (e) {
+		if (localStorage.theme == "ui-theme-system-default") {
+			setTheme(Themes.system);
+		}
+	});
 
 var draggableNumInputs = [];
 

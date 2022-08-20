@@ -2,6 +2,7 @@
 
 * {
     font-family: 'Roboto', sans-serif;
+    transition: color 0.3s, fill 0.3s, background 0.3s;
 }
 
 body,
@@ -45,14 +46,15 @@ html {
 }
 
 .ui-theme-dark {
-    --modalT: #00000081;
-    --modalMain: #212125;
-    --modalSide: #2b2b30;
+    --windowT: #00000081;
+    --windowMain: #212125;
+    --windowMainT: #2121258c;
+    --windowSide: #2b2b30;
     --appBarThemeColor: #141416;
     --bgMain: #18171a;
     --bgMainT: #18171ae3;
     --canvasBg: #202022;
-    --bgLight: #262628;
+    --bgLight: #35353b;
     --bgDark: #131214;
     --bgDarkT: #131214e3;
     --textMain: #ffffff;
@@ -69,11 +71,15 @@ html {
 }
 
 .ui-theme-light {
-    --appBarThemeColor: #ffffff;
+    --windowT: #00000041;
+    --windowMain: #ffffff;
+    --windowMainT: #ffffff8c;
+    --windowSide: #eaeaee;
+    --appBarThemeColor: #EDEFF4;
     --bgMain: #ffffff;
     --bgMainT: #ffffffd5;
     --canvasBg: #eaeaee;
-    --bgLight: #dbdde0;
+    --bgLight: #d3d5d8;
     --bgDark: #eef0f5;
     --bgDarkT: #eef0f5d5;
     --textMain: #0b0c1a;
@@ -1980,32 +1986,34 @@ div[id^='alrt-main'] {
     transform: scale(105%);
 }
 
-.modal-wrap {
+.window-wrap {
     position: fixed;
     width: 100vw;
     height: 100vh;
     top: 0;
     left: 0;
     z-index: 99999;
-    background: var(--modalT);
-    animation: modal-blur 0.3s linear;
+    background: var(--windowT);
+    animation: window-blur 0.3s linear;
     animation-fill-mode: forwards
 }
 
 /*animation that blurs from 0 to 5px on backdrop filter and changes opacity*/
-@keyframes modal-blur {
+@keyframes window-blur {
     0% {
         backdrop-filter: blur(0px);
+        -webkit-backdrop-filter: blur(0px);
         opacity: 0;
     }
 
     100% {
         backdrop-filter: blur(5px);
+        -webkit-backdrop-filter: blur(5px);
         opacity: 1;
     }
 }
 
-@keyframes modal-blur-out {
+@keyframes window-blur-out {
     0% {
         backdrop-filter: blur(5px);
         opacity: 1;
@@ -2017,28 +2025,80 @@ div[id^='alrt-main'] {
     }
 }
 
-.modal-content {
+.window-content {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     width: 900px;
-    height: 700px;
-    background: var(--modalMain);
+    height: 600px;
+    background: var(--windowMain);
     border-radius: 13px;
     overflow: hidden;
     box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.25);
 }
 
-.modal-sidebar {
-    background: var(--modalSide);
+.window-close {
+    position: absolute;
+    border: 0;
+    background: none;
+    cursor: pointer;
+    top: 10px;
+    right: 10px;
+    padding: 0;
+    margin: 0;
+}
+
+.window-inner {
+    width: 660px;
+    right: 0;
+    position: fixed;
+    top: 0;
+    height: calc(100% - 110px);
+    z-index: -10;
+    padding: 20px;
+    padding-top: 70px;
+    padding-bottom: 40px;
+    overflow: scroll;
+    overflow-x: hidden;
+}
+
+.window-header {
+    width: 700px;
+    right: 0;
+    position: fixed;
+    top: 0;
+    height: 50px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background: var(--windowMainT);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+}
+
+.window-header h1 {
+    bottom: 0;
+    padding: 0;
+    font-size: 20px;
+    color: var(--textMain);
+    width: fit-content;
+}
+
+.window-close i {
+    font-size: 30px;
+    color: var(--textMain);
+}
+
+.window-sidebar {
+    background: var(--windowSide);
     backdrop-filter: saturate(180%) blur(20px);
     -webkit-backdrop-filter: saturate(180%) blur(20px);
     width: 200px;
     height: 100%;
 }
 
-.modal-sidebar h1 {
+.window-sidebar h1 {
     margin: 0;
     padding: 20px;
     padding-top: 40px;
@@ -2046,7 +2106,7 @@ div[id^='alrt-main'] {
     color: var(--textMain);
 }
 
-.modal-sidebar-button {
+.window-sidebar-button {
     width: calc(100% - 20px);
     margin: 10px;
     margin-bottom: 0;
@@ -2061,29 +2121,40 @@ div[id^='alrt-main'] {
     align-items: center;
     border-radius: 7px;
     cursor: pointer;
+    color: var(--textMain);
+    transition: background 0.3s;
 }
 
-.modal-sidebar-button:hover {
+.window-sidebar-button:hover,
+.window-sidebar-button-active {
     background: var(--important);
 }
 
-.modal-sidebar-button:hover i {
-    color: var(--textMain);
+.window-sidebar-button i,
+.window-sidebar-button p {
+    transition: color 0.3s;
 }
 
-.modal-sidebar-button i {
+.window-sidebar-button:hover i,
+.window-sidebar-button:hover p,
+.window-sidebar-button-active i,
+.window-sidebar-button-active p {
+    color: var(--importantText) !important;
+}
+
+.window-sidebar-button i {
     font-size: 22px;
     color: var(--important);
 }
 
-.modal-sidebar-button p {
+.window-sidebar-button p {
     color: var(--textMain);
     font-size: 18px;
 }
 
 /*media query that activates only on landscape and under 1000px*/
 @media (max-width: 1000px) {
-    .modal-content {
+    .window-content {
         width: 100vw;
         height: 100vh;
         border-radius: 0;
