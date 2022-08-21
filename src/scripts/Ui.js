@@ -19,6 +19,13 @@ var Themes = {
 };
 function setTheme(themeName) {
 	localStorage.setItem("theme", themeName);
+	//activate the button with pattern of theme-*-button to match the theme
+	document.querySelectorAll(".theme-button").forEach((e) => {
+		e.classList.remove("popup-btn-imp");
+		if (e.id == themeName) {
+			e.classList.add("popup-btn-imp");
+		}
+	});
 	if (themeName === "ui-theme-system-default") {
 		//see what the system theme is
 		var systemTheme = window.matchMedia("(prefers-color-scheme: dark)").matches;
@@ -194,5 +201,7 @@ function openEditor() {
 }
 
 window.closeSplash = () => {
-	document.getElementById("splash").classList.add("hidden");
+	setTimeout(() => {
+		document.getElementById("splash").classList.add("hidden");
+	}, 1000);
 };

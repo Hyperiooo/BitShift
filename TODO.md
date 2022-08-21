@@ -1,10 +1,12 @@
 # Todo
+
 A list of all the things planned to do for BitShift
 
 ## Tools
+
 - ~~Spray brush tool~~
   - ~~Improve to make speed 1 not produce as many particles ~~
-- Smudge and scatter tools  
+- Smudge and scatter tools
   - Effect surrounding pixels
 - Magic wand tool
 - ~~Marquee tool~~
@@ -31,8 +33,8 @@ A list of all the things planned to do for BitShift
   - ~~Improve zoom tool~~
     - ~~just removed~~
 
-
 ## Palettes
+
 - Add color to palette
 - ~~Rewrite to make class based~~
 - Rename palettes
@@ -41,7 +43,7 @@ A list of all the things planned to do for BitShift
 - ~~Drag and drop to import ([Use Anypalette.js](https://1j01.github.io/anypalette.js/demo))~~
   - For mobile, add button to import palette
 - ~~Import image as palette~~
-- Palette window 
+- Palette window
   - Show only top x palettes in main window
   - Separate window for all palettes w/ search bar
 - Export to image ?
@@ -50,7 +52,8 @@ A list of all the things planned to do for BitShift
 - ~~Add error handling for imports~~
 
 ## Layers
-- Layer settings 
+
+- Layer settings
   - Image blending
     - can be done with global composite operations when exporting, when editing can be done with css blend modes
   - opacity
@@ -63,30 +66,31 @@ A list of all the things planned to do for BitShift
 - ~~Create new layer~~
 
 ## Animation
+
 - Add frames
 - Change FPS
 - Timeline window
 - Export as GIF
 
 ## Menus
+
 - File menu
   - add Preferences
   - Anything that can be modified in the code
   - Keyboard shortcuts & changing them
-  - theming 
+  - theming
 - Gallery
   - Create new
-  - View all recent 
+  - View all recent
   - Star / rate an art
   - folders
-  - rename 
+  - rename
   - duplicate
   - delete
   - export
   - Use Infinite Scroll.js - https://infinite-scroll.com/
   - Tagging
-  
-- Account 
+- Account
 - ~~Export Image~~
   - ~~Format options~~
   - ~~Location options~~
@@ -97,14 +101,15 @@ A list of all the things planned to do for BitShift
 
 ## Animation
 
-## Visual changes 
+## Visual changes
+
 - ~~Fork remixicon to add Spray can, along with other various tools~~
 - Make responsive on mobile devices
   - started
-- Enforce constant transitions on background and color across all ui
+- ~~Enforce constant transitions on background and color across all ui~~
 - Theming
   - started, no way to set in-app
-- Add min width, max height to tool settings content
+- ~~Add min width, max height to tool settings content~~
 - Improve tool settings inputs to allow for input groups with proper rounding and units
   - Add new input types
 - Add full screen to phone to avoid annoying scroll issue
@@ -116,6 +121,7 @@ A list of all the things planned to do for BitShift
 - ~~Give borders of palette windows an extra 4px~~
 
 ## Other
+
 - ~~Keyboard Shortcuts~~
   - added framework for them
 - Undo / Redo
@@ -129,6 +135,7 @@ A list of all the things planned to do for BitShift
 - ~~Give eraser outline to show where it will erase~~
 
 ## Bugs
+
 - Document doesnt perfectly center
 - ~~with how the current "outline" on eraser and spray works, when zoomed in a lot the canvas gets too big on large canvas sizes, slows down performance. Make outline canvas only as big as it needs to be and move it around instead of making it the entire size of the canvas.~~
 - ~~when creating palette via preview, the palette doesnt save properly unless it is used (clicking on a swatch)~~
@@ -157,7 +164,7 @@ A list of all the things planned to do for BitShift
     - ~~consider making it just make the area below it darker? like a gray at 50% opacity~~
     - ~~Show as clearing the area below it~~
     - ~~OR Show as an outline (similar to Aseprite)~~
-      - ~~Do this by creating a special canvas thats larger than the current drwaing but at the same ratio, offset pixels in all 4 directions ( nw, ne, sw, se)~~ 
+      - ~~Do this by creating a special canvas thats larger than the current drwaing but at the same ratio, offset pixels in all 4 directions ( nw, ne, sw, se)~~
 - ~~Lines get cut off if theyre off screen, causing the canvas to see the cursor as drawing when the mouse buttons arent held.~~
   - ~~Allow drawing off screen~~
     - ~~Useful in lines, shapes, and general drawing.~~
@@ -170,9 +177,10 @@ A list of all the things planned to do for BitShift
 - ~~Number Input doesnt clear event listeners when recreating the tool settings menu~~
 - ~~On mobile, dragging the palette window ends up messing with the top bar~~
   - ~~Prevent Defaults~~
-  
+
 ## Enhancements
-- ~~***Restructure everything***~~
+
+- ~~**_Restructure everything_**~~
 - Hold on a color in a palette -> reorder & delete
   - Delete by moving swatch on to a delete bar that shows on the bottom of the color menu
 - Drag the color preview in the hue/value area over a palette
@@ -203,5 +211,5 @@ A list of all the things planned to do for BitShift
 - tile preview
 - possible recording, take snapshot of all canvases every x seconds
 - ~~pinch zoom in/out on value color box to resize it~~
-  - ~~hide hue and opacity~~- 
+  - ~~hide hue and opacity~~-
 - Eyedropper tool compiles entire image w/ blend modes, when picking on a spot it picks from that compiled image.

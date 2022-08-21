@@ -219,6 +219,29 @@ function valueThumb(e) {
 		);
 	}
 	valueMoving = true;
+	if (valueMoving && !valueTwoFinger) {
+		document.querySelectorAll("[data-color-input]").forEach((e) => {
+			e.blur();
+		});
+		//pickerColor[1] = clamp(x / valueRect.width * 100, 0, 100)
+		//pickerColor[2] = 100 - clamp(y / valueRect.height * 100, 0, 100)
+		pickerColor = new Color({
+			h: pickerColor.hsva.h,
+			s: clamp((x / valueRect.width) * 100, 0, 100),
+			v: 100 - clamp((y / valueRect.height) * 100, 0, 100),
+			a: pickerColor.hsva.a,
+		});
+		vThumb.style.setProperty(
+			"--posX",
+			clamp((x / valueRect.width) * 100, 0, 100) + "%"
+		);
+		vThumb.style.setProperty(
+			"--posY",
+			clamp((y / valueRect.height) * 100, 0, 100) + "%"
+		);
+		updatePickerColor();
+		board.setColor(pickerColor, true);
+	}
 }
 
 function valueEndDrag(e) {

@@ -23,6 +23,8 @@ html {
     --canvY: 32px;
     --vh: 0;
     --vw: 0;
+    --color: #fff;
+    --hue: #fff;
 }
 
 .ui-theme-black {
@@ -1016,7 +1018,6 @@ canvas * {
 .color-menu #color-value {
     position: absolute;
     --hue: 360;
-    overflow: hidden;
     width: 200px;
     height: 200px;
     z-index: 200;
@@ -1055,17 +1056,34 @@ canvas * {
     transition: 0.2s opacity;
 }
 
+#color-value:active #color-value-thumb {
+    width: 50px;
+    height: 50px;
+    transform: translate(-20px, -20px);
+}
+
 #color-value-thumb {
+    background: var(--color);
     --posX: 100%;
     --posY: 0%;
     position: absolute;
-    width: 6px;
-    height: 6px;
-    border: 2px solid var(--toolBarHover);
-    border-radius: 15px;
-    left: calc(var(--posX) - 5px);
-    top: calc(var(--posY) - 5px);
+    width: 10px;
+    height: 10px;
+    border: 2px solid var(--importantText);
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.356);
+    border-radius: 100%;
+    left: calc(var(--posX) - 7px);
+    top: calc(var(--posY) - 7px);
     cursor: grab;
+    transform: translate(0px, 0px);
+    transition: width 0.3s, height 0.3s, transform 0.3s;
+    transition-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+#color-hue:active #color-hue-thumb {
+    width: calc(100% + 10px);
+    height: 20px;
+    transform: translate(-7px, -5px);
 }
 
 #color-hue-thumb {
@@ -1075,12 +1093,15 @@ canvas * {
     position: absolute;
     width: calc(100%);
     height: 10px;
-    -webkit-box-shadow: inset 0px 0px 0px 2px var(--toolBarHover);
-    -moz-box-shadow: inset 0px 0px 0px 2px var(--toolBarHover);
-    box-shadow: inset 0px 0px 0px 2px var(--toolBarHover);
-    border-radius: 5px;
-    top: calc(calc(var(--pos)) - (var(--posp) * 10px));
+    border: 2px solid var(--importantText);
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.356);
+    border-radius: 50px;
+    top: calc(calc(var(--pos)) - (var(--posp) * 14px));
     cursor: grab;
+    transform: translate(-2px, 0px);
+    transition: width 0.3s, height 0.3s, transform 0.3s;
+    transition-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    background: var(--hue);
 }
 
 #color-opacity-thumb {
@@ -1597,10 +1618,10 @@ input {
     -ms-user-select: none;
     user-select: none;
     display: block;
-    transform: translate(335px, 0);
+    transform: translate(316px, 0);
     transition: 0.2s opacity, 0.2s transform, max-height 0.2s;
     pointer-events: none;
-    width: 250px;
+    width: 300px;
     padding: 8px;
     height: calc(100% - 66px);
     overflow-x: hidden;
@@ -1727,6 +1748,20 @@ input {
     image-rendering: pixelated;
     image-rendering: crisp-edges;
     position: relative;
+}
+
+.layer-alpha-icon {
+    position: absolute;
+    background: none;
+    border: none;
+    font-size: 20px;
+    color: var(--textDim);
+    padding: 0;
+    margin: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 75px;
+    cursor: pointer;
 }
 
 canvas {
@@ -1961,7 +1996,7 @@ div[id^='alrt-main'] {
     width: 150px;
     height: 150px;
     background-size: 12.5%;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 6 6'%3E%3Cg fill='%23bababa' fill-opacity='0.4'%3E%3Cpath fill-rule='evenodd' d='M 0 0 h 3 v 3 H 0 V 0 z m 3 3 h 3 v 3 H 3 V 3 z V 3 H 6 H 3 M 6 6'/%3E%3C/g%3E%3C/svg%3E"), linear-gradient(to right, var(--textMain), var(--textMain));
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 8 8'%3E%3Cg fill='%23bababa' fill-opacity='0.4'%3E%3Cpath fill-rule='evenodd' d='M0 0h4v4H0V0zm4 4h4v4H4V4z'/%3E%3C/g%3E%3C/svg%3E"), linear-gradient(to right, white, white);
     border-radius: 5px;
     transition: transform 0.15s;
 }
@@ -2159,4 +2194,10 @@ div[id^='alrt-main'] {
         height: 100vh;
         border-radius: 0;
     }
+}
+
+.window-closed {
+    pointer-events: none;
+    animation: window-blur-out 0.3s linear;
+    animation-fill-mode: forwards
 }

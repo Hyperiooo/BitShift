@@ -48,7 +48,7 @@
   <!--STYLES & FONTS-->
   <link rel="stylesheet" href="./styles/main.css" />
   <link rel="stylesheet" href="./styles/alrt-theme.css" />
-  <link href="https://cdn.jsdelivr.net/gh/Hyperiooo/Hypericons@v0.3.0/fonts/hypericons.css" rel="stylesheet"
+  <link href="https://cdn.jsdelivr.net/gh/Hyperiooo/Hypericons@v0.3.1/fonts/hypericons.css" rel="stylesheet"
     type="text/css" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -186,7 +186,7 @@
       </div>
     </div>
   </div>
-  <div class="window-wrap">
+  <div class="window-wrap window-closed">
     <div class="window-content">
       <div class="window-sidebar">
         <h1>Settings</h1>
@@ -202,7 +202,7 @@
           <i class="hi-pencil-fill"></i>
           <p>Input</p>
         </button><button class="window-sidebar-button">
-          <i class="hi-lock-fill"></i>
+          <i class="hi-keyboard-line"></i>
           <p>Keybinds</p>
         </button>
         <button class="window-sidebar-button">
@@ -210,11 +210,11 @@
           <p>Account</p>
         </button>
         <button class="window-sidebar-button">
-          <i class="hi-account-line"></i>
+          <i class="hi-info-line"></i>
           <p>About</p>
         </button>
         <button class="window-sidebar-button">
-          <i class="hi-account-line"></i>
+          <i class="hi-help-line"></i>
           <p>Help</p>
         </button>
       </div>
@@ -224,11 +224,12 @@
           <i class="hi-x-large-line"></i>
         </button>
       </div>
-      <div class="window-inner">
+      <div class="window-inner ">
         <div class="popup-btn-group">
-          <button onclick="setTheme(Themes.light)" class="popup-btn popup-btn-imp">Light</button>
-          <button onclick="setTheme(Themes.dark)" class="popup-btn">Dark</button>
-          <button onclick="setTheme(Themes.system)" class="popup-btn">System Theme</button>
+          <button id="ui-theme-light" onclick="setTheme(Themes.light)" class="popup-btn theme-button">Light</button>
+          <button id="ui-theme-dark" onclick="setTheme(Themes.dark)" class="popup-btn theme-button">Dark</button>
+          <button id="ui-theme-system-default" onclick="setTheme(Themes.system)" class="popup-btn theme-button">System
+            Theme</button>
         </div>
       </div>
     </div>
