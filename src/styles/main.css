@@ -1074,6 +1074,7 @@ canvas * {
     border-radius: 100%;
     left: calc(var(--posX) - 7px);
     top: calc(var(--posY) - 7px);
+    transform-origin: center;
     cursor: grab;
     transform: translate(0px, 0px);
     transition: width 0.3s, height 0.3s, transform 0.3s;
@@ -1939,7 +1940,7 @@ div[id^='alrt-main'] {
 }
 
 #splashTitle {
-    color: var(--importantText);
+    color: var(--textMain);
     font-size: 75px;
     font-family: 'Space Grotesk';
     font-weight: 700;

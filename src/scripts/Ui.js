@@ -205,3 +205,13 @@ window.closeSplash = () => {
 		document.getElementById("splash").classList.add("hidden");
 	}, 1000);
 };
+
+
+function share() {
+	var data = {
+		title: 'MDN',
+		text: 'Learn web development on MDN!',
+		url: 'https://developer.mozilla.org'
+	  }
+	navigator.share(data)
+}
