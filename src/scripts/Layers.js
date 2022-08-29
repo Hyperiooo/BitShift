@@ -554,7 +554,9 @@ function createLayer(n, data, settings) {
 	var wrap = document.createElement("div");
 	wrap.classList.add("layer-wrap");
 	wrap.id = "l-" + id;
-	wrap.onclick = (e) => {
+	wrap.onpointerup = function (e) {
+		e.preventDefault();
+		console.log("pointer");
 		if (e.target == wrap) setLayer(id);
 	};
 	var previewWrapper = document.createElement("div");
@@ -644,7 +646,9 @@ function newLayer(width, height) {
 	var wrap = document.createElement("div");
 	wrap.classList.add("layer-wrap");
 	wrap.id = "l-" + id;
-	wrap.onclick = (e) => {
+	wrap.onpointerup = function (e) {
+		e.preventDefault();
+		console.log("pointer");
 		if (e.target == wrap) setLayer(id);
 	};
 	var preview = document.createElement("canvas");
@@ -723,6 +727,7 @@ function clearLayers() {
 }
 
 function setLayer(id, setColor) {
+	//notify.log("asdf");
 	layer = layers.find((obj) => {
 		return obj.id == id;
 	});
