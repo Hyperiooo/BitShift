@@ -87,11 +87,11 @@ class Canvas {
 			smoothScroll: false,
 			initialX:
 				this.width / 2 -
-				(this.canvasParent.offsetWidth / 2 - this.width / 2) /
+				(this.canvasParent.offsetWidth / 2) /
 					settings.ui.canvasScale,
 			initialY:
 				this.height / 2 -
-				(this.canvasParent.offsetHeight / 2 - this.height / 2) /
+				(this.canvasParent.offsetHeight / 2) /
 					settings.ui.canvasScale,
 			initialZoom: settings.ui.canvasScale,
 			zoomSpeed: 0.15,

@@ -113,7 +113,7 @@
         <span class="item" onclick="openGallery()">
           <i class="hi-cloud-fill"></i>
         </span>
-        <span class="item" onclick="openGallery()">
+        <span class="item" onclick="openSettingsWindow()">
           <i class="hi-settings-fill"></i>
         </span>
       </div>
@@ -186,7 +186,7 @@
       </div>
     </div>
   </div>
-  <div class="window-wrap window-closed">
+  <div id="window-settings" class="window-wrap window-closed">
     <div class="window-content">
       <div class="window-sidebar">
         <h1>Settings</h1>
@@ -220,7 +220,7 @@
       </div>
       <div class="window-header">
         <h1>General</h1>
-        <button class="window-close">
+        <button class="window-close" onclick="closeSettingsWindow()">
           <i class="hi-x-large-line"></i>
         </button>
       </div>

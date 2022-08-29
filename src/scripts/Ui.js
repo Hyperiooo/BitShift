@@ -215,3 +215,14 @@ function share() {
 	  }
 	navigator.share(data)
 }
+
+
+//replace when you have a functioning window system
+function openSettingsWindow() {
+	document.getElementById("window-settings").classList.remove("window-closed")
+}
+
+function closeSettingsWindow() {
+	document.getElementById("window-settings").classList.add("window-closed")
+
+}

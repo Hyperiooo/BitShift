@@ -2030,7 +2030,7 @@ div[id^='alrt-main'] {
     left: 0;
     z-index: 99999;
     background: var(--windowT);
-    animation: window-blur 0.3s linear;
+    animation: window-blur 0.1s linear;
     animation-fill-mode: forwards
 }
 
@@ -2052,11 +2052,13 @@ div[id^='alrt-main'] {
 @keyframes window-blur-out {
     0% {
         backdrop-filter: blur(5px);
+        -webkit-backdrop-filter: blur(5px);
         opacity: 1;
     }
 
     100% {
         backdrop-filter: blur(0px);
+        -webkit-backdrop-filter: blur(0px);
         opacity: 0;
     }
 }
@@ -2199,6 +2201,6 @@ div[id^='alrt-main'] {
 
 .window-closed {
     pointer-events: none;
-    animation: window-blur-out 0.3s linear;
+    animation: window-blur-out 0.1s linear;
     animation-fill-mode: forwards
 }
