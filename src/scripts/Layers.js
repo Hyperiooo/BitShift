@@ -6,7 +6,11 @@ function toggleLayerMenu() {
 		.classList.toggle("tool-active");
 }
 var container = document.querySelector("#layer-main");
-sorter = new dragSort(container, "layer-wrap");
+sorter = new dragSort(
+	container,
+	"layer-wrap",
+	document.getElementById("layer-main")
+);
 
 var layers = [];
 
@@ -79,19 +83,22 @@ function dragSort(container, handleClass, scrollElement = null) {
 			if (targetElement.parentElement === container) break;
 			targetElement = targetElement.parentElement;
 		}
+		event.preventDefault();
 
 		function initDragging() {
 			if (dragging) return;
 			dragging = true;
 
+			console.log(targetElement);
+
 			initIntersectionState();
 
 			initFloatingItem(targetElement, event.clientX, event.clientY);
 
-			document.addEventListener("pointermove", userMoved, { passive: true });
-			document.addEventListener("pointerup", userReleased, { passive: true });
+			document.addEventListener("pointermove", userMoved, { passive: false });
+			document.addEventListener("pointerup", userReleased, { passive: false });
 			document.addEventListener("pointercancel", userReleased, {
-				passive: true,
+				passive: false,
 			});
 			document.addEventListener("pointerleave", userReleased);
 
@@ -101,11 +108,11 @@ function dragSort(container, handleClass, scrollElement = null) {
 			container.classList.add("active");
 			targetElement.classList.add("moving");
 		}
-
 		timedStart(container, event.clientX, event.clientY, 400, initDragging);
 	}
 
 	function userMoved(event) {
+		event.preventDefault();
 		console.log("move");
 
 		lastClientY = event.clientY;
@@ -425,6 +432,7 @@ function dragSort(container, handleClass, scrollElement = null) {
 
 	function getScrollableArea() {
 		if (scrollElement === window) {
+			notify.log("a");
 			return document.documentElement.clientHeight;
 		} else {
 			return scrollElement.getBoundingClientRect().height;

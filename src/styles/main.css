@@ -1659,12 +1659,6 @@ input {
     transition: all 0.1s ease-out;
 }
 
-.moving {
-    background: red;
-    transform: scale(80%, 80%) translate(var(--x), var(--y));
-    transition: 0.3s transform;
-}
-
 #layer-main::-webkit-scrollbar {
     width: 22px;
     border-radius: 9px;
@@ -1735,6 +1729,15 @@ input {
     transform: scale(var(--s), var(--s)) translateY(var(--y));
     transition: background 0.3s;
     touch-action: none;
+}
+
+.potentiallyMoving {
+    background: red !important;
+}
+
+.moving {
+    transform: scale(80%, 80%) translate(var(--x), var(--y));
+    transition: 0.3s transform;
 }
 
 .layer-active {
