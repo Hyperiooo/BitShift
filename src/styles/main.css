@@ -1734,6 +1734,7 @@ input {
     align-items: center;
     transform: scale(var(--s), var(--s)) translateY(var(--y));
     transition: background 0.3s;
+    touch-action: none;
 }
 
 .layer-active {
