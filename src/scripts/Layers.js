@@ -84,6 +84,7 @@ function dragSort(container, handleClass, scrollElement = null) {
 			targetElement = targetElement.parentElement;
 		}
 		event.preventDefault();
+		event.stopPropagation()
 
 		function initDragging() {
 			if (dragging) return;

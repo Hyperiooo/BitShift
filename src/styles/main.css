@@ -506,7 +506,6 @@ html {
 #layers-wrap {
     position: absolute;
     display: block !important;
-    touch-action: none;
     image-rendering: -moz-crisp-edges;
     image-rendering: -webkit-crisp-edges;
     image-rendering: pixelated;
@@ -1728,11 +1727,11 @@ input {
     align-items: center;
     transform: scale(var(--s), var(--s)) translateY(var(--y));
     transition: background 0.3s;
-    touch-action: none;
 }
 
 .potentiallyMoving {
     background: red !important;
+    overflow-y: hidden;
 }
 
 .moving {
