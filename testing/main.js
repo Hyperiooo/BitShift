@@ -31,12 +31,6 @@ class LayerElement {
 					(boundingRect.top + boundingRect.bottom) / 2 -
 						startingTouchPosition[1],
 				];
-				notify.log(
-					"x: " +
-						distanceBetweenPointerAndCenterOfBoundingRect[0] +
-						" y: " +
-						distanceBetweenPointerAndCenterOfBoundingRect[1]
-				);
 				inAnimating = true;
 				requestAnimationFrame(animateIn);
 			}, 400);
@@ -46,6 +40,7 @@ class LayerElement {
 			moving = false;
 			_self.layerElement.classList.remove("moving");
 			endAnimating = true;
+			inAnimating = false;
 			requestAnimationFrame(animateOut);
 			deltaMovingX = 0;
 			deltaMovingY = 0;
@@ -57,6 +52,8 @@ class LayerElement {
 		var boundingRect = this.layerElement.getBoundingClientRect();
 		var distanceBetweenPointerAndCenterOfBoundingRect = [0, 0];
 		var centerCorrection = [0, 0];
+		var scale = 1;
+		var targetScale = 0.8;
 		function animateOut() {
 			//gets current value of offsetx and offsety & converts to integers, pruning px
 			var offsetX = parseInt(
@@ -65,12 +62,15 @@ class LayerElement {
 			var offsetY = parseInt(
 				_self.layerElement.style.getPropertyValue("--offsetY").replace("px", "")
 			);
+			scale = lerp(scale, 1, 0.25)
 			//lerp between offsetx and offset y and 0
 			offsetX = lerp(offsetX, 0, 0.25);
 			offsetY = lerp(offsetY, 0, 0.25);
 			//sets offsetx and offsety to new values
 			_self.layerElement.style.setProperty("--offsetX", `${offsetX}px`);
 			_self.layerElement.style.setProperty("--offsetY", `${offsetY}px`);
+
+			_self.layerElement.style.setProperty("--s", `${scale}`);
 			//if theres a change in offset, keep animating
 			if (Math.abs(offsetX) < 0.01 && Math.abs(offsetY) < 0.01) {
 				endAnimating = false;
@@ -82,6 +82,7 @@ class LayerElement {
 		}
 
 		function animateIn() {
+			if(!inAnimating) return
 			//gets current value of offsetx and offsety & converts to integers, pruning px
 			//lerp between offsetx and offset y and 0
 			centerCorrection[0] = lerp(
@@ -94,6 +95,11 @@ class LayerElement {
 				-distanceBetweenPointerAndCenterOfBoundingRect[1],
 				0.25
 			);
+
+			scale = lerp(
+				scale,targetScale,
+				0.25
+			);
 			//sets offsetx and offsety to new values
 			_self.layerElement.style.setProperty(
 				"--offsetX",
@@ -102,6 +108,10 @@ class LayerElement {
 			_self.layerElement.style.setProperty(
 				"--offsetY",
 				`${centerCorrection[1] + deltaMovingY}px`
+			);
+			_self.layerElement.style.setProperty(
+				"--s",
+				`${scale}`
 			);
 			//if theres a change in offset, keep animating
 			if (
@@ -123,7 +133,6 @@ class LayerElement {
 		let deltaMovingY = 0;
 		//on pointermove, if there is more than X threshold on the movement based on the startingtouchposition and the current touch position, then move the layer.
 		this.layerElement.onpointermove = function (e) {
-			notify.log(inAnimating);
 			let currentTouchPosition = [e.clientX, e.clientY];
 			deltaMovingX = currentTouchPosition[0] - startingTouchPosition[0];
 			deltaMovingY = currentTouchPosition[1] - startingTouchPosition[1];
@@ -142,7 +151,6 @@ class LayerElement {
 			deltaPosition[0] += Math.abs(deltaMovingX);
 			deltaPosition[1] += Math.abs(deltaMovingY);
 			if (deltaPosition[0] > 20 || deltaPosition[1] > 20) {
-				notify.log("failed hold" + _self.layer.name);
 				clearTimeout(timeout);
 			}
 		};
