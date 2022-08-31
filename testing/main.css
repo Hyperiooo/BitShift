@@ -37,9 +37,10 @@ body {
 }
 
 #layer-main {
-    width: 500px;
-    height: 100vh;
-    position: relative;
+    width: 300px;
+    height: 600px;
+    top:100px;
+    position: fixed;
     overflow-y: scroll;
     overflow-x: hidden;
     background: gray;
@@ -53,7 +54,7 @@ body {
     background: darkslategray;
     color: white;
     width: calc(100% - 10px);
-    height: 100px;
+    height: 55px;
     margin-bottom: 5px;
     user-select: none;
     -webkit-user-select: none;
