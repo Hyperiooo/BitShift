@@ -38,6 +38,7 @@ class LayerElement {
         ];
         inAnimating = true;
         pickedUp = true;
+        beginningScroll = layerMain.scrollTop
         requestAnimationFrame(animateIn);
       }, 400);
     };
@@ -48,7 +49,8 @@ class LayerElement {
       
       _self.layerElement.classList.remove("moving");
       _self.layerElement.classList.add("movingIndex");
-      
+      animateScroll = false
+      clearInterval(animateScrollInterval)
       endAnimating = true;
       centerAnimating = false;
       movingLayer = false;
@@ -73,6 +75,9 @@ class LayerElement {
     var pickedUp = false;
     var movingLayer = false;
     var moveThreshold = 70; //threshold before the layer thinks that its tryna be moved
+    var scrollPercentage = 0.25
+    var maxScrollSpeed = 10
+    var beginningScroll = 0
     function animateOut() {
       //gets current value of offsetx and offsety & converts to integers, pruning px
       var offsetX = parseInt(
@@ -136,7 +141,7 @@ class LayerElement {
       );
       _self.layerElement.style.setProperty(
         "--offsetY",
-        `${centerCorrection[1] + deltaMovingY}px`
+        `${centerCorrection[1] + deltaMovingY  + (layerMain.scrollTop - beginningScroll)}px`
       );
       scale = lerp(scale, smallScale, 0.1);
       //sets offsetx and offsety to new values
@@ -162,6 +167,18 @@ class LayerElement {
     let deltaMovingX = 0;
     let deltaMovingY = 0;
     let deltaMovingLayer = [0, 0];
+    var scrollAmt = 0
+    var animateScroll = false;
+    var animateScrollInterval;
+    var scrollTiming = 10
+    function animateScrolling() {
+      layerMain.scrollBy({top: maxScrollSpeed * scrollAmt})
+      notify.log(beginningScroll - layerMain.scrollTop)
+      _self.layerElement.style.setProperty(
+        "--offsetY",
+        `${deltaMovingY + centerCorrection[1] + (layerMain.scrollTop - beginningScroll)}px`
+      );
+    }
     //on pointermove, if there is more than X threshold on the movement based on the startingtouchposition and the current touch position, then move the layer.
     this.layerElement.onpointermove = function (e) {
       let currentTouchPosition = [e.clientX, e.clientY];
@@ -176,7 +193,29 @@ class LayerElement {
       if (pickedUp) {
         if (movingLayer) {
           if (moving) {
-            notify.log((e.clientY - _self.containerRect.top) / (_self.containerRect.bottom - _self.containerRect.top))
+            var heightPercentage = (e.clientY - _self.containerRect.top) / (_self.containerRect.bottom - _self.containerRect.top)
+            scrollAmt = 0
+            if(heightPercentage < scrollPercentage) {
+              if(animateScroll == false) {
+                animateScrollInterval = setInterval(() => {
+                  animateScrolling()
+                }, scrollTiming);
+              }
+              animateScroll = true
+              scrollAmt = (1 - heightPercentage/scrollPercentage) * -1
+              
+            }else if(heightPercentage > 1 - scrollPercentage) {
+              if(animateScroll == false) {
+                animateScrollInterval = setInterval(() => {
+                  animateScrolling()
+                }, scrollTiming);
+              }
+              animateScroll = true
+              scrollAmt = ((heightPercentage - (1 - scrollPercentage)) / scrollPercentage)
+            }else {
+              animateScroll = false;
+              clearInterval(animateScrollInterval)
+            }
             //set offset variable to deltaY
             _self.layerElement.style.setProperty(
               "--offsetX",
@@ -184,7 +223,7 @@ class LayerElement {
             );
             _self.layerElement.style.setProperty(
               "--offsetY",
-              `${deltaMovingY + centerCorrection[1]}px`
+              `${deltaMovingY + centerCorrection[1] + (layerMain.scrollTop - beginningScroll)}px`
             );
             return;
           }
