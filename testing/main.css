@@ -2,15 +2,18 @@ body {
     height: 100vh;
     margin: 0;
     overflow: hidden;
+    background-color: var(--canvasBg);
 }
+
 #debug {
     position: absolute;
     top: 100px;
     right: 5px;
-    height:100vh;
-    width:500px;
-    background:lightblue
+    height: 100vh;
+    width: 500px;
+    background: lightblue
 }
+
 :root {
     --windowT: #00000081;
     --windowMain: #212125;
@@ -39,19 +42,20 @@ body {
 #layer-main {
     width: 300px;
     height: 600px;
-    top:100px;
+    top: 100px;
     position: fixed;
     overflow-y: scroll;
     overflow-x: hidden;
-    background: gray;
+    background: var(--bgMainT);
 }
 
 .layer-wrap {
     --offsetX: 0px;
     --offsetY: 0px;
+    --layerMovementOffset: 0px;
     --s: 1;
     --top: 0px;
-    background: darkslategray;
+    background: var(--bgLight);
     color: white;
     width: calc(100% - 10px);
     height: 55px;
@@ -60,19 +64,38 @@ body {
     -webkit-user-select: none;
     position: absolute;
     margin: 5px;
-    top: calc(var(--top) + var(--offsetY));
+    top: calc(var(--top) + var(--offsetY) - var(--layerMovementOffset));
     left: var(--offsetX);
     transform: scale(var(--s), var(--s));
     transform-origin: center;
-    transition: box-shadow 0.1s;
+    transition: box-shadow 0.1s, top 0.2s;
     z-index: 0;
     border-radius: 5px;
 }
 
 .moving {
     box-shadow: 0px 5px 25px rgba(0, 0, 0, 0.25);
+    transition: box-shadow 0.1s;
 }
 
 .movingIndex {
     z-index: 9999999 !important;
+    transition: box-shadow 0.1s;
+}
+
+#layer-position-preview-horizontal {
+    position: absolute;
+    z-index: -999;
+    top: 0;
+    left: 5px;
+    width: calc(100% - 10px);
+    background: var(--important);
+    height: 8px;
+    border-radius: 60px;
+    transition: top 0.2s, opacity 0.2s;
+    opacity: 0;
+}
+
+.layer-position-preview-visible {
+    opacity: 1 !important;
 }
