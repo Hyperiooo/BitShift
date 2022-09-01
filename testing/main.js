@@ -330,7 +330,7 @@ class LayerElement {
 				2
 		);
 		if (this.endAnimating) return;
-		previewLayerPosition(currentIndex);
+		previewLayerPosition(currentIndex + ((currentIndex < this.index) ? 0 : 1 ), currentIndex < this.index);
 	}
 	updateLayerOrder() {
 		var moveToIndex =
@@ -383,10 +383,10 @@ function updateNormalTops() {
 	});
 }
 
-function previewLayerPosition(index) {
+function previewLayerPosition(index, o) {
 	previewBarHorizontal.classList.add("layer-position-preview-visible");
 	previewBarHorizontal.style.top = `${
-		clamp(layerElements.length - index - 1, 0, layerElements.length - 1) *
+		clamp(layerElements.length - index - 1 + (o ? 0 : 1), 0, layerElements.length - 1) *
 			(layerHeight + layerMargin) +
 		18
 	}px`;
