@@ -78,7 +78,7 @@ class LayerElement {
 		var pickedUp = false;
 		var movingLayer = false;
 		var moveThreshold = 70; //threshold before the layer thinks that its tryna be moved
-		var scrollPercentage = 0.25;
+		var scrollPercentage = 0.2;
 		var maxScrollSpeed = 10;
 		var beginningScroll = 0;
 		function animateOut() {

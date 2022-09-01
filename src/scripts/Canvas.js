@@ -87,12 +87,10 @@ class Canvas {
 			smoothScroll: false,
 			initialX:
 				this.width / 2 -
-				(this.canvasParent.offsetWidth / 2) /
-					settings.ui.canvasScale,
+				this.canvasParent.offsetWidth / 2 / settings.ui.canvasScale,
 			initialY:
 				this.height / 2 -
-				(this.canvasParent.offsetHeight / 2) /
-					settings.ui.canvasScale,
+				this.canvasParent.offsetHeight / 2 / settings.ui.canvasScale,
 			initialZoom: settings.ui.canvasScale,
 			zoomSpeed: 0.15,
 			onDoubleClick: function (e) {
@@ -105,6 +103,8 @@ class Canvas {
 				return !(e.touches.length > 1);
 			},
 			zoomDoubleClickSpeed: 1,
+			maxZoom: 200,
+			minZoom: 0.1,
 		});
 		var _self = this;
 		this.panzoom.on("transform", function (e) {
