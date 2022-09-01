@@ -416,29 +416,39 @@ var layerMain = document.getElementById("layer-main");
 var previewBarHorizontal = document.getElementById(
 	"layer-position-preview-horizontal"
 );
+var debug = document.getElementById("debug")
 function createLayer(name) {
-	layers.unshift({ name: name, index: layers.length });
+	debug.innerHTML += layers.length
+	var layer = { name: name, index: layers.length, id: randomString(8) }
+	layers.unshift(layer);
+	 setTimeout(() => {
+		layerElements.push(new LayerElement(layer));
+		
+	 }, 1);
+}
+function newLayer() {
+	createLayer("Layer " + layers.length)
+	setTimeout(() => {
+		
+		addAllLayers()
+	}, 100);
 }
 function createMultipleLayers(l) {
+	layerElements = []
+	layerMain.querySelectorAll(".layer-wrap").forEach((e) => {
+		e.remove();
+	});
 	for (let i = 0; i < l; i++) {
 		createLayer("Layer " + i);
 	}
-	setTimeout(() => {
-		addAllLayers();
-	}, 100);
 }
 let layerElements = [];
 createMultipleLayers(80);
 var layerHeight = 55;
 var layerMargin = 5;
 function addAllLayers() {
-	layerMain.querySelectorAll(".layer-wrap").forEach((e) => {
-		e.remove();
-	});
 	for (let i = 0; i < layers.length; i++) {
-		let layer = layers[i];
-		layers[i].id = randomString(10);
-		layerElements.push(new LayerElement(layer));
+		
 	}
 }
 

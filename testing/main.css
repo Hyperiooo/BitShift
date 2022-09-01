@@ -99,3 +99,8 @@ body {
 .layer-position-preview-visible {
     opacity: 1 !important;
 }
+
+button {
+    width: 200px;
+    margin: auto;
+}
