@@ -52,7 +52,7 @@ export async function authChangeHandler(signedIn, user) {
 		}
 	} else if (!signedIn) {
 		console.log("signed out");
-		window.location.href = "login";
+		//window.location.href = "login";
 		isSignedIn = false;
 		userObj = null;
 	}

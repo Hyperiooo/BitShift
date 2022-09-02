@@ -1,7 +1,7 @@
-var layers = [];
 
 class LayerElement {
 	constructor(layer) {
+		layers.unshift(this)
 		this.layer = layer;
 		this.index = layer.index;
 		this.id = layer.id;
@@ -15,8 +15,8 @@ class LayerElement {
 		this.layerElement.style.setProperty("--offsetY", `0px`);
 		this.previewOffset = 0;
 		this.layerTop =
-			(layers.length - this.layer.index - 1) * layerHeight +
-			layerMargin * (layers.length - this.layer.index - 1); //the height that the element would be if it werent moving
+			(layers.length - this.index - 1) * layerHeight +
+			layerMargin * (layers.length - this.index - 1); //the height that the element would be if it werent moving
 		this.absoluteTop = this.layerTop; //the current absolute height of the element, including everything
 
 		this.containerRect = layerMain.getBoundingClientRect();
@@ -64,6 +64,10 @@ class LayerElement {
 			if (!pickedUp) {
 				//it can be assumed that the element was sohrt tapped
 				setLayer(_self.id);
+			}
+			if(pickedUp && !movingLayer) {
+				//addLayerToSelection
+				_self.layerElement.classList.add("layer-selection")
 			}
 			pickedUp = false;
 			movingLayer = false;
@@ -327,14 +331,9 @@ class LayerElement {
 	}
 	updateLayerPosition() {
 		var currentIndex =
-			layerElements.length -
+			layers.length -
 			Math.floor(this.absoluteTop / (layerHeight + layerMargin)) -
 			2;
-		notify.log(
-			layerElements.length -
-				Math.floor(this.absoluteTop / (layerHeight + layerMargin)) -
-				2
-		);
 		if (this.endAnimating) return;
 		previewLayerPosition(
 			currentIndex + (currentIndex < this.index ? 0 : 1),
@@ -343,40 +342,27 @@ class LayerElement {
 	}
 	updateLayerOrder() {
 		var moveToIndex =
-			layerElements.length -
+			layers.length -
 			Math.floor(this.absoluteTop / (layerHeight + layerMargin)) -
 			2;
 		arraymove(
 			layers,
-			layerElements.indexOf(this),
-			layerElements.length - moveToIndex - 1
-		);
-		arraymove(
-			layerElements,
-			layerElements.indexOf(this),
-			layerElements.length - moveToIndex - 1
-		);
-		console.log(
-			this,
-			layerElements,
-			layerElements.indexOf(this),
-			layerElements.length - moveToIndex - 1
+			layers.indexOf(this),
+			layers.length - moveToIndex - 1
 		);
 		this.previousIndex = this.index;
 		this.updateIndices();
 		updateNormalTops();
-		layers[layerElements.indexOf(this)];
 	}
 	updateIndices() {
-		for (var i = 0; i < layerElements.length; i++) {
-			layerElements[i].index = layerElements.length - i - 1;
+		for (var i = 0; i < layers.length; i++) {
 			layers[i].index = layers.length - i - 1;
 		}
 	}
 	updateNormalTop() {
 		this.layerTop =
-			(layers.length - this.layer.index - 1) * layerHeight +
-			layerMargin * (layers.length - this.layer.index - 1);
+			(layers.length - this.index - 1) * layerHeight +
+			layerMargin * (layers.length - this.index - 1);
 		this.absoluteTop = this.layerTop + layerMain.scrollTop;
 		this.layerElement.style.setProperty("--top", `${this.layerTop}px`);
 		if (!this.moving) return;
@@ -392,7 +378,7 @@ class LayerElement {
 	}
 }
 function updateNormalTops() {
-	layerElements.forEach((e) => {
+	layers.forEach((e) => {
 		e.updateNormalTop();
 	});
 }
@@ -401,32 +387,32 @@ function previewLayerPosition(index, o) {
 	previewBarHorizontal.classList.add("layer-position-preview-visible");
 	previewBarHorizontal.style.top = `${
 		clamp(
-			layerElements.length - index - 1 + (o ? 0 : 1),
+			layers.length - index - 1 + (o ? 0 : 1),
 			0,
-			layerElements.length - 1
+			layers.length - 1
 		) *
 			(layerHeight + layerMargin) +
 		18
 	}px`;
-	layerElements.forEach((e) => {
+	layers.forEach((e) => {
 		e.previewLayerPosition(index);
 	});
 }
 
 function clearPreviewLayerPosition() {
-	layerElements.forEach((e) => {
+	layers.forEach((e) => {
 		e.unshiftLayer();
 	});
 }
 
 function shiftAllLayers(index) {
-	layerElements.forEach((e) => {
+	layers.forEach((e) => {
 		e.shiftToNewLayerPosition(index);
 	});
 }
 function unshiftAllLayers(index) {
 	previewBarHorizontal.classList.remove("layer-position-preview-visible");
-	layerElements.forEach((e) => {
+	layers.forEach((e) => {
 		e.unshiftLayer(index);
 	});
 }
@@ -436,12 +422,8 @@ var previewBarHorizontal = document.getElementById(
 );
 var debug = document.getElementById("debug");
 function createLayer(name) {
-	debug.innerHTML += layers.length;
 	var layer = { name: name, index: layers.length, id: randomString(8) };
-	var layerElement = new LayerElement(layer);
-	layer.layerElement = layerElement.layerElement;
-	layers.unshift(layer);
-	layerElements.unshift(layerElement);
+	new LayerElement(layer);
 	setTimeout(() => {
 		updateNormalTops();
 		setLayer(layer.id);
@@ -449,9 +431,6 @@ function createLayer(name) {
 }
 function newLayer() {
 	createLayer("Layer " + layers.length);
-	setTimeout(() => {
-		addAllLayers();
-	}, 100);
 }
 
 function setLayer(id) {
@@ -469,7 +448,7 @@ function setLayer(id) {
 	}
 }
 function createMultipleLayers(l) {
-	layerElements = [];
+	layers = [];
 	layerMain.querySelectorAll(".layer-wrap").forEach((e) => {
 		e.remove();
 	});
@@ -477,13 +456,10 @@ function createMultipleLayers(l) {
 		createLayer("Layer " + i);
 	}
 }
-let layerElements = [];
+//let layers = [];
 createMultipleLayers(80);
 var layerHeight = 55;
 var layerMargin = 5;
-function addAllLayers() {
-	for (let i = 0; i < layers.length; i++) {}
-}
 
 var notify = new Alrt({
 	position: "top-center",

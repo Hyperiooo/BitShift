@@ -6,6 +6,8 @@ body {
 }
 
 #debug {
+    pointer-events: none;
+    display: none;
     position: absolute;
     top: 100px;
     right: 5px;
@@ -80,6 +82,9 @@ body {
 
 .layer-active {
     background: var(--important);
+}
+.layer-selection {
+    background: var(--importantT);
 }
 
 @keyframes layer-wrap-anim {

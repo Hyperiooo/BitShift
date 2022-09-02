@@ -587,6 +587,7 @@ canvas * {
     height: var(--canvY);
     z-index: 9999999999999999999999;
     mix-blend-mode: difference;
+    user-select: none;
 }
 
 #selectionSVG {
@@ -1778,6 +1779,7 @@ canvas {
     image-rendering: -webkit-crisp-edges;
     image-rendering: pixelated;
     image-rendering: crisp-edges;
+    user-select: none;
 }
 
 .layer-preview canvas {
