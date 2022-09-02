@@ -4,6 +4,7 @@ class LayerElement {
 	constructor(layer) {
 		this.layer = layer;
 		this.index = layer.index;
+		this.id = layer.id;
 
 		this.previousIndex = this.index;
 		console.log("as");
@@ -24,7 +25,6 @@ class LayerElement {
 		this.layerElement.innerHTML = this.layer.name;
 		var _self = this;
 		this.layerElement.onpointerdown = function (e) {
-			console.log(e.target);
 			//sets startingTouchPosition to mouse position if there is mouse position, or touch position if theres a touch position. array of [x,y]
 			startingTouchPosition = [e.clientX, e.clientY];
 			timeout = setTimeout(function () {
@@ -54,13 +54,19 @@ class LayerElement {
 			clearInterval(animateScrollInterval);
 			_self.endAnimating = true;
 			centerAnimating = false;
-			movingLayer = false;
 			inAnimating = false;
-			pickedUp = false;
-			unshiftAllLayers();
-			clearPreviewLayerPosition();
+			if (movingLayer) {
+				unshiftAllLayers();
+				clearPreviewLayerPosition();
+				_self.updateLayerOrder();
+			}
 			requestAnimationFrame(animateOut);
-			_self.updateLayerOrder();
+			if (!pickedUp) {
+				//it can be assumed that the element was sohrt tapped
+				setLayer(_self.id);
+			}
+			pickedUp = false;
+			movingLayer = false;
 			deltaMovingX = 0;
 			deltaMovingY = 0;
 			centerCorrection = [0, 0];
@@ -330,7 +336,10 @@ class LayerElement {
 				2
 		);
 		if (this.endAnimating) return;
-		previewLayerPosition(currentIndex + ((currentIndex < this.index) ? 0 : 1 ), currentIndex < this.index);
+		previewLayerPosition(
+			currentIndex + (currentIndex < this.index ? 0 : 1),
+			currentIndex < this.index
+		);
 	}
 	updateLayerOrder() {
 		var moveToIndex =
@@ -347,11 +356,16 @@ class LayerElement {
 			layerElements.indexOf(this),
 			layerElements.length - moveToIndex - 1
 		);
+		console.log(
+			this,
+			layerElements,
+			layerElements.indexOf(this),
+			layerElements.length - moveToIndex - 1
+		);
 		this.previousIndex = this.index;
 		this.updateIndices();
 		updateNormalTops();
 		layers[layerElements.indexOf(this)];
-		console.log(layers[layerElements.indexOf(this)]);
 	}
 	updateIndices() {
 		for (var i = 0; i < layerElements.length; i++) {
@@ -386,7 +400,11 @@ function updateNormalTops() {
 function previewLayerPosition(index, o) {
 	previewBarHorizontal.classList.add("layer-position-preview-visible");
 	previewBarHorizontal.style.top = `${
-		clamp(layerElements.length - index - 1 + (o ? 0 : 1), 0, layerElements.length - 1) *
+		clamp(
+			layerElements.length - index - 1 + (o ? 0 : 1),
+			0,
+			layerElements.length - 1
+		) *
 			(layerHeight + layerMargin) +
 		18
 	}px`;
@@ -416,25 +434,42 @@ var layerMain = document.getElementById("layer-main");
 var previewBarHorizontal = document.getElementById(
 	"layer-position-preview-horizontal"
 );
-var debug = document.getElementById("debug")
+var debug = document.getElementById("debug");
 function createLayer(name) {
-	debug.innerHTML += layers.length
-	var layer = { name: name, index: layers.length, id: randomString(8) }
+	debug.innerHTML += layers.length;
+	var layer = { name: name, index: layers.length, id: randomString(8) };
+	var layerElement = new LayerElement(layer);
+	layer.layerElement = layerElement.layerElement;
 	layers.unshift(layer);
-	 setTimeout(() => {
-		layerElements.push(new LayerElement(layer));
-		
-	 }, 1);
+	layerElements.unshift(layerElement);
+	setTimeout(() => {
+		updateNormalTops();
+		setLayer(layer.id);
+	}, 1);
 }
 function newLayer() {
-	createLayer("Layer " + layers.length)
+	createLayer("Layer " + layers.length);
 	setTimeout(() => {
-		
-		addAllLayers()
+		addAllLayers();
 	}, 100);
 }
+
+function setLayer(id) {
+	layer = layers.find((obj) => {
+		return obj.id == id;
+	});
+	document.querySelectorAll(".layer-active").forEach((e) => {
+		e.classList.remove("layer-active");
+	});
+	if (layer) {
+		layer.layerElement.classList.add("layer-active");
+		activeLayer = layer;
+		//board.ctx = layer.ctx;
+		//board.setColor(board.color);
+	}
+}
 function createMultipleLayers(l) {
-	layerElements = []
+	layerElements = [];
 	layerMain.querySelectorAll(".layer-wrap").forEach((e) => {
 		e.remove();
 	});
@@ -447,9 +482,7 @@ createMultipleLayers(80);
 var layerHeight = 55;
 var layerMargin = 5;
 function addAllLayers() {
-	for (let i = 0; i < layers.length; i++) {
-		
-	}
+	for (let i = 0; i < layers.length; i++) {}
 }
 
 var notify = new Alrt({
