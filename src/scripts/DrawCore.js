@@ -216,10 +216,10 @@ window.onload = function () {
 		projName = data.name;
 		document.getElementById("topbar-project-name").value = data.name;
 		initializeGestures();
-		setUpSelectionSVG();
 	} else {
 		newProject();
 	}
+	setUpSelectionSVG();
 	populatePresets();
 	updateCursor();
 	createToolUI();
