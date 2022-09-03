@@ -963,16 +963,7 @@ class Canvas {
 		this.pctx.clearRect(0, 0, this.width, this.height);
 	}
 	pDraw(coord) {
-		this.pctx.fillStyle =
-			"rgba(" +
-			this.color[0] +
-			"," +
-			this.color[1] +
-			"," +
-			this.color[2] +
-			"," +
-			this.color[3] +
-			")";
+		this.pctx.fillStyle = this.color.hex;
 		this.pctx.globalCompositeOperation = "source-over";
 		this.previewcanvas.style.opacity = 1;
 		if (Tools.rectangleMarquee || Tools.ellipseMarquee) {

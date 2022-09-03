@@ -83,9 +83,6 @@ body {
 .layer-active {
     background: var(--important);
 }
-.layer-selection {
-    background: var(--importantT);
-}
 
 @keyframes layer-wrap-anim {
     0% {

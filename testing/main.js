@@ -1,7 +1,6 @@
-
 class LayerElement {
 	constructor(layer) {
-		layers.unshift(this)
+		layers.unshift(this);
 		this.layer = layer;
 		this.index = layer.index;
 		this.id = layer.id;
@@ -65,9 +64,9 @@ class LayerElement {
 				//it can be assumed that the element was sohrt tapped
 				setLayer(_self.id);
 			}
-			if(pickedUp && !movingLayer) {
+			if (pickedUp && !movingLayer) {
 				//addLayerToSelection
-				_self.layerElement.classList.add("layer-selection")
+				_self.layerElement.classList.add("layer-selection");
 			}
 			pickedUp = false;
 			movingLayer = false;
@@ -345,11 +344,7 @@ class LayerElement {
 			layers.length -
 			Math.floor(this.absoluteTop / (layerHeight + layerMargin)) -
 			2;
-		arraymove(
-			layers,
-			layers.indexOf(this),
-			layers.length - moveToIndex - 1
-		);
+		arraymove(layers, layers.indexOf(this), layers.length - moveToIndex - 1);
 		this.previousIndex = this.index;
 		this.updateIndices();
 		updateNormalTops();
@@ -386,11 +381,7 @@ function updateNormalTops() {
 function previewLayerPosition(index, o) {
 	previewBarHorizontal.classList.add("layer-position-preview-visible");
 	previewBarHorizontal.style.top = `${
-		clamp(
-			layers.length - index - 1 + (o ? 0 : 1),
-			0,
-			layers.length - 1
-		) *
+		clamp(layers.length - index - 1 + (o ? 0 : 1), 0, layers.length - 1) *
 			(layerHeight + layerMargin) +
 		18
 	}px`;
@@ -489,10 +480,6 @@ function lerp(v0, v1, t) {
 function clamp(val, min, max) {
 	return Math.min(Math.max(val, min), max);
 }
-Array.prototype.insert = function (index, ...items) {
-	this.splice(index, 0, ...items);
-};
-
 function arraymove(arr, fromIndex, toIndex) {
 	var element = arr[fromIndex];
 	arr.splice(fromIndex, 1);

@@ -588,6 +588,9 @@ canvas * {
     z-index: 9999999999999999999999;
     mix-blend-mode: difference;
     user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
 }
 
 #selectionSVG {
@@ -1215,12 +1218,17 @@ canvas * {
     cursor: pointer;
     margin: 0;
     float: left;
-    transition: opacity 0.3s;
+    transition: opacity 0.3s, transform 0.1s;
+    transition-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);
     display: flex;
     justify-content: center;
     align-items: center;
     background-size: contain;
     background-image: linear-gradient(to right, var(--color), var(--color)), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 9 9'%3E%3Cg fill='%23ffffff' fill-opacity='0.4'%3E%3Cpath fill-rule='evenodd' d='M 0 0 h 3 v 3 H 0 V 0 z m 3 3 h 3 v 3 H 3 V 3 z M 6 0 H 9 V 3 H 6 V 0 M 0 6 H 3 V 9 H 0 V 6 M 6 6 H 9 V 9 H 6 V 6'/%3E%3C/g%3E%3C/svg%3E"), linear-gradient(to right, #bababa, #bababa);
+}
+
+.palette-color:active {
+    transform: scale(0.8);
 }
 
 .palette-active {
@@ -1653,6 +1661,7 @@ input {
     margin: 0;
     height: calc(100% - 49px);
     overflow-x: hidden;
+    position: relative;
 }
 
 #layer-main.active>div {
@@ -1714,20 +1723,43 @@ input {
 }
 
 .layer-wrap {
+    --offsetX: 0px;
+    --offsetY: 0px;
+    --layerMovementOffset: 0px;
     --s: 1;
-    --y: 0px;
+    --top: 0px;
+    background: var(--bgLight);
+    color: var(--textMain);
     width: calc(100% - 8px);
     padding: 4px;
-    background: var(--bgLight);
     margin-bottom: 8px;
+    user-select: none;
+    -webkit-user-select: none;
     border-radius: 5px;
-    position: relative;
+    position: absolute;
     height: 55px;
-    display: flex;
-    justify-content: left;
-    align-items: center;
-    transform: scale(var(--s), var(--s)) translateY(var(--y));
-    transition: background 0.3s;
+    top: calc(var(--top) + var(--offsetY) - var(--layerMovementOffset));
+    left: var(--offsetX);
+    transform: scale(var(--s), var(--s));
+    transform-origin: center;
+    transition: box-shadow 0.1s, top 0.15s, opacity 0.2s, background 0.2s;
+    z-index: 0;
+    border-radius: 5px;
+    animation: layer-wrap-anim 0.2s;
+    animation-delay: 0.15s;
+    opacity: 0;
+    animation-direction: forward;
+    animation-fill-mode: forwards;
+}
+
+@keyframes layer-wrap-anim {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
 }
 
 .potentiallyMoving {
@@ -1735,17 +1767,40 @@ input {
     overflow-y: hidden;
 }
 
-.moving {
-    transform: scale(80%, 80%) translate(var(--x), var(--y));
-    transition: 0.3s transform;
+.movingIndex {
+    z-index: 9999999 !important;
+    transition: box-shadow 0.1s;
+}
+
+#layer-position-preview-horizontal {
+    position: absolute;
+    z-index: -999;
+    top: 0;
+    left: 5px;
+    width: calc(100% - 10px);
+    background: var(--important);
+    height: 8px;
+    border-radius: 60px;
+    transition: top 0.15s, opacity 0.2s;
+    opacity: 0;
+}
+
+.layer-position-preview-visible {
+    opacity: 1 !important;
 }
 
 .layer-active {
-    background: var(--importantT);
+    background: var(--important);
 }
 
-.layer-wrap:last-of-type {
-    margin-bottom: 0;
+.moving {
+    box-shadow: 0px 5px 25px rgba(0, 0, 0, 0.25);
+    background: var(--bgLight);
+    transition: box-shadow 0.1s, background 0.2s;
+}
+
+.layer-active.moving {
+    background: var(--importantT);
 }
 
 .layer-preview {
@@ -1780,6 +1835,9 @@ canvas {
     image-rendering: pixelated;
     image-rendering: crisp-edges;
     user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
 }
 
 .layer-preview canvas {
@@ -1799,6 +1857,9 @@ canvas {
     margin-left: 16px;
     color: var(--textDim);
     pointer-events: none;
+    position: absolute;
+    top: 18px;
+    left: 60px;
 }
 
 .layer-visibility {
@@ -1858,15 +1919,13 @@ canvas {
     mix-blend-mode: difference;
 }
 
-@supports (backdrop-filter: invert(1)) {
-    .invertBackground {
-        background: none;
-        mix-blend-mode: unset;
-        backdrop-filter: invert(1) contrast(10000) saturate(0);
+/*
+.invertBackground {
+    background: none;
+    mix-blend-mode: unset;
+    backdrop-filter: invert(1) contrast(10000) saturate(0);
         -webkit-backdrop-filter: invert(1) contrast(10000) saturate(0);
-    }
-}
-
+    }*/
 .bufferCanvas {
     z-index: 10000000000;
     position: absolute;
@@ -2038,7 +2097,7 @@ div[id^='alrt-main'] {
     height: 100vh;
     top: 0;
     left: 0;
-    z-index: 99999;
+    z-index: 999999999999999999999999;
     background: var(--windowT);
     animation: window-blur 0.1s linear;
     animation-fill-mode: forwards

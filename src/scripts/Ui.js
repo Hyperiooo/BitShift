@@ -166,7 +166,7 @@ function confirmNewProject() {
 	projName = project.name;
 
 	document.getElementById("topbar-project-name").value = projName;
-	newLayer(width, height);
+	newLayer();
 	initializeGestures();
 }
 
@@ -206,23 +206,20 @@ window.closeSplash = () => {
 	}, 1000);
 };
 
-
 function share() {
 	var data = {
-		title: 'MDN',
-		text: 'Learn web development on MDN!',
-		url: 'https://developer.mozilla.org'
-	  }
-	navigator.share(data)
+		title: "MDN",
+		text: "Learn web development on MDN!",
+		url: "https://developer.mozilla.org",
+	};
+	navigator.share(data);
 }
-
 
 //replace when you have a functioning window system
 function openSettingsWindow() {
-	document.getElementById("window-settings").classList.remove("window-closed")
+	document.getElementById("window-settings").classList.remove("window-closed");
 }
 
 function closeSettingsWindow() {
-	document.getElementById("window-settings").classList.add("window-closed")
-
+	document.getElementById("window-settings").classList.add("window-closed");
 }

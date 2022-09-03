@@ -56,19 +56,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono&family=Roboto:wght@400;500;600;700&display=swap"
     rel="stylesheet">
-  <script>window.addEventListener("scroll", (e) => {
-      e.preventDefault();
-      window.scrollTo(0, 0);
-    });
-    function preventDefault(e) {
-      e.preventDefault();
-    }
 
-    function disableScroll() {
-      document.body.addEventListener('touchmove', preventDefault, { passive: false });
-    }
-    disableScroll()
-  </script>
 </head>
 
 <body>
@@ -80,7 +68,7 @@
     <div class="menu-btn" onclick="saveFile()">Save</div>
     <div class="menu-btn" onclick="openFile()">Open</div>
     <div class="menu-btn" onclick="openExportMenu()">Export</div>
-    <div class="menu-btn" onclick="openSettings()">Settings</div>
+    <div class="menu-btn" onclick="openSettingsWindow()">Settings</div>
   </div>
   <input type="file" id="fileOpenDialog" style="display: hidden; visibility:
       hidden; height: 0px; width: 0px; pointer-events: none;" accept=".bspr">
@@ -191,11 +179,12 @@
       <button class="layer-menu-button">
         <i class="hi-folder-fill"></i>
       </button>
-      <button onclick="newLayer(project.width, project.height)" class="layer-menu-button">
+      <button onclick="newLayer()" class="layer-menu-button">
         <i class="hi-plus-large-line"></i>
       </button>
     </div>
     <div id="layer-main">
+      <div id="layer-position-preview-horizontal"></div>
     </div>
   </div>
   <div id="popup" class="popup">
@@ -333,14 +322,55 @@
     <span class="item" onclick="board.clear()"><i class="hi-trash-fill"></i></span>
     <!---test-->
   </div>
-  <!---
-    <div id="debug" style="z-index: 1000000000; background-color: rgba(47, 0,
-      255, 0.548); position: absolute; bottom: 0px; right: 0; width: 100vw;
-      height: 100vh;"></div>
 
-    <div id="debug" style="z-index: 1000000000; background-color: rgba(255, 0,
-      0, 0.548); position: absolute; top: 0; left: 0; width: 100vw; height:
-      100vh;"></div>-->
+  <div id="window-settings" class="window-wrap window-closed">
+    <div class="window-content">
+      <div class="window-sidebar">
+        <h1>Settings</h1>
+        <button class="window-sidebar-button window-sidebar-button-active">
+          <i class="hi-settings-fill"></i>
+          <p>General</p>
+        </button>
+        <button class="window-sidebar-button">
+          <i class="hi-ui-line"></i>
+          <p>Interface</p>
+        </button>
+        <button class="window-sidebar-button">
+          <i class="hi-pencil-fill"></i>
+          <p>Input</p>
+        </button><button class="window-sidebar-button">
+          <i class="hi-keyboard-line"></i>
+          <p>Keybinds</p>
+        </button>
+        <button class="window-sidebar-button">
+          <i class="hi-account-fill"></i>
+          <p>Account</p>
+        </button>
+        <button class="window-sidebar-button">
+          <i class="hi-info-line"></i>
+          <p>About</p>
+        </button>
+        <button class="window-sidebar-button">
+          <i class="hi-help-line"></i>
+          <p>Help</p>
+        </button>
+      </div>
+      <div class="window-header">
+        <h1>General</h1>
+        <button class="window-close" onclick="closeSettingsWindow()">
+          <i class="hi-x-large-line"></i>
+        </button>
+      </div>
+      <div class="window-inner ">
+        <div class="popup-btn-group">
+          <button id="ui-theme-light" onclick="setTheme(Themes.light)" class="popup-btn theme-button">Light</button>
+          <button id="ui-theme-dark" onclick="setTheme(Themes.dark)" class="popup-btn theme-button">Dark</button>
+          <button id="ui-theme-system-default" onclick="setTheme(Themes.system)" class="popup-btn theme-button">System
+            Theme</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </body>
 
 </html>
