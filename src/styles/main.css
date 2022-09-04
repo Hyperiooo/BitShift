@@ -2364,8 +2364,8 @@ div[id^='alrt-main'] {
     overflow: hidden;
     z-index: 999999;
     background: rgba(0, 0, 0, 0.308);
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
     transition: transform 0.2s;
     transition-timing-function: cubic-bezier(0.19, 0.77, 0.39, 0.95);
 }
