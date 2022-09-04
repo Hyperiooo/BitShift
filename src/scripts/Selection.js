@@ -43,7 +43,7 @@ function drawOnSelectionSVG(antiPath) {
 function updateSelectionOutline() {
 	selectionMaskBox.setAttributeNS(null, "stroke-width", svgOffset);
 	selectionMaskAnti.setAttributeNS(null, "stroke-width", svgOffset);
-	boundingSVG.setAttributeNS(null, "stroke-width", svgOffset * 2);
+	boundingSVG.setAttributeNS(null, "stroke-width", svgOffset * 1.25);
 	document.querySelectorAll(".boundingRectCircleHandle").forEach((e) => {
 		e.setAttributeNS(null, "r", handleWidth);
 	});
