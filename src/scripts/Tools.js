@@ -13,6 +13,7 @@ var Tools = {
 	ellipseMarquee: false,
 	freehandSelect: false,
 	magicWand: false,
+	transform: false,
 };
 previousTool = "pen";
 
@@ -95,6 +96,12 @@ var ToolParams = {
 		icon: "hi-magic-wand-line",
 		action: "setTool('magicWand')",
 	},
+	transform: {
+		name: "transform",
+		id: "tool-btn-transform",
+		icon: "hi-move-line",
+		action: "setTool('transform'); showBoundingBox()",
+	},
 };
 
 var ToolbarAssignments = [
@@ -122,6 +129,7 @@ var ToolbarAssignments = [
 		type: "single",
 		tool: "line",
 	},
+	{ type: "single", tool: "transform" },
 	{
 		type: "multiple",
 		name: "selection",
@@ -324,6 +332,7 @@ function updateToolSettings(tool) {
 }
 
 function setTool(tool, el) {
+	hideBoundingBox();
 	closeAllToolPopups();
 	Object.keys(Tools).forEach((v) => (Tools[v] = false));
 

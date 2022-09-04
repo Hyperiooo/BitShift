@@ -264,3 +264,13 @@ function updateBounding() {
 	handlemr.setAttributeNS(null, "cx", maxX);
 	handlemr.setAttributeNS(null, "cy", (minY + maxY) / 2);
 }
+
+function showBoundingBox() {
+	boundingSVG.style.opacity = 1;
+	selectionGroup.style.opacity = 0;
+}
+
+function hideBoundingBox() {
+	selectionGroup.style.opacity = 1;
+	boundingSVG.style.opacity = 0;
+}
