@@ -331,7 +331,8 @@
     <span class="item toolbar-landscape-only" onclick="toggleColorPicker()"><i class="hi-circle-small-fill"
         data-tool-color-menu-button></i>
     </span>
-    <span id="tool-btn-eyedropper" class="item" onclick="setmode(' eyedropper', this)"><i
+    <span id="tool-btn-eyedropper" class="item" data-tool-name="eyedropper"
+      onclick="previousTool = getTool();compileForEyedropper(); setTool('eyedropper', this)"><i
         class="hi-eyedropper-fill"></i></span>
     <span class="toolbar-divider"></span>
     <span class="item" onclick="board.clear()"><i class="hi-trash-fill"></i></span>
@@ -385,6 +386,10 @@
         </div>
       </div>
     </div>
+  </div>
+  <div id="eyedropper-preview">
+    <img src="./assets/cursors/crosshair.png" alt="">
+    <canvas id="eyedropperPreviewCanvas"></canvas>
   </div>
 </body>
 

@@ -223,7 +223,7 @@ window.onload = function () {
 	populatePresets();
 	updateCursor();
 	createToolUI();
-	setmode("pen");
+	setTool("pen");
 };
 
 function newProject() {

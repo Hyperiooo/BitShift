@@ -14,85 +14,86 @@ var Tools = {
 	freehandSelect: false,
 	magicWand: false,
 };
+previousTool = "pen";
 
 var ToolParams = {
 	pen: {
 		name: "pen",
 		id: "tool-btn-pen",
 		icon: "hi-pencil-fill",
-		action: "setmode('pen')",
+		action: "setTool('pen')",
 	},
 	eraser: {
 		name: "eraser",
 		id: "tool-btn-eraser",
 		icon: "hi-eraser-fill",
-		action: "setmode('eraser')",
+		action: "setTool('eraser')",
 	},
 	fillBucket: {
 		name: "fillBucket",
 		id: "tool-btn-fillBucket",
 		icon: "hi-paint-bucket-fill",
-		action: "setmode('fillBucket')",
+		action: "setTool('fillBucket')",
 	},
 	line: {
 		name: "line",
 		id: "tool-btn-line",
 		icon: "hi-path-line",
-		action: "setmode('line')",
+		action: "setTool('line')",
 	},
 	ellipse: {
 		name: "ellipse",
 		id: "tool-btn-ellipse",
 		icon: "hi-circle-line",
-		action: "setmode('ellipse')",
+		action: "setTool('ellipse')",
 	},
 	rectangle: {
 		name: "rectangle",
 		id: "tool-btn-rectangle",
 		icon: "hi-square-line",
-		action: "setmode('rectangle')",
+		action: "setTool('rectangle')",
 	},
 	filledEllipse: {
 		name: "filledEllipse",
 		id: "tool-btn-filledEllipse",
 		icon: "hi-circle-fill",
-		action: "setmode('filledEllipse')",
+		action: "setTool('filledEllipse')",
 	},
 	filledRectangle: {
 		name: "filledRectangle",
 		id: "tool-btn-filledRectangle",
 		icon: "hi-square-fill",
-		action: "setmode('filledRectangle')",
+		action: "setTool('filledRectangle')",
 	},
 	sprayPaint: {
 		name: "sprayPaint",
 		id: "tool-btn-sprayPaint",
 		icon: "hi-spray-fill",
-		action: "setmode('sprayPaint')",
+		action: "setTool('sprayPaint')",
 	},
 	rectangleMarquee: {
 		name: "rectangleMarquee",
 		id: "tool-btn-rectangleMarquee",
 		icon: "hi-marquee-line",
-		action: "setmode('rectangleMarquee')",
+		action: "setTool('rectangleMarquee')",
 	},
 	ellipseMarquee: {
 		name: "ellipseMarquee",
 		id: "tool-btn-ellipseMarquee",
 		icon: "hi-circle-marquee-line",
-		action: "setmode('ellipseMarquee')",
+		action: "setTool('ellipseMarquee')",
 	},
 	freehandSelect: {
 		name: "freehandSelect",
 		id: "tool-btn-freehandSelect",
 		icon: "hi-lasso-line",
-		action: "setmode('freehandSelect')",
+		action: "setTool('freehandSelect')",
 	},
 	magicWand: {
 		name: "magicWand",
 		id: "tool-btn-magicWand",
 		icon: "hi-magic-wand-line",
-		action: "setmode('magicWand')",
+		action: "setTool('magicWand')",
 	},
 };
 
@@ -322,7 +323,7 @@ function updateToolSettings(tool) {
 	}, 150);
 }
 
-function setmode(tool, el) {
+function setTool(tool, el) {
 	closeAllToolPopups();
 	Object.keys(Tools).forEach((v) => (Tools[v] = false));
 
@@ -339,6 +340,10 @@ function setmode(tool, el) {
 		e.classList.add("tool-active");
 	});
 }
+//find true in Tools
+function getTool() {
+	return Object.keys(Tools).find((key) => Tools[key]);
+}
 
 function setPopupTool(set, tool) {
 	var toolParent = document.querySelector(`[data-multiple-tool-name="${set}"]`);
@@ -348,4 +353,20 @@ function setPopupTool(set, tool) {
 	toolParent.firstChild.className = ToolParams[tool].icon;
 	var fn = new Function("return " + ToolParams[tool].action);
 	fn();
+}
+
+function compileForEyedropper() {
+	var eyedropperPreviewCanvas = document.getElementById(
+		"eyedropperPreviewCanvas"
+	);
+	eyedropperPreviewCanvas.width = project.width;
+	eyedropperPreviewCanvas.height = project.height;
+	var eCtx = eyedropperPreviewCanvas.getContext("2d");
+	eCtx.clearRect(0, 0, project.width, project.height);
+	eCtx.globalCompositeOperation = "source-over";
+	eCtx.imageSmoothingEnabled = false;
+	var reversed = [...layers].reverse();
+	reversed.forEach((e) => {
+		if (e.settings.visible) eCtx.drawImage(e.canvasElement, 0, 0);
+	});
 }

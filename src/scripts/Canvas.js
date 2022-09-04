@@ -27,6 +27,12 @@ class Canvas {
 		this.boundingSVG = document.querySelector("#boundingSVG");
 		this.selectionSVG = document.querySelector("#selectionSVG");
 		this.selectionGroup.setAttribute("viewBox", "0 0 " + width + " " + height);
+		this.eyedropperPreviewCanvas = document.getElementById(
+			"eyedropperPreviewCanvas"
+		);
+		this.eyedropperPreviewElement =
+			document.getElementById("eyedropper-preview");
+		this.eyedropperPreviewCtx = this.eyedropperPreviewCanvas.getContext("2d");
 		this.boundingSVG.setAttribute(
 			"viewBox",
 			"0 0 " + window.innerWidth + " " + window.innerHeight
@@ -401,6 +407,12 @@ class Canvas {
 		//debug.log("wasPanning: " + wasPanning)
 		if (!wasPanning) addToUndoStack(uCallback, rCallback);
 		this.touching = false;
+		if (Tools.eyedropper) {
+			setTool(previousTool);
+			this.eyedropperPreviewElement.classList.remove(
+				"eyedropper-preview-visible"
+			);
+		}
 	}
 	inputActive(e) {
 		this.touching = true;
@@ -410,8 +422,12 @@ class Canvas {
 		var rect = this.bggridcanvas.getBoundingClientRect();
 		var x = e.clientX - rect.left || e.touches[0].clientX - rect.left || -1;
 		var y = e.clientY - rect.top || e.touches[0].clientY - rect.top || -1;
+		var rawX = x / this.canvScale;
+		var rawY = y / this.canvScale;
 		x = Math.floor(x / this.canvScale);
 		y = Math.floor(y / this.canvScale);
+		var clientX = e.clientX || e.touches[0].clientX;
+		var clientY = e.clientY || e.touches[0].clientY;
 		this.currentX = x;
 		this.currentY = y;
 		if (Tools.eraser) {
@@ -542,7 +558,20 @@ class Canvas {
 				this.sY = y;
 				this.ctx.globalCompositeOperation = "source-over";
 			} else if (Tools.eyedropper) {
-				this.setColor(this.getPixelCol(new Point(x, y)));
+				this.eyedropperPreviewElement.style.top = clientY + "px";
+				this.eyedropperPreviewElement.style.left = clientX + "px";
+				this.eyedropperPreviewElement.classList.add(
+					"eyedropper-preview-visible"
+				);
+				this.eyedropperPreviewCanvas.style.setProperty(
+					"--x",
+					rawX / this.width
+				);
+				this.eyedropperPreviewCanvas.style.setProperty(
+					"--y",
+					rawY / this.width
+				);
+				this.setColor(this.getEyedropperPixelCol(new Point(x, y)));
 			}
 			if (preview) {
 				this.clearPreview();
@@ -1165,6 +1194,23 @@ class Canvas {
 
 		var pixel = (p.y * this.width + p.x) * 4;
 		console.log(imgData.data[pixel + 3]);
+		return new Color({
+			r: imgData.data[pixel],
+			g: imgData.data[pixel + 1],
+			b: imgData.data[pixel + 2],
+			a: imgData.data[pixel + 3],
+		});
+	}
+
+	getEyedropperPixelCol(p) {
+		var imgData = this.eyedropperPreviewCtx.getImageData(
+			0,
+			0,
+			this.width,
+			this.height
+		);
+
+		var pixel = (p.y * this.width + p.x) * 4;
 		return new Color({
 			r: imgData.data[pixel],
 			g: imgData.data[pixel + 1],

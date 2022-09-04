@@ -256,7 +256,6 @@ class Color {
 		this.hsla = {};
 		this.hex = "";
 		if (data.r != undefined) {
-			console.log("rgb");
 			if (data.a == undefined) {
 				data.a = 255;
 			}
@@ -279,7 +278,6 @@ class Color {
 				this.rgba.a,
 			]);
 			var hslFromHSV = HSVToHSL(hsvFromRGB);
-			console.log(this.rgba, hexFromRGB);
 			this.hex = hexFromRGB;
 			this.hsva = {
 				h: hsvFromRGB[0],
