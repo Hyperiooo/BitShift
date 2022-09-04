@@ -176,3 +176,6 @@ function canvasResized() {
         drawSprayPreview(board.currentX, board.currentY)
     }
 }
+function clearSVGBrushPreviews() {
+    cursorSVG.innerHTML = ""
+}

@@ -300,6 +300,7 @@ class Canvas {
 		this.undoBuffer = layer.canvasElement.toDataURL();
 	}
 	inputUp(e, wasPanning) {
+		
 		if (
 			Tools.circle ||
 			Tools.ellipse ||
@@ -382,6 +383,7 @@ class Canvas {
 		this.sX = null;
 		this.sY = null;
 		updateCanvasPreview();
+		clearSVGBrushPreviews()
 		this.linePoints = [];
 		this.redoBuffer = layer.canvasElement.toDataURL();
 		var buf = this.undoBuffer;
