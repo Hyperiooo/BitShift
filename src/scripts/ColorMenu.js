@@ -768,7 +768,6 @@ class paletteGroup {
 			colors: palette,
 		};
 		filePalettes.push(pal);
-		console.log(palette);
 		var id = randomString(7);
 		console.log(id);
 		var paletteParent = document.getElementById("palettes");

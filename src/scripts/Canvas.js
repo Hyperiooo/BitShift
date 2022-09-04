@@ -19,12 +19,32 @@ class Canvas {
 		this.selectionBufferCanvas = document.createElement("canvas");
 		this.sctx = this.selectionCanvas.getContext("2d");
 		//document.body.appendChild(this.selectionCanvas)
-		this.sbctx = this.selectionBufferCanvas.getContext("2d");
 		//document.body.appendChild(this.selectionBufferCanvas)
 		this.cursorSVG = document.querySelector("#cursorSVG");
 		this.cursorSVG.setAttribute("viewBox", "0 0 " + width + " " + height);
+		this.selectionGroup = document.querySelector("#selectionGroup");
+		this.boundingGroup = document.querySelector("#boundingGroup");
+		this.boundingSVG = document.querySelector("#boundingSVG");
 		this.selectionSVG = document.querySelector("#selectionSVG");
-		this.selectionSVG.setAttribute("viewBox", "0 0 " + width + " " + height);
+		this.selectionGroup.setAttribute("viewBox", "0 0 " + width + " " + height);
+		this.boundingSVG.setAttribute(
+			"viewBox",
+			"0 0 " + window.innerWidth + " " + window.innerHeight
+		);
+		this.selectionSVG.setAttribute(
+			"viewBox",
+			"0 0 " + window.innerWidth + " " + window.innerHeight
+		);
+		window.addEventListener("resize", () => {
+			this.boundingSVG.setAttribute(
+				"viewBox",
+				"0 0 " + window.innerWidth + " " + window.innerHeight
+			);
+			this.selectionSVG.setAttribute(
+				"viewBox",
+				"0 0 " + window.innerWidth + " " + window.innerHeight
+			);
+		});
 		this.bggridcanvas = document.querySelector("#bggridcanv");
 		this.eBufferCanvas = document.getElementById("eraserBrushBufferParent");
 		this.canvaslayersparent = document.getElementById("layers-wrap");
@@ -109,13 +129,15 @@ class Canvas {
 		var _self = this;
 		this.panzoom.on("transform", function (e) {
 			// This event will be called along with events above.
-			_self.selectionSVG.style.transform =
+			_self.boundingGroup.style.transform =
+				_self.selectionGroup.style.transform =
 				_self.cursorSVG.style.transform =
 				_self.cursorcanvas.style.transform =
 				_self.previewcanvas.style.transform =
 				_self.bggridcanvas.style.transform =
 					_self.canvaslayersparent.style.transform;
-			_self.selectionSVG.style.transformOrigin =
+			_self.boundingGroup.style.transformOrigin =
+				_self.selectionGroup.style.transformOrigin =
 				_self.cursorSVG.style.transformOrigin =
 				_self.cursorcanvas.style.transformOrigin =
 				_self.previewcanvas.style.transformOrigin =
@@ -295,7 +317,6 @@ class Canvas {
 			for (p of this.tempL) {
 				this.sBufferDraw(p);
 				if (p.constructor.name == "Rect") {
-					console.log(p);
 					var q = {};
 					if (p.x1 > p.x2) {
 						q.x1 = p.x2;
@@ -352,7 +373,6 @@ class Canvas {
 			this.clearPreview();
 			this.tempL = [];
 		}
-		this.sbctx.clearRect(0, 0, this.width, this.height);
 		this.sX = null;
 		this.sY = null;
 		updateCanvasPreview();
@@ -841,7 +861,6 @@ class Canvas {
 
 	clearPreview() {
 		this.pctx.clearRect(0, 0, this.width, this.height);
-		//this.sbctx.clearRect(0, 0, this.width, this.height)
 	}
 	draw(coord) {
 		if (coord.constructor.name == "Point") {
@@ -1074,7 +1093,6 @@ class Canvas {
 		});
 		if (this.ctx) this.ctx.fillStyle = color.hex;
 		this.pctx.fillStyle = color.hex;
-		this.sbctx.fillStyle = color.hex;
 		act(document.querySelectorAll(`[data-palette-color='${color.hexh}']`));
 	}
 	save() {

@@ -1,4 +1,7 @@
-var selectionSVG = document.getElementById("selectionSVG");
+var selectionGroup = document.getElementById("selectionGroup");
+
+var boundingSVG = document.getElementById("boundingSVG");
+var boundingHandleSize = 5;
 
 var selectionPath = [];
 var outlinePath = [];
@@ -20,62 +23,14 @@ var selectionStripeFill = document.createElementNS(
 	"rect"
 );
 
-function createPattern() {
-	stripeWidth = 6 / (board ? board.canvScale : 4);
-	selectionStripePattern.appendChild(selectionStripeFill);
-	selectionStripeFill.setAttributeNS(null, "x", 0);
-	selectionStripeFill.setAttributeNS(null, "width", stripeWidth);
-	selectionStripeFill.setAttributeNS(null, "y", 0);
-	selectionStripeFill.setAttributeNS(null, "height", stripeWidth);
-	selectionStripeFill.setAttributeNS(null, "fill", "white");
-	selectionStripePattern.setAttributeNS(null, "id", "stripes");
-	selectionStripePattern.setAttributeNS(null, "patternUnits", "userSpaceOnUse");
-	selectionStripePattern.setAttributeNS(null, "width", stripeWidth);
-	selectionStripePattern.setAttributeNS(null, "height", stripeWidth);
-	selectionStripePath.setAttributeNS(
-		null,
-		"d",
-		`M 0 0 L ${0.25 * stripeWidth} 0 L 0 ${0.25 * stripeWidth} M ${
-			0.75 * stripeWidth
-		} 0 L 0 ${0.75 * stripeWidth} L 0 ${stripeWidth} L ${
-			0.25 * stripeWidth
-		} ${stripeWidth} L ${stripeWidth} ${
-			0.25 * stripeWidth
-		} L ${stripeWidth} 0 M ${stripeWidth} ${0.75 * stripeWidth} L ${
-			0.75 * stripeWidth
-		} ${stripeWidth} L ${stripeWidth} ${stripeWidth}`
-	);
-	selectionStripePath.setAttributeNS(null, "fill", "black");
-	selectionStripePath.setAttributeNS(null, "stroke-width", "10");
-	selectionStripePattern.appendChild(selectionStripePath);
-	selectionStripeDefs.appendChild(selectionStripePattern);
-	selectionSVG.appendChild(selectionStripeDefs);
-}
-
-function updatePattern() {
-	stripeWidth = 6 / (board ? board.canvScale : 4);
-	selectionStripePattern.setAttributeNS(null, "width", stripeWidth);
-	selectionStripePattern.setAttributeNS(null, "height", stripeWidth);
-	selectionStripePath.setAttributeNS(
-		null,
-		"d",
-		`M 0 0 L ${0.25 * stripeWidth} 0 L 0 ${0.25 * stripeWidth} M ${
-			0.75 * stripeWidth
-		} 0 L 0 ${0.75 * stripeWidth} L 0 ${stripeWidth} L ${
-			0.25 * stripeWidth
-		} ${stripeWidth} L ${stripeWidth} ${
-			0.25 * stripeWidth
-		} L ${stripeWidth} 0 M ${stripeWidth} ${0.75 * stripeWidth} L ${
-			0.75 * stripeWidth
-		} ${stripeWidth} L ${stripeWidth} ${stripeWidth}`
-	);
-}
 var selectionMaskBox, selectionMaskAnti, selectionMask, selectionFill;
+var svgOffset = 1;
+var handleWidth = boundingHandleSize;
 
 function drawOnSelectionSVG(antiPath) {
-	var svgOffset = 1 / board.canvScale;
+	svgOffset = 1 / board.canvScale;
+	handleWidth = boundingHandleSize / board.canvScale;
 
-	//updatePattern()
 	selectionMaskBox.setAttributeNS(null, "d", antiPath);
 	selectionMaskBox.setAttributeNS(null, "stroke", "white");
 	selectionMaskBox.setAttributeNS(null, "stroke-width", svgOffset);
@@ -88,6 +43,10 @@ function drawOnSelectionSVG(antiPath) {
 function updateSelectionOutline() {
 	selectionMaskBox.setAttributeNS(null, "stroke-width", svgOffset);
 	selectionMaskAnti.setAttributeNS(null, "stroke-width", svgOffset);
+	boundingSVG.setAttributeNS(null, "stroke-width", svgOffset);
+	document.querySelectorAll(".boundingRectCircleHandle").forEach((e) => {
+		e.setAttributeNS(null, "r", handleWidth);
+	});
 	selectionMaskAnti.setAttributeNS(null, "stroke-dasharray", stripeWidth);
 }
 var calledAlready = false;
@@ -102,7 +61,6 @@ function debounce(callback) {
 }
 
 function modifySelectionPath(x1, y1, x2, y2, type) {
-	//updatePattern()
 	var modifierPath = [
 		[
 			{ X: x1, Y: y1 },
@@ -130,6 +88,27 @@ function modifySelectionPath(x1, y1, x2, y2, type) {
 		ClipperLib.PolyFillType.pftNonZero
 	);
 	selectionPath = modifiedPaths;
+
+	modifierPath = [
+		[
+			{ X: 0, Y: 0 },
+			{ X: board.width, Y: 0 },
+			{ X: board.width, Y: board.height },
+			{ X: 0, Y: board.height },
+		],
+	];
+	var cpr2 = new ClipperLib.Clipper();
+	cpr2.AddPaths(selectionPath, ClipperLib.PolyType.ptSubject, true);
+	cpr2.AddPaths(modifierPath, ClipperLib.PolyType.ptClip, true);
+	modifiedPaths = new ClipperLib.Paths();
+	cpr2.Execute(
+		ClipperLib.ClipType.ctIntersection,
+		modifiedPaths,
+		ClipperLib.PolyFillType.pftNonZero,
+		ClipperLib.PolyFillType.pftNonZero
+	);
+	selectionPath = modifiedPaths;
+
 	drawSelectionPreview();
 }
 
@@ -152,8 +131,6 @@ function drawSelectionPreview() {
 			outlinePath.push(e);
 		});
 	});
-	console.timeLog("preview");
-	console.timeEnd("preview");
 	notify.log(selectionPath.length);
 	drawOnSelectionSVG(paths2string(selectionPath));
 	if (isSelected()) {
@@ -164,11 +141,13 @@ function drawSelectionPreview() {
 	} else {
 		document.querySelector("#actionButton").classList.add("actionButtonHidden");
 	}
+	updateBounding();
 }
 
 function canvasResized() {
 	stripeWidth = 6 / (board ? board.canvScale : 4);
 	svgOffset = 1 / board.canvScale;
+	handleWidth = boundingHandleSize / board.canvScale;
 	updateSelectionOutline();
 }
 
@@ -194,7 +173,6 @@ function isSelected() {
 }
 
 function setUpSelectionSVG() {
-	//createPattern()
 	selectionMaskBox = document.createElementNS(
 		"http://www.w3.org/2000/svg",
 		"path"
@@ -227,16 +205,62 @@ function setUpSelectionSVG() {
 
 	group.appendChild(selectionMaskBox);
 	group.appendChild(selectionMaskAnti);
-	//selectionSVG.appendChild(selectionMask)
-	selectionSVG.appendChild(group);
+	//selectionGroup.appendChild(selectionMask)
+	selectionGroup.appendChild(group);
 	requestAnimationFrame(stripeAnimation);
 }
 var stripeOffset = 0;
 var previousElapsed;
 
 function stripeAnimation(elapsed) {
-	stripeOffset += 0.5 / board.canvScale;
+	stripeOffset += 0.5 / (board.canvScale || 1);
 
 	selectionMaskAnti.setAttributeNS(null, "stroke-dashoffset", stripeOffset);
 	requestAnimationFrame(stripeAnimation);
+}
+
+function updateBounding() {
+	var minX = board.width;
+	var maxX = 0;
+	var minY = board.height;
+	var maxY = 0;
+	var rect = document.querySelector("#boundingRect");
+	var handlebl = document.querySelector(".boundingRectHandle-bl");
+	var handlebr = document.querySelector(".boundingRectHandle-br");
+	var handletl = document.querySelector(".boundingRectHandle-tl");
+	var handletr = document.querySelector(".boundingRectHandle-tr");
+	var handlebm = document.querySelector(".boundingRectHandle-bm");
+	var handleml = document.querySelector(".boundingRectHandle-ml");
+	var handletm = document.querySelector(".boundingRectHandle-tm");
+	var handlemr = document.querySelector(".boundingRectHandle-mr");
+	selectionPath.forEach((s) => {
+		s.forEach((e) => {
+			console.log(e.X, e.Y);
+			if (e.X < minX) minX = e.X;
+			if (e.X > maxX) maxX = e.X;
+			if (e.Y < minY) minY = e.Y;
+			if (e.Y > maxY) maxY = e.Y;
+		});
+	});
+	console.log(minX, maxX, minY, maxY);
+	rect.setAttributeNS(null, "x", minX);
+	rect.setAttributeNS(null, "y", minY);
+	rect.setAttributeNS(null, "width", maxX - minX);
+	rect.setAttributeNS(null, "height", maxY - minY);
+	handlebl.setAttributeNS(null, "cx", minX);
+	handlebl.setAttributeNS(null, "cy", minY);
+	handlebr.setAttributeNS(null, "cx", maxX);
+	handlebr.setAttributeNS(null, "cy", minY);
+	handletl.setAttributeNS(null, "cx", minX);
+	handletl.setAttributeNS(null, "cy", maxY);
+	handletr.setAttributeNS(null, "cx", maxX);
+	handletr.setAttributeNS(null, "cy", maxY);
+	handlebm.setAttributeNS(null, "cx", (minX + maxX) / 2);
+	handlebm.setAttributeNS(null, "cy", minY);
+	handleml.setAttributeNS(null, "cx", minX);
+	handleml.setAttributeNS(null, "cy", (minY + maxY) / 2);
+	handletm.setAttributeNS(null, "cx", (minX + maxX) / 2);
+	handletm.setAttributeNS(null, "cy", maxY);
+	handlemr.setAttributeNS(null, "cx", maxX);
+	handlemr.setAttributeNS(null, "cy", (minY + maxY) / 2);
 }

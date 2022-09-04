@@ -570,8 +570,7 @@ canvas * {
     mix-blend-mode: difference;
 }
 
-#cursorSVG,
-#selectionSVG {
+#cursorSVG {
     --opac: 1;
     position: absolute;
     top: 0;
@@ -594,7 +593,55 @@ canvas * {
 }
 
 #selectionSVG {
-    mix-blend-mode: unset !important;
+    --opac: 1;
+    position: absolute;
+    top: 0;
+    touch-action: none;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: -webkit-crisp-edges;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+    pointer-events: none;
+    z-index: 100000;
+    pointer-events: none;
+    z-index: 9999999999;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+
+#boundingSVG {
+    --opac: 1;
+    position: absolute;
+    top: 0;
+    touch-action: none;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: -webkit-crisp-edges;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+    z-index: 100000;
+    pointer-events: none;
+    z-index: 9999999999999999999999;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+
+#boundingGroup,
+#selectionGroup {
+    width: var(--canvX) !important;
+    height: var(--canvY) !important;
+    transform: translate(var(--canvTransformX), var(--canvTransformY)) scale(var(--canvScale), var(--canvScale));
+}
+
+#selectionGroup {
+    z-index: 888888888;
+}
+
+#boundingGroup {
+    z-index: 9999999999999999999999;
 }
 
 #eraserBrushBufferParent {
@@ -1729,7 +1776,7 @@ input {
     --s: 1;
     --top: 0px;
     background: var(--bgLight);
-    color: var(--textMain);
+    color: var(--importantText);
     width: calc(100% - 8px);
     padding: 4px;
     margin-bottom: 8px;
@@ -1820,7 +1867,7 @@ input {
     background: none;
     border: none;
     font-size: 20px;
-    color: var(--textDim);
+    color: var(--importantText);
     padding: 0;
     margin: 0;
     top: 50%;
@@ -1855,7 +1902,7 @@ canvas {
     overflow: hidden;
     margin: 4px;
     margin-left: 16px;
-    color: var(--textDim);
+    color: var(--importantText);
     pointer-events: none;
     position: absolute;
     top: 18px;
@@ -1867,7 +1914,7 @@ canvas {
     background: none;
     border: none;
     font-size: 20px;
-    color: var(--textDim);
+    color: var(--importantText);
     padding: 0;
     margin: 0;
     top: 50%;
@@ -1881,7 +1928,7 @@ canvas {
     background: none;
     border: none;
     font-size: 20px;
-    color: var(--textDim);
+    color: var(--importantText);
     padding: 0;
     margin: 0;
     top: 50%;
@@ -2272,4 +2319,36 @@ div[id^='alrt-main'] {
     pointer-events: none;
     animation: window-blur-out 0.1s linear;
     animation-fill-mode: forwards
+}
+
+.boundingRectHandle-bl,
+.boundingRectHandle-br,
+.boundingRectHandle-tl,
+.boundingRectHandle-tr,
+.boundingRectHandle-bm,
+.boundingRectHandle-ml,
+.boundingRectHandle-tm,
+.boundingRectHandle-mr {
+    touch-action: all;
+    pointer-events: all;
+}
+
+.boundingRectHandle-bl,
+.boundingRectHandle-tr {
+    cursor: nw-resize;
+}
+
+.boundingRectHandle-bm,
+.boundingRectHandle-tm {
+    cursor: ns-resize;
+}
+
+.boundingRectHandle-ml,
+.boundingRectHandle-mr {
+    cursor: ew-resize;
+}
+
+.boundingRectHandle-br,
+.boundingRectHandle-tl {
+    cursor: ne-resize;
 }

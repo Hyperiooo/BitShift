@@ -12,7 +12,6 @@ var Tools = {
 	rectangleMarquee: false,
 	ellipseMarquee: false,
 	freehandSelect: false,
-	brushSelect: false,
 	magicWand: false,
 };
 
@@ -89,12 +88,6 @@ var ToolParams = {
 		icon: "hi-lasso-line",
 		action: "setmode('freehandSelect')",
 	},
-	brushSelect: {
-		name: "brushSelect",
-		id: "tool-btn-brushSelect",
-		icon: "hi-freehand-select-line",
-		action: "setmode('brushSelect')",
-	},
 	magicWand: {
 		name: "magicWand",
 		id: "tool-btn-magicWand",
@@ -136,7 +129,6 @@ var ToolbarAssignments = [
 			"rectangleMarquee",
 			"ellipseMarquee",
 			"freehandSelect",
-			"brushSelect",
 			"magicWand",
 		],
 	},

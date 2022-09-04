@@ -278,7 +278,22 @@
   <div id="canvas-parent" customcursor>
     <canvas id="cursorcanv" class=""></canvas>
     <svg id="cursorSVG"></svg>
-    <svg id="selectionSVG"></svg>
+    <svg id='boundingSVG'>
+      <g stroke="blue" id="boundingGroup">
+        <rect id="boundingRect" x="10" y="10" width="100" height="100" fill="none" />
+        <circle class="boundingRectCircleHandle boundingRectHandle-bl" cx="10" cy="10" r="5" fill="white" />
+        <circle class="boundingRectCircleHandle boundingRectHandle-br" cx="110" cy="10" r="5" fill="white" />
+        <circle class="boundingRectCircleHandle boundingRectHandle-tl" cx="10" cy="110" r="5" fill="white" />
+        <circle class="boundingRectCircleHandle boundingRectHandle-tr" cx="110" cy="110" r="5" fill="white" />
+        <circle class="boundingRectCircleHandle boundingRectHandle-bm" cx="60" cy="10" r="5" fill="white" />
+        <circle class="boundingRectCircleHandle boundingRectHandle-ml" cx="10" cy="60" r="5" fill="white" />
+        <circle class="boundingRectCircleHandle boundingRectHandle-tm" cx="60" cy="110" r="5" fill="white" />
+        <circle class="boundingRectCircleHandle boundingRectHandle-mr" cx="110" cy="60" r="5" fill="white" />
+      </g>
+    </svg>
+    <svg id="selectionSVG">
+      <g id="selectionGroup"></g>
+    </svg>
     <canvas id="previewcanv" customcursor></canvas>
     <div id="layers-wrap" customcursor>
     </div>
@@ -316,8 +331,8 @@
     <span class="item toolbar-landscape-only" onclick="toggleColorPicker()"><i class="hi-circle-small-fill"
         data-tool-color-menu-button></i>
     </span>
-    <span id="tool-btn-eyedropper" class="item" onclick="setmode('eyedropper',
-        this)"><i class="hi-eyedropper-fill"></i></span>
+    <span id="tool-btn-eyedropper" class="item" onclick="setmode(' eyedropper', this)"><i
+        class="hi-eyedropper-fill"></i></span>
     <span class="toolbar-divider"></span>
     <span class="item" onclick="board.clear()"><i class="hi-trash-fill"></i></span>
     <!---test-->
