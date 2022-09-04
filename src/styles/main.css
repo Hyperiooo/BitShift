@@ -2357,8 +2357,8 @@ div[id^='alrt-main'] {
     pointer-events: none;
     position: absolute;
     transform: translate(-50%, -150%) scale(0);
-    width: 80px;
-    height: 80px;
+    width: 120px;
+    height: 120px;
     border: 3px solid white;
     border-radius: 100%;
     overflow: hidden;
@@ -2392,8 +2392,8 @@ div[id^='alrt-main'] {
     z-index: 999999;
     --x: 0;
     --y: 0;
-    width: calc(var(--canvX) * 20);
-    height: calc(var(--canvY) * 20);
-    left: calc((var(--x) * ((var(--canvX) * 20) - 80px) * -1) - (80px * (var(--x) - .5)));
-    top: calc((var(--y) * ((var(--canvY) * 20) - 80px) * -1) - (80px * (var(--y) - .5)));
+    width: calc(var(--canvX) * 40);
+    height: calc(var(--canvY) * 40);
+    left: calc((var(--x) * ((var(--canvX) * 40) - 120px) * -1) - (120px * (var(--x) - .5)));
+    top: calc((var(--y) * ((var(--canvY) * 40) - 120px) * -1) - (120px * (var(--y) - .5)));
 }
