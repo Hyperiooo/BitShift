@@ -43,7 +43,7 @@ function drawOnSelectionSVG(antiPath) {
 function updateSelectionOutline() {
 	selectionMaskBox.setAttributeNS(null, "stroke-width", svgOffset);
 	selectionMaskAnti.setAttributeNS(null, "stroke-width", svgOffset);
-	boundingSVG.setAttributeNS(null, "stroke-width", svgOffset);
+	boundingSVG.setAttributeNS(null, "stroke-width", svgOffset * 2);
 	document.querySelectorAll(".boundingRectCircleHandle").forEach((e) => {
 		e.setAttributeNS(null, "r", handleWidth);
 	});
@@ -267,10 +267,10 @@ function updateBounding() {
 
 function showBoundingBox() {
 	boundingSVG.style.opacity = 1;
-	selectionGroup.style.opacity = 0;
+	//selectionGroup.style.opacity = 0;
 }
 
 function hideBoundingBox() {
-	selectionGroup.style.opacity = 1;
+	//selectionGroup.style.opacity = 1;
 	boundingSVG.style.opacity = 0;
 }

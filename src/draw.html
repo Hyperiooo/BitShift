@@ -278,8 +278,11 @@
   <div id="canvas-parent" customcursor>
     <canvas id="cursorcanv" class=""></canvas>
     <svg id="cursorSVG"></svg>
+    <svg id="selectionSVG">
+      <g id="selectionGroup"></g>
+    </svg>
     <svg id='boundingSVG'>
-      <g stroke="blue" id="boundingGroup">
+      <g stroke="var(--important)" id="boundingGroup">
         <rect id="boundingRect" x="10" y="10" width="100" height="100" fill="none" />
         <circle class="boundingRectCircleHandle boundingRectHandle-bl" cx="10" cy="10" r="5" fill="white" />
         <circle class="boundingRectCircleHandle boundingRectHandle-br" cx="110" cy="10" r="5" fill="white" />
@@ -290,9 +293,6 @@
         <circle class="boundingRectCircleHandle boundingRectHandle-tm" cx="60" cy="110" r="5" fill="white" />
         <circle class="boundingRectCircleHandle boundingRectHandle-mr" cx="110" cy="60" r="5" fill="white" />
       </g>
-    </svg>
-    <svg id="selectionSVG">
-      <g id="selectionGroup"></g>
     </svg>
     <canvas id="previewcanv" customcursor></canvas>
     <div id="layers-wrap" customcursor>
