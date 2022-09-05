@@ -1269,10 +1269,10 @@ class Canvas {
 			b = this.imageData.data[pixelPos + 2],
 			a = this.imageData.data[pixelPos + 3];
 		if (
-			r == this.color[0] &&
-			g == this.color[1] &&
-			b == this.color[2] &&
-			a == this.color[3]
+			r == this.color.rgba.r &&
+			g == this.color.rgba.g &&
+			b == this.color.rgba.b &&
+			a == this.color.rgba.a
 		)
 			return;
 		this.floodFill(startX, startY, r, g, b, a);
