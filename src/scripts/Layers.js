@@ -69,6 +69,7 @@ class Layer {
 		this.canvasElement.classList.add("drawingCanvas");
 		this.canvasElement.id = "c-" + this.id;
 		this.canvasElement.style.setProperty("--zindex", layers.length);
+		updateAllIndices();
 		this.ctx = this.canvasElement.getContext("2d");
 		document.getElementById("layers-wrap").prepend(this.canvasElement);
 
@@ -418,7 +419,10 @@ class Layer {
 	updateIndices() {
 		for (var i = 0; i < layers.length; i++) {
 			layers[i].index = layers.length - i - 1;
-			layers[i].canvasElement.style.setProperty("--zindex", layers[i].index);
+			layers[i].canvasElement.style.setProperty(
+				"--zindex",
+				layers[i].index * 2
+			);
 		}
 	}
 	updateNormalTop() {
@@ -438,6 +442,12 @@ class Layer {
 			}px`
 		);
 	}
+}
+
+function updateAllIndices() {
+	layers.forEach((layer) => {
+		layer.updateIndices();
+	});
 }
 
 function updateNormalTops() {
@@ -615,7 +625,9 @@ function setLayer(id) {
 		layer.layerElement.classList.add("layer-active");
 		activeLayer = layer;
 		board.ctx = layer.ctx;
+		board.canvas = layer.canvasElement;
 		board.setColor(board.color);
+		board.previewcanvas.style.setProperty("--zindex", layer.index * 2 + 1);
 	}
 }
 
@@ -633,15 +645,6 @@ function updateCanvasPreview() {
 		);
 		layer.previewCTX.drawImage(layer.canvasElement, 0, 0);
 	}
-}
-
-function reorderLayers() {
-	layers.forEach((e) => {
-		i = e.index;
-		setTimeout(() => {
-			e.canvasElement.style.setProperty("--zindex", e.index);
-		}, 10);
-	});
 }
 
 function toggleLayerVisibility(id, el) {

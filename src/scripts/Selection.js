@@ -283,7 +283,6 @@ function updateBounding() {
 			if (e.Y > maxY) maxY = e.Y;
 		});
 	});
-	console.log(minX, maxX, minY, maxY);
 	rect.setAttributeNS(null, "x", minX);
 	rect.setAttributeNS(null, "y", minY);
 	rect.setAttributeNS(null, "width", maxX - minX);
@@ -313,11 +312,26 @@ function updateBounding() {
 }
 
 function showBoundingBox() {
-	boundingSVG.style.opacity = 1;
-	//selectionGroup.style.opacity = 0;
+	boundingSVG.classList.remove("boundingHidden");
 }
 
 function hideBoundingBox() {
-	//selectionGroup.style.opacity = 1;
-	boundingSVG.style.opacity = 0;
+	boundingSVG.classList.add("boundingHidden");
+}
+
+function getSelectionRect() {
+	selectionPath.forEach((s) => {
+		s.forEach((e) => {
+			if (e.X < minX) minX = e.X;
+			if (e.X > maxX) maxX = e.X;
+			if (e.Y < minY) minY = e.Y;
+			if (e.Y > maxY) maxY = e.Y;
+		});
+	});
+	return {
+		width: maxX - minX,
+		height: maxY - minY,
+		x: minX,
+		y: minY,
+	};
 }

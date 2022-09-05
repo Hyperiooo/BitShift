@@ -139,14 +139,14 @@ class Canvas {
 				_self.selectionGroup.style.transform =
 				_self.cursorSVG.style.transform =
 				_self.cursorcanvas.style.transform =
-				_self.previewcanvas.style.transform =
+				//_self.previewcanvas.style.transform =
 				_self.bggridcanvas.style.transform =
 					_self.canvaslayersparent.style.transform;
 			_self.boundingGroup.style.transformOrigin =
 				_self.selectionGroup.style.transformOrigin =
 				_self.cursorSVG.style.transformOrigin =
 				_self.cursorcanvas.style.transformOrigin =
-				_self.previewcanvas.style.transformOrigin =
+				//_self.previewcanvas.style.transformOrigin =
 				_self.bggridcanvas.style.transformOrigin =
 					_self.canvaslayersparent.style.transformOrigin;
 			_self.setCanvScale(_self.panzoom.getTransform().scale);
@@ -300,7 +300,6 @@ class Canvas {
 		this.undoBuffer = layer.canvasElement.toDataURL();
 	}
 	inputUp(e, wasPanning) {
-		
 		if (
 			Tools.circle ||
 			Tools.ellipse ||
@@ -383,7 +382,7 @@ class Canvas {
 		this.sX = null;
 		this.sY = null;
 		updateCanvasPreview();
-		clearSVGBrushPreviews()
+		clearSVGBrushPreviews();
 		this.linePoints = [];
 		this.redoBuffer = layer.canvasElement.toDataURL();
 		var buf = this.undoBuffer;
@@ -1108,6 +1107,23 @@ class Canvas {
 			} else {
 				this.ctx.fillRect(ax1, ay1, ax2 - ax1, ay2 - ay1);
 			}
+		}
+	}
+	eraseSelection() {
+		if (isSelected()) {
+			this.ctx.save();
+			var clipPath = new Path2D();
+			selectionPath.forEach((e) => {
+				clipPath.moveTo(e[0].X, e[0].Y);
+				for (let i = 0; i < e.length - 1; i++) {
+					const pt = e[i + 1];
+					clipPath.lineTo(pt.X, pt.Y);
+				}
+				clipPath.closePath();
+			});
+			this.ctx.clip(clipPath, "evenodd");
+			this.ctx.clearRect(0, 0, board.width, board.height);
+			this.ctx.restore();
 		}
 	}
 	setColor(color, skipDuplicate) {
