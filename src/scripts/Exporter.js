@@ -6,6 +6,7 @@ async function exportFile() {
 	exportCanvas.style.width = "500px";
 	exportCanvas.width = project.width * scaleFactor;
 	exportCanvas.height = project.height * scaleFactor;
+	console.log(scaleFactor);
 	var eCtx = exportCanvas.getContext("2d");
 	eCtx.globalCompositeOperation = "source-over";
 	eCtx.imageSmoothingEnabled = false;
