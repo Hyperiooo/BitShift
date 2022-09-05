@@ -607,7 +607,7 @@ function clearLayerMenu() {
 function clearLayers() {
 	document
 		.getElementById("layers-wrap")
-		.querySelectorAll("canvas")
+		.querySelectorAll(".drawingCanvas")
 		.forEach((e) => {
 			e.parentElement.removeChild(e);
 		});

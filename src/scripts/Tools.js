@@ -333,6 +333,9 @@ function updateToolSettings(tool) {
 
 function setTool(tool, el) {
 	var toolbarFound = false;
+  if(Tools.transform) {
+    confirmTransform()
+  }
 	if (tool == getTool()) {
 		ToolbarAssignments.forEach((e) => {
 			if (e.tools) {

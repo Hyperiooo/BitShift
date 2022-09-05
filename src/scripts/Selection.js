@@ -1,7 +1,7 @@
 var selectionGroup = document.getElementById("selectionGroup");
 
 var boundingSVG = document.getElementById("boundingSVG");
-var rect = document.querySelector("#boundingRect");
+var boundingRectElement = document.querySelector("#boundingRect");
 var handlebl = document.querySelector(".boundingRectHandle-bl");
 var handlebr = document.querySelector(".boundingRectHandle-br");
 var handletl = document.querySelector(".boundingRectHandle-tl");
@@ -126,6 +126,7 @@ function modifySelectionPath(x1, y1, x2, y2, type) {
 }
 
 function deselect() {
+	if (Tools.transform) confirmTransform();
 	selectionPath = [];
 	drawSelectionPreview();
 }
@@ -155,7 +156,6 @@ function invertSelection() {
 }
 
 function drawSelectionPreview() {
-	console.time("preview");
 	outlinePath = [];
 	selectionPath.forEach((e) => {
 		var outlinedPath = [[], [], [], []];
@@ -180,8 +180,19 @@ function drawSelectionPreview() {
 		document
 			.querySelector("#actionButtons")
 			.classList.add("actionButtonsHidden");
+		hideBoundingBox();
 	}
 	updateBounding();
+}
+
+function moveSelection(dx, dy) {
+	selectionPath.forEach((e) => {
+		e.forEach((x) => {
+			x.X += dx;
+			x.Y += dy;
+		});
+	});
+	drawSelectionPreview();
 }
 
 function canvasResized() {
@@ -276,17 +287,16 @@ function updateBounding() {
 	maxY = 0;
 	selectionPath.forEach((s) => {
 		s.forEach((e) => {
-			console.log(e.X, e.Y);
 			if (e.X < minX) minX = e.X;
 			if (e.X > maxX) maxX = e.X;
 			if (e.Y < minY) minY = e.Y;
 			if (e.Y > maxY) maxY = e.Y;
 		});
 	});
-	rect.setAttributeNS(null, "x", minX);
-	rect.setAttributeNS(null, "y", minY);
-	rect.setAttributeNS(null, "width", maxX - minX);
-	rect.setAttributeNS(null, "height", maxY - minY);
+	boundingRectElement.setAttributeNS(null, "x", minX);
+	boundingRectElement.setAttributeNS(null, "y", minY);
+	boundingRectElement.setAttributeNS(null, "width", maxX - minX);
+	boundingRectElement.setAttributeNS(null, "height", maxY - minY);
 	handlebl.setAttributeNS(null, "cx", minX);
 	handlebl.setAttributeNS(null, "cy", minY);
 	handlebr.setAttributeNS(null, "cx", maxX);

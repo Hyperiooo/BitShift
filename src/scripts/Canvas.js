@@ -58,6 +58,7 @@ class Canvas {
 		document.documentElement.style.setProperty("--canvScale", this.canvScale);
 		this.bggridcanvas.width = width;
 		this.bggridcanvas.height = height;
+		console.log(this.previewcanvas);
 		this.previewcanvas.width = width;
 		this.previewcanvas.height = height;
 		this.selectionCanvas.width = width;
@@ -431,6 +432,7 @@ class Canvas {
 		var clientY = e.clientY || e.touches[0].clientY;
 		this.currentX = x;
 		this.currentY = y;
+		if (Tools.transform) return;
 		if (Tools.eraser) {
 			drawEraserPreview(x, y);
 		}
