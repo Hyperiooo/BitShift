@@ -46,7 +46,7 @@ function confirmTransform() {
 var selectionMoving = false;
 var prevMovementPosition = [0, 0];
 document.body.addEventListener("pointerdown", function (e) {
-	if (e.target == boundingRectElement) {
+	if (e.target == boundingRectElement && Tools.transform) {
 		selectionMoving = true;
 		var rect = board.bggridcanvas.getBoundingClientRect();
 		var x = e.clientX - rect.left || e.touches[0].clientX - rect.left || -1;

@@ -184,7 +184,6 @@ function drawSelectionPreview() {
 	}
 	updateBounding();
 }
-
 function moveSelection(dx, dy) {
 	selectionPath.forEach((e) => {
 		e.forEach((x) => {
