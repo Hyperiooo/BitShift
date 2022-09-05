@@ -286,6 +286,7 @@
     <svg id='boundingSVG'>
       <g stroke="var(--important)" id="boundingGroup">
         <rect id="boundingRect" x="10" y="10" width="100" height="100" fill="none" />
+        <line id="boundingRotLine" x1="60" y1="-5" x2="60" y2="10" />
         <circle class="boundingRectCircleHandle boundingRectHandle-bl" cx="10" cy="10" r="5" fill="white" />
         <circle class="boundingRectCircleHandle boundingRectHandle-br" cx="110" cy="10" r="5" fill="white" />
         <circle class="boundingRectCircleHandle boundingRectHandle-tl" cx="10" cy="110" r="5" fill="white" />
@@ -294,6 +295,7 @@
         <circle class="boundingRectCircleHandle boundingRectHandle-ml" cx="10" cy="60" r="5" fill="white" />
         <circle class="boundingRectCircleHandle boundingRectHandle-tm" cx="60" cy="110" r="5" fill="white" />
         <circle class="boundingRectCircleHandle boundingRectHandle-mr" cx="110" cy="60" r="5" fill="white" />
+        <circle class="boundingRectCircleHandle boundingRectHandle-rot" cx="60" cy="-5" r="5" fill="white" />
       </g>
     </svg>
     <canvas id="previewcanv" customcursor></canvas>
@@ -322,10 +324,28 @@
       <span id="layer-toggle-button" class="item" onclick="toggleLayerMenu()"><i class="hi-layer-fill"></i></span>
     </div>
   </div>
-  <button onclick="deselect()" id="actionButton" class="actionButtonHidden">
-    <i class="hi-x-large-line"></i>
-    Deselect
-  </button>
+  <div id="actionButtons" class="">
+    <button onclick="deselect()" class="actionButton ">
+      <i class="hi-x-large-line"></i>
+      Deselect
+    </button><button onclick="invertSelection()" class="actionButton ">
+      <i class="hi-half-star-line"></i>
+      Invert
+    </button>
+    <button onclick="deselect()" class="actionButton ">
+      <i class="hi-scissors-line"></i>
+      Cut
+    </button>
+    <button onclick="deselect()" class="actionButton ">
+      <i class="hi-copy-line"></i>
+      Copy
+    </button>
+    <button onclick="deselect()" class="actionButton ">
+      <i class="hi-paste-line"></i>
+      Paste
+    </button>
+
+  </div>
   <div id="toolbar" class="ui">
     <div id="dynamic-tool-wrap">
     </div>

@@ -774,6 +774,7 @@ canvas * {
     pointer-events: none;
     background: var(--bgMainT);
     backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
     border-radius: 15px;
     opacity: 0;
     transition: opacity 0.3s;
@@ -1642,37 +1643,42 @@ input {
     visibility: visible;
 }
 
-#actionButton {
+#actionButtons {
     background: var(--bgMainT);
-    font-family: 'Roboto';
-    color: var(--toolBarHover);
     position: fixed;
     left: 32px;
     bottom: 32px;
     padding: 14px 16px;
+    display: flex;
+    flex-direction: row;
+    gap: 28px;
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
-    background: var(--bgMainT);
     backdrop-filter: saturate(180%) blur(20px);
     -webkit-backdrop-filter: saturate(180%) blur(20px);
     border-radius: 15px;
+    transition: opacity 0.3s;
+}
+
+.actionButton {
+    font-family: 'Roboto';
+    color: var(--textDim);
     border: none;
     font-size: 16px;
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 8px;
-    transition: opacity 0.3s;
 }
 
-.actionButtonHidden {
+.actionButtonsHidden {
     opacity: 0;
     pointer-events: none;
 }
 
-#actionButton i {
+.actionButton i {
     font-size: 20px;
 }
 
@@ -2342,7 +2348,8 @@ div[id^='alrt-main'] {
 .boundingRectHandle-bm,
 .boundingRectHandle-ml,
 .boundingRectHandle-tm,
-.boundingRectHandle-mr {
+.boundingRectHandle-mr,
+.boundingRectHandle-rot {
     touch-action: all;
     pointer-events: all;
 }
@@ -2365,6 +2372,10 @@ div[id^='alrt-main'] {
 .boundingRectHandle-br,
 .boundingRectHandle-tl {
     cursor: ne-resize;
+}
+
+.boundingRectHandle-rot {
+    cursor: grab
 }
 
 #eyedropper-preview {

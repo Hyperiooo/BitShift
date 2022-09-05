@@ -1,7 +1,20 @@
 var selectionGroup = document.getElementById("selectionGroup");
 
 var boundingSVG = document.getElementById("boundingSVG");
+var rect = document.querySelector("#boundingRect");
+var handlebl = document.querySelector(".boundingRectHandle-bl");
+var handlebr = document.querySelector(".boundingRectHandle-br");
+var handletl = document.querySelector(".boundingRectHandle-tl");
+var handletr = document.querySelector(".boundingRectHandle-tr");
+var handlebm = document.querySelector(".boundingRectHandle-bm");
+var handleml = document.querySelector(".boundingRectHandle-ml");
+var handletm = document.querySelector(".boundingRectHandle-tm");
+var handlemr = document.querySelector(".boundingRectHandle-mr");
+var handlerot = document.querySelector(".boundingRectHandle-rot");
+var linerot = document.querySelector("#boundingRotLine");
 var boundingHandleSize = 5;
+var boundingLineRotSize = 50;
+var boundingRotOffset = 0;
 
 var selectionPath = [];
 var outlinePath = [];
@@ -43,7 +56,7 @@ function drawOnSelectionSVG(antiPath) {
 function updateSelectionOutline() {
 	selectionMaskBox.setAttributeNS(null, "stroke-width", svgOffset);
 	selectionMaskAnti.setAttributeNS(null, "stroke-width", svgOffset);
-	boundingSVG.setAttributeNS(null, "stroke-width", svgOffset * 1.25);
+	boundingSVG.setAttributeNS(null, "stroke-width", svgOffset * 1.5);
 	document.querySelectorAll(".boundingRectCircleHandle").forEach((e) => {
 		e.setAttributeNS(null, "r", handleWidth);
 	});
@@ -116,6 +129,31 @@ function deselect() {
 	selectionPath = [];
 	drawSelectionPreview();
 }
+function invertSelection() {
+	//inverts selection. wow
+	modifierPath = [
+		[
+			{ X: 0, Y: 0 },
+			{ X: board.width, Y: 0 },
+			{ X: board.width, Y: board.height },
+			{ X: 0, Y: board.height },
+		],
+	];
+	var cpr = new ClipperLib.Clipper();
+	var cliptype = ClipperLib.ClipType.ctDifference;
+	cpr.AddPaths(modifierPath, ClipperLib.PolyType.ptSubject, true);
+	cpr.AddPaths(selectionPath, ClipperLib.PolyType.ptClip, true);
+	var modifiedPaths = new ClipperLib.Paths();
+	cpr.Execute(
+		cliptype,
+		modifiedPaths,
+		ClipperLib.PolyFillType.pftNonZero,
+		ClipperLib.PolyFillType.pftNonZero
+	);
+	selectionPath = modifiedPaths;
+	drawSelectionPreview();
+}
+
 function drawSelectionPreview() {
 	console.time("preview");
 	outlinePath = [];
@@ -136,10 +174,12 @@ function drawSelectionPreview() {
 	if (isSelected()) {
 		//show action button if selected, hide if not
 		document
-			.querySelector("#actionButton")
-			.classList.remove("actionButtonHidden");
+			.querySelector("#actionButtons")
+			.classList.remove("actionButtonsHidden");
 	} else {
-		document.querySelector("#actionButton").classList.add("actionButtonHidden");
+		document
+			.querySelector("#actionButtons")
+			.classList.add("actionButtonsHidden");
 	}
 	updateBounding();
 }
@@ -148,6 +188,12 @@ function canvasResized() {
 	stripeWidth = 6 / (board ? board.canvScale : 4);
 	svgOffset = 1 / board.canvScale;
 	handleWidth = boundingHandleSize / board.canvScale;
+	boundingRotOffset = boundingLineRotSize / board.canvScale;
+	handlerot.setAttributeNS(null, "cy", minY - boundingRotOffset);
+	linerot.setAttributeNS(null, "x1", (minX + maxX) / 2);
+	linerot.setAttributeNS(null, "x2", (minX + maxX) / 2);
+	linerot.setAttributeNS(null, "y1", minY);
+	linerot.setAttributeNS(null, "y2", minY - boundingRotOffset);
 	updateSelectionOutline();
 }
 
@@ -218,21 +264,16 @@ function stripeAnimation(elapsed) {
 	selectionMaskAnti.setAttributeNS(null, "stroke-dashoffset", stripeOffset);
 	requestAnimationFrame(stripeAnimation);
 }
+var minX = 0;
+var maxX = 0;
+var minY = 0;
+var maxY = 0;
 
 function updateBounding() {
-	var minX = board.width;
-	var maxX = 0;
-	var minY = board.height;
-	var maxY = 0;
-	var rect = document.querySelector("#boundingRect");
-	var handlebl = document.querySelector(".boundingRectHandle-bl");
-	var handlebr = document.querySelector(".boundingRectHandle-br");
-	var handletl = document.querySelector(".boundingRectHandle-tl");
-	var handletr = document.querySelector(".boundingRectHandle-tr");
-	var handlebm = document.querySelector(".boundingRectHandle-bm");
-	var handleml = document.querySelector(".boundingRectHandle-ml");
-	var handletm = document.querySelector(".boundingRectHandle-tm");
-	var handlemr = document.querySelector(".boundingRectHandle-mr");
+	minX = board.width;
+	maxX = 0;
+	minY = board.height;
+	maxY = 0;
 	selectionPath.forEach((s) => {
 		s.forEach((e) => {
 			console.log(e.X, e.Y);
@@ -263,6 +304,12 @@ function updateBounding() {
 	handletm.setAttributeNS(null, "cy", maxY);
 	handlemr.setAttributeNS(null, "cx", maxX);
 	handlemr.setAttributeNS(null, "cy", (minY + maxY) / 2);
+	handlerot.setAttributeNS(null, "cx", (minX + maxX) / 2);
+	handlerot.setAttributeNS(null, "cy", minY - boundingRotOffset);
+	linerot.setAttributeNS(null, "x1", (minX + maxX) / 2);
+	linerot.setAttributeNS(null, "x2", (minX + maxX) / 2);
+	linerot.setAttributeNS(null, "y1", minY);
+	linerot.setAttributeNS(null, "y2", minY - boundingRotOffset);
 }
 
 function showBoundingBox() {
