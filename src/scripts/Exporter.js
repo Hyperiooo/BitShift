@@ -1,4 +1,4 @@
-function exportFile() {
+async function exportFile() {
 	var scaleFactor = 1;
 	scaleFactor = document.getElementById("export-scale").value;
 	var exportCanvas = document.createElement("canvas");
@@ -17,7 +17,7 @@ function exportFile() {
 		var url = exportCanvas.toDataURL(
 			"image/" + document.getElementById("export-file-type").value
 		);
-		var blob = dataURItoBlob(url);
+		var blob = await (await fetch(url)).blob();
 		var file = new File(
 			[blob],
 			document.getElementById("export-file-name").value +
@@ -47,10 +47,6 @@ function exportFile() {
 function openExportMenu() {
 	document.getElementById("export-menu").classList.add("export-open");
 	closeMenu();
-}
-
-if (navigator.share) {
-	notify.log("Share API is supported");
 }
 
 function closeExportMenu() {
