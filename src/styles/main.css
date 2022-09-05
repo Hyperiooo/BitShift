@@ -1647,9 +1647,10 @@ input {
 #actionButtons {
     background: var(--bgMainT);
     position: fixed;
-    left: 32px;
+    left: 50%;
+    transform: translateX(-50%);
     bottom: 32px;
-    padding: 14px 16px;
+    padding: 12px 14px;
     display: flex;
     flex-direction: row;
     gap: 28px;
@@ -1661,16 +1662,33 @@ input {
     -webkit-backdrop-filter: saturate(180%) blur(20px);
     border-radius: 15px;
     transition: opacity 0.3s;
+    align-items: center;
+}
+
+.actionButtonDivider {
+    position: relative;
+    cursor: pointer;
+    font-size: 18px;
+    border-radius: 5px;
+    width: 2px;
+    height: 20px;
+    transition: 0.1s background, 0.3s color, 0.3s fill;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: var(--toolBarDim);
 }
 
 .actionButton {
     font-family: 'Roboto';
     color: var(--textDim);
     border: none;
-    font-size: 16px;
+    font-size: 14px;
     display: flex;
     justify-content: center;
     align-items: center;
+    width: fit-content;
+    white-space: nowrap;
     gap: 8px;
 }
 
@@ -1680,7 +1698,7 @@ input {
 }
 
 .actionButton i {
-    font-size: 20px;
+    font-size: 18px;
 }
 
 #layer-menu {

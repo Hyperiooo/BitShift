@@ -76,30 +76,35 @@ var ToolParams = {
 		name: "rectangleMarquee",
 		id: "tool-btn-rectangleMarquee",
 		icon: "hi-marquee-line",
+		actionMenu: "selection",
 		action: "setTool('rectangleMarquee')",
 	},
 	ellipseMarquee: {
 		name: "ellipseMarquee",
 		id: "tool-btn-ellipseMarquee",
 		icon: "hi-circle-marquee-line",
+		actionMenu: "selection",
 		action: "setTool('ellipseMarquee')",
 	},
 	freehandSelect: {
 		name: "freehandSelect",
 		id: "tool-btn-freehandSelect",
 		icon: "hi-lasso-line",
+		actionMenu: "selection",
 		action: "setTool('freehandSelect')",
 	},
 	magicWand: {
 		name: "magicWand",
 		id: "tool-btn-magicWand",
 		icon: "hi-magic-wand-line",
+		actionMenu: "selection",
 		action: "setTool('magicWand')",
 	},
 	transform: {
 		name: "transform",
 		id: "tool-btn-transform",
 		icon: "hi-move-line",
+		actionMenu: "transform",
 		action: "setTool('transform'); showBoundingBox(); prepareTransform()",
 	},
 };
@@ -142,6 +147,73 @@ var ToolbarAssignments = [
 		],
 	},
 ];
+
+var ToolbarActionMenus = {
+	universal: [
+		{
+			name: "Deselect",
+			action: "deselect()",
+			icon: "hi-x-large-line",
+			condition: () => {
+				return isSelected() || ToolParams[getTool()].actionMenu == "selection";
+			},
+		},
+	],
+	transform: [
+		{
+			name: "Confirm",
+			action: "confirmTransform(); setTool(previousTool)",
+			icon: "hi-check-line",
+		},
+		{
+			name: "Flip Horizontal",
+			action: "flipHorizontal()",
+			icon: "hi-flip-horizontal-line",
+		},
+		{
+			name: "Flip Vertical",
+			action: "flipVertical()",
+			icon: "hi-flip-vertical-line",
+		},
+		{
+			name: "Rotate Left",
+			action: "rotateLeft()",
+			icon: "hi-rotate-left-line",
+		},
+		{
+			name: "Rotate Right",
+			action: "rotateRight()",
+			icon: "hi-rotate-right-line",
+		},
+		{
+			name: "Reset Transform",
+			action: "resetTransform()",
+			icon: "hi-undo-line",
+		},
+	],
+	selection: [
+		{
+			name: "Invert",
+			action: "invertSelection()",
+			icon: "hi-half-star-line",
+		},
+		{
+			name: "Cut",
+			action: "cutSelection()",
+			icon: "hi-scissors-line",
+		},
+		{
+			name: "Copy",
+			action: "copySelection()",
+			icon: "hi-copy-line",
+		},
+		{
+			name: "Paste",
+			action: "pasteSelection()",
+			icon: "hi-paste-line",
+		},
+	],
+};
 
 var toolPopInstances = {};
 
@@ -333,9 +405,9 @@ function updateToolSettings(tool) {
 
 function setTool(tool, el) {
 	var toolbarFound = false;
-  if(Tools.transform) {
-    confirmTransform()
-  }
+	if (Tools.transform) {
+		confirmTransform();
+	}
 	if (tool == getTool()) {
 		ToolbarAssignments.forEach((e) => {
 			if (e.tools) {
@@ -367,6 +439,47 @@ function setTool(tool, el) {
 
 	document.querySelectorAll(`[data-tool-name="${tool}"]`).forEach((e) => {
 		e.classList.add("tool-active");
+	});
+	var shouldActionMenuBeShown = false;
+	ToolbarActionMenus["universal"].forEach((e) => {
+		if (e.condition()) {
+			shouldActionMenuBeShown = true;
+			notify.log("asdfasdf" + Math.random());
+		}
+	});
+	if (ToolParams[tool].actionMenu) shouldActionMenuBeShown = true;
+	if (shouldActionMenuBeShown) {
+		document
+			.querySelector("#actionButtons")
+			.classList.remove("actionButtonsHidden");
+		createActionMenu(
+			ToolbarActionMenus[ToolParams[tool].actionMenu] || "noAction"
+		);
+	} else {
+		document
+			.querySelector("#actionButtons")
+			.classList.add("actionButtonsHidden");
+	}
+}
+function createActionMenu(menu) {
+	var actionMenu = document.getElementById("actionButtons");
+	actionMenu.innerHTML = "";
+	var universal = false;
+	ToolbarActionMenus["universal"].forEach((e) => {
+		if (e.condition()) {
+			actionMenu.innerHTML += `<button class="actionButton" onclick="${e.action}">
+			<i class="${e.icon}"></i>
+			${e.name}</button>`;
+			universal = true;
+		}
+	});
+	if (universal && menu != "noAction") {
+		actionMenu.innerHTML += `<div class="actionButtonDivider"></div>`;
+	}
+	menu.forEach((e) => {
+		actionMenu.innerHTML += `<button class="actionButton" onclick="${e.action}">
+		<i class="${e.icon}"></i>
+		${e.name}</button>`;
 	});
 }
 //find true in Tools

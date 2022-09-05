@@ -301,6 +301,7 @@ class Canvas {
 		this.undoBuffer = layer.canvasElement.toDataURL();
 	}
 	inputUp(e, wasPanning) {
+		notify.log("inputUp");
 		if (
 			Tools.circle ||
 			Tools.ellipse ||

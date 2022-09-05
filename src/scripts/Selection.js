@@ -169,17 +169,10 @@ function drawSelectionPreview() {
 			outlinePath.push(e);
 		});
 	});
-	notify.log(selectionPath.length);
 	drawOnSelectionSVG(paths2string(selectionPath));
 	if (isSelected()) {
 		//show action button if selected, hide if not
-		document
-			.querySelector("#actionButtons")
-			.classList.remove("actionButtonsHidden");
 	} else {
-		document
-			.querySelector("#actionButtons")
-			.classList.add("actionButtonsHidden");
 		hideBoundingBox();
 	}
 	updateBounding();
