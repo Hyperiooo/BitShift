@@ -5,6 +5,20 @@
     transition: color 0.3s, fill 0.3s, background 0.3s;
 }
 
+/*strip button of default styles*/
+button {
+    background: none;
+    border: none;
+    padding: 0;
+    font: inherit;
+    cursor: pointer;
+    outline: inherit;
+}
+
+.item i {
+    color: var(--toolBarHover);
+}
+
 body,
 html {
     background-color: var(--canvasBg);

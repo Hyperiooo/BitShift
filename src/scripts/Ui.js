@@ -206,15 +206,6 @@ window.closeSplash = () => {
 	}, 1000);
 };
 
-function share() {
-	var data = {
-		title: "MDN",
-		text: "Learn web development on MDN!",
-		url: "https://developer.mozilla.org",
-	};
-	navigator.share(data);
-}
-
 //replace when you have a functioning window system
 function openSettingsWindow() {
 	document.getElementById("window-settings").classList.remove("window-closed");
