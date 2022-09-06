@@ -440,6 +440,9 @@ function setTool(tool, el) {
 	document.querySelectorAll(`[data-tool-name="${tool}"]`).forEach((e) => {
 		e.classList.add("tool-active");
 	});
+	attemptActionMenu(tool);
+}
+function attemptActionMenu(tool) {
 	var shouldActionMenuBeShown = false;
 	ToolbarActionMenus["universal"].forEach((e) => {
 		if (e.condition()) {
@@ -476,6 +479,7 @@ function createActionMenu(menu) {
 	if (universal && menu != "noAction") {
 		actionMenu.innerHTML += `<div class="actionButtonDivider"></div>`;
 	}
+	if (!menu.forEach) return;
 	menu.forEach((e) => {
 		actionMenu.innerHTML += `<button class="actionButton" onclick="${e.action}">
 		<i class="${e.icon}"></i>

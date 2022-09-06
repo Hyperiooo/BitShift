@@ -1,4 +1,6 @@
-document.onkeydown = keyboardInput;
+//document.onkeydown = keyboardInput;
+
+window.onkeydown = keyboardInput;
 
 var keyboardAssignments = {
 	"ALT+SHIFT+C": (e) => {
@@ -36,6 +38,18 @@ var keyboardAssignments = {
 	},
 	"CONTROL+D": (e) => {
 		deselect();
+	},
+	"CONTROL+C": (e) => {
+		copySelection();
+	},
+	"CONTROL+V": (e) => {
+		pasteSelection();
+	},
+	"CONTROL+X": (e) => {
+		cutSelection();
+	},
+	"CONTROL+SHIFT+D": (e) => {
+		duplicateSelection();
 	},
 };
 

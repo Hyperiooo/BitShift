@@ -129,6 +129,7 @@ function deselect() {
 	if (Tools.transform) confirmTransform();
 	selectionPath = [];
 	drawSelectionPreview();
+	attemptActionMenu(getTool());
 }
 function invertSelection() {
 	//inverts selection. wow
@@ -184,6 +185,48 @@ function moveSelection(dx, dy) {
 			x.Y += dy;
 		});
 	});
+	drawSelectionPreview();
+}
+
+function adjustBoundingRect(side, amount) {
+	var largestX = 0;
+	var largestY = 0;
+	var smallestX = board.width;
+	var smallestY = board.height;
+	selectionPath.forEach((e) => {
+		e.forEach((x) => {
+			if (x.X > largestX) largestX = x.X;
+			if (x.Y > largestY) largestY = x.Y;
+			if (x.X < smallestX) smallestX = x.X;
+			if (x.Y < smallestY) smallestY = x.Y;
+		});
+	});
+	if (side == "top") {
+		//for whatever elements of the array with smallest y, adjust by amount
+		selectionPath.forEach((e) => {
+			e.forEach((x) => {
+				if (x.Y == smallestY) x.Y += amount;
+			});
+		});
+	} else if (side == "bottom") {
+		selectionPath.forEach((e) => {
+			e.forEach((x) => {
+				if (x.Y == largestY) x.Y += amount;
+			});
+		});
+	} else if (side == "left") {
+		selectionPath.forEach((e) => {
+			e.forEach((x) => {
+				if (x.X == smallestX) x.X += amount;
+			});
+		});
+	} else if (side == "right") {
+		selectionPath.forEach((e) => {
+			e.forEach((x) => {
+				if (x.X == largestX) x.X += amount;
+			});
+		});
+	}
 	drawSelectionPreview();
 }
 
@@ -289,20 +332,20 @@ function updateBounding() {
 	boundingRectElement.setAttributeNS(null, "y", minY);
 	boundingRectElement.setAttributeNS(null, "width", maxX - minX);
 	boundingRectElement.setAttributeNS(null, "height", maxY - minY);
-	handlebl.setAttributeNS(null, "cx", minX);
-	handlebl.setAttributeNS(null, "cy", minY);
-	handlebr.setAttributeNS(null, "cx", maxX);
-	handlebr.setAttributeNS(null, "cy", minY);
 	handletl.setAttributeNS(null, "cx", minX);
-	handletl.setAttributeNS(null, "cy", maxY);
+	handletl.setAttributeNS(null, "cy", minY);
 	handletr.setAttributeNS(null, "cx", maxX);
-	handletr.setAttributeNS(null, "cy", maxY);
+	handletr.setAttributeNS(null, "cy", minY);
+	handletm.setAttributeNS(null, "cx", (minX + maxX) / 2);
+	handletm.setAttributeNS(null, "cy", minY);
+	handlebl.setAttributeNS(null, "cx", minX);
+	handlebl.setAttributeNS(null, "cy", maxY);
+	handlebr.setAttributeNS(null, "cx", maxX);
+	handlebr.setAttributeNS(null, "cy", maxY);
 	handlebm.setAttributeNS(null, "cx", (minX + maxX) / 2);
-	handlebm.setAttributeNS(null, "cy", minY);
+	handlebm.setAttributeNS(null, "cy", maxY);
 	handleml.setAttributeNS(null, "cx", minX);
 	handleml.setAttributeNS(null, "cy", (minY + maxY) / 2);
-	handletm.setAttributeNS(null, "cx", (minX + maxX) / 2);
-	handletm.setAttributeNS(null, "cy", maxY);
 	handlemr.setAttributeNS(null, "cx", maxX);
 	handlemr.setAttributeNS(null, "cy", (minY + maxY) / 2);
 	handlerot.setAttributeNS(null, "cx", (minX + maxX) / 2);

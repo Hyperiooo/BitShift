@@ -241,6 +241,7 @@ window.onpagehide = function () {
 };
 
 function saveData() {
+	confirmTransform();
 	project = {
 		name: projName,
 		palettes: filePalettes,

@@ -2395,7 +2395,7 @@ div[id^='alrt-main'] {
 
 .boundingRectHandle-bl,
 .boundingRectHandle-tr {
-    cursor: nw-resize;
+    cursor: ne-resize;
 }
 
 .boundingRectHandle-bm,
@@ -2410,7 +2410,7 @@ div[id^='alrt-main'] {
 
 .boundingRectHandle-br,
 .boundingRectHandle-tl {
-    cursor: ne-resize;
+    cursor: nw-resize;
 }
 
 .boundingRectHandle-rot {
@@ -2471,7 +2471,15 @@ div[id^='alrt-main'] {
 #transformdummycanvas {
     position: absolute;
     width: 50px;
-    top: 50px;
+    top: 75px;
+    left: 50px;
+    pointer-events: none;
+}
+
+#scaledummycanvas {
+    position: absolute;
+    width: 150px;
+    top: 150px;
     left: 50px;
     pointer-events: none;
 }
