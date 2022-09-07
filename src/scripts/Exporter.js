@@ -24,7 +24,7 @@ async function exportFile() {
 			document.getElementById("export-file-name").value +
 				"." +
 				document.getElementById("export-file-type").value,
-			{ type: blob.type || "image/png" }
+			{ type: "image/png" }
 		);
 		navigator.share({
 			title: "Export" + document.getElementById("export-file-name").value,
