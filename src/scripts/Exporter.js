@@ -24,10 +24,11 @@ async function exportFile() {
 			document.getElementById("export-file-name").value +
 				"." +
 				document.getElementById("export-file-type").value,
-			{ type: blob.type }
+			{ type: blob.type || "image/png" }
 		);
 		navigator.share({
-			title: document.getElementById("export-file-name").value,
+			title: "Export" + document.getElementById("export-file-name").value,
+			text: document.getElementById("export-file-name").value,
 			files: [file],
 		});
 	} else {
