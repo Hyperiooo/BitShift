@@ -285,3 +285,12 @@ function scale() {
 	}
 }
 scale();
+
+//read image from url, get its width and height, and draw it on canvas
+function drawImageFromUrl(url) {
+	var img = new Image();
+	img.onload = function () {
+		board.ctx.drawImage(img, 0, 0);
+	};
+	img.src = url;
+}

@@ -829,6 +829,8 @@ class Canvas {
 				}
 			}
 		}
+		var url = board.canvas.toDataURL();
+		notify.log("urld");
 	}
 	round(value, step) {
 		step || (step = 1.0);
