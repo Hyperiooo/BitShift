@@ -38,8 +38,8 @@ html {
     --canvScale: 10;
     --canvTransformX: 0px;
     --canvTransformY: 0px;
-    --canvX: 32px;
-    --canvY: 32px;
+    --canvX: 256px;
+    --canvY: 256px;
     --vh: 0;
     --vw: 0;
     --color: #fff;
@@ -523,11 +523,13 @@ html {
     width: var(--canvX);
     height: var(--canvY);
     image-rendering: pixelated !important;
-    pointer-events: none;z-index: 100000000;
+    pointer-events: none;
+    z-index: 100000000;
 }
 
 #newLayerWrapper img {
     width: 100%;
+    image-rendering: pixelated !important;
 }
 
 canvas * {
@@ -541,6 +543,7 @@ canvas * {
 .drawingCanvas {
     width: var(--canvX);
     height: var(--canvY);
+    background: transparent;
 }
 
 #bggridcanv,
@@ -561,7 +564,6 @@ canvas * {
 
 #bggridcanv {
     position: absolute;
-    transform: translate(calc(-50% + var(--canvTransformX)), calc(-50% + var(--canvTransformY))) scale(var(--canvScale), var(--canvScale));
     display: none;
     background-color: white;
     z-index: -100000;
@@ -584,7 +586,6 @@ canvas * {
     --opac: 1;
     position: absolute;
     top: 0;
-    transform: translate(var(--canvTransformX), var(--canvTransformY)) scale(var(--canvScale), var(--canvScale));
     z-index: 100000;
     pointer-events: none;
     z-index: 9999999999999999999999;
@@ -614,7 +615,6 @@ canvas * {
 #selectionGroup {
     width: var(--canvX) !important;
     height: var(--canvY) !important;
-    transform: translate(var(--canvTransformX), var(--canvTransformY)) scale(var(--canvScale), var(--canvScale));
 }
 
 #selectionGroup {
