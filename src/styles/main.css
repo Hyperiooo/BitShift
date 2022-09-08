@@ -514,7 +514,6 @@ html {
 #layers-wrap {
     position: absolute;
     display: block !important;
-    opacity: 0.1;
 }
 
 #newLayerWrapper {
