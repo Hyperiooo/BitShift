@@ -602,6 +602,7 @@ canvas * {
 }
 #layerWrapperWrapper{
     position: absolute;
+    top: 0;
     pointer-events:none;
 }
 #boundingSVG {
@@ -638,7 +639,7 @@ canvas * {
     bottom: 0;
     transform: translate(-50%);
     width: 100%;
-    height: calc(var(--vh) - 56px);
+    height: 100%;
     cursor: none;
 }
 
