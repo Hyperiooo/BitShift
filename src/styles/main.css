@@ -568,10 +568,7 @@ canvas * {
 }
 
 #cursorcanv {
-    --opac: 1;
-    position: absolute;
-    transform: translate(var(--canvTransformX), var(--canvTransformY)) scale(var(--canvScale), var(--canvScale));
-    touch-action: none;
+    --opac: 1;touch-action: none;
     image-rendering: -moz-crisp-edges;
     image-rendering: -webkit-crisp-edges;
     image-rendering: pixelated;

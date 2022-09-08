@@ -42,9 +42,7 @@ function updateCursor() {
 	cursor.style.height = cursors[curCursor].height + "px";
 }
 
-var cursorCanv = document.getElementById("cursorcanv");
 var cursorSVG = document.getElementById("cursorSVG");
-var cursorcanvctx = cursorCanv.getContext("2d");
 
 var eraserBufferCanvas = document.createElement("canvas");
 eraserBufferCanvas.id = "eraserBufferCanvas";

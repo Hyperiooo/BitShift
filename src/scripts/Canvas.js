@@ -14,7 +14,6 @@ class Canvas {
 		this.initialScale = 1;
 		this.canvScale = settings.ui.canvasScale;
 		this.previewcanvas = document.querySelector("#previewcanv");
-		this.cursorcanvas = document.querySelector("#cursorcanv");
 		this.selectionCanvas = document.createElement("canvas");
 		this.selectionBufferCanvas = document.createElement("canvas");
 		this.sctx = this.selectionCanvas.getContext("2d");
@@ -89,7 +88,6 @@ class Canvas {
 		this.h = height;
 		this.ctx;
 		this.pctx = this.previewcanvas.getContext("2d");
-		this.ccctx = this.cursorcanvas.getContext("2d");
 		this.bggctx = this.bggridcanvas.getContext("2d");
 		this.data = [...Array(this.width)].map((e) =>
 			Array(this.height).fill([255, 255, 255, 255])
@@ -139,14 +137,12 @@ class Canvas {
 			_self.boundingGroup.style.transform =
 				_self.selectionGroup.style.transform =
 				_self.cursorSVG.style.transform =
-				_self.cursorcanvas.style.transform =
 				//_self.previewcanvas.style.transform =
 				_self.bggridcanvas.style.transform =
 					_self.canvaslayersparent.style.transform;
 			_self.boundingGroup.style.transformOrigin =
 				_self.selectionGroup.style.transformOrigin =
 				_self.cursorSVG.style.transformOrigin =
-				_self.cursorcanvas.style.transformOrigin =
 				//_self.previewcanvas.style.transformOrigin =
 				_self.bggridcanvas.style.transformOrigin =
 					_self.canvaslayersparent.style.transformOrigin;
@@ -195,7 +191,7 @@ class Canvas {
 				y = e.touches[0].clientY;
 			}
 
-			if (e.touches && e.touches.length != 1) {
+			if (e.touches && e.touches.length > 1) {
 				this.panning = true;
 				this.panzoom.moveBy(-(this.deltaX - x), -(this.deltaY - y));
 				this.deltaX = (e.touches[0].clientX + e.touches[1].clientX) / 2;
@@ -843,8 +839,6 @@ class Canvas {
 	setCanvScale(s) {
 		settings.ui.canvasScale = s;
 		this.canvScale = settings.ui.canvasScale;
-		this.cursorcanvas.width = project.width * this.canvScale;
-		this.cursorcanvas.height = project.height * this.canvScale;
 		canvasResized();
 		//document.documentElement.style.setProperty('--canvScale', this.canvScale);
 	}
@@ -866,6 +860,7 @@ class Canvas {
 		this.prevTY = y;
 	}
 	drawBgGrid() {
+		return
 		let nCol = Math.ceil(this.width / settings.background.width);
 		let nRow = Math.ceil(this.height / settings.background.height);
 		var ctx = this.bggctx;
