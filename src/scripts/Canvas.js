@@ -25,7 +25,12 @@ class Canvas {
 		this.boundingGroup = document.querySelector("#boundingGroup");
 		this.boundingSVG = document.querySelector("#boundingSVG");
 		this.selectionSVG = document.querySelector("#selectionSVG");
+		this.newLayerWrapperSVG = document.querySelector("#newLayerWrapper");
 		this.selectionGroup.setAttribute("viewBox", "0 0 " + width + " " + height);
+		this.newLayerWrapperSVG.setAttribute(
+			"viewBox",
+			"0 0 " + width + " " + height
+		);
 		this.eyedropperPreviewCanvas = document.getElementById(
 			"eyedropperPreviewCanvas"
 		);
@@ -134,16 +139,16 @@ class Canvas {
 		var _self = this;
 		this.panzoom.on("transform", function (e) {
 			// This event will be called along with events above.
-			_self.boundingGroup.style.transform =
+			_self.newLayerWrapperSVG.style.transform =
+				_self.boundingGroup.style.transform =
 				_self.selectionGroup.style.transform =
 				_self.cursorSVG.style.transform =
-				//_self.previewcanvas.style.transform =
 				_self.bggridcanvas.style.transform =
 					_self.canvaslayersparent.style.transform;
-			_self.boundingGroup.style.transformOrigin =
+			_self.newLayerWrapperSVG.style.transformOrigin =
+				_self.boundingGroup.style.transformOrigin =
 				_self.selectionGroup.style.transformOrigin =
 				_self.cursorSVG.style.transformOrigin =
-				//_self.previewcanvas.style.transformOrigin =
 				_self.bggridcanvas.style.transformOrigin =
 					_self.canvaslayersparent.style.transformOrigin;
 			_self.setCanvScale(_self.panzoom.getTransform().scale);
@@ -860,7 +865,7 @@ class Canvas {
 		this.prevTY = y;
 	}
 	drawBgGrid() {
-		return
+		return;
 		let nCol = Math.ceil(this.width / settings.background.width);
 		let nRow = Math.ceil(this.height / settings.background.height);
 		var ctx = this.bggctx;

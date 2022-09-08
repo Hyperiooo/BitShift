@@ -508,22 +508,26 @@ html {
 .drawingCanvas {
     --zindex: 0;
     position: absolute;
-    display: block !important;
-    touch-action: none;
-    image-rendering: -moz-crisp-edges;
-    image-rendering: -webkit-crisp-edges;
-    image-rendering: pixelated;
-    image-rendering: crisp-edges;
     z-index: var(--zindex) !important;
 }
 
 #layers-wrap {
     position: absolute;
     display: block !important;
-    image-rendering: -moz-crisp-edges;
-    image-rendering: -webkit-crisp-edges;
-    image-rendering: pixelated;
-    image-rendering: crisp-edges;
+    opacity: 0.1;
+}
+
+#newLayerWrapper {
+    position: absolute;
+    display: block !important;
+    width: var(--canvX);
+    height: var(--canvY);
+    image-rendering: pixelated !important;
+    pointer-events: none;z-index: 100000000;
+}
+
+#newLayerWrapper img {
+    width: 100%;
 }
 
 canvas * {
@@ -531,20 +535,37 @@ canvas * {
     top: 0;
 }
 
-#bggridcanv {
-    position: absolute;
-    transform: translate(calc(-50% + var(--canvTransformX)), calc(-50% + var(--canvTransformY))) scale(var(--canvScale), var(--canvScale));
-    display: none;
+#bggridcanv,
+#previewcanv,
+#cursorSVG,
+.drawingCanvas {
+    width: var(--canvX);
+    height: var(--canvY);
+}
+
+#bggridcanv,
+#previewcanv,
+#cursorSVG,
+#selectionSVG,
+#boundingSVG,
+.drawingCanvas {
     touch-action: none;
     image-rendering: -moz-crisp-edges;
     image-rendering: -webkit-crisp-edges;
     image-rendering: pixelated;
-    image-rendering: crisp-edges;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+
+#bggridcanv {
+    position: absolute;
+    transform: translate(calc(-50% + var(--canvTransformX)), calc(-50% + var(--canvTransformY))) scale(var(--canvScale), var(--canvScale));
+    display: none;
     background-color: white;
     z-index: -100000;
     pointer-events: none;
-    width: var(--canvX);
-    height: var(--canvY);
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8' viewBox='0 0 8 8'%3E%3Cg fill='%23bababa' fill-opacity='0.4'%3E%3Cpath fill-rule='evenodd' d='M0 0h4v4H0V0zm4 4h4v4H4V4z'/%3E%3C/g%3E%3C/svg%3E");
 }
 
@@ -552,34 +573,11 @@ canvas * {
     --opac: 1;
     --zindex: 100000;
     position: absolute;
-    /*transform: translate(var(--canvTransformX), var(--canvTransformY)) scale(var(--canvScale), var(--canvScale));*/
     display: none;
-    touch-action: none;
-    image-rendering: -moz-crisp-edges;
-    image-rendering: -webkit-crisp-edges;
-    image-rendering: pixelated;
-    image-rendering: crisp-edges;
     background: transparent;
     z-index: var(--zindex);
     pointer-events: none;
-    width: var(--canvX);
-    height: var(--canvY);
     opacity: var(--opac);
-}
-
-#cursorcanv {
-    --opac: 1;touch-action: none;
-    image-rendering: -moz-crisp-edges;
-    image-rendering: -webkit-crisp-edges;
-    image-rendering: pixelated;
-    image-rendering: crisp-edges;
-    background: transparent;
-    z-index: 100000;
-    pointer-events: none;
-    width: var(--canvX);
-    height: var(--canvY);
-    z-index: 9999999999999999999999;
-    mix-blend-mode: difference;
 }
 
 #cursorSVG {
@@ -587,58 +585,29 @@ canvas * {
     position: absolute;
     top: 0;
     transform: translate(var(--canvTransformX), var(--canvTransformY)) scale(var(--canvScale), var(--canvScale));
-    touch-action: none;
-    image-rendering: -moz-crisp-edges;
-    image-rendering: -webkit-crisp-edges;
-    image-rendering: pixelated;
-    image-rendering: crisp-edges;
     z-index: 100000;
     pointer-events: none;
-    width: var(--canvX);
-    height: var(--canvY);
     z-index: 9999999999999999999999;
     mix-blend-mode: difference;
-    user-select: none;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
 }
 
 #selectionSVG {
     --opac: 1;
     position: absolute;
     top: 0;
-    touch-action: none;
-    image-rendering: -moz-crisp-edges;
-    image-rendering: -webkit-crisp-edges;
-    image-rendering: pixelated;
-    image-rendering: crisp-edges;
     pointer-events: none;
     z-index: 100000;
     pointer-events: none;
     z-index: 9999999999;
-    user-select: none;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
 }
 
 #boundingSVG {
     --opac: 1;
     position: absolute;
     top: 0;
-    touch-action: none;
-    image-rendering: -moz-crisp-edges;
-    image-rendering: -webkit-crisp-edges;
-    image-rendering: pixelated;
-    image-rendering: crisp-edges;
     z-index: 100000;
     pointer-events: none;
     z-index: 9999999999999999999999;
-    user-select: none;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
 }
 
 #boundingGroup,

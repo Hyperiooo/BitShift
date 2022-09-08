@@ -5,75 +5,62 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>new layer menu tests</title><!---
+    <title>new layer menu tests</title>
+    <!---
     <script src="pinchzoom.js" defer></script>
     <script src="main.js" defer></script>-->
+    <link rel="stylesheet" href="../src/styles/main.css">
 
-    <link rel="manifest" href="manifest.json" />
-    <script src="https://cdn.jsdelivr.net/gh/Hyperiooo/Alrt.js@v0.1.2/src/alrt.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Hyperiooo/Alrt.js@v0.1.1/src/alrt.css">
-    <link rel="stylesheet" href="alrt-theme.css">
-    <style>
-        .pixelated {
-            image-rendering: pixelated;
-        }
-
-        img {
-            width: 100%;
-        }
-        svg {
-            background-color: red;
-            transform: translate(10px, 10px) scale(10);
-        }
-    </style>
     <script>
-        //function that loads to canvas element of id "canvas" from url 
-        function loadCanvas(url, canvasId) {
-            var canvas = document.getElementById(canvasId);
-            var ctx = canvas.getContext("2d");
-            var img = new Image();
-            img.onload = function () {
-                canvas.width = img.width;
-                canvas.height = img.height;
-                ctx.drawImage(img, 0, 0);
-            };
-            img.src = url;
-        }
-
-        window.onload = () => {
-            loadCanvas("https://cdn.discordapp.com/attachments/656343660241223697/1016921977128230952/canvas.png", "canvas");
-        }
-    </script><script>
         window.onload = e => {
 
-            var apanzoom = panzoom(document.querySelector(".pixelated"), {
-			smoothScroll: false,
-			zoomSpeed: 0.15,
-			onDoubleClick: function (e) {
-				return false;
-			},
-			beforeMouseDown: function (e) {
-				return e.button != 1;
-			},
-			beforeTouchDown: function (e) {
-				return !(e.touches.length > 1);
-			},
-			zoomDoubleClickSpeed: 1,
-			maxZoom: 200,
-			minZoom: 0.1,
-		});
-        }</script><script src="../src/scripts/panzoom.js"></script>
+
+
+            var apanzoom = panzoom(document.getElementById("newLayerWrapper"), {
+                smoothScroll: false,
+                initialZoom: 10,
+                zoomSpeed: 0.15,
+                onDoubleClick: function (e) {
+                    return false;
+                },
+                beforeMouseDown: function (e) {
+                    return e.button != 1;
+                },
+                beforeTouchDown: function (e) {
+                    return !(e.touches.length > 1);
+                },
+                zoomDoubleClickSpeed: 1,
+                maxZoom: 200,
+                minZoom: 0.1,
+            });
+            var _self = this;
+            apanzoom.on("transform", function (e) {
+                // This event will be called along with events above.
+                _self.newLayerWrapperSVG.style.transform =
+                    _self.boundingGroup.style.transform =
+                    _self.selectionGroup.style.transform =
+                    _self.cursorSVG.style.transform =
+                    _self.bggridcanvas.style.transform =
+                    _self.canvaslayersparent.style.transform;
+                _self.newLayerWrapperSVG.style.transformOrigin =
+                    _self.boundingGroup.style.transformOrigin =
+                    _self.selectionGroup.style.transformOrigin =
+                    _self.cursorSVG.style.transformOrigin =
+                    _self.bggridcanvas.style.transformOrigin =
+                    _self.canvaslayersparent.style.transformOrigin;
+            });
+        }</script>
+    <script src="../src/scripts/panzoom.js"></script>
 </head>
 
-<body>  <svg class="pixelated" viewBox="0 0 1304 906" xmlns="http://www.w3.org/2000/svg">
-    <foreignObject x="0" y="0" width="100%" height="100%" style="transform: translateZ(-10px)"><img src="https://upload.wikimedia.org/wikipedia/commons/4/47/PNG_transparency_demonstration_1.png" alt="">
-        
-    </foreignObject>
-            <foreignObject x="0" y="0" width="100%" height="100%" style="transform: translateZ(10px)"><img id="img"
-                    src="https://media.discordapp.net/attachments/842229696229670952/1016921734135414814/IMG_0454.png?width=1010&height=702">
-                    
-            </foreignObject>
-        </svg>
+<body>
+
+    <svg id="newLayerWrapper" customcursor viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
+        <foreignObject class="drawingCanvas" x=" 0" y="0" width="100%" height="100%">
+            <img id="img"
+                src="https://cdn.discordapp.com/attachments/656343660241223697/1016921977128230952/canvas.png">
+        </foreignObject>
+    </svg>
 </body>
 
 </html>
