@@ -517,13 +517,8 @@ html {
 }
 
 #newLayerWrapper {
-    position: absolute;
-    display: block !important;
     width: var(--canvX);
     height: var(--canvY);
-    image-rendering: pixelated !important;
-    pointer-events: none;
-    z-index: 100000000;
 }
 
 #newLayerWrapper img {
@@ -545,11 +540,16 @@ canvas * {
     background: transparent;
 }
 
+.drawingCanvas img {
+    width: var(--canvX) !important;
+    height: var(--canvY);
+}
+
 #bggridcanv,
 #previewcanv,
 #cursorSVG,
 #selectionSVG,
-#boundingSVG,
+#boundingSVG,#layerWrapperWrapper,
 .drawingCanvas {
     touch-action: none;
     image-rendering: -moz-crisp-edges;
@@ -600,7 +600,10 @@ canvas * {
     pointer-events: none;
     z-index: 9999999999;
 }
-
+#layerWrapperWrapper{
+    position: absolute;
+    pointer-events:none;
+}
 #boundingSVG {
     --opac: 1;
     position: absolute;

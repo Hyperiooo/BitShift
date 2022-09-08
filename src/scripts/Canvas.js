@@ -25,6 +25,7 @@ class Canvas {
 		this.boundingGroup = document.querySelector("#boundingGroup");
 		this.boundingSVG = document.querySelector("#boundingSVG");
 		this.selectionSVG = document.querySelector("#selectionSVG");
+		this.layerWrapperParent = document.querySelector("#layerWrapperWrapper");
 		this.newLayerWrapperSVG = document.querySelector("#newLayerWrapper");
 		this.selectionGroup.setAttribute("viewBox", "0 0 " + width + " " + height);
 		this.newLayerWrapperSVG.setAttribute(
@@ -37,6 +38,8 @@ class Canvas {
 		this.eyedropperPreviewElement =
 			document.getElementById("eyedropper-preview");
 		this.eyedropperPreviewCtx = this.eyedropperPreviewCanvas.getContext("2d");
+		this.layerWrapperParent.setAttribute("viewBox",
+		"0 0 " + window.innerWidth + " " + window.innerHeight )
 		this.boundingSVG.setAttribute(
 			"viewBox",
 			"0 0 " + window.innerWidth + " " + window.innerHeight
