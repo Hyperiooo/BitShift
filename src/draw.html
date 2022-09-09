@@ -285,9 +285,9 @@
       <g id="selectionGroup"></g>
     </svg>
     <svg id="layerWrapperWrapper" customcursor xmlns="http://www.w3.org/2000/svg">
-      <g id="newLayerWrapper">
+      <g id="newLayerWrapper" style="opacity: 0">
         <foreignObject id="" class="drawingCanvas" x=" 0" y="0" width="100%" height="100%">
-          <canvas id="previewcanv" customcursor></canvas>
+          
         </foreignObject>
       </g>
     </svg>
@@ -306,9 +306,10 @@
         <circle class="boundingRectCircleHandle boundingRectHandle-rot" cx="60" cy="-5" r="5" fill="white" />
       </g>
     </svg>
-    <div style="opacity: 0.2" id="layers-wrap" customcursor>
+    <div style="opacity: 1" id="layers-wrap" customcursor>
+      <canvas id="previewcanv" customcursor></canvas>
     </div>
-    <canvas style="opacity: 0.2" id="bggridcanv" customcursor></canvas>
+    <canvas style="opacity: 1" id="bggridcanv" customcursor></canvas>
   </div>
 
 

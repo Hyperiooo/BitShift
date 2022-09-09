@@ -148,13 +148,13 @@ class Canvas {
 		var _self = this;
 		this.panzoom.on("transform", function (e) {
 			// This event will be called along with events above.
-			_self.newLayerWrapperSVG.style.transform =
+			//_self.newLayerWrapperSVG.style.transform =
 				_self.boundingGroup.style.transform =
 				_self.selectionGroup.style.transform =
 				_self.cursorSVG.style.transform =
 				_self.bggridcanvas.style.transform =
 					_self.canvaslayersparent.style.transform;
-			_self.newLayerWrapperSVG.style.transformOrigin =
+			//_self.newLayerWrapperSVG.style.transformOrigin =
 				_self.boundingGroup.style.transformOrigin =
 				_self.selectionGroup.style.transformOrigin =
 				_self.cursorSVG.style.transformOrigin =
