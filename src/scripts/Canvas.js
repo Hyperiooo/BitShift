@@ -38,8 +38,10 @@ class Canvas {
 		this.eyedropperPreviewElement =
 			document.getElementById("eyedropper-preview");
 		this.eyedropperPreviewCtx = this.eyedropperPreviewCanvas.getContext("2d");
-		this.layerWrapperParent.setAttribute("viewBox",
-		"0 0 " + window.innerWidth + " " + window.innerHeight )
+		this.layerWrapperParent.setAttribute(
+			"viewBox",
+			"0 0 " + window.innerWidth + " " + window.innerHeight
+		);
 		this.boundingSVG.setAttribute(
 			"viewBox",
 			"0 0 " + window.innerWidth + " " + window.innerHeight
@@ -54,6 +56,10 @@ class Canvas {
 				"0 0 " + window.innerWidth + " " + window.innerHeight
 			);
 			this.selectionSVG.setAttribute(
+				"viewBox",
+				"0 0 " + window.innerWidth + " " + window.innerHeight
+			);
+			this.layerWrapperParent.setAttribute(
 				"viewBox",
 				"0 0 " + window.innerWidth + " " + window.innerHeight
 			);
@@ -970,6 +976,7 @@ class Canvas {
 				this.ctx.fillRect(ax1, ay1, ax2 - ax1, ay2 - ay1);
 			}
 		}
+		//document.getElementById("xae").src = this.canvas.toDataURL();
 	}
 	sBufferDraw(coord) {
 		this.sctx.fillStyle = "red";

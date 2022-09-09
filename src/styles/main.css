@@ -73,11 +73,11 @@ html {
     --windowSide: #2b2b30;
     --appBarThemeColor: #141416;
     --bgMain: #18171a;
-    --bgMainT: #18171ae3;
+    --bgMainT: #18171aa6;
     --canvasBg: #202022;
     --bgLight: #35353b;
     --bgDark: #131214;
-    --bgDarkT: #131214e3;
+    --bgDarkT: #131214a6;
     --textMain: #ffffff;
     --textDim: #cacaca;
     --important: #2741ff;
@@ -98,11 +98,11 @@ html {
     --windowSide: #eaeaee;
     --appBarThemeColor: #EDEFF4;
     --bgMain: #ffffff;
-    --bgMainT: #ffffffd5;
+    --bgMainT: #ffffffa6;
     --canvasBg: #eaeaee;
     --bgLight: #d3d5d8;
     --bgDark: #eef0f5;
-    --bgDarkT: #eef0f5d5;
+    --bgDarkT: #eef0f5a6;
     --textMain: #0b0c1a;
     --textDim: #1b1c2e;
     --important: #2741ff;
@@ -521,9 +521,13 @@ html {
     height: var(--canvY);
 }
 
-#newLayerWrapper img {
-    width: 100%;
+.drawingCanvas * {
+    position: fixed !important;
+    width: var(--canvX);
+    height: var(--canvY);
     image-rendering: pixelated !important;
+    display: contents;
+    transform-origin: 0;
 }
 
 canvas * {
@@ -549,7 +553,8 @@ canvas * {
 #previewcanv,
 #cursorSVG,
 #selectionSVG,
-#boundingSVG,#layerWrapperWrapper,
+#boundingSVG,
+#layerWrapperWrapper,
 .drawingCanvas {
     touch-action: none;
     image-rendering: -moz-crisp-edges;
@@ -573,7 +578,7 @@ canvas * {
 #previewcanv {
     --opac: 1;
     --zindex: 100000;
-    position: absolute;
+    position: relative;
     display: none;
     background: transparent;
     z-index: var(--zindex);
@@ -600,11 +605,13 @@ canvas * {
     pointer-events: none;
     z-index: 9999999999;
 }
-#layerWrapperWrapper{
+
+#layerWrapperWrapper {
     position: absolute;
     top: 0;
-    pointer-events:none;
+    pointer-events: none;
 }
+
 #boundingSVG {
     --opac: 1;
     position: absolute;
