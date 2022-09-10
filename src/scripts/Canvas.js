@@ -165,7 +165,16 @@ class Canvas {
 				_self.panzoom.getTransform().x,
 				_self.panzoom.getTransform().y
 			);
+			var rect = _self.canvaslayersparent.getBoundingClientRect()
+			notify.log(rect.width)
+			document.body.style.setProperty("--scaledX", rect.left + "px")
+			document.body.style.setProperty("--scaledY", rect.top + "px")
+
+			document.body.style.setProperty("--scaledWidth", rect.width + "px")
+
+			document.body.style.setProperty("--scaledHeight", rect.height+ "px")
 		});
+		
 		this.startZoomX = 0;
 		this.startZoomY = 0;
 		this.deltaX = 0;

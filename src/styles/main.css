@@ -44,6 +44,10 @@ html {
     --vw: 0;
     --color: #fff;
     --hue: #fff;
+    --scaledWidth: 100px;
+    --scaledHeight: 200px;
+    --scaledX: 100px;
+    --scaledY:100px;
 }
 
 .ui-theme-black {
@@ -584,6 +588,12 @@ canvas * {
     z-index: var(--zindex);
     pointer-events: none;
     opacity: var(--opac);
+    
+}
+.drawingCanvas * {
+    width: var(--scaledWidth) !important;
+    height: var(--scaledHeight) !important;
+    transform: translate(var(--scaledX), var(--scaledY));
 }
 
 #cursorSVG {
