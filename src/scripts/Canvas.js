@@ -25,23 +25,20 @@ class Canvas {
 		this.boundingGroup = document.querySelector("#boundingGroup");
 		this.boundingSVG = document.querySelector("#boundingSVG");
 		this.selectionSVG = document.querySelector("#selectionSVG");
-		this.layerWrapperParent = document.querySelector("#layerWrapperWrapper");
-		this.newLayerWrapperSVG = document.querySelector("#newLayerWrapper");
 		this.selectionGroup.setAttribute("viewBox", "0 0 " + width + " " + height);
-		this.newLayerWrapperSVG.setAttribute(
-			"viewBox",
-			"0 0 " + width + " " + height
-		);
 		this.eyedropperPreviewCanvas = document.getElementById(
 			"eyedropperPreviewCanvas"
 		);
 		this.eyedropperPreviewElement =
 			document.getElementById("eyedropper-preview");
 		this.eyedropperPreviewCtx = this.eyedropperPreviewCanvas.getContext("2d");
-		this.layerWrapperParent.setAttribute(
-			"viewBox",
-			"0 0 " + window.innerWidth + " " + window.innerHeight
-		);
+		
+		document.querySelectorAll(".layerWrapperWrapper").forEach(e=>{
+			e.setAttribute(
+				"viewBox",
+				"0 0 " + window.innerWidth + " " + window.innerHeight
+			);
+		})
 		this.boundingSVG.setAttribute(
 			"viewBox",
 			"0 0 " + window.innerWidth + " " + window.innerHeight
@@ -59,14 +56,17 @@ class Canvas {
 				"viewBox",
 				"0 0 " + window.innerWidth + " " + window.innerHeight
 			);
-			this.layerWrapperParent.setAttribute(
-				"viewBox",
-				"0 0 " + window.innerWidth + " " + window.innerHeight
-			);
+			document.querySelectorAll(".layerWrapperWrapper").forEach(e=>{
+				e.setAttribute(
+					"viewBox",
+					"0 0 " + window.innerWidth + " " + window.innerHeight
+				);
+			})
 		});
 		this.bggridcanvas = document.querySelector("#bggridcanv");
 		this.eBufferCanvas = document.getElementById("eraserBrushBufferParent");
 		this.canvaslayersparent = document.getElementById("layers-wrap");
+		this.newLayerParent = document.getElementById("layerParent")
 		this.ectx = this.eBufferCanvas.getContext("2d");
 		document.documentElement.style.setProperty("--canvScale", this.canvScale);
 		this.bggridcanvas.width = width;
@@ -148,17 +148,17 @@ class Canvas {
 		var _self = this;
 		this.panzoom.on("transform", function (e) {
 			// This event will be called along with events above.
-			//_self.newLayerWrapperSVG.style.transform =
 				_self.boundingGroup.style.transform =
 				_self.selectionGroup.style.transform =
 				_self.cursorSVG.style.transform =
 				_self.bggridcanvas.style.transform =
+				//_self.newLayerParent.style.transform = 
 					_self.canvaslayersparent.style.transform;
-			//_self.newLayerWrapperSVG.style.transformOrigin =
 				_self.boundingGroup.style.transformOrigin =
 				_self.selectionGroup.style.transformOrigin =
 				_self.cursorSVG.style.transformOrigin =
 				_self.bggridcanvas.style.transformOrigin =
+				//_self.newLayerParent.style.transformOrigin = 
 					_self.canvaslayersparent.style.transformOrigin;
 			_self.setCanvScale(_self.panzoom.getTransform().scale);
 			_self.setCanvTransform(
@@ -166,7 +166,6 @@ class Canvas {
 				_self.panzoom.getTransform().y
 			);
 			var rect = _self.canvaslayersparent.getBoundingClientRect()
-			notify.log(rect.width)
 			document.body.style.setProperty("--scaledX", rect.left + "px")
 			document.body.style.setProperty("--scaledY", rect.top + "px")
 
@@ -985,7 +984,6 @@ class Canvas {
 				this.ctx.fillRect(ax1, ay1, ax2 - ax1, ay2 - ay1);
 			}
 		}
-		//document.getElementById("xae").src = this.canvas.toDataURL();
 	}
 	sBufferDraw(coord) {
 		this.sctx.fillStyle = "red";

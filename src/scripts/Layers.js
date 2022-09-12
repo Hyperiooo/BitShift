@@ -21,6 +21,16 @@ class Layer {
 		this.layerElement.style.setProperty("--offsetY", `0px`);
 		this.layerElement.id = "l-" + this.id;
 
+		this.svgWrapper = document.createElementNS("http://www.w3.org/2000/svg", "svg")
+		this.svgWrapper.classList.add("layerWrapperWrapper")
+		this.svgWrapper.setAttribute(
+			"viewBox",
+			"0 0 " + window.innerWidth + " " + window.innerHeight
+		);
+		this.svgWrapper.setAttribute("customcursor", "true")
+		this.foreignObject = document.createElementNS("http://www.w3.org/2000/svg", "foreignObject")
+		this.foreignObject.classList.add("drawingCanvas")
+
 		this.previewCanvas = document.createElement("canvas");
 		this.previewCanvas.classList.add("layer-preview");
 		this.previewCanvas.width = project.width;
@@ -68,10 +78,12 @@ class Layer {
 		this.canvasElement.height = project.height;
 		this.canvasElement.classList.add("drawingCanvas");
 		this.canvasElement.id = "c-" + this.id;
-		this.canvasElement.style.setProperty("--zindex", layers.length);
+		this.svgWrapper.style.setProperty("--zindex", layers.length);
 		updateAllIndices();
 		this.ctx = this.canvasElement.getContext("2d");
-		document.getElementById("layers-wrap").prepend(this.canvasElement);
+		this.svgWrapper.appendChild(this.foreignObject)
+		this.foreignObject.appendChild(this.canvasElement)
+		document.getElementById("layerParent").prepend(this.svgWrapper);
 
 		let img = new Image();
 		img.setAttribute("src", this.data);
@@ -419,7 +431,7 @@ class Layer {
 	updateIndices() {
 		for (var i = 0; i < layers.length; i++) {
 			layers[i].index = layers.length - i - 1;
-			layers[i].canvasElement.style.setProperty(
+			layers[i].svgWrapper.style.setProperty(
 				"--zindex",
 				layers[i].index * 2
 			);
@@ -563,7 +575,7 @@ function newLayerB(n, data) {
 	drawCanvas.id = "c-" + id;
 	drawCanvas.style.setProperty("--zindex", layers.length);
 	var context = drawCanvas.getContext("2d");
-	document.getElementById("layers-wrap").prepend(drawCanvas);
+	document.getElementById("layerParent").prepend(drawCanvas);
 
 	layers.unshift({
 		name: nm,
@@ -606,9 +618,10 @@ function clearLayerMenu() {
 
 function clearLayers() {
 	document
-		.getElementById("layers-wrap")
-		.querySelectorAll(".drawingCanvas")
+		.getElementById("layerParent")
+		.querySelectorAll(".layerWrapperWrapper")
 		.forEach((e) => {
+			if(e.classList.contains("nodelete")) return
 			e.parentElement.removeChild(e);
 		});
 }
@@ -627,7 +640,7 @@ function setLayer(id) {
 		board.ctx = layer.ctx;
 		board.canvas = layer.canvasElement;
 		board.setColor(board.color);
-		board.previewcanvas.style.setProperty("--zindex", layer.index * 2 + 1);
+		document.getElementById("previewCanvasWrapper").style.setProperty("--zindex", layer.index * 2 + 1);
 	}
 }
 

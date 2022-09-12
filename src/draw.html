@@ -284,14 +284,14 @@
     <svg id="selectionSVG" customcursor>
       <g id="selectionGroup"></g>
     </svg>
-    <svg id="layerWrapperWrapper" customcursor xmlns="http://www.w3.org/2000/svg">
-      <g id="newLayerWrapper" style="top: 100px;">
-        <foreignObject id="" class="drawingCanvas" width="100%" height="100%">
-          
-      <canvas id="previewcanv"customcursor></canvas>
-        </foreignObject>
-      </g>
-    </svg>
+    <div id="layerParent">
+      <svg id="previewCanvasWrapper" class="layerWrapperWrapper nodelete" customcursor xmlns="http://www.w3.org/2000/svg">
+          <foreignObject class="drawingCanvas" >
+        <canvas id="previewcanv"customcursor></canvas>
+          </foreignObject>
+      </svg>
+
+    </div>
     <svg id='boundingSVG' class="boundingHidden">
       <g stroke="var(--important)" id="boundingGroup">
         <rect id="boundingRect" x="10" y="10" width="100" height="100" fill="none" />
