@@ -328,6 +328,16 @@ function updateToolSettings(tool) {
 		const element = toolSettings[i];
 		const setting = settings.tools[element];
 		if (setting.type == "int") {
+			notify.log(!isMobile)
+			var inputGroup = document.createElement("span")
+			inputGroup.classList.add("tool-settings-ui-input-group")
+			var inputTitle = document.createElement("p")
+			inputTitle.classList.add("tool-settings-ui-input-title")
+			inputTitle.innerHTML = setting.title
+			var inputWrap = document.createElement("div").classList.add("tool-settings-ui-input-wrap")
+			var inputField = document.createElement("div").classList.add("tool-settings-ui-input-field")
+			inputWrap.appendChild(inputField)
+			var inputElement 
 			toolCont += `
             <span class="tool-settings-ui-input-group">
               <p class="tool-settings-ui-input-title">${setting.title}</p>
@@ -339,7 +349,7 @@ function updateToolSettings(tool) {
 				setting.draggable ? "data-input-num-draggable" : ""
 			} class="tool-settings-ui-input-num" onchange="console.log('a')" oninput="${
 				setting.callback
-			}" type="number" value="${setting.value}" />
+			}" type="number" value="${setting.value}" ${isMobile ? "readonly" : ""}/>
                   <p class="tool-settings-ui-input-unit">${setting.unit}</p>
                 </div>
               </div>
