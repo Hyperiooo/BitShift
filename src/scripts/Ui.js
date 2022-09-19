@@ -74,6 +74,7 @@ var draggableNumInputs = [];
 
 class numberDraggable {
 	constructor(el) {
+		console.log(el);
 		this.do = false;
 		this.startX = 0;
 		this.el = el;
@@ -114,6 +115,7 @@ class numberDraggable {
 		});
 		document.addEventListener("mousemove", (e) => {
 			if (this.do) {
+				console.log("move");
 				this.el.value = clamp(
 					parseInt(this.startVal) + Math.floor((e.clientX - this.startX) / 10),
 					this.el.min,

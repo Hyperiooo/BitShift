@@ -23,15 +23,18 @@ var curCursor = "eyedropper";
 
 document.onmousemove = (e) => {
 	if (!e.target.getAttribute) return;
-	if (e.target.getAttribute("customcursor") != null) {
-		cursor.style.left =
-			e.clientX -
-			Math.floor(cursors[curCursor].origin[0] * cursors[curCursor].width) +
-			"px";
-		cursor.style.top =
-			e.clientY -
-			Math.floor(cursors[curCursor].origin[1] * cursors[curCursor].height) +
-			"px";
+	cursor.style.left =
+		e.clientX -
+		Math.floor(cursors[curCursor].origin[0] * cursors[curCursor].width) +
+		"px";
+	cursor.style.top =
+		e.clientY -
+		Math.floor(cursors[curCursor].origin[1] * cursors[curCursor].height) +
+		"px";
+	if (e.target.getAttribute("customcursor") == null) {
+		cursor.style.display = "none";
+	} else {
+		cursor.style.display = "block";
 	}
 };
 

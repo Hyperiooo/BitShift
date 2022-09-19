@@ -328,16 +328,41 @@ function updateToolSettings(tool) {
 		const element = toolSettings[i];
 		const setting = settings.tools[element];
 		if (setting.type == "int") {
-			notify.log(!isMobile)
-			var inputGroup = document.createElement("span")
-			inputGroup.classList.add("tool-settings-ui-input-group")
-			var inputTitle = document.createElement("p")
-			inputTitle.classList.add("tool-settings-ui-input-title")
-			inputTitle.innerHTML = setting.title
-			var inputWrap = document.createElement("div").classList.add("tool-settings-ui-input-wrap")
-			var inputField = document.createElement("div").classList.add("tool-settings-ui-input-field")
-			inputWrap.appendChild(inputField)
-			var inputElement 
+			notify.log(!isMobile);
+			var inputGroup = document.createElement("span");
+			inputGroup.classList.add("tool-settings-ui-input-group");
+			var inputTitle = document.createElement("p");
+			inputTitle.classList.add("tool-settings-ui-input-title");
+			inputTitle.innerHTML = setting.title;
+			var inputWrap = document.createElement("div");
+			inputWrap.classList.add("tool-settings-ui-input-wrap");
+			var inputField = document.createElement("div");
+			inputField.classList.add("tool-settings-ui-input-field");
+			inputWrap.appendChild(inputField);
+			var inputElement = document.createElement("input");
+			inputElement.setAttribute("data-input-filter", "true");
+			inputElement.min = setting.min;
+			inputElement.max = setting.max;
+			if (setting.draggable)
+				inputElement.setAttribute("data-input-num-draggable", "true");
+			inputElement.classList.add("tool-settings-ui-input-num");
+			inputElement.onchange = "console.log('a')";
+			inputElement.oninput = setting.callback;
+			inputElement.type = "number";
+			inputElement.value = setting.value;
+			if (isMobile) inputElement.setAttribute("readonly", "true");
+			if (setting.unit) {
+				var inputUnit = document.createElement("p");
+				inputUnit.classList.add("tool-settings-ui-input-unit");
+				inputUnit.innerHTML = setting.unit;
+				inputField.appendChild(inputUnit);
+			}
+			inputField.appendChild(inputElement);
+			inputGroup.appendChild(inputTitle);
+			inputGroup.appendChild(inputWrap);
+			toolContent.appendChild(inputGroup);
+			draggableNumInputs.push(new numberDraggable(inputElement));
+			return;
 			toolCont += `
             <span class="tool-settings-ui-input-group">
               <p class="tool-settings-ui-input-title">${setting.title}</p>

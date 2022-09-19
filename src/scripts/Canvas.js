@@ -32,13 +32,13 @@ class Canvas {
 		this.eyedropperPreviewElement =
 			document.getElementById("eyedropper-preview");
 		this.eyedropperPreviewCtx = this.eyedropperPreviewCanvas.getContext("2d");
-		
-		document.querySelectorAll(".layerWrapperWrapper").forEach(e=>{
+
+		document.querySelectorAll(".layerWrapperWrapper").forEach((e) => {
 			e.setAttribute(
 				"viewBox",
 				"0 0 " + window.innerWidth + " " + window.innerHeight
 			);
-		})
+		});
 		this.boundingSVG.setAttribute(
 			"viewBox",
 			"0 0 " + window.innerWidth + " " + window.innerHeight
@@ -56,17 +56,17 @@ class Canvas {
 				"viewBox",
 				"0 0 " + window.innerWidth + " " + window.innerHeight
 			);
-			document.querySelectorAll(".layerWrapperWrapper").forEach(e=>{
+			document.querySelectorAll(".layerWrapperWrapper").forEach((e) => {
 				e.setAttribute(
 					"viewBox",
 					"0 0 " + window.innerWidth + " " + window.innerHeight
 				);
-			})
+			});
 		});
 		this.bggridcanvas = document.querySelector("#bggridcanv");
 		this.eBufferCanvas = document.getElementById("eraserBrushBufferParent");
 		this.canvaslayersparent = document.getElementById("layers-wrap");
-		this.newLayerParent = document.getElementById("layerParent")
+		this.newLayerParent = document.getElementById("layerParent");
 		this.ectx = this.eBufferCanvas.getContext("2d");
 		document.documentElement.style.setProperty("--canvScale", this.canvScale);
 		this.bggridcanvas.width = width;
@@ -148,32 +148,30 @@ class Canvas {
 		var _self = this;
 		this.panzoom.on("transform", function (e) {
 			// This event will be called along with events above.
-				_self.boundingGroup.style.transform =
-				_self.selectionGroup.style.transform =
-				_self.cursorSVG.style.transform =
-				_self.bggridcanvas.style.transform =
-				//_self.newLayerParent.style.transform = 
-					_self.canvaslayersparent.style.transform;
-				_self.boundingGroup.style.transformOrigin =
-				_self.selectionGroup.style.transformOrigin =
-				_self.cursorSVG.style.transformOrigin =
-				_self.bggridcanvas.style.transformOrigin =
-				//_self.newLayerParent.style.transformOrigin = 
-					_self.canvaslayersparent.style.transformOrigin;
+			_self.canvaslayersparent.style.transform;
+			_self.canvaslayersparent.style.transformOrigin;
 			_self.setCanvScale(_self.panzoom.getTransform().scale);
 			_self.setCanvTransform(
 				_self.panzoom.getTransform().x,
 				_self.panzoom.getTransform().y
 			);
-			var rect = _self.canvaslayersparent.getBoundingClientRect()
-			document.body.style.setProperty("--scaledX", rect.left + "px")
-			document.body.style.setProperty("--scaledY", rect.top + "px")
+			document.body.style.setProperty(
+				"--panzoomTransformMatrix",
+				_self.canvaslayersparent.style.transform
+			);
+			document.body.style.setProperty(
+				"--panzoomTransformOrigin",
+				_self.canvaslayersparent.style.transformOrigin
+			);
+			var rect = _self.canvaslayersparent.getBoundingClientRect();
+			document.body.style.setProperty("--scaledX", rect.left + "px");
+			document.body.style.setProperty("--scaledY", rect.top + "px");
 
-			document.body.style.setProperty("--scaledWidth", rect.width + "px")
+			document.body.style.setProperty("--scaledWidth", rect.width + "px");
 
-			document.body.style.setProperty("--scaledHeight", rect.height+ "px")
+			document.body.style.setProperty("--scaledHeight", rect.height + "px");
 		});
-		
+
 		this.startZoomX = 0;
 		this.startZoomY = 0;
 		this.deltaX = 0;
@@ -847,8 +845,6 @@ class Canvas {
 				}
 			}
 		}
-		var url = board.canvas.toDataURL();
-		notify.log("urld");
 	}
 	round(value, step) {
 		step || (step = 1.0);

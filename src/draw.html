@@ -280,20 +280,21 @@
   </div>
   <canvas id="eraserBrushBufferParent"></canvas>
   <div id="canvas-parent" customcursor>
-    <svg id="cursorSVG" customcursor></svg>
+    <svg id="cursorSVG" customcursor class="followsPanzoom"></svg>
     <svg id="selectionSVG" customcursor>
-      <g id="selectionGroup"></g>
+      <g id="selectionGroup" class="followsPanzoom"></g>
     </svg>
-    <div id="layerParent">
-      <svg id="previewCanvasWrapper" class="layerWrapperWrapper nodelete" customcursor xmlns="http://www.w3.org/2000/svg">
-          <foreignObject class="drawingCanvas" >
-        <canvas id="previewcanv"customcursor></canvas>
-          </foreignObject>
+    <div id="layerParent" customcursor>
+      <svg id="previewCanvasWrapper" class="layerWrapperWrapper nodelete" customcursor
+        xmlns="http://www.w3.org/2000/svg">
+        <foreignObject class="drawingCanvas">
+          <canvas id="previewcanv" customcursor></canvas>
+        </foreignObject>
       </svg>
 
     </div>
     <svg id='boundingSVG' class="boundingHidden">
-      <g stroke="var(--important)" id="boundingGroup">
+      <g stroke="var(--important)" id="boundingGroup" class="followsPanzoom">
         <rect id="boundingRect" x="10" y="10" width="100" height="100" fill="none" />
         <line id="boundingRotLine" x1="60" y1="-5" x2="60" y2="10" />
         <circle class="boundingRectCircleHandle boundingRectHandle-bl" cx="10" cy="10" r="5" fill="white" />
@@ -307,9 +308,9 @@
         <circle class="boundingRectCircleHandle boundingRectHandle-rot" cx="60" cy="-5" r="5" fill="white" />
       </g>
     </svg>
-    <div style="opacity: 1" id="layers-wrap" customcursor>
+    <div id="layers-wrap" customcursor>
     </div>
-    <canvas style="opacity: 1" id="bggridcanv" customcursor></canvas>
+    <canvas id="bggridcanv" class="followsPanzoom" customcursor></canvas>
   </div>
 
 
