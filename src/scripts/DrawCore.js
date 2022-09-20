@@ -35,13 +35,17 @@ var settings = {
 			min: 1,
 			max: 100,
 			unit: "px",
-			callback: "settings.tools.brushSize.value = this.value",
+			callback: (e) => {
+				settings.tools.brushSize.value = e.value
+			},
 		},
 		brushSquare: {
 			title: "Square Brush",
 			value: false,
 			type: "bool",
-			callback: "settings.tools.brushSquare.value = this.checked",
+			callback: (e) => {
+				settings.tools.brushSquare = e.checked			
+			},
 		},
 		brushSmoothing: {
 			title: "Brush Smoothness",
@@ -51,17 +55,17 @@ var settings = {
 			min: 0,
 			max: 100,
 			unit: "px",
-			callback: "settings.tools.brushSmoothing.value = this.value",
+			callback: (e) => {
+				settings.tools.brushSmoothing.value = e.value
+			}
 		},
 		brushPixelPerfect: {
 			title: "Pixel Perfect",
 			value: false,
 			type: "bool",
-			callback: "settings.tools.brushPixelPerfect.value = this.value",
-		},
-		shapeFilled: {
-			value: false,
-			type: "bool",
+			callback:  e=>{
+				settings.tools.brushPixelPerfect.value= e.value
+			}
 		},
 		spraySpeed: {
 			title: "Spray Speed",
@@ -70,8 +74,9 @@ var settings = {
 			draggable: true,
 			min: 1,
 			max: 100,
-			unit: "px",
-			callback: "settings.tools.spraySpeed.value = this.value",
+			callback: e=>{
+				settings.tools.spraySpeed.value = e.value
+			}
 		},
 		spraySize: {
 			title: "Spray Size",
@@ -81,35 +86,47 @@ var settings = {
 			min: 1,
 			max: 100,
 			unit: "px",
-			callback:
-				"settings.tools.spraySize.value = this.value; createSprayPoints();",
+				callback: e=> {
+					settings.tools.spraySize.value = e.value
+					createSprayPoints()
+				}
 		},
 		contiguous: {
 			title: "Contiguous",
 			value: true,
 			type: "bool",
-			callback: "settings.tools.contiguous.value = this.checked",
+			callback: e=> {
+				settings.tools.contiguous.value = e.checked
+			}
 		},
 		selectionMode: {
 			title: "Selection Mode",
 			value: "replace",
 			type: "iconArray",
-			initialCallback: "setSelectionMode('replace')",
+			initialCallback: e=> {
+				setSelectionMode('replace')
+			},
 			values: [
 				{
 					name: "replace",
 					icon: "hi-replace-selection-fill",
-					callback: "setSelectionMode('replace')",
+					callback: e=> {
+						setSelectionMode('replace')
+					}
 				},
 				{
 					name: "add",
 					icon: "hi-add-selection-fill",
-					callback: "setSelectionMode('add')",
+					callback: e=> {
+						setSelectionMode('add')
+					}
 				},
 				{
 					name: "subtract",
 					icon: "hi-subtract-selection-fill",
-					callback: "setSelectionMode('subtract')",
+					callback: e=> {
+						setSelectionMode('subtract')
+					}
 				},
 			],
 		},

@@ -13,6 +13,7 @@ button {
     font: inherit;
     cursor: pointer;
     outline: inherit;
+    color: inherit;
 }
 
 .item i {
