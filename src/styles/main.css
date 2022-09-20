@@ -674,6 +674,14 @@ foreignObject {
     z-index: 9999999999999999999999;
 }
 
+#rotationBoundingGroup {
+    --rotate: 0deg;
+    --originX: 1.5px;
+    --originY: 1.5px;
+    transform: rotate(var(--rotate));
+    transform-origin: var(--originX) var(--originY);
+}
+
 .followsPanzoom {
     transform: var(--panzoomTransformMatrix);
     transform-origin: var(--panzoomTransformOrigin);

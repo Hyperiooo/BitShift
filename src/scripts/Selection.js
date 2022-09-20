@@ -235,11 +235,7 @@ function canvasResized() {
 	svgOffset = 1 / board.canvScale;
 	handleWidth = boundingHandleSize / board.canvScale;
 	boundingRotOffset = boundingLineRotSize / board.canvScale;
-	handlerot.setAttributeNS(null, "cy", minY - boundingRotOffset);
-	linerot.setAttributeNS(null, "x1", (minX + maxX) / 2);
-	linerot.setAttributeNS(null, "x2", (minX + maxX) / 2);
-	linerot.setAttributeNS(null, "y1", minY);
-	linerot.setAttributeNS(null, "y2", minY - boundingRotOffset);
+	updateBounding();
 	updateSelectionOutline();
 }
 
@@ -316,45 +312,44 @@ var minY = 0;
 var maxY = 0;
 
 function updateBounding() {
-	minX = board.width;
-	maxX = 0;
-	minY = board.height;
-	maxY = 0;
-	selectionPath.forEach((s) => {
-		s.forEach((e) => {
-			if (e.X < minX) minX = e.X;
-			if (e.X > maxX) maxX = e.X;
-			if (e.Y < minY) minY = e.Y;
-			if (e.Y > maxY) maxY = e.Y;
-		});
-	});
-	boundingRectElement.setAttributeNS(null, "x", minX);
-	boundingRectElement.setAttributeNS(null, "y", minY);
-	boundingRectElement.setAttributeNS(null, "width", maxX - minX);
-	boundingRectElement.setAttributeNS(null, "height", maxY - minY);
-	handletl.setAttributeNS(null, "cx", minX);
-	handletl.setAttributeNS(null, "cy", minY);
-	handletr.setAttributeNS(null, "cx", maxX);
-	handletr.setAttributeNS(null, "cy", minY);
-	handletm.setAttributeNS(null, "cx", (minX + maxX) / 2);
-	handletm.setAttributeNS(null, "cy", minY);
-	handlebl.setAttributeNS(null, "cx", minX);
-	handlebl.setAttributeNS(null, "cy", maxY);
-	handlebr.setAttributeNS(null, "cx", maxX);
-	handlebr.setAttributeNS(null, "cy", maxY);
-	handlebm.setAttributeNS(null, "cx", (minX + maxX) / 2);
-	handlebm.setAttributeNS(null, "cy", maxY);
-	handleml.setAttributeNS(null, "cx", minX);
-	handleml.setAttributeNS(null, "cy", (minY + maxY) / 2);
-	handlemr.setAttributeNS(null, "cx", maxX);
-	handlemr.setAttributeNS(null, "cy", (minY + maxY) / 2);
-	handlerot.setAttributeNS(null, "cx", (minX + maxX) / 2);
-	handlerot.setAttributeNS(null, "cy", minY - boundingRotOffset);
-	linerot.setAttributeNS(null, "x1", (minX + maxX) / 2);
-	linerot.setAttributeNS(null, "x2", (minX + maxX) / 2);
-	linerot.setAttributeNS(null, "y1", minY);
-	linerot.setAttributeNS(null, "y2", minY - boundingRotOffset);
+	var rect = getSelectionRect();
+	boundingRectElement.setAttributeNS(null, "x", rect.x);
+	boundingRectElement.setAttributeNS(null, "y", rect.y);
+	boundingRectElement.setAttributeNS(null, "width", rect.width);
+	boundingRectElement.setAttributeNS(null, "height", rect.height);
+	handletl.setAttributeNS(null, "cx", rect.x);
+	handletl.setAttributeNS(null, "cy", rect.y);
+	handletr.setAttributeNS(null, "cx", rect.maxX);
+	handletr.setAttributeNS(null, "cy", rect.y);
+	handletm.setAttributeNS(null, "cx", (rect.x + rect.maxX) / 2);
+	handletm.setAttributeNS(null, "cy", rect.y);
+	handlebl.setAttributeNS(null, "cx", rect.x);
+	handlebl.setAttributeNS(null, "cy", rect.maxY);
+	handlebr.setAttributeNS(null, "cx", rect.maxX);
+	handlebr.setAttributeNS(null, "cy", rect.maxY);
+	handlebm.setAttributeNS(null, "cx", (rect.x + rect.maxX) / 2);
+	handlebm.setAttributeNS(null, "cy", rect.maxY);
+	handleml.setAttributeNS(null, "cx", rect.x);
+	handleml.setAttributeNS(null, "cy", (rect.y + rect.maxY) / 2);
+	handlemr.setAttributeNS(null, "cx", rect.maxX);
+	handlemr.setAttributeNS(null, "cy", (rect.y + rect.maxY) / 2);
+	handlerot.setAttributeNS(null, "cx", (rect.x + rect.maxX) / 2);
+	handlerot.setAttributeNS(null, "cy", rect.y - boundingRotOffset);
+	linerot.setAttributeNS(null, "x1", (rect.x + rect.maxX) / 2);
+	linerot.setAttributeNS(null, "x2", (rect.x + rect.maxX) / 2);
+	linerot.setAttributeNS(null, "y1", rect.y);
+	linerot.setAttributeNS(null, "y2", rect.y - boundingRotOffset);
+	rotationBoundingGroup.style.setProperty(
+		"--originX",
+		(rect.x + rect.maxX) / 2 + "px"
+	);
+	rotationBoundingGroup.style.setProperty(
+		"--originY",
+		(rect.y + rect.maxY) / 2+ "px"
+	) ;
 }
+var boundingGroup = document.querySelector("#boundingGroup");
+var rotationBoundingGroup = document.querySelector("#rotationBoundingGroup");
 
 function showBoundingBox() {
 	boundingSVG.classList.remove("boundingHidden");
@@ -365,18 +360,13 @@ function hideBoundingBox() {
 }
 
 function getSelectionRect() {
-	selectionPath.forEach((s) => {
-		s.forEach((e) => {
-			if (e.X < minX) minX = e.X;
-			if (e.X > maxX) maxX = e.X;
-			if (e.Y < minY) minY = e.Y;
-			if (e.Y > maxY) maxY = e.Y;
-		});
-	});
+	var a = ClipperLib.Clipper.GetBounds(selectionPath);
 	return {
-		width: maxX - minX,
-		height: maxY - minY,
-		x: minX,
-		y: minY,
+		width: a.right - a.left,
+		height: a.bottom - a.top,
+		x: a.left,
+		y: a.top,
+		maxX: a.right,
+		maxY: a.bottom,
 	};
 }

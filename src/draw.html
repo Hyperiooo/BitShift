@@ -293,19 +293,30 @@
       </svg>
 
     </div>
-    <svg id='boundingSVG' class="boundingHidden">
-      <g stroke="var(--important)" id="boundingGroup" class="followsPanzoom">
-        <rect id="boundingRect" x="10" y="10" width="100" height="100" fill="none" />
-        <line id="boundingRotLine" x1="60" y1="-5" x2="60" y2="10" />
-        <circle class="boundingRectCircleHandle boundingRectHandle-bl" cx="10" cy="10" r="5" fill="white" />
-        <circle class="boundingRectCircleHandle boundingRectHandle-br" cx="110" cy="10" r="5" fill="white" />
-        <circle class="boundingRectCircleHandle boundingRectHandle-tl" cx="10" cy="110" r="5" fill="white" />
-        <circle class="boundingRectCircleHandle boundingRectHandle-tr" cx="110" cy="110" r="5" fill="white" />
-        <circle class="boundingRectCircleHandle boundingRectHandle-bm" cx="60" cy="10" r="5" fill="white" />
-        <circle class="boundingRectCircleHandle boundingRectHandle-ml" cx="10" cy="60" r="5" fill="white" />
-        <circle class="boundingRectCircleHandle boundingRectHandle-tm" cx="60" cy="110" r="5" fill="white" />
-        <circle class="boundingRectCircleHandle boundingRectHandle-mr" cx="110" cy="60" r="5" fill="white" />
-        <circle class="boundingRectCircleHandle boundingRectHandle-rot" cx="60" cy="-5" r="5" fill="white" />
+    <svg customcursor id='boundingSVG' class="boundingHidden">
+      <g stroke="var(--important)" id="boundingGroup" class="followsPanzoom" customcursor>
+        <g id="rotationBoundingGroup">
+          <rect customcursor id="boundingRect" x="10" y="10" width="100" height="100" fill="none" />
+          <line customcursor id="boundingRotLine" x1="60" y1="-5" x2="60" y2="10" />
+          <circle customcursor class="boundingRectCircleHandle boundingRectHandle-bl" cx="10" cy="10" r="5"
+            fill="white" />
+          <circle customcursor class="boundingRectCircleHandle boundingRectHandle-br" cx="110" cy="10" r="5"
+            fill="white" />
+          <circle customcursor class="boundingRectCircleHandle boundingRectHandle-tl" cx="10" cy="110" r="5"
+            fill="white" />
+          <circle customcursor class="boundingRectCircleHandle boundingRectHandle-tr" cx="110" cy="110" r="5"
+            fill="white" />
+          <circle customcursor class="boundingRectCircleHandle boundingRectHandle-bm" cx="60" cy="10" r="5"
+            fill="white" />
+          <circle customcursor class="boundingRectCircleHandle boundingRectHandle-ml" cx="10" cy="60" r="5"
+            fill="white" />
+          <circle customcursor class="boundingRectCircleHandle boundingRectHandle-tm" cx="60" cy="110" r="5"
+            fill="white" />
+          <circle customcursor class="boundingRectCircleHandle boundingRectHandle-mr" cx="110" cy="60" r="5"
+            fill="white" />
+          <circle customcursor class="boundingRectCircleHandle boundingRectHandle-rot" cx="60" cy="-5" r="5"
+            fill="white" />
+        </g>
       </g>
     </svg>
     <div id="layers-wrap" customcursor>
