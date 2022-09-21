@@ -1018,7 +1018,7 @@ foreignObject {
     -webkit-backdrop-filter: saturate(180%) blur(20px);
     display: grid;
     grid-template-columns: repeat(9, 50px);
-    grid-template-rows: repeat(8, 50px);
+    grid-template-rows: repeat(18, 25px);
     gap: 6px;
     padding: 6px;
     justify-items: stretch;
@@ -1121,8 +1121,8 @@ foreignObject {
 
 .color-menu #color-value {
     --hue: 360;
-    grid-column: 1 / 5;
-    grid-row: 1 / 5;
+    grid-column: 1 / 6;
+    grid-row: 1 / 10;
     width: 100%;
     height: 100%;
     z-index: 200;
@@ -1130,16 +1130,14 @@ foreignObject {
     background-image: linear-gradient(to bottom, transparent 0%, rgb(0, 0, 0) 100%), linear-gradient(to right, transparent 0%, hsl(var(--hue), 100%, 50%) 100%), linear-gradient(to bottom, white 0%, white 100%);
 }
 
-
 .color-menu #color-hue {
-    grid-column: 5 / 6;
-    grid-row: 2 / 5;
+    grid-column: 1 / 6;
+    grid-row: 10 / 11;
     width: 100%;
     height: 100% !important;
     z-index: 200;
     transition: 0.2s width;
-    background-image: linear-gradient(to top, #ff0000 0%, #ffff00 17%, #00ff00 33%, #00ffff 50%, #0000ff 67%, #ff00ff 83%, #ff0000 100%);
-    
+    background-image: linear-gradient(to right, #ff0000 0%, #ffff00 17%, #00ff00 33%, #00ffff 50%, #0000ff 67%, #ff00ff 83%, #ff0000 100%);
 }
 
 .color-menu #color-opacity {
@@ -1169,8 +1167,7 @@ foreignObject {
     height: 10px;
     border: 2px solid var(--importantText);
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.356);
-    border-radius: 100%;
-    left: calc(var(--posX) - 7px);
+    border-radius: 100%;left: calc(var(--posX) - 7px);
     top: calc(var(--posY) - 7px);
     transform-origin: center;
     cursor: grab;
