@@ -743,8 +743,9 @@ foreignObject {
 #toolbar .item i {
   font-size: 18px;
   transform: scale(100%);
-  transition: transform 0.1s ease-in-out !important;
-}
+  transition: transform 0.3s !important;
+
+  transition-timing-function: cubic-bezier(0.175, 1.8, 0.32, 1.275) !important;}
 
 #toolbar .item:active i {
   transform: scale(80%);
@@ -1365,20 +1366,9 @@ foreignObject {
 .palette-active {
   -webkit-box-shadow: inset 0px 0px 0px 2px white;
   -moz-box-shadow: inset 0px 0px 0px 2px white;
-  box-shadow: inset 0px 0px 0px 2px white;
+  box-shadow: inset 0px 0px 0px 2px white, inset 0px 0px 0px 4px black;
   position: relative;
   z-index: 1000;
-}
-
-.palette-active:before {
-  content: "";
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  position: absolute;
-  background: white;
-  clip-path: polygon(100% 100%, 60% 100%, 100% 60%);
 }
 
 .color-palette-title {
