@@ -1016,7 +1016,7 @@ foreignObject {
     backdrop-filter: saturate(180%) blur(20px);
     -webkit-backdrop-filter: saturate(180%) blur(20px);
     display: grid;
-    grid-template-columns: repeat(5, 54px);
+    grid-template-columns: repeat(5, 53px);
     grid-template-rows: repeat(12, 27px);
     gap: 8px;
     padding: 12px;
