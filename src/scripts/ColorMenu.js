@@ -171,16 +171,16 @@ function hueDrag(e) {
 		//pickerColor[0] = clamp((1 - (y / hueRect.height)), 0, 1) * 360
 
 		pickerColor = new Color({
-			h: (pickerColor[0] = clamp(1 - y / hueRect.height, 0, 1) * 360),
+			h: (pickerColor[0] = clamp(x / hueRect.width, 0, 1) * 360),
 			s: pickerColor.hsva.s,
 			v: pickerColor.hsva.v,
 			a: pickerColor.hsva.a,
 		});
 		hThumb.style.setProperty(
 			"--pos",
-			clamp((y / hueRect.height) * 100, 0, 100) + "%"
+			clamp((x / hueRect.width) * 100, 0, 100) + "%"
 		);
-		hThumb.style.setProperty("--posp", clamp(y / hueRect.height, 0, 1));
+		hThumb.style.setProperty("--posp", clamp(x / hueRect.width, 0, 1));
 		updatePickerColor();
 		board.setColor(pickerColor, true);
 	}
@@ -470,7 +470,7 @@ function setPickerColor(color) {
 	var newPickerColor = [color.hsva.h, color.hsva.s, color.hsva.v, color.hsva.a];
 	vThumb.style.setProperty("--posX", color.hsva.s + "%");
 	vThumb.style.setProperty("--posY", 100 - color.hsva.v + "%");
-	hThumb.style.setProperty("--pos", (1 - color.hsva.h / 360) * 100 + "%");
+	hThumb.style.setProperty("--pos", (color.hsva.h / 360) * 100 + "%");
 	hThumb.style.setProperty("--posp", 1 - color.hsva.h / 360);
 	opacThumb.style.setProperty("--pos", color.hsva.a + "%");
 	opacThumb.style.setProperty("--posp", color.hsva.a / 100);
