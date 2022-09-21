@@ -1030,7 +1030,7 @@ foreignObject {
 }
 #color-menu-drop-effect {
     background: var(--importantT);
-    position: sticky;
+    position: absolute;
     top: 13px;
     left: 13px;
     width: calc(100% - 18px);
@@ -1059,7 +1059,7 @@ foreignObject {
 
 #color-menu-drop-err {
     background: var(--errorT);
-    position: sticky;
+    position: absolute;
     top: 13px;
     left: 13px;
     width: calc(100% - 18px);
@@ -1118,10 +1118,28 @@ foreignObject {
     display: inline-block;
 }
 
+#color-menu-topbar {
+    grid-column: 1 / 5; 
+    grid-row: 1 / 2;
+}
+.color-menu-close-button i {
+    font-size: 40px;
+}
+.color-menu-close-button {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+}
+#color-menu-topbar h1 {
+    position: absolute;
+    top: -4px;
+    left: 24px;
+}
+
 .color-menu #color-value {
     --hue: 360;
     grid-column: 1 / 6;
-    grid-row: 1 / 10;
+    grid-row: 2/ 11;
     width: 100%;
     height: 100%;
     z-index: 200;
@@ -1131,7 +1149,7 @@ foreignObject {
 
 .color-menu #color-hue {
     grid-column: 1 / 6;
-    grid-row: 10 / 11;
+    grid-row: 11 / 12;
     width: 100%;
     height: 100% !important;
     z-index: -200 !important;
@@ -1436,7 +1454,7 @@ input[type=number] {
     line-height: 26px;
     transform: translateX(8px);
 }
-@media only screen and (max-width: 16000px){
+@media only screen and (max-width: 1000px){
 
 
     .color-menu {
@@ -1447,11 +1465,15 @@ input[type=number] {
         max-height: unset;
         display: grid;
         grid-template-columns: repeat(5, 1fr);
-        grid-template-rows: repeat(10,30px);
+        grid-template-rows: repeat(13,30px);
         gap: 8px;
         padding: 24px;
-        width: calc(100vw - 48px);
-        border-radius: 13px;
+        width: calc(100vw - 60px);
+        left: 50%;
+        transform: translate(-50%);
+        border-radius: 29px;
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
     }
 }
 

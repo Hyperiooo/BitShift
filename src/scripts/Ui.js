@@ -7,6 +7,8 @@ window.addEventListener("resize", () => {
 	vw = window.innerWidth;
 	document.documentElement.style.setProperty("--vh", `${vh}px`);
 	document.documentElement.style.setProperty("--vw", `${vw}px`);
+	hueRect = hueRange.getBoundingClientRect();
+	valueRect = valueRange.getBoundingClientRect();
 });
 
 let debug;
