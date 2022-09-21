@@ -76,11 +76,10 @@
       hidden; height: 0px; width: 0px; pointer-events: none;" accept=".bspr">
   <div id="tool-settings">
   </div>
-  <div class="color-menu" id="color-menu" ondrop="dropHandler(event);" ondragover="dragOverHandler(event);"
+  <div class="color-menu color-open" id="color-menu" ondrop="dropHandler(event);" ondragover="dragOverHandler(event);"
     ondragleave="dragLeaveHandler(event);" ondragend="dragLeaveHandler(event);">
     <div id="color-menu-drop-effect">Import Palette</div>
     <div id="color-menu-drop-err">Could Not Import Palette</div>
-    <div class="color-selector-wrap">
       <div class="color-selector" id="color-value" width="200" height="200"
         onmousedown="valueThumb(event);valueDrag(event);" onmousemove="valueDrag(event)" onmouseup="valueEndDrag(event)"
         ontouchstart="valueThumb(event);" ontouchmove="valueDrag(event)" ontouchend="valueEndDrag(event)">
@@ -106,7 +105,6 @@
         <div id="color-opacity-thumb" onmousedown="opacityThumb(event);opacDrag(event);" onmousemove="opacDrag(event)"
           onmouseup="opacEndDrag(event)"></div>
       </div>
-    </div>
     <div class="color-data">
       <div class="color-rgba">
         <p>R</p>
@@ -170,7 +168,7 @@
     <div id="palettes" class="drop_zone">
     </div>
   </div>
-  <div class="layer-menu layer-open" id="layer-menu">
+  <div class="layer-menu" id="layer-menu">
     <div class="layer-menu-controls">
       <button class="layer-menu-button">
         <i class="hi-copy-fill"></i>

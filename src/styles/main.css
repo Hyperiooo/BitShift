@@ -82,12 +82,12 @@ html {
     --windowSide: #2b2b30;
     --appBarThemeColor: #141416;
     --bgMain: #18171a;
-    --bgMainT: #18171aa6;
+    --bgMainT: #161518e3;
     --bgMainUltraT: #49484d7e;
     --canvasBg: #202022;
     --bgLight: #35353b;
     --bgDark: #131214;
-    --bgDarkT: #131214a6;
+    --bgDarkT: #131214e3;
     --textMain: #ffffff;
     --textDim: #cacaca;
     --important: #2741ff;
@@ -109,12 +109,12 @@ html {
     --windowSide: #eaeaee;
     --appBarThemeColor: #EDEFF4;
     --bgMain: #ffffff;
-    --bgMainT: #ffffffa6;
+    --bgMainT: #ffffff8c;
     --bgMainUltraT: #cecedb7e;
     --canvasBg: #eaeaee;
     --bgLight: #d3d5d8;
     --bgDark: #eef0f5;
-    --bgDarkT: #eef0f5a6;
+    --bgDarkT: #eef0f5e3;
     --textMain: #0b0c1a;
     --textDim: #1b1c2e;
     --important: #2741ff;
@@ -1000,9 +1000,7 @@ foreignObject {
     padding: 0px;
     margin: 0;
     color: var(--textDim);
-    background: var(--bgMain);
     z-index: 3;
-    display: none;
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
@@ -1014,6 +1012,21 @@ foreignObject {
     overflow-y: scroll;
     overflow-x: hidden;
     pointer-events: none;
+    user-select: none;
+    background: var(--bgMainT);
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    display: grid;
+    grid-template-columns: repeat(9, 50px);
+    grid-template-rows: repeat(8, 50px);
+    gap: 6px;
+    padding: 6px;
+    justify-items: stretch;
+    align-items: stretch;
+    justify-content: stretch;
+    border-radius: 11px;
+    box-shadow: var(--boxShadow);
+    font-family: 'JetBrains Mono';
 }
 
 #color-menu-drop-effect {
@@ -1100,47 +1113,33 @@ foreignObject {
     background-color: var(--scrollTrack);
 }
 
-.color-selector-wrap {
-    height: 200px;
-    width: 100%;
-    margin-bottom: 8px;
-}
-
 .color-menu .color-selector {
     position: relative;
-    margin: 8px;
-    margin-bottom: 0;
     border-radius: 5px;
     display: inline-block;
 }
 
 .color-menu #color-value {
-    position: absolute;
     --hue: 360;
-    width: 200px;
-    height: 200px;
+    grid-column: 1 / 5;
+    grid-row: 1 / 5;
+    width: 100%;
+    height: 100%;
     z-index: 200;
     transition: 0.2s width;
     background-image: linear-gradient(to bottom, transparent 0%, rgb(0, 0, 0) 100%), linear-gradient(to right, transparent 0%, hsl(var(--hue), 100%, 50%) 100%), linear-gradient(to bottom, white 0%, white 100%);
 }
 
-.color-value-expanded {
-    width: 296px !important;
-}
-
-.color-value-expanded~#color-hue,
-.color-value-expanded~#color-opacity {
-    opacity: 0;
-}
 
 .color-menu #color-hue {
-    position: absolute;
-    right: 40px;
+    grid-column: 5 / 6;
+    grid-row: 2 / 5;
+    width: 100%;
+    height: 100% !important;
+    z-index: 200;
+    transition: 0.2s width;
     background-image: linear-gradient(to top, #ff0000 0%, #ffff00 17%, #00ff00 33%, #00ffff 50%, #0000ff 67%, #ff00ff 83%, #ff0000 100%);
-    width: 40px;
-    margin-left: 0;
-    height: 200px;
-    transition: 0.2s opacity;
+    
 }
 
 .color-menu #color-opacity {
