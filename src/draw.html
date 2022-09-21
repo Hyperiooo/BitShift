@@ -96,16 +96,7 @@
           onmouseup="hueEndDrag(event)" ontouchstart="hueThumb(event);hueDrag(event);" ontouchmove="hueDrag(event)"
           ontouchend="hueEndDrag(event)"></div>
       </div>
-      <!--
-        -->
-      <div class="color-selector" id="color-opacity" width="40" height="200"
-        onmousedown="opacityThumb(event);opacDrag(event);" onmouseup="opacEndDrag(event)" onmousemove="opacDrag(event)"
-        ontouchstart="opacityThumb(event);opacDrag(event);" ontouchend="opacEndDrag(event)"
-        ontouchmove="opacDrag(event)">
-        <div id="color-opacity-thumb" onmousedown="opacityThumb(event);opacDrag(event);" onmousemove="opacDrag(event)"
-          onmouseup="opacEndDrag(event)"></div>
-      </div>
-    <div class="color-data">
+    <div style="display: none; visibility: hidden;" class="color-data">
       <div class="color-rgba">
         <p>R</p>
         <!--
@@ -135,7 +126,7 @@
         <div id="color-current"></div>
       </div>
     </div>
-    <div class="color-data">
+    <div style="display: none; visibility: hidden;" class="color-data">
       <div class="color-hsla">
         <p>H</p>
         <!--
@@ -165,7 +156,7 @@
           type="text" />
       </div>
     </div>
-    <div id="palettes" class="drop_zone">
+    <div style="display: none; visibility: hidden;" id="palettes" class="drop_zone">
     </div>
   </div>
   <div class="layer-menu" id="layer-menu">

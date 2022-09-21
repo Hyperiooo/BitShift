@@ -173,13 +173,10 @@ window.onload = function () {
 	});
 	window.colors = defaultPalettes;
 
-	opacThumb = document.getElementById("color-opacity-thumb");
-	opacRange = document.getElementById("color-opacity");
 	hThumb = document.getElementById("color-hue-thumb");
 	hueRange = document.getElementById("color-hue");
 	vThumb = document.getElementById("color-value-thumb");
 	valueRange = document.getElementById("color-value");
-	opacRect = opacRange.getBoundingClientRect();
 	hueRect = hueRange.getBoundingClientRect();
 	valueRect = valueRange.getBoundingClientRect();
 

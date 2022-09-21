@@ -96,50 +96,6 @@ function updateColorNum(el) {
 	}
 }
 
-var opacMoving = false;
-var opacThumb;
-var opacRange;
-var opacRect;
-
-function opacityThumb(e) {
-	opacMoving = true;
-}
-
-function opacEndDrag(e) {
-	opacMoving = false;
-}
-
-function opacDrag(e) {
-	e.preventDefault();
-
-	var x, y;
-	if (e.touches) {
-		x = e.touches[0].clientX - (opacRect ? opacRect.left : 0);
-		y = e.touches[0].clientY - (opacRect ? opacRect.top : 0);
-	} else {
-		x = e.clientX - (opacRect ? opacRect.left : 0);
-		y = e.clientY - (opacRect ? opacRect.top : 0);
-	}
-	if (opacMoving) {
-		document.querySelectorAll("[data-color-input]").forEach((e) => {
-			e.blur();
-		});
-		//pickerColor[3] = clamp(y / opacRect.height * 100, 0, 100)
-		pickerColor = new Color({
-			h: pickerColor.hsva.h,
-			s: pickerColor.hsva.s,
-			v: pickerColor.hsva.v,
-			a: clamp((y / opacRect.height) * 100, 0, 100),
-		});
-		opacThumb.style.setProperty(
-			"--pos",
-			clamp((y / opacRect.height) * 100, 0, 100) + "%"
-		);
-		opacThumb.style.setProperty("--posp", clamp(y / opacRect.height, 0, 1));
-		updatePickerColor();
-		board.setColor(pickerColor, true);
-	}
-}
 
 var hueMoving = false;
 var hThumb;
@@ -343,12 +299,7 @@ function updatePickerColor() {
 	var lEl = document.getElementById("color-hsla-l");
 	var hslAEl = document.getElementById("color-hsla-a");
 	var hexEl = document.getElementById("color-data-hex");
-	opacRange.style.setProperty("--hue", pickerColor.hsv.h);
 	valueRange.style.setProperty("--hue", pickerColor.hsv.h);
-	opacRange.style.setProperty(
-		"--color",
-		`hsl( ${pickerColor.hsl.h}, ${pickerColor.hsl.s}%, ${pickerColor.hsl.l}%)`
-	);
 	colorCurrent.style.setProperty(
 		"--color",
 		`hsla( ${pickerColor.hsla.h}, ${pickerColor.hsla.s}%, ${pickerColor.hsla.l}%, ${pickerColor.hsla.a}%)`
@@ -456,12 +407,10 @@ function colorPreviewClickHandler(e) {
 document.body.onmousemove = (e) => {
 	valueDrag(e);
 	hueDrag(e);
-	opacDrag(e);
 };
 
 document.body.onmouseup = (e) => {
 	valueEndDrag(e);
-	opacEndDrag(e);
 	hueEndDrag(e);
 };
 
@@ -472,8 +421,6 @@ function setPickerColor(color) {
 	vThumb.style.setProperty("--posY", 100 - color.hsva.v + "%");
 	hThumb.style.setProperty("--pos", (color.hsva.h / 360) * 100 + "%");
 	hThumb.style.setProperty("--posp", 1 - color.hsva.h / 360);
-	opacThumb.style.setProperty("--pos", color.hsva.a + "%");
-	opacThumb.style.setProperty("--posp", color.hsva.a / 100);
 	pickerColor = color;
 	updatePickerColor();
 }
