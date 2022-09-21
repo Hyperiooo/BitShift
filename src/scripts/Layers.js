@@ -611,6 +611,13 @@ function newLayer(n, data) {
 		setLayer(nLayer.id);
 	}, 1);
 }
+function createMultipleLayers(n)
+{
+	for (let i = 0; i < n; i++) {
+		newLayer()
+		
+	}
+}
 function clearLayerMenu() {
 	console.trace("a");
 	document.getElementById("layer-main").innerText = "";

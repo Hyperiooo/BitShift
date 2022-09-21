@@ -1,431 +1,896 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
+  <head>
+    <!--METADATA-->
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no"
+    />
+    <title>BitShift</title>
+    <link rel="icon" type="image/svg" href="./assets/logo.svg" />
+    <link rel="manifest" href="manifest.json" />
+    <!-- IOS SUPPORT -->
+    <meta name="apple-mobile-web-app-status-bar" />
+    <meta name="theme-color" />
+    <meta name="apple-mobile-web-app-status-bar-style" />
 
-<head>
-  <!--METADATA-->
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport"
-    content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
-  <title>BitShift</title>
-  <link rel="icon" type="image/svg" href="./assets/logo.svg">
-  <link rel="manifest" href="manifest.json" />
-  <!-- IOS SUPPORT -->
-  <meta name="apple-mobile-web-app-status-bar" />
-  <meta name="theme-color" />
-  <meta name="apple-mobile-web-app-status-bar-style">
+    <script src="./scripts/firebase/firebaseCore.js" type="module"></script>
 
-  <script src="./scripts/firebase/firebaseCore.js" type="module"></script>
+    <!--REMOVE THESE AND REPLACE WITH ACTUAL debug-->
+    <script src="https://cdn.jsdelivr.net/gh/Hyperiooo/Alrt.js@v0.1.2/src/alrt.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/gh/Hyperiooo/Alrt.js@v0.1.1/src/alrt.css"
+    />
+    <!--COLOR-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chroma-js/2.1.0/chroma.min.js"></script>
+    <script src="./scripts/anypalette.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.0/color-thief.umd.js"></script>
+    <!--SCRIPTS-->
+    <script src="./scripts/popper.min.js"></script>
+    <script src="./scripts/Matrix.js" defer></script>
+    <script src="./scripts/Shapes.js" defer></script>
+    <script src="./scripts/Utils.js" defer></script>
+    <script src="./scripts/Ui.js" defer></script>
+    <script src="./scripts/Canvas.js" defer></script>
+    <script src="./scripts/Tools.js" defer></script>
+    <script src="./scripts/Layers.js" defer></script>
+    <script src="./scripts/ColorMenu.js" defer></script>
+    <script src="./scripts/Transformation.js" defer></script>
+    <script src="./scripts/KeyboardInput.js" defer></script>
+    <script src="./scripts/Exporter.js" defer></script>
+    <script src="./scripts/UndoRedoSystem.js" defer></script>
+    <script src="./scripts/Cursor.js" defer></script>
+    <script src="./scripts/File.js" defer></script>
+    <script src="./scripts/Gestures.js" defer></script>
+    <script src="./scripts/Selection.js" defer></script>
+    <script src="./scripts/clipper.js" defer></script>
+    <script src="./scripts/gif.js"></script>
+    <script src="./scripts/Compressor.js" defer></script>
+    <script src="./scripts/Transform.js" defer></script>
+    <script src="./scripts/panzoom.js" defer></script>
+    <script src="./scripts/pinchzoom.js"></script>
+    <script defer type="text/javascript" src="./scripts/DrawCore.js"></script>
+    <!--STYLES & FONTS-->
+    <link rel="stylesheet" href="./styles/main.css" />
+    <link rel="stylesheet" href="./styles/alrt-theme.css" />
+    <link
+      href="https://cdn.jsdelivr.net/gh/Hyperiooo/Hypericons@v0.3.1/fonts/hypericons.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono&family=Roboto:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
 
-  <!--REMOVE THESE AND REPLACE WITH ACTUAL debug-->
-  <script src="https://cdn.jsdelivr.net/gh/Hyperiooo/Alrt.js@v0.1.2/src/alrt.js"></script>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Hyperiooo/Alrt.js@v0.1.1/src/alrt.css">
-  <!--COLOR-->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/chroma-js/2.1.0/chroma.min.js"></script>
-  <script src="./scripts/anypalette.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.0/color-thief.umd.js"></script>
-  <!--SCRIPTS-->
-  <script src="./scripts/popper.min.js"></script>
-  <script src="./scripts/Matrix.js" defer></script>
-  <script src="./scripts/Shapes.js" defer></script>
-  <script src="./scripts/Utils.js" defer></script>
-  <script src="./scripts/Ui.js" defer></script>
-  <script src="./scripts/Canvas.js" defer></script>
-  <script src="./scripts/Tools.js" defer></script>
-  <script src="./scripts/Layers.js" defer></script>
-  <script src="./scripts/ColorMenu.js" defer></script>
-  <script src="./scripts/Transformation.js" defer></script>
-  <script src="./scripts/KeyboardInput.js" defer></script>
-  <script src="./scripts/Exporter.js" defer></script>
-  <script src="./scripts/UndoRedoSystem.js" defer></script>
-  <script src="./scripts/Cursor.js" defer></script>
-  <script src="./scripts/File.js" defer></script>
-  <script src="./scripts/Gestures.js" defer></script>
-  <script src="./scripts/Selection.js" defer></script>
-  <script src="./scripts/clipper.js" defer></script>
-  <script src="./scripts/gif.js"></script>
-  <script src="./scripts/Compressor.js" defer></script>
-  <script src="./scripts/Transform.js" defer></script>
-  <script src="./scripts/panzoom.js" defer></script>
-  <script src="./scripts/pinchzoom.js"></script>
-  <script defer type="text/javascript" src="./scripts/DrawCore.js"></script>
-  <!--STYLES & FONTS-->
-  <link rel="stylesheet" href="./styles/main.css" />
-  <link rel="stylesheet" href="./styles/alrt-theme.css" />
-  <link href="https://cdn.jsdelivr.net/gh/Hyperiooo/Hypericons@v0.3.1/fonts/hypericons.css" rel="stylesheet"
-    type="text/css" />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono&family=Roboto:wght@400;500;600;700&display=swap"
-    rel="stylesheet">
-
-</head>
-
-<body>
-  <div id="cursor" class="invertBackground">
-  </div>
-  <img id="img" />
-  <div class="menu">
-    <div class="menu-btn" onclick="newProject()">New</div>
-    <div class="menu-btn" onclick="saveFile()">Save</div>
-    <div class="menu-btn" onclick="openFile()">Open</div>
-    <div class="menu-btn" onclick="openExportMenu()">Export</div>
-    <div class="menu-btn" onclick="openSettingsWindow()">Settings</div>
-  </div>
-  <input type="file" id="fileOpenDialog" style="display: hidden; visibility:
-      hidden; height: 0px; width: 0px; pointer-events: none;" accept=".bspr">
-  <div id="tool-settings">
-  </div>
-  <div class="color-menu color-open" id="color-menu" ondrop="dropHandler(event);" ondragover="dragOverHandler(event);"
-    ondragleave="dragLeaveHandler(event);" ondragend="dragLeaveHandler(event);">
-    <div id="color-menu-topbar">
-      <h1>Color Picker</h1>
-      <button class="color-menu-close-button" onclick="toggleColorPicker()">
-      <i class="hi-x-large-line"></i></button>
+  <body>
+    <div id="cursor" class="invertBackground"></div>
+    <img id="img" />
+    <div class="menu">
+      <div class="menu-btn" onclick="newProject()">New</div>
+      <div class="menu-btn" onclick="saveFile()">Save</div>
+      <div class="menu-btn" onclick="openFile()">Open</div>
+      <div class="menu-btn" onclick="openExportMenu()">Export</div>
+      <div class="menu-btn" onclick="openSettingsWindow()">Settings</div>
     </div>
-    <div id="color-menu-drop-effect">Import Palette</div>
-    <div id="color-menu-drop-err">Could Not Import Palette</div>
-      <div class="color-selector" id="color-value" width="200" height="200"
-        onmousedown="valueThumb(event);valueDrag(event);" onmousemove="valueDrag(event)" onmouseup="valueEndDrag(event)"
-        ontouchstart="valueThumb(event);" ontouchmove="valueDrag(event)" ontouchend="valueEndDrag(event)">
-        <div id="color-value-thumb" onmousedown="valueThumb(event);valueDrag(event);" onmousemove="valueDrag(event)"
-          onmouseup="valueEndDrag(event)" ontouchstart="valueThumb(event);valueDrag(event);"
-          ontouchmove="valueDrag(event)" ontouchend="valueEndDrag(event)"></div>
-      </div>
-      <!--
-        -->
-      <div class="color-selector" id="color-hue" width="40" height="200" onmousedown="hueThumb(event);hueDrag(event);"
-        onmousemove="hueDrag(event)" onmouseup="hueEndDrag(event)" ontouchstart="hueThumb(event);hueDrag(event);"
-        ontouchmove="hueDrag(event)" ontouchend="hueEndDrag(event)">
-        <div id="color-hue-thumb" onmousedown="hueThumb(event);hueDrag(event);" onmousemove="hueDrag(event)"
-          onmouseup="hueEndDrag(event)" ontouchstart="hueThumb(event);hueDrag(event);" ontouchmove="hueDrag(event)"
-          ontouchend="hueEndDrag(event)"></div>
-      </div>
-    <div style="display: none; visibility: hidden;" class="color-data">
-      <div class="color-rgba">
-        <p>R</p>
-        <!--
-          --><input class="color-input-num" id="color-rgba-r" value="255" min="0" max="255" type="number"
-          data-color-input />
-        <!--
-          -->
-        <p>G</p>
-        <!--
-          --><input class="color-input-num" id="color-rgba-g" value="255" min="0" data-color-input max="255"
-          type="number" />
-        <!--
-            -->
-        <p>B</p>
-        <!--
-          --><input class="color-input-num" id="color-rgba-b" value="255" min="0" data-color-input max="255"
-          type="number" />
-        <!--
-              -->
-        <p>A</p>
-        <!--
-          --><input class="color-input-num" id="color-rgba-a" value="255" min="0" data-color-input max="255"
-          type="number" />
-      </div>
-      <div id="color-preview" onclick="colorPreviewClickHandler(event)" ontouchstart="colorPreviewClickHandler(event)">
-        <div id="color-previous"></div>
-        <div id="color-current"></div>
-      </div>
-    </div>
-    <div style="display: none; visibility: hidden;" class="color-data">
-      <div class="color-hsla">
-        <p>H</p>
-        <!--
-          --><input class="color-input-num" data-color-input id="color-hsla-h" value="0" min="0" max="360"
-          maxlength="3" type="number" />
-        <!--
-          -->
-        <p>S</p>
-        <!--
-          --><input class="color-input-num" id="color-hsla-s" value="100" min="0" data-color-input max="100"
-          type="number" />
-        <!--
-            -->
-        <p>L</p>
-        <!--
-          --><input class="color-input-num" id="color-hsla-l" value="100" min="0" data-color-input max="100"
-          type="number" />
-        <!--
-              -->
-        <p>A</p>
-        <!--
-          --><input class="color-input-num" id="color-hsla-a" value="100" min="0" data-color-input max="100"
-          type="number" />
-        <p class="label-hex">#</p>
-        <!--
-            --><input class="color-input-hex" maxlength="8" id="color-data-hex" data-color-input value="ffffff"
-          type="text" />
-      </div>
-    </div>
-    <div style="display: none; visibility: hidden;" id="palettes" class="drop_zone">
-    </div>
-  </div>
-  <div class="layer-menu" id="layer-menu">
-    <div class="layer-menu-controls">
-      <button class="layer-menu-button">
-        <i class="hi-copy-fill"></i>
-      </button>
-      <button class="layer-menu-button">
-        <i class="hi-trash-fill"></i>
-      </button>
-      <button class="layer-menu-button">
-        <i class="hi-folder-fill"></i>
-      </button>
-      <button onclick="newLayer()" class="layer-menu-button">
-        <i class="hi-plus-large-line"></i>
-      </button>
-    </div>
-    <div id="layer-main">
-      <div id="layer-position-preview-horizontal"></div>
-    </div>
-  </div>
-  <div id="popup" class="popup">
-    <div class="popup-top-bar">
-      <h1>New File</h1>
-    </div>
-    <div class='popup-content'>
-      <div class="popup-preset-group" id="popup-presets">
-      </div>
-      <div class="popup-sidebar">
-        <span class="popup-input-group">
-          <p class="popup-input-title">Width</p>
-          <div class="popup-input-wrap">
-            <div class="popup-input-field">
-              <input data-input-num-draggable class="popup-input-num" type="number" id="width" value="16" />
-              <p class="popup-input-unit">px</p>
-            </div>
-          </div>
-        </span>
-        <span class="popup-input-group">
-          <p class="popup-input-title">Height</p>
-          <div class="popup-input-wrap">
-            <div class="popup-input-field">
-              <input data-input-num-draggable class="popup-input-num" type="number" id="height" value="16" />
-              <p class="popup-input-unit">px</p>
-            </div>
-          </div>
-        </span>
-        <div class="popup-btn-group">
-          <button onclick="confirmNewProject()" id="close" class="popup-btn popup-btn-imp">OK</button>
-          <button onclick="closePopup()" class="popup-btn">Cancel</button>
-        </div>
-      </div>
-    </div>
-
-  </div>
-  <div id="export-menu" class="export-menu">
-    <div class="popup-top-bar">
-      <h1>Export</h1>
-    </div>
-    <div class='popup-column' class="" style="--maxHeight: 136px;">
-      <span class="popup-input-group">
-        <p class="popup-input-title">File Name</p>
-        <div class="popup-input-wrap">
-          <div class="popup-input-field">
-            <input class="popup-input-text" id="export-file-name" type="text" value="canvas">
-            <p class="popup-input-unit" id="export-name-extension">.png</p>
-          </div>
-        </div>
-      </span>
-      <span class="popup-input-group">
-        <p class="popup-input-title">File Type</p>
-        <div class="popup-input-wrap">
-          <div class="popup-input-field">
-            <select name="type" id="export-file-type" value="png" oninput="document.getElementById('export-name-extension').innerHTML=
-                '.' + this.value" class="popup-input-select">
-              <option value="png" selected>.png</option>
-              <option value="jpeg">.jpeg</option>
-              <option value="bmp">.bmp</option>
-            </select>
-          </div>
-        </div>
-      </span>
-      <span class="popup-input-group">
-        <p class="popup-input-title">Scale</p>
-        <div class="popup-input-wrap">
-          <div class="popup-input-field">
-            <select name="type" id="export-scale" value="1" class="popup-input-select">
-              <option value="1" selected>1x</option>
-              <option value="2">2x</option>
-              <option value="3">3x</option>
-              <option value="4">4x</option>
-              <option value="5">5x</option>
-              <option value="6">6x</option>
-              <option value="7">7x</option>
-              <option value="8">8x</option>
-              <option value="9">9x</option>
-              <option value="10">10x</option>
-              <option value="25">25x</option>
-              <option value="50">50x</option>
-              <option value="100">100x</option>
-            </select>
-          </div>
-        </div>
-      </span>
-      <div class="popup-btn-group">
-        <button onclick="exportFile()" class="popup-btn popup-btn-imp">OK</button>
-        <button onclick="closeExportMenu()" class="popup-btn">Cancel</button>
-      </div>
-    </div>
-  </div>
-  <canvas id="eraserBrushBufferParent"></canvas>
-  <div id="canvas-parent" customcursor>
-    <svg id="cursorSVG" customcursor class="followsPanzoom"></svg>
-    <svg id="selectionSVG" customcursor>
-      <g id="selectionGroup" class="followsPanzoom"></g>
-    </svg>
-    <div id="layerParent" customcursor>
-      <svg id="previewCanvasWrapper" class="layerWrapperWrapper nodelete" customcursor
-        xmlns="http://www.w3.org/2000/svg">
-        <foreignObject class="drawingCanvas">
-          <canvas id="previewcanv" customcursor></canvas>
-        </foreignObject>
-      </svg>
-
-    </div>
-    <svg customcursor id='boundingSVG' class="boundingHidden">
-      <g stroke="var(--important)" id="boundingGroup" class="followsPanzoom" customcursor>
-        <g id="rotationBoundingGroup">
-          <rect customcursor id="boundingRect" x="10" y="10" width="100" height="100" fill="none" />
-          <line customcursor id="boundingRotLine" x1="60" y1="-5" x2="60" y2="10" />
-          <circle customcursor class="boundingRectCircleHandle boundingRectHandle-bl" cx="10" cy="10" r="5"
-            fill="white" />
-          <circle customcursor class="boundingRectCircleHandle boundingRectHandle-br" cx="110" cy="10" r="5"
-            fill="white" />
-          <circle customcursor class="boundingRectCircleHandle boundingRectHandle-tl" cx="10" cy="110" r="5"
-            fill="white" />
-          <circle customcursor class="boundingRectCircleHandle boundingRectHandle-tr" cx="110" cy="110" r="5"
-            fill="white" />
-          <circle customcursor class="boundingRectCircleHandle boundingRectHandle-bm" cx="60" cy="10" r="5"
-            fill="white" />
-          <circle customcursor class="boundingRectCircleHandle boundingRectHandle-ml" cx="10" cy="60" r="5"
-            fill="white" />
-          <circle customcursor class="boundingRectCircleHandle boundingRectHandle-tm" cx="60" cy="110" r="5"
-            fill="white" />
-          <circle customcursor class="boundingRectCircleHandle boundingRectHandle-mr" cx="110" cy="60" r="5"
-            fill="white" />
-          <circle customcursor class="boundingRectCircleHandle boundingRectHandle-rot" cx="60" cy="-5" r="5"
-            fill="white" />
-        </g>
-      </g>
-    </svg>
-    <div id="layers-wrap" customcursor>
-    </div>
-    <canvas id="bggridcanv" class="followsPanzoom" customcursor></canvas>
-  </div>
-
-
-  <div id="topbar" class="ui">
-    <div id="topbar-left">
-      <span class="item" onclick="openGallery()"><i class="hi-left-arrow-large-line"></i></span>
-      <button class="topbar-button" onclick="toggleMenu()">
-        File
-      </button>
-      <button class="item" onclick="openExportMenu()" id="exportButton"><i class="hi-export-line"></i></butt>
-    </div>
-
-    <input style="visibility: hidden;display: none;" type="text" id="topbar-project-name" value=""
-      onblur="renameProject(this)">
-
-    <div id="tool-settings-content"></div>
-    <div id="topbar-right">
-
-      <span class="item" onclick="undo()"><i class="hi-undo-line"></i></span>
-      <span class="item" onclick="redo()"><i class="hi-redo-line"></i></span>
-      <span class="toolbar-divider"></span>
-      <span id="layer-toggle-button" class="item" onclick="toggleLayerMenu()"><i class="hi-layer-fill"></i></span>
-    </div>
-  </div>
-  <div id="actionButtons" class="actionButtonsHidden">
-
-  </div>
-  <div id="toolbar" class="ui">
-    <div id="dynamic-tool-wrap">
-    </div>
-    <span class="toolbar-divider"></span>
-    <span class="item toolbar-landscape-only" onclick="toggleColorPicker()"><i class="hi-circle-small-fill"
-        data-tool-color-menu-button></i>
-    </span>
-    <span id="tool-btn-eyedropper" class="item" data-tool-name="eyedropper"
-      onclick="previousTool = getTool();compileForEyedropper(); setTool('eyedropper', this)"><i
-        class="hi-eyedropper-fill"></i></span>
-    <span class="toolbar-divider"></span>
-    <span class="item" onclick="board.clear()"><i class="hi-trash-fill"></i></span>
-    <!---test-->
-  </div>
-
-  <div id="window-settings" class="window-wrap window-closed">
-    <div class="window-content">
-      <div class="window-sidebar">
-        <h1>Settings</h1>
-        <button class="window-sidebar-button window-sidebar-button-active">
-          <i class="hi-settings-fill"></i>
-          <p>General</p>
-        </button>
-        <button class="window-sidebar-button">
-          <i class="hi-ui-line"></i>
-          <p>Interface</p>
-        </button>
-        <button class="window-sidebar-button">
-          <i class="hi-pencil-fill"></i>
-          <p>Input</p>
-        </button><button class="window-sidebar-button">
-          <i class="hi-keyboard-line"></i>
-          <p>Keybinds</p>
-        </button>
-        <button class="window-sidebar-button">
-          <i class="hi-account-fill"></i>
-          <p>Account</p>
-        </button>
-        <button class="window-sidebar-button">
-          <i class="hi-info-line"></i>
-          <p>About</p>
-        </button>
-        <button class="window-sidebar-button">
-          <i class="hi-help-line"></i>
-          <p>Help</p>
-        </button>
-      </div>
-      <div class="window-header">
-        <h1>General</h1>
-        <button class="window-close" onclick="closeSettingsWindow()">
+    <input
+      type="file"
+      id="fileOpenDialog"
+      style="
+        display: hidden;
+        visibility: hidden;
+        height: 0px;
+        width: 0px;
+        pointer-events: none;
+      "
+      accept=".bspr"
+    />
+    <div id="tool-settings"></div>
+    <div
+      class="color-menu color-open"
+      id="color-menu"
+      ondrop="dropHandler(event);"
+      ondragover="dragOverHandler(event);"
+      ondragleave="dragLeaveHandler(event);"
+      ondragend="dragLeaveHandler(event);"
+    >
+      <div id="color-menu-topbar">
+        <h1>Color Picker</h1>
+        <button class="color-menu-close-button" onclick="toggleColorPicker()">
           <i class="hi-x-large-line"></i>
         </button>
       </div>
-      <div class="window-inner ">
-        <div class="popup-btn-group">
-          <button id="ui-theme-light" onclick="setTheme(Themes.light)" class="popup-btn theme-button">Light</button>
-          <button id="ui-theme-dark" onclick="setTheme(Themes.dark)" class="popup-btn theme-button">Dark</button>
-          <button id="ui-theme-system-default" onclick="setTheme(Themes.system)" class="popup-btn theme-button">System
-            Theme</button>
+      <div id="color-menu-drop-effect">Import Palette</div>
+      <div id="color-menu-drop-err">Could Not Import Palette</div>
+      <div
+        class="color-selector"
+        id="color-value"
+        width="200"
+        height="200"
+        onmousedown="valueThumb(event);valueDrag(event);"
+        onmousemove="valueDrag(event)"
+        onmouseup="valueEndDrag(event)"
+        ontouchstart="valueThumb(event);"
+        ontouchmove="valueDrag(event)"
+        ontouchend="valueEndDrag(event)"
+      >
+        <div
+          id="color-value-thumb"
+          onmousedown="valueThumb(event);valueDrag(event);"
+          onmousemove="valueDrag(event)"
+          onmouseup="valueEndDrag(event)"
+          ontouchstart="valueThumb(event);valueDrag(event);"
+          ontouchmove="valueDrag(event)"
+          ontouchend="valueEndDrag(event)"
+        ></div>
+      </div>
+      <div
+        class="color-selector"
+        id="color-hue"
+        width="40"
+        height="200"
+        onmousedown="hueThumb(event);hueDrag(event);"
+        onmousemove="hueDrag(event)"
+        onmouseup="hueEndDrag(event)"
+        ontouchstart="hueThumb(event);hueDrag(event);"
+        ontouchmove="hueDrag(event)"
+        ontouchend="hueEndDrag(event)"
+      >
+        <div
+          id="color-hue-thumb"
+          onmousedown="hueThumb(event);hueDrag(event);"
+          onmousemove="hueDrag(event)"
+          onmouseup="hueEndDrag(event)"
+          ontouchstart="hueThumb(event);hueDrag(event);"
+          ontouchmove="hueDrag(event)"
+          ontouchend="hueEndDrag(event)"
+        ></div>
+      </div>
+      <div id="color-menu-recent-colors">
+        <div
+          data-palette-color="243d7eff"
+          class="palette-color palette-inactive"
+          style="--color: #ff00ffff"
+        ></div>
+        <div
+          data-palette-color="243d7eff"
+          class="palette-color palette-inactive"
+          style="--color: #ff0f"
+        ></div>
+        <div
+          data-palette-color="243d7eff"
+          class="palette-color palette-inactive"
+          style="--color: #f0ff"
+        ></div>
+        <div
+          data-palette-color="243d7eff"
+          class="palette-color palette-inactive"
+          style="--color: #243d7eff"
+        ></div>
+        <div
+          data-palette-color="243d7eff"
+          class="palette-color palette-inactive"
+          style="--color: #ff00ffff"
+        ></div>
+        <div
+          data-palette-color="243d7eff"
+          class="palette-color palette-inactive"
+          style="--color: #ff0f"
+        ></div>
+        <div
+          data-palette-color="243d7eff"
+          class="palette-color palette-inactive"
+          style="--color: #f0ff"
+        ></div>
+        <div
+          data-palette-color="243d7eff"
+          class="palette-color palette-inactive"
+          style="--color: #243d7eff"
+        ></div>
+        <div
+          data-palette-color="243d7eff"
+          class="palette-color palette-inactive"
+          style="--color: #ff00ffff"
+        ></div>
+        <div
+          data-palette-color="243d7eff"
+          class="palette-color palette-inactive"
+          style="--color: #ff0f"
+        ></div>
+        <div
+          data-palette-color="243d7eff"
+          class="palette-color palette-inactive"
+          style="--color: #f0ff"
+        ></div>
+        <div
+          data-palette-color="243d7eff"
+          class="palette-color palette-inactive"
+          style="--color: #243d7eff"
+        ></div>
+        <div
+          data-palette-color="243d7eff"
+          class="palette-color palette-inactive"
+          style="--color: #ff00ffff"
+        ></div>
+        <div
+          data-palette-color="243d7eff"
+          class="palette-color palette-inactive"
+          style="--color: #ff0f"
+        ></div>
+        <div
+          data-palette-color="243d7eff"
+          class="palette-color palette-inactive"
+          style="--color: #f0ff"
+        ></div>
+        <div
+          data-palette-color="243d7eff"
+          class="palette-color palette-inactive"
+          style="--color: #243d7eff"
+        ></div>
+        <div
+          data-palette-color="243d7eff"
+          class="palette-color palette-inactive"
+          style="--color: #ff00ffff"
+        ></div>
+        <div
+          data-palette-color="243d7eff"
+          class="palette-color palette-inactive"
+          style="--color: #ff0f"
+        ></div>
+        <div
+          data-palette-color="243d7eff"
+          class="palette-color palette-inactive"
+          style="--color: #f0ff"
+        ></div>
+        <div
+          data-palette-color="243d7eff"
+          class="palette-color palette-inactive"
+          style="--color: #243d7eff"
+        ></div>
+        <div
+          data-palette-color="243d7eff"
+          class="palette-color palette-inactive"
+          style="--color: #ff00ffff"
+        ></div>
+        <div
+          data-palette-color="243d7eff"
+          class="palette-color palette-inactive"
+          style="--color: #ff0f"
+        ></div>
+        <div
+          data-palette-color="243d7eff"
+          class="palette-color palette-inactive"
+          style="--color: #f0ff"
+        ></div>
+        <div
+          data-palette-color="243d7eff"
+          class="palette-color palette-inactive"
+          style="--color: #243d7eff"
+        ></div>
+        <div
+          data-palette-color="243d7eff"
+          class="palette-color palette-inactive"
+          style="--color: #ff00ffff"
+        ></div>
+        <div
+          data-palette-color="243d7eff"
+          class="palette-color palette-inactive"
+          style="--color: #ff0f"
+        ></div>
+        <div
+          data-palette-color="243d7eff"
+          class="palette-color palette-inactive"
+          style="--color: #f0ff"
+        ></div>
+        <div
+          data-palette-color="243d7eff"
+          class="palette-color palette-inactive"
+          style="--color: #243d7eff"
+        ></div>
+        <div
+          data-palette-color="243d7eff"
+          class="palette-color palette-inactive"
+          style="--color: #ff00ffff"
+        ></div>
+        <div
+          data-palette-color="243d7eff"
+          class="palette-color palette-inactive"
+          style="--color: #ff0f"
+        ></div>
+        <div
+          data-palette-color="243d7eff"
+          class="palette-color palette-inactive"
+          style="--color: #f0ff"
+        ></div>
+        <div
+          data-palette-color="243d7eff"
+          class="palette-color palette-inactive"
+          style="--color: #243d7eff"
+        ></div>
+        <div
+          data-palette-color="243d7eff"
+          class="palette-color palette-inactive"
+          style="--color: #ff00ffff"
+        ></div>
+        <div
+          data-palette-color="243d7eff"
+          class="palette-color palette-inactive"
+          style="--color: #ff0f"
+        ></div>
+        <div
+          data-palette-color="243d7eff"
+          class="palette-color palette-inactive"
+          style="--color: #f0ff"
+        ></div>
+        <div
+          data-palette-color="243d7eff"
+          class="palette-color palette-inactive"
+          style="--color: #243d7eff"
+        ></div>
+        <div
+          data-palette-color="243d7eff"
+          class="palette-color palette-inactive"
+          style="--color: #ff00ffff"
+        ></div>
+        <div
+          data-palette-color="243d7eff"
+          class="palette-color palette-inactive"
+          style="--color: #ff0f"
+        ></div>
+        <div
+          data-palette-color="243d7eff"
+          class="palette-color palette-inactive"
+          style="--color: #f0ff"
+        ></div>
+        <div
+          data-palette-color="243d7eff"
+          class="palette-color palette-inactive"
+          style="--color: #243d7eff"
+        ></div>
+      </div>
+      <div style="display: none; visibility: hidden" class="color-data">
+        <div class="color-rgba">
+          <p>R</p>
+          <!--
+          --><input
+            class="color-input-num"
+            id="color-rgba-r"
+            value="255"
+            min="0"
+            max="255"
+            type="number"
+            data-color-input
+          />
+          <!--
+          -->
+          <p>G</p>
+          <!--
+          --><input
+            class="color-input-num"
+            id="color-rgba-g"
+            value="255"
+            min="0"
+            data-color-input
+            max="255"
+            type="number"
+          />
+          <!--
+            -->
+          <p>B</p>
+          <!--
+          --><input
+            class="color-input-num"
+            id="color-rgba-b"
+            value="255"
+            min="0"
+            data-color-input
+            max="255"
+            type="number"
+          />
+          <!--
+              -->
+          <p>A</p>
+          <!--
+          --><input
+            class="color-input-num"
+            id="color-rgba-a"
+            value="255"
+            min="0"
+            data-color-input
+            max="255"
+            type="number"
+          />
+        </div>
+        <div
+          id="color-preview"
+          onclick="colorPreviewClickHandler(event)"
+          ontouchstart="colorPreviewClickHandler(event)"
+        >
+          <div id="color-previous"></div>
+          <div id="color-current"></div>
+        </div>
+      </div>
+      <div style="display: none; visibility: hidden" class="color-data">
+        <div class="color-hsla">
+          <p>H</p>
+          <!--
+          --><input
+            class="color-input-num"
+            data-color-input
+            id="color-hsla-h"
+            value="0"
+            min="0"
+            max="360"
+            maxlength="3"
+            type="number"
+          />
+          <!--
+          -->
+          <p>S</p>
+          <!--
+          --><input
+            class="color-input-num"
+            id="color-hsla-s"
+            value="100"
+            min="0"
+            data-color-input
+            max="100"
+            type="number"
+          />
+          <!--
+            -->
+          <p>L</p>
+          <!--
+          --><input
+            class="color-input-num"
+            id="color-hsla-l"
+            value="100"
+            min="0"
+            data-color-input
+            max="100"
+            type="number"
+          />
+          <!--
+              -->
+          <p>A</p>
+          <!--
+          --><input
+            class="color-input-num"
+            id="color-hsla-a"
+            value="100"
+            min="0"
+            data-color-input
+            max="100"
+            type="number"
+          />
+          <p class="label-hex">#</p>
+          <!--
+            --><input
+            class="color-input-hex"
+            maxlength="8"
+            id="color-data-hex"
+            data-color-input
+            value="ffffff"
+            type="text"
+          />
+        </div>
+      </div>
+      <div
+        style="display: none; visibility: hidden"
+        id="palettes"
+        class="drop_zone"
+      ></div>
+    </div>
+    <div class="layer-menu" id="layer-menu">
+      <div class="layer-menu-controls">
+        <button class="layer-menu-button">
+          <i class="hi-copy-fill"></i>
+        </button>
+        <button class="layer-menu-button">
+          <i class="hi-trash-fill"></i>
+        </button>
+        <button class="layer-menu-button">
+          <i class="hi-folder-fill"></i>
+        </button>
+        <button onclick="newLayer()" class="layer-menu-button">
+          <i class="hi-plus-large-line"></i>
+        </button>
+      </div>
+      <div id="layer-main">
+        <div id="layer-position-preview-horizontal"></div>
+      </div>
+    </div>
+    <div id="popup" class="popup">
+      <div class="popup-top-bar">
+        <h1>New File</h1>
+      </div>
+      <div class="popup-content">
+        <div class="popup-preset-group" id="popup-presets"></div>
+        <div class="popup-sidebar">
+          <span class="popup-input-group">
+            <p class="popup-input-title">Width</p>
+            <div class="popup-input-wrap">
+              <div class="popup-input-field">
+                <input
+                  data-input-num-draggable
+                  class="popup-input-num"
+                  type="number"
+                  id="width"
+                  value="16"
+                />
+                <p class="popup-input-unit">px</p>
+              </div>
+            </div>
+          </span>
+          <span class="popup-input-group">
+            <p class="popup-input-title">Height</p>
+            <div class="popup-input-wrap">
+              <div class="popup-input-field">
+                <input
+                  data-input-num-draggable
+                  class="popup-input-num"
+                  type="number"
+                  id="height"
+                  value="16"
+                />
+                <p class="popup-input-unit">px</p>
+              </div>
+            </div>
+          </span>
+          <div class="popup-btn-group">
+            <button
+              onclick="confirmNewProject()"
+              id="close"
+              class="popup-btn popup-btn-imp"
+            >
+              OK
+            </button>
+            <button onclick="closePopup()" class="popup-btn">Cancel</button>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-  <div id="eyedropper-preview">
-    <img src="./assets/cursors/crosshair.png" alt="">
-    <canvas id="eyedropperPreviewCanvas"></canvas>
-  </div>
-  <div class="number-pad-input-wrap number-pad-input-hidden">
-    <div class="number-pad-preview grid-row-1 grid-col-1-4">7000<span class="number-pad-unit">px</span></div>
-    <button class="number-pad-input-button grid-row-2 grid-col-1">7</button>
-    <button class="number-pad-input-button grid-row-2 grid-col-2">8</button>
-    <button class="number-pad-input-button grid-row-2 grid-col-3">9</button>
-    <button class="number-pad-input-button grid-row-3 grid-col-1">4</button>
-    <button class="number-pad-input-button grid-row-3 grid-col-2">6</button>
-    <button class="number-pad-input-button grid-row-3 grid-col-3">5</button>
-    <button class="number-pad-input-button grid-row-4 grid-col-1">1</button>
-    <button class="number-pad-input-button grid-row-4 grid-col-2">2</button>
-    <button class="number-pad-input-button grid-row-4 grid-col-3">3</button>
-    <button class="number-pad-input-button grid-row-5 grid-col-1-2">0</button>
-    <button class="number-pad-input-button grid-row-5 grid-col-3">.</button>
-    <button class="number-pad-input-button grid-col-4 grid-row-2-3">e</button>
-    <button class="number-pad-input-button grid-col-4 grid-row-4-5 bg-important-t">b</button>
-  </div>
-</body>
+    <div id="export-menu" class="export-menu">
+      <div class="popup-top-bar">
+        <h1>Export</h1>
+      </div>
+      <div class="popup-column" class="" style="--maxHeight: 136px">
+        <span class="popup-input-group">
+          <p class="popup-input-title">File Name</p>
+          <div class="popup-input-wrap">
+            <div class="popup-input-field">
+              <input
+                class="popup-input-text"
+                id="export-file-name"
+                type="text"
+                value="canvas"
+              />
+              <p class="popup-input-unit" id="export-name-extension">.png</p>
+            </div>
+          </div>
+        </span>
+        <span class="popup-input-group">
+          <p class="popup-input-title">File Type</p>
+          <div class="popup-input-wrap">
+            <div class="popup-input-field">
+              <select
+                name="type"
+                id="export-file-type"
+                value="png"
+                oninput="document.getElementById('export-name-extension').innerHTML=
+                '.' + this.value"
+                class="popup-input-select"
+              >
+                <option value="png" selected>.png</option>
+                <option value="jpeg">.jpeg</option>
+                <option value="bmp">.bmp</option>
+              </select>
+            </div>
+          </div>
+        </span>
+        <span class="popup-input-group">
+          <p class="popup-input-title">Scale</p>
+          <div class="popup-input-wrap">
+            <div class="popup-input-field">
+              <select
+                name="type"
+                id="export-scale"
+                value="1"
+                class="popup-input-select"
+              >
+                <option value="1" selected>1x</option>
+                <option value="2">2x</option>
+                <option value="3">3x</option>
+                <option value="4">4x</option>
+                <option value="5">5x</option>
+                <option value="6">6x</option>
+                <option value="7">7x</option>
+                <option value="8">8x</option>
+                <option value="9">9x</option>
+                <option value="10">10x</option>
+                <option value="25">25x</option>
+                <option value="50">50x</option>
+                <option value="100">100x</option>
+              </select>
+            </div>
+          </div>
+        </span>
+        <div class="popup-btn-group">
+          <button onclick="exportFile()" class="popup-btn popup-btn-imp">
+            OK
+          </button>
+          <button onclick="closeExportMenu()" class="popup-btn">Cancel</button>
+        </div>
+      </div>
+    </div>
+    <canvas id="eraserBrushBufferParent"></canvas>
+    <div id="canvas-parent" customcursor>
+      <svg id="cursorSVG" customcursor class="followsPanzoom"></svg>
+      <svg id="selectionSVG" customcursor>
+        <g id="selectionGroup" class="followsPanzoom"></g>
+      </svg>
+      <div id="layerParent" customcursor>
+        <svg
+          id="previewCanvasWrapper"
+          class="layerWrapperWrapper nodelete"
+          customcursor
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <foreignObject class="drawingCanvas">
+            <canvas id="previewcanv" customcursor></canvas>
+          </foreignObject>
+        </svg>
+      </div>
+      <svg customcursor id="boundingSVG" class="boundingHidden">
+        <g
+          stroke="var(--important)"
+          id="boundingGroup"
+          class="followsPanzoom"
+          customcursor
+        >
+          <g id="rotationBoundingGroup">
+            <rect
+              customcursor
+              id="boundingRect"
+              x="10"
+              y="10"
+              width="100"
+              height="100"
+              fill="none"
+            />
+            <line
+              customcursor
+              id="boundingRotLine"
+              x1="60"
+              y1="-5"
+              x2="60"
+              y2="10"
+            />
+            <circle
+              customcursor
+              class="boundingRectCircleHandle boundingRectHandle-bl"
+              cx="10"
+              cy="10"
+              r="5"
+              fill="white"
+            />
+            <circle
+              customcursor
+              class="boundingRectCircleHandle boundingRectHandle-br"
+              cx="110"
+              cy="10"
+              r="5"
+              fill="white"
+            />
+            <circle
+              customcursor
+              class="boundingRectCircleHandle boundingRectHandle-tl"
+              cx="10"
+              cy="110"
+              r="5"
+              fill="white"
+            />
+            <circle
+              customcursor
+              class="boundingRectCircleHandle boundingRectHandle-tr"
+              cx="110"
+              cy="110"
+              r="5"
+              fill="white"
+            />
+            <circle
+              customcursor
+              class="boundingRectCircleHandle boundingRectHandle-bm"
+              cx="60"
+              cy="10"
+              r="5"
+              fill="white"
+            />
+            <circle
+              customcursor
+              class="boundingRectCircleHandle boundingRectHandle-ml"
+              cx="10"
+              cy="60"
+              r="5"
+              fill="white"
+            />
+            <circle
+              customcursor
+              class="boundingRectCircleHandle boundingRectHandle-tm"
+              cx="60"
+              cy="110"
+              r="5"
+              fill="white"
+            />
+            <circle
+              customcursor
+              class="boundingRectCircleHandle boundingRectHandle-mr"
+              cx="110"
+              cy="60"
+              r="5"
+              fill="white"
+            />
+            <circle
+              customcursor
+              class="boundingRectCircleHandle boundingRectHandle-rot"
+              cx="60"
+              cy="-5"
+              r="5"
+              fill="white"
+            />
+          </g>
+        </g>
+      </svg>
+      <div id="layers-wrap" customcursor></div>
+      <canvas id="bggridcanv" class="followsPanzoom" customcursor></canvas>
+    </div>
 
+    <div id="topbar" class="ui">
+      <div id="topbar-left">
+        <span class="item" onclick="openGallery()"
+          ><i class="hi-left-arrow-large-line"></i
+        ></span>
+        <button class="topbar-button" onclick="toggleMenu()">File</button>
+        <button class="item" onclick="openExportMenu()" id="exportButton">
+          <i class="hi-export-line"></i>
+        </button>
+      </div>
+
+      <input
+        style="visibility: hidden; display: none"
+        type="text"
+        id="topbar-project-name"
+        value=""
+        onblur="renameProject(this)"
+      />
+
+      <div id="tool-settings-content"></div>
+      <div id="topbar-right">
+        <span class="item" onclick="undo()"><i class="hi-undo-line"></i></span>
+        <span class="item" onclick="redo()"><i class="hi-redo-line"></i></span>
+        <span class="toolbar-divider"></span>
+        <span id="layer-toggle-button" class="item" onclick="toggleLayerMenu()"
+          ><i class="hi-layer-fill"></i
+        ></span>
+      </div>
+    </div>
+    <div id="actionButtons" class="actionButtonsHidden"></div>
+    <div id="toolbar" class="ui">
+      <div id="dynamic-tool-wrap"></div>
+      <span class="toolbar-divider"></span>
+      <span class="item toolbar-landscape-only" onclick="toggleColorPicker()"
+        ><i class="hi-circle-small-fill" data-tool-color-menu-button></i>
+      </span>
+      <span
+        id="tool-btn-eyedropper"
+        class="item"
+        data-tool-name="eyedropper"
+        onclick="previousTool = getTool();compileForEyedropper(); setTool('eyedropper', this)"
+        ><i class="hi-eyedropper-fill"></i
+      ></span>
+      <span class="toolbar-divider"></span>
+      <span class="item" onclick="board.clear()"
+        ><i class="hi-trash-fill"></i
+      ></span>
+      <!---test-->
+    </div>
+
+    <div id="window-settings" class="window-wrap window-closed">
+      <div class="window-content">
+        <div class="window-sidebar">
+          <h1>Settings</h1>
+          <button class="window-sidebar-button window-sidebar-button-active">
+            <i class="hi-settings-fill"></i>
+            <p>General</p>
+          </button>
+          <button class="window-sidebar-button">
+            <i class="hi-ui-line"></i>
+            <p>Interface</p>
+          </button>
+          <button class="window-sidebar-button">
+            <i class="hi-pencil-fill"></i>
+            <p>Input</p></button
+          ><button class="window-sidebar-button">
+            <i class="hi-keyboard-line"></i>
+            <p>Keybinds</p>
+          </button>
+          <button class="window-sidebar-button">
+            <i class="hi-account-fill"></i>
+            <p>Account</p>
+          </button>
+          <button class="window-sidebar-button">
+            <i class="hi-info-line"></i>
+            <p>About</p>
+          </button>
+          <button class="window-sidebar-button">
+            <i class="hi-help-line"></i>
+            <p>Help</p>
+          </button>
+        </div>
+        <div class="window-header">
+          <h1>General</h1>
+          <button class="window-close" onclick="closeSettingsWindow()">
+            <i class="hi-x-large-line"></i>
+          </button>
+        </div>
+        <div class="window-inner">
+          <div class="popup-btn-group">
+            <button
+              id="ui-theme-light"
+              onclick="setTheme(Themes.light)"
+              class="popup-btn theme-button"
+            >
+              Light
+            </button>
+            <button
+              id="ui-theme-dark"
+              onclick="setTheme(Themes.dark)"
+              class="popup-btn theme-button"
+            >
+              Dark
+            </button>
+            <button
+              id="ui-theme-system-default"
+              onclick="setTheme(Themes.system)"
+              class="popup-btn theme-button"
+            >
+              System Theme
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="eyedropper-preview">
+      <img src="./assets/cursors/crosshair.png" alt="" />
+      <canvas id="eyedropperPreviewCanvas"></canvas>
+    </div>
+    <div class="number-pad-input-wrap number-pad-input-hidden">
+      <div class="number-pad-preview grid-row-1 grid-col-1-4">
+        7000<span class="number-pad-unit">px</span>
+      </div>
+      <button class="number-pad-input-button grid-row-2 grid-col-1">7</button>
+      <button class="number-pad-input-button grid-row-2 grid-col-2">8</button>
+      <button class="number-pad-input-button grid-row-2 grid-col-3">9</button>
+      <button class="number-pad-input-button grid-row-3 grid-col-1">4</button>
+      <button class="number-pad-input-button grid-row-3 grid-col-2">6</button>
+      <button class="number-pad-input-button grid-row-3 grid-col-3">5</button>
+      <button class="number-pad-input-button grid-row-4 grid-col-1">1</button>
+      <button class="number-pad-input-button grid-row-4 grid-col-2">2</button>
+      <button class="number-pad-input-button grid-row-4 grid-col-3">3</button>
+      <button class="number-pad-input-button grid-row-5 grid-col-1-2">0</button>
+      <button class="number-pad-input-button grid-row-5 grid-col-3">.</button>
+      <button class="number-pad-input-button grid-col-4 grid-row-2-3">e</button>
+      <button
+        class="number-pad-input-button grid-col-4 grid-row-4-5 bg-important-t"
+      >
+        b
+      </button>
+    </div>
+  </body>
 </html>
