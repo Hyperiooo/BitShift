@@ -357,6 +357,15 @@ function updateToolSettings(tool) {
       inputGroup.appendChild(inputWrap);
       toolContent.appendChild(inputGroup);
       draggableNumInputs.push(new numberDraggable(inputElement));
+      var a = new NumberInputKeypad(inputElement)
+      inputElement.addEventListener("click", e=>{
+        if(!a.isopen) {
+          a.open()
+
+        }else {
+          a.close()
+        }
+      })
     } else if (setting.type == "bool") {
       let inputGroup = document.createElement("span");
       inputGroup.classList.add("tool-settings-ui-input-group");
