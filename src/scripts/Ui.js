@@ -23,9 +23,9 @@ function setTheme(themeName) {
 	localStorage.setItem("theme", themeName);
 	//activate the button with pattern of theme-*-button to match the theme
 	document.querySelectorAll(".theme-button").forEach((e) => {
-		e.classList.remove("popup-btn-imp");
+		e.classList.remove("window-btn-imp");
 		if (e.id == themeName) {
-			e.classList.add("popup-btn-imp");
+			e.classList.add("window-btn-imp");
 		}
 	});
 	if (themeName === "ui-theme-system-default") {
