@@ -1310,6 +1310,19 @@ foreignObject {
   border-radius: 5px;
   overflow: hidden;
   transition: 0.2s width;
+  background: var(--bgDarkT);
+}
+
+#color-menu-tabbar {
+  grid-column: 1 / 6;
+  grid-row: 13 / 14;
+  width: 100%;
+  height: 100%;
+  z-index: -200 !important;
+  border-radius: 5px;
+  overflow: hidden;
+  transition: 0.2s width;
+  background: var(--bgDarkT);
 }
 
 .color-palette-standalone {
@@ -1539,12 +1552,17 @@ input[type="number"] {
     flex-wrap: wrap;
   }
 
+  #color-menu-tabbar {
+    height: 50px;
+  }
+
   .palette-color {
     width: 30px;
     height: 30px;
     flex-basis: 30px;
     flex-shrink: 0;
-    flex-grow: 2;
+    flex-grow: 1;
+    max-width: 40px;
   }
 }
 

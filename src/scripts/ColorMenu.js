@@ -96,7 +96,6 @@ function updateColorNum(el) {
 	}
 }
 
-
 var hueMoving = false;
 var hThumb;
 var hueRange;
@@ -181,7 +180,7 @@ function valueThumb(e) {
 		});
 		//pickerColor[1] = clamp(x / valueRect.width * 100, 0, 100)
 		//pickerColor[2] = 100 - clamp(y / valueRect.height * 100, 0, 100)
-		notify.log(valueRect.height)
+		notify.log(valueRect.height);
 		pickerColor = new Color({
 			h: pickerColor.hsva.h,
 			s: clamp((x / valueRect.width) * 100, 0, 100),
@@ -425,10 +424,27 @@ function setPickerColor(color) {
 	updatePickerColor();
 }
 
+var previousPrevious = null;
+
 function updatePrevious(col) {
 	document
 		.getElementById("color-previous")
 		.style.setProperty("--color", col.hex);
+	if (previousPrevious != null) {
+		if (previousPrevious == col) return;
+		else {
+			let e = document.createElement("div");
+			e.setAttribute("data-palette-color", previousPrevious.hexh);
+			e.classList.add("palette-color");
+			e.style.setProperty("--color", previousPrevious.hex);
+			var color = { ...previousPrevious };
+			e.addEventListener("click", () => {
+				window.board.setColor(color);
+			});
+			document.getElementById("color-menu-recent-colors").prepend(e);
+		}
+	}
+	previousPrevious = col;
 }
 
 function dragOverHandler(e) {
