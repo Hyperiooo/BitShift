@@ -1,3 +1,27 @@
+:root {
+    --windowT: #00000081;
+    --windowMain: #212125;
+    --windowMainT: #2121258c;
+    --windowSide: #2b2b30;
+    --appBarThemeColor: #141416;
+    --bgMainT: #161518e3;
+    --bgMainUltraT: #49484d7e;
+    --bgDarkT: #131214e3;
+    --textMain: #ffffff;
+    --textDim: #cacaca;
+    --important: #2741ff;
+    --importantT: #2740ffa9;
+    --error: #ff163d;
+    --errorT: #ff163da9;
+    --importantText: #ffffff;
+    --scrollTrack: #201f22;
+    --scrollHover: #3b3a3d;
+    --toolBarDim: #49484a;
+    --toolBarHover: #7f7f80;
+    --lightT: #99999991;
+    --boxShadowT: 0.45;
+}
+
 .alrt-wrap[data-theme="bitshift-confirmation"] {
     color: var(--textMain);
     background: var(--bgMainT);
@@ -5,6 +29,8 @@
     -webkit-backdrop-filter: blur(20px);
     padding: 0;
     border-radius: 100px;
+    max-width: 80vw;
+    overflow-wrap: break-word;
 }
 
 div[id^='alrt-main'].alrt-top-center,
@@ -46,6 +72,7 @@ div[id*='alrt-main'].alrt-top-center {
     100% {
         opacity: 1;
     }
+
     0% {
         opacity: 0;
     }
@@ -55,6 +82,7 @@ div[id*='alrt-main'].alrt-top-center {
     0% {
         opacity: 1;
     }
+
     100% {
         opacity: 0;
     }
