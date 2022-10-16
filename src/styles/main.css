@@ -531,7 +531,7 @@ html {
   z-index: var(--zindex) !important;
 }
 
-#layers-wrap {
+#input-layer {
   position: absolute;
   display: block !important;
 }
@@ -566,7 +566,7 @@ canvas * {
 
 #bggridcanv,
 #previewcanv,
-#cursorSVG,
+#cursorGroup,
 .drawingCanvas {
   width: var(--canvX);
   height: var(--canvY);
@@ -586,9 +586,6 @@ canvas * {
 .layerWrapperWrapper,
 .drawingCanvas {
   touch-action: none;
-  image-rendering: -moz-crisp-edges;
-  image-rendering: -webkit-crisp-edges;
-  image-rendering: pixelated;
   user-select: none;
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -601,7 +598,6 @@ canvas * {
   background-color: white;
   z-index: -100000;
   pointer-events: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8' viewBox='0 0 8 8'%3E%3Cg fill='%23bababa' fill-opacity='0.4'%3E%3Cpath fill-rule='evenodd' d='M0 0h4v4H0V0zm4 4h4v4H4V4z'/%3E%3C/g%3E%3C/svg%3E");
 }
 
 #previewcanv {
@@ -663,7 +659,8 @@ foreignObject {
 }
 
 #boundingGroup,
-#selectionGroup {
+#selectionGroup,
+#cursorGroup {
   width: var(--canvX) !important;
   height: var(--canvY) !important;
 }
@@ -1033,6 +1030,20 @@ foreignObject {
   font-family: "JetBrains Mono";
 }
 
+.color-menu-content {
+  grid-column: 1 / 6;
+  grid-row: 1/ 11;
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: repeat(6, 53px);
+  grid-template-rows: 32px repeat(13, 27px);
+  gap: 8px;
+  justify-items: stretch;
+  align-items: stretch;
+  justify-content: stretch;
+}
+
 .color-menu.color-open {
   opacity: 1;
   pointer-events: all;
@@ -1316,13 +1327,33 @@ foreignObject {
 #color-menu-tabbar {
   grid-column: 1 / 6;
   grid-row: 13 / 14;
-  width: 100%;
+  width: calc(100% - 4px);
   height: 100%;
   z-index: -200 !important;
   border-radius: 5px;
+  gap: 2px;
+  padding: 2px;
   overflow: hidden;
   transition: 0.2s width;
   background: var(--bgDarkT);
+  display: flex;
+  justify-content: stretch;
+}
+
+.color-menu-tabbar-button {
+  margin: 0;
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  border-radius: 3px;
+  color: var(--toolBarHover);
+}
+
+.color-menu-tabbar-button-active {
+  color: var(--textMain);
+  background: var(--bgLight);
 }
 
 .color-palette-standalone {
@@ -1519,6 +1550,20 @@ input[type="number"] {
     border-radius: 29px;
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
+  }
+
+  .color-menu-content {
+    grid-column: 1 / 6;
+    grid-row: 1/ 11;
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: repeat(4, 53px);
+    grid-template-rows: 32px repeat(14, 27px);
+    gap: 8px;
+    justify-items: stretch;
+    align-items: stretch;
+    justify-content: stretch;
   }
 
   .color-open {
@@ -1827,6 +1872,7 @@ input {
   border-radius: 15px;
   transition: opacity 0.3s;
   align-items: center;
+  box-shadow: var(--boxShadow);
 }
 
 .actionButtonDivider {
@@ -2088,10 +2134,14 @@ input {
 }
 
 canvas {
+  image-rendering: optimizeSpeed;
   image-rendering: -moz-crisp-edges;
-  image-rendering: -webkit-crisp-edges;
-  image-rendering: pixelated;
+  image-rendering: -o-crisp-edges;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: optimize-contrast;
   image-rendering: crisp-edges;
+  image-rendering: pixelated;
+  -ms-interpolation-mode: nearest-neighbor;
   user-select: none;
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -2861,6 +2911,7 @@ div[id^="alrt-main"] {
 }
 
 .number-pad-input-wrap {
+  will-change: transform, opacity;
   background: var(--bgMainT);
   backdrop-filter: saturate(180%) blur(20px);
   -webkit-backdrop-filter: saturate(180%) blur(20px);
@@ -2880,6 +2931,12 @@ div[id^="alrt-main"] {
   border-radius: 11px;
   box-shadow: var(--boxShadow);
   font-family: "JetBrains Mono";
+  transition: opacity 0.3s;
+}
+
+.number-pad-input-hidden {
+  opacity: 0;
+  pointer-events: none;
 }
 
 .number-pad-input-button {
@@ -2892,6 +2949,7 @@ div[id^="alrt-main"] {
   display: flex;
   justify-content: center;
   align-items: center;
+  opacity: 1;
   transition: background 0.3s, border 0.3s;
 }
 
@@ -2976,9 +3034,4 @@ div[id^="alrt-main"] {
 
 .grid-row-4-5 {
   grid-row: 4 / 6;
-}
-
-.number-pad-input-hidden {
-  opacity: 0;
-  pointer-events: none;
 }

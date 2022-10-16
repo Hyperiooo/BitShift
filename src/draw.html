@@ -78,7 +78,7 @@
         pointer-events: none;
       " accept=".bspr" />
   <div id="tool-settings"></div>
-  <div class="color-menu color-open" id="color-menu" ondrop="dropHandler(event);" ondragover="dragOverHandler(event);"
+  <div class="color-menu" id="color-menu" ondrop="dropHandler(event);" ondragover="dragOverHandler(event);"
     ondragleave="dragLeaveHandler(event);" ondragend="dragLeaveHandler(event);">
     <div id="color-preview" onclick="colorPreviewClickHandler(event)" ontouchstart="colorPreviewClickHandler(event)">
       <div id="color-previous"></div>
@@ -106,15 +106,15 @@
     <div id="color-menu-recent-colors">
     </div>
     <div id="color-menu-tabbar">
-      <button id="color-menu-picker-button" class="color-menu-tabbar-button">
+      <button class="color-menu-tabbar-button color-menu-tabbar-button-active" onclick="setPickerMode('picker')">
         <i class="hi-circle-fill"></i>
         Picker
       </button>
-      <button id="color-menu-picker-button" class="color-menu-tabbar-button">
+      <button class="color-menu-tabbar-button" onclick="setPickerMode('value')">
         <i class="hi-settings-fill"></i>
         Value
       </button>
-      <button id="color-menu-picker-button" class="color-menu-tabbar-button">
+      <button class="color-menu-tabbar-button" onclick="setPickerMode('palette')">
         <i class="hi-keyboard-line"></i>
         Palette
       </button>
@@ -289,7 +289,9 @@
   </div>
   <canvas id="eraserBrushBufferParent"></canvas>
   <div id="canvas-parent" customcursor>
-    <svg id="cursorSVG" customcursor class="followsPanzoom"></svg>
+    <svg id="cursorSVG" customcursor>
+      <g id="cursorGroup" class="followsPanzoom"></g>
+    </svg>
     <svg id="selectionSVG" customcursor>
       <g id="selectionGroup" class="followsPanzoom"></g>
     </svg>
@@ -298,6 +300,12 @@
         xmlns="http://www.w3.org/2000/svg">
         <foreignObject class="drawingCanvas">
           <canvas id="previewcanv" customcursor></canvas>
+        </foreignObject>
+      </svg>
+      <svg id="backgroundCanvasWrapper" class="layerWrapperWrapper nodelete" customcursor
+        xmlns="http://www.w3.org/2000/svg" style="--zindex: -1;">
+        <foreignObject class="drawingCanvas">
+          <canvas id="bggridcanv" customcursor></canvas>
         </foreignObject>
       </svg>
     </div>
@@ -327,9 +335,9 @@
         </g>
       </g>
     </svg>
-    <div id="layers-wrap" customcursor></div>
-    <canvas id="bggridcanv" class="followsPanzoom" customcursor></canvas>
+    <div id="input-layer" customcursor></div>
   </div>
+  <canvas id="viewport"></canvas>
 
   <div id="topbar" class="ui">
     <div id="topbar-left">
@@ -428,26 +436,7 @@
     <img src="./assets/cursors/crosshair.png" alt="" />
     <canvas id="eyedropperPreviewCanvas"></canvas>
   </div>
-  <div class="number-pad-input-wrap number-pad-input-hidden">
-    <div class="number-pad-preview grid-row-1 grid-col-1-4">
-      7000<span class="number-pad-unit">px</span>
-    </div>
-    <button class="number-pad-input-button grid-row-2 grid-col-1">7</button>
-    <button class="number-pad-input-button grid-row-2 grid-col-2">8</button>
-    <button class="number-pad-input-button grid-row-2 grid-col-3">9</button>
-    <button class="number-pad-input-button grid-row-3 grid-col-1">4</button>
-    <button class="number-pad-input-button grid-row-3 grid-col-2">6</button>
-    <button class="number-pad-input-button grid-row-3 grid-col-3">5</button>
-    <button class="number-pad-input-button grid-row-4 grid-col-1">1</button>
-    <button class="number-pad-input-button grid-row-4 grid-col-2">2</button>
-    <button class="number-pad-input-button grid-row-4 grid-col-3">3</button>
-    <button class="number-pad-input-button grid-row-5 grid-col-1-2">0</button>
-    <button class="number-pad-input-button grid-row-5 grid-col-3">.</button>
-    <button class="number-pad-input-button grid-col-4 grid-row-2-3">e</button>
-    <button class="number-pad-input-button grid-col-4 grid-row-4-5 bg-important-t">
-      b
-    </button>
-  </div>
+
 </body>
 
 </html>

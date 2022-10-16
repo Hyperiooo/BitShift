@@ -19,12 +19,13 @@ class Canvas {
 		this.sctx = this.selectionCanvas.getContext("2d");
 		//document.body.appendChild(this.selectionCanvas)
 		//document.body.appendChild(this.selectionBufferCanvas)
-		this.cursorSVG = document.querySelector("#cursorSVG");
-		this.cursorSVG.setAttribute("viewBox", "0 0 " + width + " " + height);
+		this.cursorGroup = document.querySelector("#cursorGroup");
+		this.cursorGroup.setAttribute("viewBox", "0 0 " + width + " " + height);
 		this.selectionGroup = document.querySelector("#selectionGroup");
 		this.boundingGroup = document.querySelector("#boundingGroup");
 		this.boundingSVG = document.querySelector("#boundingSVG");
 		this.selectionSVG = document.querySelector("#selectionSVG");
+		this.cursorSVG = document.querySelector("#cursorSVG");
 		this.selectionGroup.setAttribute("viewBox", "0 0 " + width + " " + height);
 		this.eyedropperPreviewCanvas = document.getElementById(
 			"eyedropperPreviewCanvas"
@@ -47,12 +48,21 @@ class Canvas {
 			"viewBox",
 			"0 0 " + window.innerWidth + " " + window.innerHeight
 		);
+		this.cursorSVG.setAttribute(
+			"viewBox",
+			"0 0 " + window.innerWidth + " " + window.innerHeight
+		);
 		window.addEventListener("resize", () => {
 			this.boundingSVG.setAttribute(
 				"viewBox",
 				"0 0 " + window.innerWidth + " " + window.innerHeight
 			);
 			this.selectionSVG.setAttribute(
+				"viewBox",
+				"0 0 " + window.innerWidth + " " + window.innerHeight
+			);
+
+			this.cursorSVG.setAttribute(
 				"viewBox",
 				"0 0 " + window.innerWidth + " " + window.innerHeight
 			);
@@ -65,7 +75,7 @@ class Canvas {
 		});
 		this.bggridcanvas = document.querySelector("#bggridcanv");
 		this.eBufferCanvas = document.getElementById("eraserBrushBufferParent");
-		this.canvaslayersparent = document.getElementById("layers-wrap");
+		this.inputLayer = document.getElementById("input-layer");
 		this.newLayerParent = document.getElementById("layerParent");
 		this.ectx = this.eBufferCanvas.getContext("2d");
 		document.documentElement.style.setProperty("--canvScale", this.canvScale);
@@ -84,10 +94,10 @@ class Canvas {
 		this.selectionBufferCanvas.classList.add("bufferCanvas");
 		this.width = width;
 		this.height = height;
-		this.canvaslayersparent.width = this.width;
-		this.canvaslayersparent.height = this.height;
-		this.canvaslayersparent.style.width = this.width + "px";
-		this.canvaslayersparent.style.height = this.height + "px";
+		this.inputLayer.width = this.width;
+		this.inputLayer.height = this.height;
+		this.inputLayer.style.width = this.width + "px";
+		this.inputLayer.style.height = this.height + "px";
 		if (
 			window.innerHeight / this.height / 1.25 <
 			window.innerWidth / this.width / 1.25
@@ -122,7 +132,7 @@ class Canvas {
 		this.currentX = 0;
 		this.currentY = 0;
 
-		this.panzoom = panzoom(this.canvaslayersparent, {
+		this.panzoom = panzoom(this.inputLayer, {
 			smoothScroll: false,
 			initialX:
 				this.width / 2 -
@@ -146,31 +156,33 @@ class Canvas {
 			minZoom: 0.1,
 		});
 		var _self = this;
-		this.panzoom.on("transform", function (e) {
-			// This event will be called along with events above.
-			_self.canvaslayersparent.style.transform;
-			_self.canvaslayersparent.style.transformOrigin;
-			_self.setCanvScale(_self.panzoom.getTransform().scale);
-			_self.setCanvTransform(
-				_self.panzoom.getTransform().x,
-				_self.panzoom.getTransform().y
-			);
-			document.body.style.setProperty(
-				"--panzoomTransformMatrix",
-				_self.canvaslayersparent.style.transform
-			);
-			document.body.style.setProperty(
-				"--panzoomTransformOrigin",
-				_self.canvaslayersparent.style.transformOrigin
-			);
-			var rect = _self.canvaslayersparent.getBoundingClientRect();
-			document.body.style.setProperty("--scaledX", rect.left + "px");
-			document.body.style.setProperty("--scaledY", rect.top + "px");
+		this.panzoom.on(
+			"transform",
+			function (e) {
+				_self.inputLayer.style.transform;
+				_self.inputLayer.style.transformOrigin;
+				_self.setCanvScale(_self.panzoom.getTransform().scale);
+				_self.setCanvTransform(
+					_self.panzoom.getTransform().x,
+					_self.panzoom.getTransform().y
+				);
+				document.body.style.setProperty(
+					"--panzoomTransformMatrix",
+					_self.inputLayer.style.transform
+				);
+				document.body.style.setProperty(
+					"--panzoomTransformOrigin",
+					_self.inputLayer.style.transformOrigin
+				);
+				var rect = _self.inputLayer.getBoundingClientRect();
+				document.body.style.setProperty("--scaledX", rect.left + "px");
+				document.body.style.setProperty("--scaledY", rect.top + "px");
 
-			document.body.style.setProperty("--scaledWidth", rect.width + "px");
+				document.body.style.setProperty("--scaledWidth", rect.width + "px");
 
-			document.body.style.setProperty("--scaledHeight", rect.height + "px");
-		});
+				document.body.style.setProperty("--scaledHeight", rect.height + "px");
+			}.bind(this)
+		);
 
 		this.startZoomX = 0;
 		this.startZoomY = 0;
@@ -241,7 +253,7 @@ class Canvas {
 		};
 
 		this.clickEvent = (e) => {
-			var rect = this.bggridcanvas.getBoundingClientRect();
+			var rect = this.inputLayer.getBoundingClientRect();
 			var x, y;
 			if (e.touches) {
 				x = e.touches[0].clientX;
@@ -253,10 +265,10 @@ class Canvas {
 			x = x - rect.left;
 			y = y - rect.top;
 			x = Math.floor(
-				(this.width * x) / (this.bggridcanvas.clientWidth * this.canvScale)
+				(this.width * x) / (this.inputLayer.clientWidth * this.canvScale)
 			);
 			y = Math.floor(
-				(this.height * y) / (this.bggridcanvas.clientHeight * this.canvScale)
+				(this.height * y) / (this.inputLayer.clientHeight * this.canvScale)
 			);
 			if (Tools.fillBucket && settings.tools.contiguous.value) {
 				this.filler(x, y, this.data[x][y]);
@@ -288,14 +300,14 @@ class Canvas {
 	inputDown(e) {
 		closeAllToolPopups();
 		updatePrevious(this.color);
-		var rect = this.bggridcanvas.getBoundingClientRect();
+		var rect = this.inputLayer.getBoundingClientRect();
 		var x = e.clientX - rect.left || e.touches[0].clientX - rect.left;
 		var y = e.clientY - rect.top || e.touches[0].clientY - rect.top;
 		x = Math.floor(
-			(this.width * x) / (this.bggridcanvas.clientWidth * this.canvScale)
+			(this.width * x) / (this.inputLayer.clientWidth * this.canvScale)
 		);
 		y = Math.floor(
-			(this.height * y) / (this.bggridcanvas.clientHeight * this.canvScale)
+			(this.height * y) / (this.inputLayer.clientHeight * this.canvScale)
 		);
 		if (
 			Tools.circle ||
@@ -437,7 +449,7 @@ class Canvas {
 		this.shiftKey = e.shiftKey;
 		this.ctrlKey = e.ctrlKey;
 		this.altKey = e.altKey;
-		var rect = this.bggridcanvas.getBoundingClientRect();
+		var rect = this.inputLayer.getBoundingClientRect();
 		var x = e.clientX - rect.left || e.touches[0].clientX - rect.left || -1;
 		var y = e.clientY - rect.top || e.touches[0].clientY - rect.top || -1;
 		var rawX = x / this.canvScale;
@@ -877,7 +889,6 @@ class Canvas {
 		this.prevTY = y;
 	}
 	drawBgGrid() {
-		return;
 		let nCol = Math.ceil(this.width / settings.background.width);
 		let nRow = Math.ceil(this.height / settings.background.height);
 		var ctx = this.bggctx;

@@ -180,7 +180,6 @@ function valueThumb(e) {
 		});
 		//pickerColor[1] = clamp(x / valueRect.width * 100, 0, 100)
 		//pickerColor[2] = 100 - clamp(y / valueRect.height * 100, 0, 100)
-		notify.log(valueRect.height);
 		pickerColor = new Color({
 			h: pickerColor.hsva.h,
 			s: clamp((x / valueRect.width) * 100, 0, 100),
@@ -430,6 +429,9 @@ function updatePrevious(col) {
 	document
 		.getElementById("color-previous")
 		.style.setProperty("--color", col.hex);
+	document.getElementById("color-previous").onclick = () => {
+		board.setColor({ ...col });
+	};
 	if (previousPrevious != null) {
 		if (previousPrevious == col) return;
 		else {

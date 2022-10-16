@@ -45,14 +45,14 @@ function updateCursor() {
 	cursor.style.height = cursors[curCursor].height + "px";
 }
 
-var cursorSVG = document.getElementById("cursorSVG");
+var cursorGroup = document.getElementById("cursorGroup");
 
 var eraserBufferCanvas = document.createElement("canvas");
 eraserBufferCanvas.id = "eraserBufferCanvas";
 var eraserBufferCtx = eraserBufferCanvas.getContext("2d");
 
 function drawOnSVGCanvas(outlinePath, antiPath) {
-	cursorSVG.innerHTML = "";
+	cursorGroup.innerHTML = "";
 	var svgOffset = 1 / board.canvScale;
 	var box = document.createElementNS("http://www.w3.org/2000/svg", "path");
 	var anti = document.createElementNS("http://www.w3.org/2000/svg", "path");
@@ -75,8 +75,8 @@ function drawOnSVGCanvas(outlinePath, antiPath) {
 
 	mask.appendChild(box);
 	mask.appendChild(anti);
-	cursorSVG.appendChild(mask);
-	cursorSVG.appendChild(group);
+	cursorGroup.appendChild(mask);
+	cursorGroup.appendChild(group);
 }
 
 function pathString(x, y, x2, y2, offset) {
@@ -87,7 +87,7 @@ function pathString(x, y, x2, y2, offset) {
 var svgOffset = 0;
 
 function drawEraserPreview(x, y) {
-	cursorSVG.innerHTML = "";
+	cursorGroup.innerHTML = "";
 	eraserBufferCanvas.width = project.width;
 	eraserBufferCanvas.height = project.height;
 	eraserBufferCtx.clearRect(0, 0, project.width, project.height);
@@ -190,5 +190,5 @@ function canvasResized() {
 	}
 }
 function clearSVGBrushPreviews() {
-	cursorSVG.innerHTML = "";
+	cursorGroup.innerHTML = "";
 }

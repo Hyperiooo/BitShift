@@ -2,10 +2,8 @@ var settings = {
 	background: {
 		width: 4, //size in px
 		height: 4, //size in px
-		colorOne: "#f0f0f0",
-		colorTwo: "#d4d4d4",
 		colorOne: "#ffffff",
-		colorTwo: "#f0f0f0",
+		colorTwo: "#e8e8e8",
 	},
 	ui: {
 		canvasScale: 2,
@@ -36,7 +34,7 @@ var settings = {
 			max: 100,
 			unit: "px",
 			callback: (e) => {
-				settings.tools.brushSize.value = e.value
+				settings.tools.brushSize.value = e.value;
 			},
 		},
 		brushSquare: {
@@ -44,7 +42,7 @@ var settings = {
 			value: false,
 			type: "bool",
 			callback: (e) => {
-				settings.tools.brushSquare = e.checked			
+				settings.tools.brushSquare = e.checked;
 			},
 		},
 		brushSmoothing: {
@@ -56,16 +54,16 @@ var settings = {
 			max: 100,
 			unit: "px",
 			callback: (e) => {
-				settings.tools.brushSmoothing.value = e.value
-			}
+				settings.tools.brushSmoothing.value = e.value;
+			},
 		},
 		brushPixelPerfect: {
 			title: "Pixel Perfect",
 			value: false,
 			type: "bool",
-			callback:  e=>{
-				settings.tools.brushPixelPerfect.value= e.value
-			}
+			callback: (e) => {
+				settings.tools.brushPixelPerfect.value = e.value;
+			},
 		},
 		spraySpeed: {
 			title: "Spray Speed",
@@ -74,9 +72,9 @@ var settings = {
 			draggable: true,
 			min: 1,
 			max: 100,
-			callback: e=>{
-				settings.tools.spraySpeed.value = e.value
-			}
+			callback: (e) => {
+				settings.tools.spraySpeed.value = e.value;
+			},
 		},
 		spraySize: {
 			title: "Spray Size",
@@ -86,47 +84,47 @@ var settings = {
 			min: 1,
 			max: 100,
 			unit: "px",
-				callback: e=> {
-					settings.tools.spraySize.value = e.value
-					createSprayPoints()
-				}
+			callback: (e) => {
+				settings.tools.spraySize.value = e.value;
+				createSprayPoints();
+			},
 		},
 		contiguous: {
 			title: "Contiguous",
 			value: true,
 			type: "bool",
-			callback: e=> {
-				settings.tools.contiguous.value = e.checked
-			}
+			callback: (e) => {
+				settings.tools.contiguous.value = e.checked;
+			},
 		},
 		selectionMode: {
 			title: "Selection Mode",
 			value: "replace",
 			type: "iconArray",
-			initialCallback: e=> {
-				setSelectionMode('replace')
+			initialCallback: (e) => {
+				setSelectionMode("replace");
 			},
 			values: [
 				{
 					name: "replace",
 					icon: "hi-replace-selection-fill",
-					callback: e=> {
-						setSelectionMode('replace')
-					}
+					callback: (e) => {
+						setSelectionMode("replace");
+					},
 				},
 				{
 					name: "add",
 					icon: "hi-add-selection-fill",
-					callback: e=> {
-						setSelectionMode('add')
-					}
+					callback: (e) => {
+						setSelectionMode("add");
+					},
 				},
 				{
 					name: "subtract",
 					icon: "hi-subtract-selection-fill",
-					callback: e=> {
-						setSelectionMode('subtract')
-					}
+					callback: (e) => {
+						setSelectionMode("subtract");
+					},
 				},
 			],
 		},
@@ -143,8 +141,7 @@ var project = {
 
 var lc = [];
 var preview = true;
-var isMobile = window.matchMedia('(pointer: coarse)').matches;
-
+var isMobile = window.matchMedia("(pointer: coarse)").matches;
 
 if (isMobile) {
 	var docElm = document.documentElement;
