@@ -134,12 +134,6 @@ class Canvas {
 
 		this.panzoom = panzoom(this.inputLayer, {
 			smoothScroll: false,
-			initialX:
-				this.width / 2 -
-				this.canvasParent.offsetWidth / 2 / settings.ui.canvasScale,
-			initialY:
-				this.height / 2 -
-				this.canvasParent.offsetHeight / 2 / settings.ui.canvasScale,
 			initialZoom: settings.ui.canvasScale,
 			zoomSpeed: 0.15,
 			onDoubleClick: function (e) {
@@ -155,6 +149,11 @@ class Canvas {
 			maxZoom: 200,
 			minZoom: 0.1,
 		});
+
+		this.panzoom.moveBy(
+			(window.innerWidth - this.width * settings.ui.canvasScale) / 2,
+			(window.innerHeight - this.height * settings.ui.canvasScale) / 2
+		);
 		var _self = this;
 		this.panzoom.on(
 			"transform",
