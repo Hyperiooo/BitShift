@@ -150,7 +150,7 @@ class Canvas {
 			minZoom: 0.1,
 		});
 
-		this.panzoom.moveBy(
+		this.panzoom.moveTo(
 			(window.innerWidth - this.width * settings.ui.canvasScale) / 2,
 			(window.innerHeight - this.height * settings.ui.canvasScale) / 2
 		);
@@ -287,6 +287,80 @@ class Canvas {
 		this.canvasParent.addEventListener("touchstart", this.clickEvent);
 		this.canvasParent.addEventListener("click", this.clickEvent);
 	}
+	recenter() {
+		var targetCanvasScale;
+		if (
+			window.innerHeight / this.height / 1.25 <
+			window.innerWidth / this.width / 1.25
+		) {
+			targetCanvasScale = window.innerHeight / this.height / 1.25;
+		} else {
+			targetCanvasScale = window.innerWidth / this.width / 1.25;
+		}
+		var targetX = (window.innerWidth - this.width * targetCanvasScale) / 2;
+		var targetY = (window.innerHeight - this.height * targetCanvasScale) / 2;
+		var _self = this;
+		var lerpFactor = 0.25;
+		function animateSmoothRecenter() {
+			_self.panzoom.zoomAbs(
+				window.innerWidth / 2,
+				window.innerHeight / 2,
+				lerp(settings.ui.canvasScale, targetCanvasScale, lerpFactor)
+			);
+			_self.panzoom.moveTo(
+				lerp(_self.panzoom.getTransform().x, targetX, lerpFactor),
+				lerp(_self.panzoom.getTransform().y, targetY, lerpFactor)
+			);
+			if (Math.abs(settings.ui.canvasScale - targetCanvasScale) < 0.01) {
+				settings.ui.canvasScale = targetCanvasScale;
+			}
+			//cancel request if close enough
+			if (
+				Math.abs(settings.ui.canvasScale - targetCanvasScale) >= 0.01 ||
+				Math.abs(targetX - _self.panzoom.getTransform().x) >= 0.01 ||
+				Math.abs(targetY - _self.panzoom.getTransform().y) >= 0.01
+			) {
+				requestAnimationFrame(animateSmoothRecenter);
+			} else {
+				_self.panzoom.zoomAbs(
+					window.innerWidth / 2,
+					window.innerHeight / 2,
+					targetCanvasScale
+				);
+				_self.panzoom.moveTo(targetX, targetY);
+			}
+		}
+		var transf = {
+			x: { ..._self.panzoom.getTransform() }.x,
+			y: { ..._self.panzoom.getTransform() }.y,
+			scale: settings.ui.canvasScale,
+		};
+		if (
+			transf.x == targetX &&
+			transf.y == targetY &&
+			transf.scale == targetCanvasScale
+		)
+			return;
+
+		anime({
+			targets: transf,
+			x: targetX,
+			y: targetY,
+			scale: targetCanvasScale,
+			easing: "linear",
+			duration: 800,
+			easing: "easeInOutBack",
+			update: function () {
+				_self.panzoom.zoomAbs(
+					window.innerWidth / 2,
+					window.innerHeight / 2,
+					transf.scale
+				);
+				_self.panzoom.moveTo(transf.x, transf.y);
+			},
+		});
+		//requestAnimationFrame(animateSmoothRecenter);
+	}
 	destroy() {
 		this.canvasParent.removeEventListener("touchmove", this.moveEvent);
 		this.canvasParent.removeEventListener("mousemove", this.moveEvent);
@@ -393,7 +467,6 @@ class Canvas {
 			for (p of this.tempL) {
 				this.sBufferDraw(p);
 				if (p.constructor.name == "Rect") {
-					console.log(p);
 					var q = {};
 					modifySelectionPath(
 						p.x1,

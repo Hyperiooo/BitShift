@@ -195,7 +195,7 @@ var ToolbarActionMenus = {
 		{
 			name: "Invert",
 			action: "invertSelection()",
-			icon: "hi-half-star-line",
+			icon: "hi-invert-line",
 		},
 		{
 			name: "Cut",
