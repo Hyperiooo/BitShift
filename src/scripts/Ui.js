@@ -222,12 +222,14 @@ function closeSettingsWindow() {
 }
 
 class NumberInputKeypad {
-	constructor(el, value, unit, min) {
+	constructor(el, value, unit, min, max) {
 		this.el = el;
 		this.element = document.createElement("div");
 		this.value = value || 0;
 		this.unit = unit || false;
+		this.overwriteDefault = false;
 		this.min = min || 0;
+		this.max = max || Infinity
 		this.element.classList.add("number-pad-input-wrap");
 		this.element.classList.add("number-pad-input-hidden");
 		this.preview = document.createElement("div");
@@ -300,6 +302,7 @@ class NumberInputKeypad {
 			(this.unit ? `<span class='number-pad-unit'>${this.unit}</span>` : "");
 	}
 	open(value) {
+		this.overwriteDefault = true;
 		this.isopen = true;
 		this.element.classList.remove("number-pad-input-hidden");
 	}
@@ -309,11 +312,17 @@ class NumberInputKeypad {
 	}
 	addToValue(i) {
 		//append to value, if value is 0 overwrite value
-		if (this.value == 0) {
+		if (this.value == 0 || this.overwriteDefault) {
 			this.value = i;
 		} else {
 			this.value += i;
 		}
+		notify.log( typeof this.max)
+		if(parseInt(this.value) > this.max) {
+			this.value = this.max.toString()
+
+		}
+		this.overwriteDefault = false;
 		this.preview.innerHTML =
 			this.value +
 			(this.unit ? `<span class='number-pad-unit'>${this.unit}</span>` : "");

@@ -51,8 +51,8 @@ html {
   --scaledY: 100px;
   --panzoomTransformMatrix: matrix(0, 0, 0, 0, 0, 0);
   --panzoomTransformOrigin: 0px 0px;
-  --boxShadowT: 0.45;
-  --boxShadow: 0px 10px 30px rgba(0, 0, 0, var(--boxShadowT));
+  --boxShadowT: 0.25;
+  --boxShadow: 0px 8px 15px rgba(0, 0, 0, var(--boxShadowT));
 }
 
 .ui-theme-black {
@@ -100,7 +100,7 @@ html {
   --toolBarDim: #49484a;
   --toolBarHover: #7f7f80;
   --lightT: #99999991;
-  --boxShadowT: 0.45;
+  --boxShadowT: .35;
 }
 
 .ui-theme-light {
@@ -128,7 +128,7 @@ html {
   --toolBarDim: #535a70;
   --toolBarHover: #181e31;
   --lightT: #99999991;
-  --boxShadowT: 0.25;
+  --boxShadowT: 0.15;
 }
 
 #debug {
@@ -705,7 +705,7 @@ foreignObject {
   position: fixed;
   top: 50%;
   transform: translateY(-50%);
-  left: 0;
+  left: 8px;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -713,7 +713,7 @@ foreignObject {
   background: var(--bgMainT);
   backdrop-filter: saturate(180%) blur(20px);
   -webkit-backdrop-filter: saturate(180%) blur(20px);
-  border-radius: 0px 15px 15px 0px;
+  border-radius: 15px;
 }
 
 .toolbar-top {
@@ -1682,7 +1682,7 @@ input {
   font-weight: bolder;
   border: none;
   border-radius: 5px;
-  width: 60px;
+  width: 43px;
   display: block;
   font-weight: 100;
   text-align: left;

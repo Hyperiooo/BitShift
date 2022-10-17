@@ -356,7 +356,7 @@ function updateToolSettings(tool) {
 			inputGroup.appendChild(inputTitle);
 			inputGroup.appendChild(inputWrap);
 			toolContent.appendChild(inputGroup);
-			var a = new NumberInputKeypad(inputElement, setting.value, setting.unit);
+			var a = new NumberInputKeypad(inputElement, setting.value, setting.unit, setting.min, setting.max);
 			inputElement.addEventListener("click", (e) => {
 				if (!a.isopen) {
 					a.update(setting.value);
