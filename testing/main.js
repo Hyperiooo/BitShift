@@ -5,8 +5,9 @@ var SUPABASE_KEY =
 var supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 window.userToken = null;
 var allLoadedProjects = [];
+var currentUser
 
-document.addEventListener("DOMContentLoaded", function (event) {
+document.addEventListener("DOMContentLoaded", async function (event) {
 	var signUpForm = document.querySelector("#sign-up");
 	signUpForm.onsubmit = signUpSubmitted;
 
@@ -15,25 +16,31 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
 	var logoutButton = document.querySelector("#logout-button");
 	logoutButton.onclick = logoutSubmitted;
+	await console.log(supabase.auth)
 });
 supabase.auth.onAuthStateChange(async (event, session) => {
 	if (event == "SIGNED_IN") {
+
+
 	}
+	const { data: { user } } = await supabase.auth.getUser()
+	currentUser = user
 	refreshList();
+	
 });
 async function refreshList() {
 	console.log("a");
 	var projects = document.getElementById("projects");
 	//query for all projects in cities by owner id
 	projects.innerHTML = `<div class="loader-5 center"><span></span></div>`;
-	if (!supabase.auth.user()) {
+	if (!currentUser) {
 		projects.innerHTML = "no projects. create one!";
 		return;
 	}
 	var { data, err } = await supabase
 		.from("cities")
 		.select()
-		.eq("owner", supabase.auth.user().id)
+		.eq("owner", currentUser.id)
 		.order("updated_at", { ascending: true });
 	if (data) {
 		allLoadedProjects = data;
@@ -79,8 +86,10 @@ const logInSubmitted = (event) => {
 	const password = event.target[1].value;
 
 	supabase.auth
-		.signIn({ email, password })
+		.signInWithPassword({ email, password })
 		.then((response) => {
+			notify.log("signedin")
+			console.log(response.error ?"z" : "b")
 			response.error ? notify.log(response.error.message) : setToken(response);
 		})
 		.catch((err) => {
@@ -89,7 +98,7 @@ const logInSubmitted = (event) => {
 };
 
 const fetchUserDetails = () => {
-	notify.log(JSON.stringify(supabase.auth.user()));
+	notify.log(JSON.stringify(currentUser));
 };
 
 const logoutSubmitted = (event) => {
@@ -109,18 +118,18 @@ const logoutSubmitted = (event) => {
 };
 
 async function setToken(response) {
-	if (response.user.confirmation_sent_at && !response?.session?.access_token) {
+	if (response.data.user.confirmation_sent_at && !response?.data?.session?.access_token) {
 		notify.log("Confirmation Email Sent");
 	} else {
 		document.querySelector("#access-token").value =
-			response.session.access_token;
+			response.data.session.access_token;
 		document.querySelector("#refresh-token").value =
-			response.session.refresh_token;
-		notify.log("Logged in as " + response.user.email);
+			response.data.session.refresh_token;
+		notify.log("Logged in as " + response.data.user.email);
 		const { data, error } = await supabase
 			.from("users")
 			.insert(
-				[{ id: response.user.id, last_access: new Date().toISOString() }],
+				[{ id: response.data.user.id, last_access: new Date().toISOString() }],
 				{
 					upsert: true,
 				}
@@ -137,7 +146,7 @@ async function newProject() {
 			id: crypto.randomUUID(),
 			name: "Untitled " + (allLoadedProjects.length + 1),
 			country_id: 554,
-			owner: supabase.auth.user().id,
+			owner: currentUser.id,
 			updated_at: new Date().toISOString(),
 		},
 	]);
