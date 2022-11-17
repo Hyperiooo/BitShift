@@ -36,8 +36,8 @@ supabase.auth.onAuthStateChange(async (event, session) => {
     .from("users")
     .select()
     .eq("id", currentUser.id).then((data, err) => {
-		document.getElementById("username").innerHTML = "signed in as " + data.data[0].display_name;
-	})
+		document.getElementById("username").innerHTML = "signed in as " + data.data[0].display_name
+  	})
 });
 async function refreshList() {
   console.log("a");
