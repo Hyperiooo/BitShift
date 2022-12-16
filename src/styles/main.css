@@ -2921,8 +2921,6 @@ div[id^="alrt-main"] {
   width: fit-content;
   height: fit-content;
   position: absolute;
-  top: 200px;
-  left: 500px;
   gap: 4px;
   padding: 6px;
   justify-items: stretch;
@@ -2932,6 +2930,7 @@ div[id^="alrt-main"] {
   box-shadow: var(--boxShadow);
   font-family: "JetBrains Mono";
   transition: opacity 0.3s;
+  z-index: 1000000;
 }
 
 .number-pad-input-hidden {

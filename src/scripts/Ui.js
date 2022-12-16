@@ -224,12 +224,16 @@ function closeSettingsWindow() {
 class NumberInputKeypad {
 	constructor(el, value, unit, min, max) {
 		this.el = el;
+		this.inputBoundingRect = this.el.getBoundingClientRect()
 		this.element = document.createElement("div");
+		this.padBoundingRect = this.element.getBoundingClientRect()
 		this.value = value || 0;
 		this.unit = unit || false;
 		this.overwriteDefault = false;
 		this.min = min || 0;
 		this.max = max || Infinity
+		this.element.style.top = this.inputBoundingRect.top + this.inputBoundingRect.height  + 20 + "px" ;
+		this.element.style.left = ((this.inputBoundingRect.width/2)+ this.inputBoundingRect.left) - (this.padBoundingRect.width/2) + 'px'
 		this.element.classList.add("number-pad-input-wrap");
 		this.element.classList.add("number-pad-input-hidden");
 		this.preview = document.createElement("div");
@@ -294,6 +298,7 @@ class NumberInputKeypad {
 		this.element.appendChild(this.buttons[13]);
 		this.el.appendChild(this.element);
 		document.body.appendChild(this.element);
+		this.padBoundingRect = this.element.getBoundingClientRect()
 	}
 	update(value) {
 		this.value = value || 0;
