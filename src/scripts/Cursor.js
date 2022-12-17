@@ -92,7 +92,7 @@ function drawEraserPreview(x, y) {
 	eraserBufferCanvas.height = project.height;
 	eraserBufferCtx.clearRect(0, 0, project.width, project.height);
 	eraserBufferCtx.fillStyle = "white";
-	let brushSize = parseInt(settings.tools.brushSize.value);
+	let brushSize = parseInt(settings.tools.eraserBrushSize.value);
 	let r = brushSize - 1;
 	if (Tools.fillBucket) r = 0;
 	let c;

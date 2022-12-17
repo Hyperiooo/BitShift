@@ -224,16 +224,13 @@ function closeSettingsWindow() {
 class NumberInputKeypad {
 	constructor(el, value, unit, min, max) {
 		this.el = el;
-		this.inputBoundingRect = this.el.getBoundingClientRect()
 		this.element = document.createElement("div");
-		this.padBoundingRect = this.element.getBoundingClientRect()
 		this.value = value || 0;
 		this.unit = unit || false;
 		this.overwriteDefault = false;
 		this.min = min || 0;
-		this.max = max || Infinity
-		this.element.style.top = this.inputBoundingRect.top + this.inputBoundingRect.height  + 20 + "px" ;
-		this.element.style.left = ((this.inputBoundingRect.width/2)+ this.inputBoundingRect.left) - (this.padBoundingRect.width/2) + 'px'
+		this.max = max || Infinity;
+		this.reposition();
 		this.element.classList.add("number-pad-input-wrap");
 		this.element.classList.add("number-pad-input-hidden");
 		this.preview = document.createElement("div");
@@ -280,7 +277,8 @@ class NumberInputKeypad {
 		this.buttons[12].classList.add("number-pad-input-button");
 		this.buttons[12].classList.add("grid-col-4");
 		this.buttons[12].classList.add("grid-row-2-3");
-		this.buttons[12].innerHTML = "b";
+		this.buttons[12].classList.add("font-icon");
+		this.buttons[12].innerHTML = '<i class="hi-backspace-line"></i>';
 		this.element.appendChild(this.buttons[12]);
 		this.buttons[12].addEventListener("click", () => {
 			this.backspace();
@@ -290,7 +288,8 @@ class NumberInputKeypad {
 		this.buttons[13].classList.add("grid-col-4");
 		this.buttons[13].classList.add("grid-row-4-5");
 		this.buttons[13].classList.add("bg-important-t");
-		this.buttons[13].innerHTML = "e";
+		this.buttons[13].classList.add("font-icon");
+		this.buttons[13].innerHTML = '<i class="hi-check-line"></i>';
 		this.buttons[13].addEventListener("click", () => {
 			this.confirm();
 			this.close();
@@ -298,7 +297,28 @@ class NumberInputKeypad {
 		this.element.appendChild(this.buttons[13]);
 		this.el.appendChild(this.element);
 		document.body.appendChild(this.element);
-		this.padBoundingRect = this.element.getBoundingClientRect()
+		this.padBoundingRect = this.element.getBoundingClientRect();
+		//gets all document inputs and close if the event target is not the parent el
+		document.addEventListener("pointerdown", (e) => {
+			if (
+				this.el != e.target &&
+				!this.element.contains(e.target) &&
+				this.element != e.target
+			) {
+				this.close();
+			}
+		});
+	}
+	reposition() {
+		this.inputBoundingRect = this.el.getBoundingClientRect();
+		this.padBoundingRect = this.element.getBoundingClientRect();
+		this.element.style.top =
+			this.inputBoundingRect.top + this.inputBoundingRect.height + 20 + "px";
+		this.element.style.left =
+			this.inputBoundingRect.width / 2 +
+			this.inputBoundingRect.left -
+			this.padBoundingRect.width / 2 +
+			"px";
 	}
 	update(value) {
 		this.value = value || 0;
@@ -306,7 +326,9 @@ class NumberInputKeypad {
 			this.value +
 			(this.unit ? `<span class='number-pad-unit'>${this.unit}</span>` : "");
 	}
-	open(value) {
+	open(targetElement) {
+		this.el = targetElement;
+		this.reposition();
 		this.overwriteDefault = true;
 		this.isopen = true;
 		this.element.classList.remove("number-pad-input-hidden");
@@ -322,10 +344,9 @@ class NumberInputKeypad {
 		} else {
 			this.value += i;
 		}
-		notify.log( typeof this.max)
-		if(parseInt(this.value) > this.max) {
-			this.value = this.max.toString()
-
+		notify.log(typeof this.max);
+		if (parseInt(this.value) > this.max) {
+			this.value = this.max.toString();
 		}
 		this.overwriteDefault = false;
 		this.preview.innerHTML =
@@ -347,107 +368,6 @@ class NumberInputKeypad {
 	animate() {}
 }
 class ColorPicker {
-	/*
-	
-  <div class="color-menu color-open" id="color-menu" ondrop="dropHandler(event);" ondragover="dragOverHandler(event);"
-    ondragleave="dragLeaveHandler(event);" ondragend="dragLeaveHandler(event);">
-    <div id="color-preview" onclick="colorPreviewClickHandler(event)" ontouchstart="colorPreviewClickHandler(event)">
-      <div id="color-previous"></div>
-      <div id="color-current"></div>
-    </div>
-    <button class="color-menu-close-button" onclick="toggleColorPicker()">
-      <i class="hi-x-large-line"></i>
-    </button>
-    <div id="color-menu-drop-effect">Import Palette</div>
-    <div id="color-menu-drop-err">Could Not Import Palette</div>
-    <div class="color-selector" id="color-value" width="200" height="200"
-      onmousedown="valueThumb(event);valueDrag(event);" onmousemove="valueDrag(event)" onmouseup="valueEndDrag(event)"
-      ontouchstart="valueThumb(event);" ontouchmove="valueDrag(event)" ontouchend="valueEndDrag(event)">
-      <div id="color-value-thumb" onmousedown="valueThumb(event);valueDrag(event);" onmousemove="valueDrag(event)"
-        onmouseup="valueEndDrag(event)" ontouchstart="valueThumb(event);valueDrag(event);"
-        ontouchmove="valueDrag(event)" ontouchend="valueEndDrag(event)"></div>
-    </div>
-    <div class="color-selector" id="color-hue" width="40" height="200" onmousedown="hueThumb(event);hueDrag(event);"
-      onmousemove="hueDrag(event)" onmouseup="hueEndDrag(event)" ontouchstart="hueThumb(event);hueDrag(event);"
-      ontouchmove="hueDrag(event)" ontouchend="hueEndDrag(event)">
-      <div id="color-hue-thumb" onmousedown="hueThumb(event);hueDrag(event);" onmousemove="hueDrag(event)"
-        onmouseup="hueEndDrag(event)" ontouchstart="hueThumb(event);hueDrag(event);" ontouchmove="hueDrag(event)"
-        ontouchend="hueEndDrag(event)"></div>
-    </div>
-    <div id="color-menu-recent-colors">
-    </div>
-    <div id="color-menu-tabbar">
-      <button class="color-menu-tabbar-button color-menu-tabbar-button-active" onclick="setPickerMode('picker')">
-        <i class="hi-circle-fill"></i>
-        Picker
-      </button>
-      <button class="color-menu-tabbar-button" onclick="setPickerMode('value')">
-        <i class="hi-settings-fill"></i>
-        Value
-      </button>
-      <button class="color-menu-tabbar-button" onclick="setPickerMode('palette')">
-        <i class="hi-keyboard-line"></i>
-        Palette
-      </button>
-    </div>
-    <div style="display: none; visibility: hidden" class="color-data">
-      <div class="color-rgba">
-        <p>R</p>
-        <!--
-          --><input class="color-input-num" id="color-rgba-r" value="255" min="0" max="255" type="number"
-          data-color-input />
-        <!--
-          -->
-        <p>G</p>
-        <!--
-          --><input class="color-input-num" id="color-rgba-g" value="255" min="0" data-color-input max="255"
-          type="number" />
-        <!--
-            -->
-        <p>B</p>
-        <!--
-          --><input class="color-input-num" id="color-rgba-b" value="255" min="0" data-color-input max="255"
-          type="number" />
-        <!--
-              -->
-        <p>A</p>
-        <!--
-          --><input class="color-input-num" id="color-rgba-a" value="255" min="0" data-color-input max="255"
-          type="number" />
-      </div>
-    </div>
-    <div style="display: none; visibility: hidden" class="color-data">
-      <div class="color-hsla">
-        <p>H</p>
-        <!--
-          --><input class="color-input-num" data-color-input id="color-hsla-h" value="0" min="0" max="360"
-          maxlength="3" type="number" />
-        <!--
-          -->
-        <p>S</p>
-        <!--
-          --><input class="color-input-num" id="color-hsla-s" value="100" min="0" data-color-input max="100"
-          type="number" />
-        <!--
-            -->
-        <p>L</p>
-        <!--
-          --><input class="color-input-num" id="color-hsla-l" value="100" min="0" data-color-input max="100"
-          type="number" />
-        <!--
-              -->
-        <p>A</p>
-        <!--
-          --><input class="color-input-num" id="color-hsla-a" value="100" min="0" data-color-input max="100"
-          type="number" />
-        <p class="label-hex">#</p>
-        <!--
-            --><input class="color-input-hex" maxlength="8" id="color-data-hex" data-color-input value="ffffff"
-          type="text" />
-      </div>
-    </div>
-    <div style="display: none; visibility: hidden" id="palettes" class="drop_zone"></div>
-  </div>*/
 	//convert the above html to js
 	constructor() {
 		this.colorMenu = document.createElement("div");

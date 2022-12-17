@@ -362,6 +362,7 @@ class Canvas {
 		//requestAnimationFrame(animateSmoothRecenter);
 	}
 	destroy() {
+		this.panzoom.dispose();
 		this.canvasParent.removeEventListener("touchmove", this.moveEvent);
 		this.canvasParent.removeEventListener("mousemove", this.moveEvent);
 		this.canvasParent.removeEventListener("touchstart", this.touchStartEvent);
@@ -552,7 +553,7 @@ class Canvas {
 				for (p of P) {
 					this.draw(new Point(p.x, p.y));
 					//adjust brush size based on force
-					let brushSize = parseInt(settings.tools.brushSize.value);
+					let brushSize = parseInt(settings.tools.penBrushSize.value);
 					let r = brushSize - 1;
 					//let c = filledEllipse(p.x, p.y, 2, 2)
 					let c;
@@ -606,7 +607,7 @@ class Canvas {
 				d.forEach((e) => {
 					let p = e;
 					this.draw(new Point(p.x, p.y));
-					let brushSize = parseInt(settings.tools.brushSize.value);
+					let brushSize = parseInt(settings.tools.sprayBrushSize.value);
 					let r = brushSize - 1;
 					//let c = filledEllipse(p.x, p.y, 2, 2)
 					let c;
@@ -634,7 +635,7 @@ class Canvas {
 				let p;
 				for (p of P) {
 					this.erase(new Point(p.x, p.y));
-					let brushSize = parseInt(settings.tools.brushSize.value);
+					let brushSize = parseInt(settings.tools.eraserBrushSize.value);
 					let r = brushSize - 1;
 					//let c = filledEllipse(p.x, p.y, 2, 2)
 					let c;
@@ -905,7 +906,7 @@ class Canvas {
 				}
 				this.clearPreview();
 				if (isMobile) return;
-				let brushSize = parseInt(settings.tools.brushSize.value);
+				let brushSize = parseInt(settings.tools.penBrushSize.value);
 				let r = brushSize - 1;
 				if (Tools.fillBucket) r = 0;
 				let c;

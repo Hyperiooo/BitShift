@@ -21,15 +21,21 @@ class Layer {
 		this.layerElement.style.setProperty("--offsetY", `0px`);
 		this.layerElement.id = "l-" + this.id;
 
-		this.svgWrapper = document.createElementNS("http://www.w3.org/2000/svg", "svg")
-		this.svgWrapper.classList.add("layerWrapperWrapper")
+		this.svgWrapper = document.createElementNS(
+			"http://www.w3.org/2000/svg",
+			"svg"
+		);
+		this.svgWrapper.classList.add("layerWrapperWrapper");
 		this.svgWrapper.setAttribute(
 			"viewBox",
 			"0 0 " + window.innerWidth + " " + window.innerHeight
 		);
-		this.svgWrapper.setAttribute("customcursor", "true")
-		this.foreignObject = document.createElementNS("http://www.w3.org/2000/svg", "foreignObject")
-		this.foreignObject.classList.add("drawingCanvas")
+		this.svgWrapper.setAttribute("customcursor", "true");
+		this.foreignObject = document.createElementNS(
+			"http://www.w3.org/2000/svg",
+			"foreignObject"
+		);
+		this.foreignObject.classList.add("drawingCanvas");
 
 		this.previewCanvas = document.createElement("canvas");
 		this.previewCanvas.classList.add("layer-preview");
@@ -81,8 +87,8 @@ class Layer {
 		this.svgWrapper.style.setProperty("--zindex", layers.length);
 		updateAllIndices();
 		this.ctx = this.canvasElement.getContext("2d");
-		this.svgWrapper.appendChild(this.foreignObject)
-		this.foreignObject.appendChild(this.canvasElement)
+		this.svgWrapper.appendChild(this.foreignObject);
+		this.foreignObject.appendChild(this.canvasElement);
 		document.getElementById("layerParent").prepend(this.svgWrapper);
 
 		let img = new Image();
@@ -293,7 +299,7 @@ class Layer {
 			);
 		}
 		//on pointermove, if there is more than X threshold on the movement based on the startingtouchposition and the current touch position, then move the layer.
-		this.layerElement.onpointermove = function (e) {
+		document.onpointermove = function (e) {
 			let currentTouchPosition = [e.clientX, e.clientY];
 			deltaMovingX = currentTouchPosition[0] - startingTouchPosition[0];
 			deltaMovingY = currentTouchPosition[1] - startingTouchPosition[1];
@@ -431,10 +437,7 @@ class Layer {
 	updateIndices() {
 		for (var i = 0; i < layers.length; i++) {
 			layers[i].index = layers.length - i - 1;
-			layers[i].svgWrapper.style.setProperty(
-				"--zindex",
-				layers[i].index * 2
-			);
+			layers[i].svgWrapper.style.setProperty("--zindex", layers[i].index * 2);
 		}
 	}
 	updateNormalTop() {
@@ -611,11 +614,9 @@ function newLayer(n, data) {
 		setLayer(nLayer.id);
 	}, 1);
 }
-function createMultipleLayers(n)
-{
+function createMultipleLayers(n) {
 	for (let i = 0; i < n; i++) {
-		newLayer()
-		
+		newLayer();
 	}
 }
 function clearLayerMenu() {
@@ -628,7 +629,7 @@ function clearLayers() {
 		.getElementById("layerParent")
 		.querySelectorAll(".layerWrapperWrapper")
 		.forEach((e) => {
-			if(e.classList.contains("nodelete")) return
+			if (e.classList.contains("nodelete")) return;
 			e.parentElement.removeChild(e);
 		});
 }
@@ -647,7 +648,9 @@ function setLayer(id) {
 		board.ctx = layer.ctx;
 		board.canvas = layer.canvasElement;
 		board.setColor(board.color);
-		document.getElementById("previewCanvasWrapper").style.setProperty("--zindex", layer.index * 2 + 1);
+		document
+			.getElementById("previewCanvasWrapper")
+			.style.setProperty("--zindex", layer.index * 2 + 1);
 	}
 }
 

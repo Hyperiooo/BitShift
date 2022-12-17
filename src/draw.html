@@ -53,7 +53,7 @@
   <!--STYLES & FONTS-->
   <link rel="stylesheet" href="./styles/main.css" />
   <link rel="stylesheet" href="./styles/alrt-theme.css" />
-  <link href="https://cdn.jsdelivr.net/gh/Hyperiooo/Hypericons@v0.3.2/fonts/hypericons.css" rel="stylesheet"
+  <link href="https://cdn.jsdelivr.net/gh/Hyperiooo/Hypericons@v0.3.5/fonts/hypericons.css" rel="stylesheet"
     type="text/css" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -62,6 +62,7 @@
 </head>
 
 <body>
+
   <div id="cursor" class="invertBackground"></div>
   <img id="img" />
   <div class="menu">
@@ -71,6 +72,7 @@
     <div class="menu-btn" onclick="openExportMenu()">Export</div>
     <div class="menu-btn" onclick="openSettingsWindow()">Settings</div>
     <div class="menu-btn" onclick="board.recenter()">Recenter</div>
+    <div class="menu-btn" onclick="board.clear()">Clear</div>
   </div>
   <input type="file" id="fileOpenDialog" style="
         display: hidden;
@@ -371,8 +373,6 @@
     <span id="tool-btn-eyedropper" class="item" data-tool-name="eyedropper"
       onclick="previousTool = getTool();compileForEyedropper(); setTool('eyedropper', this)"><i
         class="hi-eyedropper-fill"></i></span>
-    <span class="toolbar-divider"></span>
-    <span class="item" onclick="board.clear()"><i class="hi-trash-fill"></i></span>
     <!---test-->
   </div>
 
@@ -436,9 +436,9 @@
   </div>
   <div id="eyedropper-preview">
     <img src="./assets/cursors/crosshair.png" alt="" />
-    <canvas id="eyedropperPreviewCanvas"></canvas>
+    <div id="eyedropper-canvas-parent"><canvas id="eyedropperPreviewCanvas"></canvas></div>
   </div>
-
+  <div id="action-blob"></div>
 </body>
 
 </html>

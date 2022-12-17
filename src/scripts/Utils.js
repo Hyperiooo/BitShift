@@ -454,3 +454,17 @@ function convertToVerboseHex(hex) {
 		return "#" + hex;
 	}
 }
+
+//generates a getboundingclientrect object based on inputted height width and x y offset
+function getBoundingRect(x, y, width, height) {
+	return {
+		x: x,
+		y: y,
+		width: width,
+		height: height,
+		top: y,
+		left: x,
+		right: x + width,
+		bottom: y + height,
+	};
+}

@@ -345,8 +345,8 @@ function updateBounding() {
 	);
 	rotationBoundingGroup.style.setProperty(
 		"--originY",
-		(rect.y + rect.maxY) / 2+ "px"
-	) ;
+		(rect.y + rect.maxY) / 2 + "px"
+	);
 }
 var boundingGroup = document.querySelector("#boundingGroup");
 var rotationBoundingGroup = document.querySelector("#rotationBoundingGroup");

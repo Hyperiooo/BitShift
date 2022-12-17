@@ -18,14 +18,14 @@ var settings = {
 	},
 	tools: {
 		assignments: {
-			pen: ["brushSize", "brushSquare", "brushPixelPerfect"],
-			eraser: ["brushSize", "brushSquare", "brushPixelPerfect"],
-			sprayPaint: ["brushSize", "brushSquare", "spraySpeed", "spraySize"],
+			pen: ["penBrushSize", "brushSquare", "brushPixelPerfect"],
+			eraser: ["eraserBrushSize", "brushSquare", "brushPixelPerfect"],
+			sprayPaint: ["sprayBrushSize", "brushSquare", "spraySpeed", "spraySize"],
 			fillBucket: ["contiguous"],
 			rectangleMarquee: ["selectionMode"],
 			ellipseMarquee: ["selectionMode"],
 		},
-		brushSize: {
+		penBrushSize: {
 			title: "Brush Size",
 			value: 1,
 			type: "int",
@@ -34,7 +34,31 @@ var settings = {
 			max: 100,
 			unit: "px",
 			callback: (e) => {
-				settings.tools.brushSize.value = e.value;
+				settings.tools.penBrushSize.value = e.value;
+			},
+		},
+		eraserBrushSize: {
+			title: "Brush Size",
+			value: 1,
+			type: "int",
+			draggable: true,
+			min: 1,
+			max: 100,
+			unit: "px",
+			callback: (e) => {
+				settings.tools.eraserBrushSize.value = e.value;
+			},
+		},
+		sprayBrushSize: {
+			title: "Brush Size",
+			value: 1,
+			type: "int",
+			draggable: true,
+			min: 1,
+			max: 100,
+			unit: "px",
+			callback: (e) => {
+				settings.tools.sprayBrushSize.value = e.value;
 			},
 		},
 		brushSquare: {

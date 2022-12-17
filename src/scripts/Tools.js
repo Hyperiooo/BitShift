@@ -128,11 +128,7 @@ var ToolbarAssignments = [
 		type: "multiple",
 		name: "shapes",
 		default: "ellipse",
-		tools: ["ellipse", "rectangle", "filledEllipse", "filledRectangle"],
-	},
-	{
-		type: "single",
-		tool: "line",
+		tools: ["ellipse", "rectangle", "filledEllipse", "filledRectangle", "line"],
 	},
 	{ type: "single", tool: "transform" },
 	{
@@ -266,6 +262,12 @@ function createToolUI() {
 								offset: [0, 10],
 							},
 						},
+						{
+							name: "preventOverflow",
+							options: {
+								padding: 55,
+							},
+						},
 					],
 				});
 				button.onmousedown = (e) => {
@@ -356,11 +358,17 @@ function updateToolSettings(tool) {
 			inputGroup.appendChild(inputTitle);
 			inputGroup.appendChild(inputWrap);
 			toolContent.appendChild(inputGroup);
-			var a = new NumberInputKeypad(inputElement, setting.value, setting.unit, setting.min, setting.max);
+			var a = new NumberInputKeypad(
+				inputElement,
+				setting.value,
+				setting.unit,
+				setting.min,
+				setting.max
+			);
 			inputElement.addEventListener("click", (e) => {
 				if (!a.isopen) {
 					a.update(setting.value);
-					a.open(setting.value);
+					a.open(e.target);
 				} else {
 					a.close();
 				}

@@ -13,6 +13,7 @@ A list of all the things planned to do for BitShift
   - ~~add stuff to a dummy canvas and clip with either canvas built in clip or with global composite~~
 - General transforming and rotation
 - Tool settings
+  - place under the toolbar
   - ~~Main Window~~
   - Brush:
     - Square brush
