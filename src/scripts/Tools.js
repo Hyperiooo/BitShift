@@ -533,6 +533,7 @@ function compileForEyedropper() {
 	eCtx.clearRect(0, 0, project.width, project.height);
 	eCtx.globalCompositeOperation = "source-over";
 	eCtx.imageSmoothingEnabled = false;
+	eCtx.drawImage(board.bggridcanvas, 0, 0);
 	var reversed = [...layers].reverse();
 	reversed.forEach((e) => {
 		if (e.settings.visible) eCtx.drawImage(e.canvasElement, 0, 0);

@@ -1331,10 +1331,10 @@ class Canvas {
 
 		var pixel = (p.y * this.width + p.x) * 4;
 		return new Color({
-			r: imgData.data[pixel],
-			g: imgData.data[pixel + 1],
-			b: imgData.data[pixel + 2],
-			a: imgData.data[pixel + 3],
+			r: 0 || imgData.data[pixel],
+			g: 0 || imgData.data[pixel + 1],
+			b: 0 || imgData.data[pixel + 2],
+			a: 255 || imgData.data[pixel + 3],
 		});
 	}
 
