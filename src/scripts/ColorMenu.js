@@ -298,8 +298,8 @@ function updatePickerColor() {
 	var hslAEl = document.getElementById("color-hsla-a");
 	var hexEl = document.getElementById("color-data-hex");
 	valueRange.style.setProperty("--hue", pickerColor.hsv.h);
-	colorCurrent.style.setProperty(
-		"--color",
+	document.documentElement.style.setProperty(
+		"--currentColor",
 		`hsla( ${pickerColor.hsla.h}, ${pickerColor.hsla.s}%, ${pickerColor.hsla.l}%, ${pickerColor.hsla.a}%)`
 	);
 	rEl.value = pickerColor.rgba.r;
@@ -426,9 +426,7 @@ function setPickerColor(color) {
 var previousPrevious = null;
 
 function updatePrevious(col) {
-	document
-		.getElementById("color-previous")
-		.style.setProperty("--color", col.hex);
+	document.documentElement.style.setProperty("--previousColor", col.hex);
 	document.getElementById("color-previous").onclick = () => {
 		board.setColor({ ...col });
 	};

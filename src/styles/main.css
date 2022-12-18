@@ -53,6 +53,8 @@ html {
   --panzoomTransformOrigin: 0px 0px;
   --boxShadowT: 0.25;
   --boxShadow: 0px 8px 15px rgba(0, 0, 0, var(--boxShadowT));
+  --previousColor: #000000;
+  --currentColor: #000;
 }
 
 .ui-theme-black {
@@ -760,11 +762,11 @@ foreignObject {
 }
 
 #toolbar .item [data-tool-color-menu-button] {
-  color: var(--color) !important;
+  color: var(--currentColor) !important;
 }
 
 #toolbar .item:hover [data-tool-color-menu-button] {
-  color: var(--color) !important;
+  color: var(--currentColor) !important;
 }
 
 #toolbar .toolbar-divider {
@@ -1176,7 +1178,7 @@ foreignObject {
   background: white;
   background-image: linear-gradient(to bottom,
       rgba(255, 255, 255, 0),
-      var(--color)),
+      var(--currentColor)),
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 8 8'%3E%3Cg fill='%23bababa' fill-opacity='0.4'%3E%3Cpath fill-rule='evenodd' d='M0 0h4v4H0V0zm4 4h4v4H4V4z'/%3E%3C/g%3E%3C/svg%3E");
   margin-left: 0;
   width: 40px;
@@ -1192,7 +1194,7 @@ foreignObject {
 }
 
 #color-value-thumb {
-  background: var(--color);
+  background: var(--currentColor);
   --posX: 100%;
   --posY: 0%;
   position: absolute;
@@ -1255,7 +1257,7 @@ foreignObject {
   height: 100%;
   width: 50%;
   background-size: contain;
-  background: var(--color);
+  background: var(--previousColor);
   display: inline-block;
   margin-bottom: -4px;
   transition: none !important;
@@ -1266,7 +1268,7 @@ foreignObject {
   height: 100%;
   width: 50%;
   background-size: contain;
-  background: var(--color);
+  background: var(--currentColor);
   display: inline-block;
   margin: 0;
   margin-bottom: -4px;
@@ -2850,8 +2852,8 @@ div[id^="alrt-main"] {
   pointer-events: none;
   position: absolute;
   transform: translate(-50%, -150%) scale(0);
-  width: 123px;
-  height: 123px;
+  width: 120px;
+  height: 120px;
   border: 3px solid white;
   box-shadow: var(--boxShadow);
   border-radius: 100px;
@@ -2885,13 +2887,32 @@ div[id^="alrt-main"] {
 
 #eyedropper-canvas-parent {
   position: absolute;
-  width: 123px;
-  height: 123px !important;
+  width: 120px;
+  height: 120px !important;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   border-radius: 100px;
-  clip-path: circle(50% at 50% 50%);
+  clip-path: circle(40% at 50% 50%);
+  z-index: 10000000;
+}
+
+#eyedropper-preview-current {
+  position: absolute;
+  width: 120px;
+  height: 50%;
+  background: var(--currentColor);
+  border-radius: 60px 60px 0 0;
+  top: 0;
+}
+
+#eyedropper-preview-previous {
+  position: absolute;
+  bottom: 0;
+  width: 120px;
+  height: 50%;
+  background: var(--previousColor);
+  border-radius: 0 0 60px 60px;
 }
 
 #eyedropperPreviewCanvas {

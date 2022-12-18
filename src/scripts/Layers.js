@@ -457,6 +457,18 @@ class Layer {
 			}px`
 		);
 	}
+	delete() {
+		if (layers.length <= 1) return;
+		this.layerElement.remove();
+		this.svgWrapper.remove();
+		var index = layers.indexOf(this);
+		layers.splice(layers.indexOf(this), 1);
+		updateAllIndices();
+		updateNormalTops();
+		setLayer(
+			layers[clamp(index, 0, Math.max(layers.length - 1, 0))].id || layers[0].id
+		);
+	}
 }
 
 function updateAllIndices() {

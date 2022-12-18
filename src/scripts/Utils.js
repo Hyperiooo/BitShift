@@ -183,8 +183,7 @@ function lerp(v0, v1, t) {
 function distance(x1, x2, y1, y2) {
 	return Math.hypot(x2 - x1, y2 - y1);
 }
-const clamp = (num, min, max) =>
-	Math.min(Math.max(num, min), max || Number.MAX_SAFE_INTEGER);
+const clamp = (num, min, max) => Math.min(Math.max(num, min), max);
 
 function truncate(input) {
 	if (input.length > 30) {

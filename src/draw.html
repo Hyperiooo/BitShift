@@ -186,7 +186,7 @@
       <button class="layer-menu-button">
         <i class="hi-copy-fill"></i>
       </button>
-      <button class="layer-menu-button">
+      <button class="layer-menu-button" onclick="activeLayer.delete()">
         <i class="hi-trash-fill"></i>
       </button>
       <button class="layer-menu-button">
@@ -434,9 +434,11 @@
       </div>
     </div>
   </div>
-  <div id="eyedropper-preview">
+  <div id="eyedropper-preview" >
     <img src="./assets/cursors/crosshair.png" alt="" />
     <div id="eyedropper-canvas-parent"><canvas id="eyedropperPreviewCanvas"></canvas></div>
+    <div id="eyedropper-preview-current"></div>
+    <div id="eyedropper-preview-previous"></div>
   </div>
   <div id="action-blob"></div>
 </body>
