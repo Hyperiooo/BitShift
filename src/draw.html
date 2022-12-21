@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="en" dir="ltr" class="ui-accent-red">
 
 <head>
   <!--METADATA-->
@@ -51,10 +51,10 @@
   <script src="./scripts/anime.js" defer></script>
   <script defer type="text/javascript" src="./scripts/DrawCore.js"></script>
   <!--STYLES & FONTS-->
+  <link href="https://cdn.jsdelivr.net/gh/Hyperiooo/Hypericons@v0.5.7/fonts/hypericons.css" rel="stylesheet"
+    type="text/css" />
   <link rel="stylesheet" href="./styles/main.css" />
   <link rel="stylesheet" href="./styles/alrt-theme.css" />
-  <link href="https://cdn.jsdelivr.net/gh/Hyperiooo/Hypericons@v0.3.5/fonts/hypericons.css" rel="stylesheet"
-    type="text/css" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono&family=Roboto:wght@400;500;600;700&display=swap"
@@ -69,7 +69,6 @@
     <div class="menu-btn" onclick="newProject()">New</div>
     <div class="menu-btn" onclick="saveFile()">Save</div>
     <div class="menu-btn" onclick="openFile()">Open</div>
-    <div class="menu-btn" onclick="openExportMenu()">Export</div>
     <div class="menu-btn" onclick="openSettingsWindow()">Settings</div>
     <div class="menu-btn" onclick="board.recenter()">Recenter</div>
     <div class="menu-btn" onclick="board.clear()">Clear</div>
@@ -314,7 +313,7 @@
       </svg>
     </div>
     <svg customcursor id="boundingSVG" class="boundingHidden">
-      <g stroke="var(--important)" id="boundingGroup" class="followsPanzoom" customcursor>
+      <g stroke="var(--accent)" id="boundingGroup" class="followsPanzoom" customcursor>
         <g id="rotationBoundingGroup">
           <rect customcursor id="boundingRect" x="10" y="10" width="100" height="100" fill="none" />
           <line customcursor id="boundingRotLine" x1="60" y1="-5" x2="60" y2="10" />
@@ -389,7 +388,7 @@
           <p>Interface</p>
         </button>
         <button class="window-sidebar-button">
-          <i class="hi-pencil-fill"></i>
+          <i class="hi-pencil"></i>
           <p>Input</p>
         </button><button class="window-sidebar-button">
           <i class="hi-keyboard-line"></i>
@@ -431,10 +430,31 @@
             </div>
           </div>
         </span>
+        <span class="window-input-group">
+          <p class="window-input-title">Accent Color</p>
+          <div class="window-input-wrap">
+            <div class="window-btn-group">
+              <button id="ui-accent-red" onclick="setAccent(Accents.red)" class="window-btn accent-button">
+              </button><button id="ui-accent-orange" onclick="setAccent(Accents.orange)"
+                class="window-btn accent-button">
+              </button><button id="ui-accent-yellow" onclick="setAccent(Accents.yellow)"
+                class="window-btn accent-button">
+              </button><button id="ui-accent-green" onclick="setAccent(Accents.green)" class="window-btn accent-button">
+              </button>
+              <button id="ui-accent-teal" onclick="setAccent(Accents.teal)" class="window-btn accent-button">
+              </button><button id="ui-accent-blue" onclick="setAccent(Accents.blue)" class="window-btn accent-button">
+              </button><button id="ui-accent-purple" onclick="setAccent(Accents.purple)"
+                class="window-btn accent-button">
+              </button><button id="ui-accent-pink" onclick="setAccent(Accents.pink)" class="window-btn accent-button">
+              </button>
+
+            </div>
+          </div>
+        </span>
       </div>
     </div>
   </div>
-  <div id="eyedropper-preview" >
+  <div id="eyedropper-preview">
     <img src="./assets/cursors/crosshair.png" alt="" />
     <div id="eyedropper-canvas-parent"><canvas id="eyedropperPreviewCanvas"></canvas></div>
     <div id="eyedropper-preview-current"></div>

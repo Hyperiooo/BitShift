@@ -21,25 +21,25 @@ var ToolParams = {
 	pen: {
 		name: "pen",
 		id: "tool-btn-pen",
-		icon: "hi-pencil-fill",
+		icon: "hi-pencil",
 		action: "setTool('pen')",
 	},
 	eraser: {
 		name: "eraser",
 		id: "tool-btn-eraser",
-		icon: "hi-eraser-fill",
+		icon: "hi-eraser",
 		action: "setTool('eraser')",
 	},
 	fillBucket: {
 		name: "fillBucket",
 		id: "tool-btn-fillBucket",
-		icon: "hi-paint-bucket-fill",
+		icon: "hi-fill",
 		action: "setTool('fillBucket')",
 	},
 	line: {
 		name: "line",
 		id: "tool-btn-line",
-		icon: "hi-path-line",
+		icon: "hi-line",
 		action: "setTool('line')",
 	},
 	ellipse: {
@@ -69,7 +69,7 @@ var ToolParams = {
 	sprayPaint: {
 		name: "sprayPaint",
 		id: "tool-btn-sprayPaint",
-		icon: "hi-spray-fill",
+		icon: "hi-spray",
 		action: "setTool('sprayPaint')",
 	},
 	rectangleMarquee: {
@@ -103,7 +103,7 @@ var ToolParams = {
 	transform: {
 		name: "transform",
 		id: "tool-btn-transform",
-		icon: "hi-move-line",
+		icon: "hi-move",
 		actionMenu: "transform",
 		action: "setTool('transform'); showBoundingBox(); prepareTransform()",
 	},

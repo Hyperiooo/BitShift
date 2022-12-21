@@ -209,6 +209,7 @@ window.onload = function () {
 	let canvasData = localStorage.getItem("pc-canvas-data");
 
 	setTheme(localStorage.getItem("theme") || "ui-theme-dark");
+	setAccent(localStorage.getItem("accent") || "ui-accent-blue");
 
 	if (canvasData) {
 		data = JSON.parse(canvasData);

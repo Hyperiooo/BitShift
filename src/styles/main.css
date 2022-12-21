@@ -18,6 +18,8 @@ button {
 
 .item i {
   color: var(--toolBarHover);
+  --hi-accent: var(--accent);
+  --hi-base: var(--toolBarHover);
 }
 
 body,
@@ -57,26 +59,6 @@ html {
   --currentColor: #000;
 }
 
-.ui-theme-black {
-  --bgMain: #070b10;
-  --bgMainT: #070b10e3;
-  --canvasBg: #101317;
-  --bgLight: #181b1e;
-  --bgDark: #0f1216;
-  --bgDarkT: #0f1216e3;
-  --textMain: #bcbec4;
-  --textDim: #a8abb0;
-  --important: #2741ff;
-  --importantT: #2741ffa9;
-  --error: #e0002c;
-  --errorT: #e0002ca9;
-  --importantText: #ffffff;
-  --scrollTrack: #000007;
-  --scrollHover: #222529;
-  --toolBarDim: #3f4146;
-  --toolBarHover: #7c7f84;
-}
-
 .ui-theme-dark {
   --windowT: #00000081;
   --windowMain: #212125;
@@ -92,17 +74,17 @@ html {
   --bgDarkT: #131214e3;
   --textMain: #ffffff;
   --textDim: #cacaca;
-  --important: #2741ff;
-  --importantT: #2740ffa9;
   --error: #ff163d;
   --errorT: #ff163da9;
-  --importantText: #ffffff;
+  --accentText: #ffffff;
   --scrollTrack: #201f22;
   --scrollHover: #3b3a3d;
   --toolBarDim: #49484a;
   --toolBarHover: #7f7f80;
   --lightT: #99999991;
   --boxShadowT: .35;
+  --accent: #1e78ff;
+  --accentT: #1E7DF0a9;
 }
 
 .ui-theme-light {
@@ -120,17 +102,97 @@ html {
   --bgDarkT: #eef0f5e3;
   --textMain: #0b0c1a;
   --textDim: #1b1c2e;
-  --important: #2741ff;
-  --importantT: #2741ffa9;
   --error: #ff2d3e;
   --errorT: #ff2d3ea9;
-  --importantText: #ffffff;
+  --accentText: #ffffff;
   --scrollTrack: #eaeaee;
   --scrollHover: #c0c2c9;
   --toolBarDim: #535a70;
   --toolBarHover: #181e31;
   --lightT: #99999991;
   --boxShadowT: 0.15;
+  --accent: #1E7DF0;
+  --accentT: #1E7DF0a9;
+}
+
+.ui-accent-red {
+  --accentText: #ffffff;
+  --accent: #ff1e44;
+  --accentT: #ff1e44a9;
+}
+
+.ui-accent-orange {
+  --accentText: #ffffff;
+  --accent: #ff5e1e;
+  --accentT: #ff5e1ea9;
+}
+
+.ui-accent-yellow {
+  --accentText: #ffffff;
+  --accent: #b89600;
+  --accentT: #b89600a9;
+}
+
+.ui-accent-green {
+  --accentText: #ffffff;
+  --accent: #12b965;
+  --accentT: #12b965a9;
+}
+
+.ui-accent-teal {
+  --accentText: #ffffff;
+  --accent: #10d0e9;
+  --accentT: #10d0e9a9;
+}
+
+.ui-accent-blue {
+  --accentText: #ffffff;
+  --accent: #1e78ff;
+  --accentT: #1E7DF0a9;
+}
+
+.ui-accent-purple {
+  --accentText: #ffffff;
+  --accent: #9773fc;
+  --accentT: #9773fca9;
+}
+
+.ui-accent-pink {
+  --accentText: #ffffff;
+  --accent: #ff2ed2;
+  --accentT: #ff2ed2a9;
+}
+
+#ui-accent-red {
+  background: #ff1e44;
+}
+
+#ui-accent-orange {
+  background: #ff5e1e;
+}
+
+#ui-accent-yellow {
+  background: #b89600;
+}
+
+#ui-accent-green {
+  background: #12b965;
+}
+
+#ui-accent-teal {
+  background: #10d0e9;
+}
+
+#ui-accent-blue {
+  background: #1e78ff;
+}
+
+#ui-accent-purple {
+  background: #9773fc;
+}
+
+#ui-accent-pink {
+  background: #ff2ed2;
 }
 
 #debug {
@@ -211,7 +273,7 @@ html {
 .popup-preset:hover,
 .popup-preset:focus,
 .popup-preset-active {
-  background: var(--importantT);
+  background: var(--accentT);
 }
 
 .popup-preset i {
@@ -346,7 +408,7 @@ html {
 }
 
 .popup-input-check:focus~.checkmark {
-  outline-color: var(--important);
+  outline-color: var(--accent);
   outline-style: solid;
   outline-width: 2px;
 }
@@ -370,7 +432,7 @@ html {
 
 .popup-input-check:checked~.checkmark {
   box-shadow: none;
-  background-color: var(--important);
+  background-color: var(--accent);
 }
 
 .popup-input-check~.checkmark:after {
@@ -389,7 +451,7 @@ html {
   top: 6px;
   width: 5px;
   height: 10px;
-  border: solid var(--importantText);
+  border: solid var(--accentText);
   border-width: 0 3px 3px 0;
   -webkit-transform: rotate(45deg);
   -ms-transform: rotate(45deg);
@@ -419,8 +481,8 @@ html {
 }
 
 .popup-btn.popup-btn-imp {
-  background: var(--important);
-  color: var(--importantText);
+  background: var(--accent);
+  color: var(--accentText);
 }
 
 .popup-btn {
@@ -713,7 +775,7 @@ foreignObject {
   background: var(--bgMainT);
   backdrop-filter: saturate(180%) blur(20px);
   -webkit-backdrop-filter: saturate(180%) blur(20px);
-  border-radius: 0 0 15px 0;
+  border-radius: 0 0 9px 0;
 }
 
 .toolbar-top {
@@ -726,7 +788,7 @@ foreignObject {
   position: relative;
   margin: 0px auto;
   cursor: pointer;
-  font-size: 18px;
+  font-size: 24px;
   border-radius: 5px;
   width: 40px;
   height: 40px;
@@ -739,40 +801,40 @@ foreignObject {
   align-items: center;
 }
 
-#toolbar .item i {
-  font-size: 18px;
+.item i {
+  font-size: 24px;
   transform: scale(100%);
   transition: transform 0.3s !important;
   transition-timing-function: cubic-bezier(0.175, 1.8, 0.32, 1.275) !important;
 }
 
-#toolbar .item:active i {
-  transform: scale(80%);
+.item:hover i {
+  transform: scale(110%) !important;
+}
+
+.item:active i {
+  transform: scale(80%) !important;
+}
+
+#toolbar .item:hover {
+  background: var(--scrollTrack);
 }
 
 #toolbar .item:first-of-type {
   margin-top: 4px;
 }
 
-#toolbar .item i,
-#toolbar .item i svg path {
-  color: var(--toolBarHover);
-  fill: var(--toolBarHover);
-  transition: 0.3s color, 0.3s fill;
-}
-
 #toolbar .item [data-tool-color-menu-button] {
-  color: var(--currentColor) !important;
+  --hi-base: var(--currentColor) !important;
 }
 
 #toolbar .item:hover [data-tool-color-menu-button] {
-  color: var(--currentColor) !important;
+  --hi-base: var(--currentColor) !important;
 }
 
 #toolbar .toolbar-divider {
   position: relative;
   cursor: pointer;
-  font-size: 18px;
   border-radius: 5px;
   width: 30px;
   height: 2px;
@@ -806,7 +868,7 @@ foreignObject {
   background: var(--bgMainT);
   backdrop-filter: saturate(180%) blur(20px);
   -webkit-backdrop-filter: saturate(180%) blur(20px);
-  border-radius: 15px;
+  border-radius: 9px;
   opacity: 0;
   transition: opacity 0.3s;
 }
@@ -839,7 +901,7 @@ foreignObject {
   display: inline-block;
   position: relative;
   cursor: pointer;
-  font-size: 18px;
+  font-size: 24px;
   border-radius: 5px;
   transition: 0.1s background, 0.3s color, 0.3s fill;
   display: flex;
@@ -947,7 +1009,7 @@ foreignObject {
 #topbar-left .toolbar-divider {
   position: relative;
   cursor: pointer;
-  font-size: 18px;
+  font-size: 24px;
   border-radius: 5px;
   width: 2px;
   height: 20px;
@@ -964,7 +1026,7 @@ foreignObject {
 }
 
 #accountWidget {
-  color: var(--important);
+  color: var(--accent);
 }
 
 #topbar-right .item,
@@ -976,18 +1038,31 @@ foreignObject {
 #topbar-right .item i,
 #topbar-left .item i,
 .input-group-item i {
-  font-size: 18px;
+  font-size: 24px;
 }
 
 .topbar-button:hover {
   background: var(--bgLight);
 }
 
-.input-group-item {}
+#toolbar .tool-active {
+  background: var(--accent) !important;
+}
 
-.tool-active i,
-.tool-active i svg path {
-  color: var(--important) !important;
+#toolbar .tool-active.tool-multiple:after {
+  background: var(--accentText);
+}
+
+#toolbar .tool-active i {
+  color: var(--accentText) !important;
+  --hi-accent: var(--accentText);
+  --hi-base: var(--accentText);
+}
+
+#topbar .tool-active i {
+  color: var(--accent) !important;
+  --hi-accent: var(--accent);
+  --hi-base: var(--accent);
 }
 
 .ui {
@@ -1051,7 +1126,7 @@ foreignObject {
 }
 
 #color-menu-drop-effect {
-  background: var(--importantT);
+  background: var(--accentT);
   position: absolute;
   top: 13px;
   left: 13px;
@@ -1064,7 +1139,7 @@ foreignObject {
   border-radius: 0.1px;
   outline-width: 5px;
   outline-style: solid;
-  outline-color: var(--important);
+  outline-color: var(--accent);
   color: white;
   font-family: "JetBrains Mono", monospace;
   text-shadow: 0 0 15px black;
@@ -1200,7 +1275,7 @@ foreignObject {
   position: absolute;
   width: 10px;
   height: 10px;
-  border: 2px solid var(--importantText);
+  border: 2px solid var(--accentText);
   box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.356);
   border-radius: 100%;
   left: calc(var(--posX) - 7px);
@@ -1226,7 +1301,7 @@ foreignObject {
   position: absolute;
   height: calc(100%);
   width: 10px;
-  border: 2px solid var(--importantText);
+  border: 2px solid var(--accentText);
   box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.356);
   border-radius: 50px;
   left: calc(var(--pos) - 7px);
@@ -1377,7 +1452,7 @@ foreignObject {
 
 .color-palette-standalone.color-palette-standalone-popout {
   transform: scale(105%, 105%) !important;
-  outline-color: var(--important);
+  outline-color: var(--accent);
 }
 
 .palette-color {
@@ -1742,7 +1817,7 @@ input {
 }
 
 .tool-settings-ui-input-check:focus~.checkmark {
-  outline-color: var(--important);
+  outline-color: var(--accent);
   outline-style: solid;
   outline-width: 2px;
 }
@@ -1766,7 +1841,7 @@ input {
 
 .tool-settings-ui-input-check:checked~.checkmark {
   box-shadow: none;
-  background-color: var(--important);
+  background-color: var(--accent);
 }
 
 .tool-settings-ui-input-check~.checkmark:after {
@@ -1785,7 +1860,7 @@ input {
   top: 6px;
   width: 5px;
   height: 10px;
-  border: solid var(--importantText);
+  border: solid var(--accentText);
   border-width: 0 3px 3px 0;
   -webkit-transform: rotate(45deg);
   -ms-transform: rotate(45deg);
@@ -1815,8 +1890,8 @@ input {
 }
 
 .tool-settings-ui-btn.tool-settings-ui-btn-imp {
-  background: var(--important);
-  color: var(--importantText);
+  background: var(--accent);
+  color: var(--accentText);
 }
 
 .tool-settings-ui-btn {
@@ -1878,7 +1953,6 @@ input {
 .actionButtonDivider {
   position: relative;
   cursor: pointer;
-  font-size: 18px;
   border-radius: 5px;
   width: 2px;
   height: 20px;
@@ -1908,7 +1982,7 @@ input {
 }
 
 .actionButton i {
-  font-size: 18px;
+  font-size: 24px;
 }
 
 #layer-menu {
@@ -2011,11 +2085,13 @@ input {
 
 .layer-menu-button:active i {
   transform: scale(80%);
-  color: var(--important);
+  color: var(--accent);
+  --hi-accent: var(--accent);
+  --hi-base: var(--accent);
 }
 
 .layer-menu-button i {
-  font-size: 18px;
+  font-size: 24px;
 }
 
 .layer-wrap {
@@ -2053,7 +2129,7 @@ input {
 }
 
 .layer-wrap.layer-active * {
-  color: var(--importantText);
+  color: var(--accentText);
 }
 
 @keyframes layer-wrap-anim {
@@ -2082,7 +2158,7 @@ input {
   top: 0;
   left: 5px;
   width: calc(100% - 10px);
-  background: var(--important);
+  background: var(--accent);
   height: 8px;
   border-radius: 60px;
   transition: top 0.15s, opacity 0.2s;
@@ -2094,7 +2170,7 @@ input {
 }
 
 .layer-active {
-  background: var(--important);
+  background: var(--accent);
 }
 
 .moving {
@@ -2104,7 +2180,7 @@ input {
 }
 
 .layer-active.moving {
-  background: var(--importantT);
+  background: var(--accentT);
 }
 
 .layer-preview {
@@ -2504,6 +2580,8 @@ div[id^="alrt-main"] {
 .window-close i {
   font-size: 30px;
   color: var(--textMain);
+  --hi-accent: var(--textMain);
+  --hi-base: var(--textMain);
 }
 
 .window-sidebar {
@@ -2543,7 +2621,7 @@ div[id^="alrt-main"] {
 
 .window-sidebar-button:hover,
 .window-sidebar-button-active {
-  background: var(--important);
+  background: var(--accent);
 }
 
 .window-sidebar-button i,
@@ -2555,12 +2633,16 @@ div[id^="alrt-main"] {
 .window-sidebar-button:hover p,
 .window-sidebar-button-active i,
 .window-sidebar-button-active p {
-  color: var(--importantText) !important;
+  color: var(--accentText) !important;
+  --hi-accent: var(--accentText);
+  --hi-base: var(--accentText);
 }
 
 .window-sidebar-button i {
   font-size: 22px;
-  color: var(--important);
+  color: var(--toolBarDim);
+  --hi-accent: var(--toolBarDim);
+  --hi-base: var(--toolBarDim);
 }
 
 .window-sidebar-button p {
@@ -2594,7 +2676,9 @@ div[id^="alrt-main"] {
 .window-input-group {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   margin: 8px;
+  height: 45px;
 }
 
 .window-input-wrap {
@@ -2680,7 +2764,7 @@ div[id^="alrt-main"] {
 }
 
 .window-input-check:focus~.checkmark {
-  outline-color: var(--important);
+  outline-color: var(--accent);
   outline-style: solid;
   outline-width: 2px;
 }
@@ -2704,7 +2788,7 @@ div[id^="alrt-main"] {
 
 .window-input-check:checked~.checkmark {
   box-shadow: none;
-  background-color: var(--important);
+  background-color: var(--accent);
 }
 
 .window-input-check~.checkmark:after {
@@ -2723,7 +2807,7 @@ div[id^="alrt-main"] {
   top: 6px;
   width: 5px;
   height: 10px;
-  border: solid var(--importantText);
+  border: solid var(--accentText);
   border-width: 0 3px 3px 0;
   -webkit-transform: rotate(45deg);
   -ms-transform: rotate(45deg);
@@ -2734,7 +2818,6 @@ div[id^="alrt-main"] {
   font-size: 18px;
   margin: 0;
   margin-left: 5px;
-  margin-top: 6px;
   color: var(--textMain);
   font-weight: bold;
   vertical-align: center;
@@ -2756,8 +2839,8 @@ div[id^="alrt-main"] {
 }
 
 .window-btn.window-btn-imp {
-  background: var(--important);
-  color: var(--importantText);
+  background: var(--accent);
+  color: var(--accentText);
 }
 
 .window-btn {
@@ -2781,8 +2864,22 @@ div[id^="alrt-main"] {
 
 .window-btn-group {
   float: right;
-  margin: 8px;
   margin-top: 0px;
+  display: flex;
+  align-items: center;
+}
+
+.accent-button {
+  height: 35px;
+  width: 35px;
+  padding: 0;
+  border-radius: 10000px;
+  margin-left: 10px;
+}
+
+.accent-button.window-btn-imp {
+  border: 3px solid var(--textMain);
+  box-sizing: border-box
 }
 
 .boundingHidden {
@@ -3003,12 +3100,13 @@ div[id^="alrt-main"] {
 }
 
 .number-pad-input-button:active {
-  background-color: var(--importantT);
+  background-color: var(--accent);
   transition: background 0s;
 }
 
 .bg-important-t {
-  background-color: var(--importantT);
+  background-color: var(--accent);
+  color: var(--accentText);
 }
 
 .number-pad-input-button-vertical-top {

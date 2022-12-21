@@ -19,6 +19,16 @@ var Themes = {
 	black: "ui-theme-black",
 	system: "ui-theme-system-default",
 };
+var Accents = {
+	red: "ui-accent-red",
+	orange: "ui-accent-orange",
+	yellow: "ui-accent-yellow",
+	green: "ui-accent-green",
+	teal: "ui-accent-teal",
+	blue: "ui-accent-blue",
+	purple: "ui-accent-purple",
+	pink: "ui-accent-pink",
+};
 function setTheme(themeName) {
 	localStorage.setItem("theme", themeName);
 	//activate the button with pattern of theme-*-button to match the theme
@@ -37,7 +47,11 @@ function setTheme(themeName) {
 			themeName = Themes.light;
 		}
 	}
-	document.documentElement.className = themeName;
+	//remove other themes from document
+	document.documentElement.classList.remove(Themes.light);
+	document.documentElement.classList.remove(Themes.dark);
+
+	document.documentElement.classList.add(themeName);
 	document
 		.querySelector('meta[name="theme-color"]')
 		.setAttribute(
@@ -62,6 +76,22 @@ function setTheme(themeName) {
 				"--appBarThemeColor"
 			)
 		);
+}
+function setAccent(accentName) {
+	localStorage.setItem("accent", accentName);
+	//activate the button with pattern of theme-*-button to match the theme
+	document.querySelectorAll(".accent-button").forEach((e) => {
+		e.classList.remove("window-btn-imp");
+		if (e.id == accentName) {
+			e.classList.add("window-btn-imp");
+		}
+	});
+	console.log(accentName);
+	//remove other accents
+	for (var key in Accents) {
+		document.documentElement.classList.remove(Accents[key]);
+	}
+	document.documentElement.classList.add(accentName);
 }
 
 window
