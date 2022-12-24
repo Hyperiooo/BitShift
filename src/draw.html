@@ -51,7 +51,7 @@
   <script src="./scripts/anime.js" defer></script>
   <script defer type="text/javascript" src="./scripts/DrawCore.js"></script>
   <!--STYLES & FONTS-->
-  <link href="https://cdn.jsdelivr.net/gh/Hyperiooo/Hypericons@v0.5.7/fonts/hypericons.css" rel="stylesheet"
+  <link href="https://cdn.jsdelivr.net/gh/Hyperiooo/Hypericons@v0.6.1/fonts/hypericons.css" rel="stylesheet"
     type="text/css" />
   <link rel="stylesheet" href="./styles/main.css" />
   <link rel="stylesheet" href="./styles/alrt-theme.css" />
@@ -88,7 +88,7 @@
       <div id="color-current"></div>
     </div>
     <button class="color-menu-close-button" onclick="toggleColorPicker()">
-      <i class="hi-x-large-line"></i>
+      <i class="hi-x"></i>
     </button>
     <div id="color-menu-drop-effect">Import Palette</div>
     <div id="color-menu-drop-err">Could Not Import Palette</div>
@@ -114,7 +114,7 @@
         Picker
       </button>
       <button class="color-menu-tabbar-button" onclick="setPickerMode('value')">
-        <i class="hi-settings-fill"></i>
+        <i class="hi-gear"></i>
         Value
       </button>
       <button class="color-menu-tabbar-button" onclick="setPickerMode('palette')">
@@ -347,7 +347,7 @@
       <span class="item" onclick="openGallery()"><i class="hi-left-arrow-large-line"></i></span>
       <button class="topbar-button" onclick="toggleMenu()">File</button>
       <button class="item" onclick="openExportMenu()" id="exportButton">
-        <i class="hi-export-line"></i>
+        <i class="hi-export"></i>
       </button>
     </div>
 
@@ -356,10 +356,10 @@
 
     <div id="tool-settings-content"></div>
     <div id="topbar-right">
-      <span class="item" onclick="undo()"><i class="hi-undo-line"></i></span>
-      <span class="item" onclick="redo()"><i class="hi-redo-line"></i></span>
+      <span class="item" onclick="undo()"><i class="hi-undo"></i></span>
+      <span class="item" onclick="redo()"><i class="hi-redo"></i></span>
       <span class="toolbar-divider"></span>
-      <span id="layer-toggle-button" class="item" onclick="toggleLayerMenu()"><i class="hi-layer-fill"></i></span>
+      <span id="layer-toggle-button" class="item" onclick="toggleLayerMenu()"><i class="hi-layer"></i></span>
     </div>
   </div>
   <div id="actionButtons" class="actionButtonsHidden"></div>
@@ -371,7 +371,7 @@
     </span>
     <span id="tool-btn-eyedropper" class="item" data-tool-name="eyedropper"
       onclick="previousTool = getTool();compileForEyedropper(); setTool('eyedropper', this)"><i
-        class="hi-eyedropper-fill"></i></span>
+        class="hi-eyedropper"></i></span>
     <!---test-->
   </div>
 
@@ -380,7 +380,7 @@
       <div class="window-sidebar">
         <h1>Settings</h1>
         <button class="window-sidebar-button window-sidebar-button-active">
-          <i class="hi-settings-fill"></i>
+          <i class="hi-gear"></i>
           <p>General</p>
         </button>
         <button class="window-sidebar-button">
@@ -410,7 +410,7 @@
       <div class="window-header">
         <h1>General</h1>
         <button class="window-close" onclick="closeSettingsWindow()">
-          <i class="hi-x-large-line"></i>
+          <i class="hi-x"></i>
         </button>
       </div>
       <div class="window-inner">

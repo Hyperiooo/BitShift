@@ -131,21 +131,21 @@ var settings = {
 			values: [
 				{
 					name: "replace",
-					icon: "hi-replace-selection-fill",
+					icon: "hi-replace-selection",
 					callback: (e) => {
 						setSelectionMode("replace");
 					},
 				},
 				{
 					name: "add",
-					icon: "hi-add-selection-fill",
+					icon: "hi-add-selection",
 					callback: (e) => {
 						setSelectionMode("add");
 					},
 				},
 				{
 					name: "subtract",
-					icon: "hi-subtract-selection-fill",
+					icon: "hi-subtract-selection",
 					callback: (e) => {
 						setSelectionMode("subtract");
 					},
@@ -314,7 +314,7 @@ function populatePresets() {
 		parent.innerHTML += `<button class="popup-preset" onclick="setPreset(${
 			preset[0]
 		}, ${preset[1]}, this)">
-          <i class="hi-file-line"></i>
+          <i class="hi-file"></i>
           ${
 						preset[2]
 							? `<h1>${preset[2]}</h1>`

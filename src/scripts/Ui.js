@@ -319,7 +319,7 @@ class NumberInputKeypad {
 		this.buttons[13].classList.add("grid-row-4-5");
 		this.buttons[13].classList.add("bg-important-t");
 		this.buttons[13].classList.add("font-icon");
-		this.buttons[13].innerHTML = '<i class="hi-check-line"></i>';
+		this.buttons[13].innerHTML = '<i class="hi-check"></i>';
 		this.buttons[13].addEventListener("click", () => {
 			this.confirm();
 			this.close();
@@ -416,7 +416,7 @@ class ColorPicker {
 		this.colorMenuCloseButton = document.createElement("button");
 		this.colorMenuCloseButton.classList.add("color-menu-close-button");
 		this.colorMenuCloseButton.onclick = this.closeMenu.bind(this);
-		this.colorMenuCloseButton.innerHTML = `<i class="hi-x-large-line"></i>`;
+		this.colorMenuCloseButton.innerHTML = `<i class="hi-x"></i>`;
 		this.colorMenu.appendChild(this.colorMenuCloseButton);
 
 		this.colorPreview = document.createElement("div");

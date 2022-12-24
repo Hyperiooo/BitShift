@@ -75,14 +75,14 @@ var ToolParams = {
 	rectangleMarquee: {
 		name: "rectangleMarquee",
 		id: "tool-btn-rectangleMarquee",
-		icon: "hi-marquee-line",
+		icon: "hi-marquee",
 		actionMenu: "selection",
 		action: "setTool('rectangleMarquee')",
 	},
 	ellipseMarquee: {
 		name: "ellipseMarquee",
 		id: "tool-btn-ellipseMarquee",
-		icon: "hi-circle-marquee-line",
+		icon: "hi-circle-marquee",
 		actionMenu: "selection",
 		action: "setTool('ellipseMarquee')",
 	},
@@ -149,7 +149,7 @@ var ToolbarActionMenus = {
 		{
 			name: "Deselect",
 			action: "deselect()",
-			icon: "hi-x-large-line",
+			icon: "hi-x",
 			condition: () => {
 				return isSelected() || ToolParams[getTool()].actionMenu == "selection";
 			},
@@ -159,7 +159,7 @@ var ToolbarActionMenus = {
 		{
 			name: "Confirm",
 			action: "confirmTransform(); setTool(previousTool)",
-			icon: "hi-check-line",
+			icon: "hi-check",
 		},
 		{
 			name: "Flip Horizontal",
@@ -184,7 +184,7 @@ var ToolbarActionMenus = {
 		{
 			name: "Reset Transform",
 			action: "resetTransform()",
-			icon: "hi-undo-line",
+			icon: "hi-undo",
 		},
 	],
 	selection: [

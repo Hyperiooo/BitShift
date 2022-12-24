@@ -896,9 +896,12 @@ foreignObject {
   align-items: center;
 }
 
+#topbar i {
+  --hi-accent: var(--toolBarDim);
+}
+
 #topbar .item,
-.input-group-item {
-  display: inline-block;
+.input-group-item {display: inline-block;
   position: relative;
   cursor: pointer;
   font-size: 24px;
@@ -907,9 +910,7 @@ foreignObject {
   display: flex;
   justify-content: center;
   align-items: center;
-}
-
-.topbar-button {
+}.topbar-button {
   display: inline-block;
   position: relative;
   cursor: pointer;
@@ -2249,13 +2250,17 @@ canvas {
   position: absolute;
   background: none;
   border: none;
-  font-size: 20px;
   padding: 0;
   margin: 0;
   top: 50%;
   transform: translateY(-50%);
   right: 15px;
   cursor: pointer;
+}
+
+.layer-visibility i,
+.layer-locked i {
+  font-size: 24px;
 }
 
 .layer-locked {

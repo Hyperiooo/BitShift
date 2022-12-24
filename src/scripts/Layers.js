@@ -58,7 +58,7 @@ class Layer {
 		);
 
 		this.visIcon = document.createElement("i");
-		this.visIcon.classList.add("hi-eye-line");
+		this.visIcon.classList.add("hi-eye");
 
 		this.visButton.appendChild(this.visIcon);
 
@@ -70,7 +70,7 @@ class Layer {
 		);
 
 		this.lockIcon = document.createElement("i");
-		this.lockIcon.classList.add("hi-lock-open-line");
+		this.lockIcon.classList.add("hi-lock-open");
 
 		this.lockButton.appendChild(this.lockIcon);
 
@@ -565,7 +565,7 @@ function newLayerB(n, data) {
 	visButton.setAttribute("onclick", `toggleLayerVisibility('${id}', this)`);
 
 	var visIcon = document.createElement("i");
-	visIcon.classList.add("hi-eye-line");
+	visIcon.classList.add("hi-eye");
 
 	visButton.appendChild(visIcon);
 
@@ -574,7 +574,7 @@ function newLayerB(n, data) {
 	lockButton.setAttribute("onclick", `toggleLayerLock('${id}', this)`);
 
 	var lockIcon = document.createElement("i");
-	lockIcon.classList.add("hi-lock-open-line");
+	lockIcon.classList.add("hi-lock-open");
 
 	lockButton.appendChild(lockIcon);
 
@@ -688,17 +688,11 @@ function toggleLayerVisibility(id, el) {
 	});
 	if (layer) {
 		if (layer.settings.visible == true) {
-			el.querySelector("i").classList.replace(
-				"hi-eye-line",
-				"hi-eye-crossed-line"
-			);
+			el.querySelector("i").classList.replace("hi-eye", "hi-eye-crossed");
 			layer.settings.visible = false;
 			layer.canvasElement.style.visibility = "hidden";
 		} else if (layer.settings.visible == false) {
-			el.querySelector("i").classList.replace(
-				"hi-eye-crossed-line",
-				"hi-eye-line"
-			);
+			el.querySelector("i").classList.replace("hi-eye-crossed", "hi-eye");
 			layer.settings.visible = true;
 			layer.canvasElement.style.visibility = "unset";
 		}
@@ -711,16 +705,10 @@ function toggleLayerLock(id, el) {
 	});
 	if (layer) {
 		if (layer.settings.locked == true) {
-			el.querySelector("i").classList.replace(
-				"hi-lock-line",
-				"hi-lock-open-line"
-			);
+			el.querySelector("i").classList.replace("hi-lock", "hi-lock-open");
 			layer.settings.locked = false;
 		} else if (layer.settings.locked == false) {
-			el.querySelector("i").classList.replace(
-				"hi-lock-open-line",
-				"hi-lock-line"
-			);
+			el.querySelector("i").classList.replace("hi-lock-open", "hi-lock");
 			layer.settings.locked = true;
 		}
 	}
@@ -731,16 +719,10 @@ function toggleAlphaLock(id, el) {
 	});
 	if (layer) {
 		if (layer.settings.locked == true) {
-			el.querySelector("i").classList.replace(
-				"hi-lock-line",
-				"hi-lock-open-line"
-			);
+			el.querySelector("i").classList.replace("hi-lock", "hi-lock-open");
 			layer.settings.locked = false;
 		} else if (layer.settings.locked == false) {
-			el.querySelector("i").classList.replace(
-				"hi-lock-open-line",
-				"hi-lock-line"
-			);
+			el.querySelector("i").classList.replace("hi-lock-open", "hi-lock");
 			layer.settings.locked = true;
 		}
 	}
