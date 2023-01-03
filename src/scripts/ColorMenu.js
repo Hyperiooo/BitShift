@@ -430,9 +430,12 @@ function updatePrevious(col) {
 	document.getElementById("color-previous").onclick = () => {
 		board.setColor({ ...col });
 	};
+	notify.log("update");
 	if (previousPrevious != null) {
+		console.log(col, previousPrevious);
 		if (previousPrevious == col) return;
 		else {
+			console.log("a!!!");
 			let e = document.createElement("div");
 			e.setAttribute("data-palette-color", previousPrevious.hexh);
 			e.classList.add("palette-color");
@@ -441,7 +444,13 @@ function updatePrevious(col) {
 			e.addEventListener("click", () => {
 				window.board.setColor(color);
 			});
-			document.getElementById("color-menu-recent-colors").prepend(e);
+			//only prepend if it's not already there
+			if (
+				!document
+					.getElementById("color-menu-recent-colors")
+					.querySelector(`[data-palette-color="${previousPrevious.hexh}"]`)
+			)
+				document.getElementById("color-menu-recent-colors").prepend(e);
 		}
 	}
 	previousPrevious = col;
@@ -876,10 +885,7 @@ class paletteGroup {
 		}
 		document.addEventListener("mouseup", mouseUpHandler);
 		document.addEventListener("touchend", mouseUpHandler);
-		document.addEventListener("mousemove", (e) => {
-			moveHandler(e, _self);
-		});
-		document.addEventListener("touchmove", (e) => {
+		document.addEventListener("pointermove", (e) => {
 			moveHandler(e, _self);
 		});
 		titleEl.onmouseup = titleEl.ontouchend = (e) => {
@@ -982,9 +988,9 @@ class paletteGroup {
 			e.classList.add("palette-color");
 			e.style.setProperty("--color", color.hex);
 			e.addEventListener("click", () => {
-				console.log("asdfaf");
-				window.board.setColor(color);
-				updatePrevious(color);
+				pickerColor = color;
+				updatePickerColor();
+				board.setColor(color);
 			});
 			colorMenu.appendChild(e);
 		});
@@ -1006,4 +1012,19 @@ function preparePalette() {
 		var palette = g.colors;
 		new paletteGroup(title, palette);
 	});
+}
+
+function setPickerMode(m) {
+	document.querySelectorAll(".color-menu-panel").forEach((e) => {
+		e.classList.remove("color-menu-panel-visible");
+	});
+	document
+		.getElementById(`color-menu-${m}-panel`)
+		.classList.add("color-menu-panel-visible");
+	document.querySelectorAll(".color-menu-tabbar-button").forEach((e) => {
+		e.classList.remove("color-menu-tabbar-button-active");
+	});
+	document
+		.getElementById(`color-mode-${m}`)
+		.classList.add("color-menu-tabbar-button-active");
 }

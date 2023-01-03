@@ -34,7 +34,7 @@ function prepareTransform() {
 }
 function confirmTransform() {
 	scaleAlreadyMoving = false;
-	notify.log("transformed");
+	notify.log("Transformed", { icon: "hi-move" });
 	pasted = false;
 	board.ctx.drawImage(board.previewcanvas, 0, 0);
 	board.pctx.clearRect(0, 0, board.width, board.height);
@@ -133,7 +133,6 @@ document.body.addEventListener("pointermove", function (e) {
 		scaleAlreadyMoving = true;
 
 		if (scaleMovingHandle == "bl") {
-			notify.log("bl");
 			scaleWidth -= dx;
 			scaleHeight += dy;
 			adjustBoundingRect("left", dx);

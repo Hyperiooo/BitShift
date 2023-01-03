@@ -356,7 +356,7 @@ html {
   font-weight: bolder;
   border: none;
   border-radius: 5px;
-  max-width: 60px;
+  width: 60px;
   display: block;
   font-weight: 100;
   text-align: left;
@@ -901,7 +901,8 @@ foreignObject {
 }
 
 #topbar .item,
-.input-group-item {display: inline-block;
+.input-group-item {
+  display: inline-block;
   position: relative;
   cursor: pointer;
   font-size: 24px;
@@ -910,7 +911,9 @@ foreignObject {
   display: flex;
   justify-content: center;
   align-items: center;
-}.topbar-button {
+}
+
+.topbar-button {
   display: inline-block;
   position: relative;
   cursor: pointer;
@@ -1086,18 +1089,16 @@ foreignObject {
   display: block;
   opacity: 0;
   transition: 0.3s opacity, 0.3s transform cubic-bezier(0.4, 0, 1, .64), max-height 0.3s;
-  max-height: min(450px, calc(var(--vh) - 56px - 16px));
   overflow: visible !important;
   pointer-events: none;
   user-select: none;
   background: var(--bgMainT);
   backdrop-filter: saturate(180%) blur(20px);
   -webkit-backdrop-filter: saturate(180%) blur(20px);
-  display: grid;
-  grid-template-columns: repeat(5, 53px);
-  grid-template-rows: 32px repeat(13, 27px);
+  display: flex;
+  padding: 8px;
   gap: 8px;
-  padding: 12px;
+  flex-direction: column;
   justify-items: stretch;
   align-items: stretch;
   justify-content: stretch;
@@ -1106,18 +1107,21 @@ foreignObject {
   font-family: "JetBrains Mono";
 }
 
-.color-menu-content {
-  grid-column: 1 / 6;
-  grid-row: 1/ 11;
-  width: 100%;
-  height: 100%;
-  display: grid;
-  grid-template-columns: repeat(6, 53px);
-  grid-template-rows: 32px repeat(13, 27px);
+.color-menu-panel {
+  display: none;
+  flex-direction: column;
+  height: 400px;
+  width: 300px;
   gap: 8px;
   justify-items: stretch;
   align-items: stretch;
   justify-content: stretch;
+  overflow: hidden;
+}
+
+.color-menu-panel-visible {
+  display: flex;
+  visibility: visible;
 }
 
 .color-menu.color-open {
@@ -1219,7 +1223,7 @@ foreignObject {
 .color-menu #color-value {
   --hue: 360;
   grid-column: 1 / 6;
-  grid-row: 2/ 11;
+  grid-row: 1/ 10;
   width: 100%;
   height: 100%;
   z-index: 200;
@@ -1232,11 +1236,10 @@ foreignObject {
 }
 
 .color-menu #color-hue {
-  grid-column: 1 / 6;
-  grid-row: 11 / 12;
+  pointer-events: all;
   width: 100%;
-  height: 100% !important;
-  z-index: -200 !important;
+  height: 30px;
+  flex-shrink: 0;
   transition: 0.2s width;
   background-image: linear-gradient(to right,
       #ff0000 0%,
@@ -1352,10 +1355,8 @@ foreignObject {
 }
 
 #color-preview {
-  grid-column: 1 / 4;
-  grid-row: 1 / 2;
-  width: 100%;
-  height: 100% !important;
+  width: 170px;
+  height: 30px;
   display: flex;
   border: 2px solid var(--lightT);
   border-radius: 5px;
@@ -1389,11 +1390,10 @@ foreignObject {
 }
 
 #color-menu-recent-colors {
-  grid-column: 1 / 6;
-  grid-row: 12 / 13;
+  pointer-events: all;
   width: 100%;
-  height: 100% !important;
-  z-index: -200 !important;
+  height: 30px;
+  flex-shrink: 0;
   border-radius: 5px;
   overflow: hidden;
   transition: 0.2s width;
@@ -1404,7 +1404,8 @@ foreignObject {
   grid-column: 1 / 6;
   grid-row: 13 / 14;
   width: calc(100% - 4px);
-  height: 100%;
+  height: 35px;
+  flex-shrink: 0;
   z-index: -200 !important;
   border-radius: 5px;
   gap: 2px;
@@ -1459,8 +1460,8 @@ foreignObject {
 .palette-color {
   z-index: 1 !important;
   position: relative;
-  width: 27px;
-  height: 27px;
+  width: 30px;
+  height: 30px;
   cursor: pointer;
   margin: 0;
   float: left;
@@ -2634,6 +2635,13 @@ div[id^="alrt-main"] {
   transition: color 0.3s;
 }
 
+.window-sidebar-button i {
+  font-size: 22px;
+  color: var(--toolBarDim);
+  --hi-accent: var(--toolBarDim);
+  --hi-base: var(--toolBarDim);
+}
+
 .window-sidebar-button:hover i,
 .window-sidebar-button:hover p,
 .window-sidebar-button-active i,
@@ -2641,13 +2649,6 @@ div[id^="alrt-main"] {
   color: var(--accentText) !important;
   --hi-accent: var(--accentText);
   --hi-base: var(--accentText);
-}
-
-.window-sidebar-button i {
-  font-size: 22px;
-  color: var(--toolBarDim);
-  --hi-accent: var(--toolBarDim);
-  --hi-base: var(--toolBarDim);
 }
 
 .window-sidebar-button p {

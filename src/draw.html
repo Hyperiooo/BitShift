@@ -66,12 +66,12 @@
   <div id="cursor" class="invertBackground"></div>
   <img id="img" />
   <div class="menu">
-    <div class="menu-btn" onclick="newProject()">New</div>
-    <div class="menu-btn" onclick="saveFile()">Save</div>
-    <div class="menu-btn" onclick="openFile()">Open</div>
-    <div class="menu-btn" onclick="openSettingsWindow()">Settings</div>
-    <div class="menu-btn" onclick="board.recenter()">Recenter</div>
-    <div class="menu-btn" onclick="board.clear()">Clear</div>
+    <div class="menu-btn" onclick="newProject(); closeMenu()">New</div>
+    <div class="menu-btn" onclick="saveFile(); closeMenu()">Save</div>
+    <div class="menu-btn" onclick="openFile(); closeMenu()">Open</div>
+    <div class="menu-btn" onclick="openSettingsWindow(); closeMenu()">Settings</div>
+    <div class="menu-btn" onclick="board.recenter(); closeMenu()">Recenter</div>
+    <div class="menu-btn" onclick="board.clear(); closeMenu()">Clear</div>
   </div>
   <input type="file" id="fileOpenDialog" style="
         display: hidden;
@@ -81,104 +81,113 @@
         pointer-events: none;
       " accept=".bspr" />
   <div id="tool-settings"></div>
-  <div class="color-menu" id="color-menu" ondrop="dropHandler(event);" ondragover="dragOverHandler(event);"
+  <div class="color-menu color-open" id="color-menu" ondrop="dropHandler(event);" ondragover="dragOverHandler(event);"
     ondragleave="dragLeaveHandler(event);" ondragend="dragLeaveHandler(event);">
-    <div id="color-preview" onclick="colorPreviewClickHandler(event)" ontouchstart="colorPreviewClickHandler(event)">
-      <div id="color-previous"></div>
-      <div id="color-current"></div>
+    <div class="color-menu-topbar">
+      <div id="color-preview" onclick="colorPreviewClickHandler(event)" ontouchstart="colorPreviewClickHandler(event)">
+        <div id="color-previous"></div>
+        <div id="color-current"></div>
+      </div>
+      <button class="color-menu-close-button" onclick="toggleColorPicker()">
+        <i class="hi-x"></i>
+      </button>
     </div>
-    <button class="color-menu-close-button" onclick="toggleColorPicker()">
-      <i class="hi-x"></i>
-    </button>
     <div id="color-menu-drop-effect">Import Palette</div>
     <div id="color-menu-drop-err">Could Not Import Palette</div>
-    <div class="color-selector" id="color-value" width="200" height="200"
-      onmousedown="valueThumb(event);valueDrag(event);" onmousemove="valueDrag(event)" onmouseup="valueEndDrag(event)"
-      ontouchstart="valueThumb(event);" ontouchmove="valueDrag(event)" ontouchend="valueEndDrag(event)">
-      <div id="color-value-thumb" onmousedown="valueThumb(event);valueDrag(event);" onmousemove="valueDrag(event)"
-        onmouseup="valueEndDrag(event)" ontouchstart="valueThumb(event);valueDrag(event);"
-        ontouchmove="valueDrag(event)" ontouchend="valueEndDrag(event)"></div>
+    <div id="color-menu-picker-panel" class="color-menu-panel color-menu-panel-visible">
+      <div class="color-selector" id="color-value" width="200" height="200"
+        onmousedown="valueThumb(event);valueDrag(event);" onmousemove="valueDrag(event)" onmouseup="valueEndDrag(event)"
+        ontouchstart="valueThumb(event);" ontouchmove="valueDrag(event)" ontouchend="valueEndDrag(event)">
+        <div id="color-value-thumb" onmousedown="valueThumb(event);valueDrag(event);" onmousemove="valueDrag(event)"
+          onmouseup="valueEndDrag(event)" ontouchstart="valueThumb(event);valueDrag(event);"
+          ontouchmove="valueDrag(event)" ontouchend="valueEndDrag(event)"></div>
+      </div>
+      <div class="color-selector" id="color-hue" width="40" height="200" onmousedown="hueThumb(event);hueDrag(event);"
+        onmousemove="hueDrag(event)" onmouseup="hueEndDrag(event)" ontouchstart="hueThumb(event);hueDrag(event);"
+        ontouchmove="hueDrag(event)" ontouchend="hueEndDrag(event)">
+        <div id="color-hue-thumb" onmousedown="hueThumb(event);hueDrag(event);" onmousemove="hueDrag(event)"
+          onmouseup="hueEndDrag(event)" ontouchstart="hueThumb(event);hueDrag(event);" ontouchmove="hueDrag(event)"
+          ontouchend="hueEndDrag(event)"></div>
+      </div>
+      <div id="color-menu-recent-colors">
+      </div>
     </div>
-    <div class="color-selector" id="color-hue" width="40" height="200" onmousedown="hueThumb(event);hueDrag(event);"
-      onmousemove="hueDrag(event)" onmouseup="hueEndDrag(event)" ontouchstart="hueThumb(event);hueDrag(event);"
-      ontouchmove="hueDrag(event)" ontouchend="hueEndDrag(event)">
-      <div id="color-hue-thumb" onmousedown="hueThumb(event);hueDrag(event);" onmousemove="hueDrag(event)"
-        onmouseup="hueEndDrag(event)" ontouchstart="hueThumb(event);hueDrag(event);" ontouchmove="hueDrag(event)"
-        ontouchend="hueEndDrag(event)"></div>
+    <div id="color-menu-value-panel" class="color-menu-panel ">
+      <div class="color-data">
+        <div class="color-rgba">
+          <p>R</p>
+          <!--
+            --><input class="color-input-num" id="color-rgba-r" value="255" min="0" max="255" type="number"
+            data-color-input />
+          <!--
+            -->
+          <p>G</p>
+          <!--
+            --><input class="color-input-num" id="color-rgba-g" value="255" min="0" data-color-input max="255"
+            type="number" />
+          <!--
+              -->
+          <p>B</p>
+          <!--
+            --><input class="color-input-num" id="color-rgba-b" value="255" min="0" data-color-input max="255"
+            type="number" />
+          <!--
+                -->
+          <p>A</p>
+          <!--
+            --><input class="color-input-num" id="color-rgba-a" value="255" min="0" data-color-input max="255"
+            type="number" />
+        </div>
+      </div>
+      <div class="color-data">
+        <div class="color-hsla">
+          <p>H</p>
+          <!--
+            --><input class="color-input-num" data-color-input id="color-hsla-h" value="0" min="0" max="360"
+            maxlength="3" type="number" />
+          <!--
+            -->
+          <p>S</p>
+          <!--
+            --><input class="color-input-num" id="color-hsla-s" value="100" min="0" data-color-input max="100"
+            type="number" />
+          <!--
+              -->
+          <p>L</p>
+          <!--
+            --><input class="color-input-num" id="color-hsla-l" value="100" min="0" data-color-input max="100"
+            type="number" />
+          <!--
+                -->
+          <p>A</p>
+          <!--
+            --><input class="color-input-num" id="color-hsla-a" value="100" min="0" data-color-input max="100"
+            type="number" />
+          <p class="label-hex">#</p>
+          <!--
+              --><input class="color-input-hex" maxlength="8" id="color-data-hex" data-color-input value="ffffff"
+            type="text" />
+        </div>
+      </div>
     </div>
-    <div id="color-menu-recent-colors">
+    <div id="color-menu-palette-panel" class="color-menu-panel ">
+      <div id="palettes" class="drop_zone"></div>
     </div>
     <div id="color-menu-tabbar">
-      <button class="color-menu-tabbar-button color-menu-tabbar-button-active" onclick="setPickerMode('picker')">
-        <i class="hi-circle-fill"></i>
+      <button id="color-mode-picker" class="color-menu-tabbar-button color-menu-tabbar-button-active"
+        onclick="setPickerMode('picker')">
+        <i class="hi-circle-small-fill"></i>
         Picker
       </button>
-      <button class="color-menu-tabbar-button" onclick="setPickerMode('value')">
+      <button id="color-mode-value" class="color-menu-tabbar-button" onclick="setPickerMode('value')">
         <i class="hi-gear"></i>
         Value
       </button>
-      <button class="color-menu-tabbar-button" onclick="setPickerMode('palette')">
+      <button id="color-mode-palette" class="color-menu-tabbar-button" onclick="setPickerMode('palette')">
         <i class="hi-keyboard-line"></i>
         Palette
       </button>
     </div>
-    <div style="display: none; visibility: hidden" class="color-data">
-      <div class="color-rgba">
-        <p>R</p>
-        <!--
-          --><input class="color-input-num" id="color-rgba-r" value="255" min="0" max="255" type="number"
-          data-color-input />
-        <!--
-          -->
-        <p>G</p>
-        <!--
-          --><input class="color-input-num" id="color-rgba-g" value="255" min="0" data-color-input max="255"
-          type="number" />
-        <!--
-            -->
-        <p>B</p>
-        <!--
-          --><input class="color-input-num" id="color-rgba-b" value="255" min="0" data-color-input max="255"
-          type="number" />
-        <!--
-              -->
-        <p>A</p>
-        <!--
-          --><input class="color-input-num" id="color-rgba-a" value="255" min="0" data-color-input max="255"
-          type="number" />
-      </div>
-    </div>
-    <div style="display: none; visibility: hidden" class="color-data">
-      <div class="color-hsla">
-        <p>H</p>
-        <!--
-          --><input class="color-input-num" data-color-input id="color-hsla-h" value="0" min="0" max="360"
-          maxlength="3" type="number" />
-        <!--
-          -->
-        <p>S</p>
-        <!--
-          --><input class="color-input-num" id="color-hsla-s" value="100" min="0" data-color-input max="100"
-          type="number" />
-        <!--
-            -->
-        <p>L</p>
-        <!--
-          --><input class="color-input-num" id="color-hsla-l" value="100" min="0" data-color-input max="100"
-          type="number" />
-        <!--
-              -->
-        <p>A</p>
-        <!--
-          --><input class="color-input-num" id="color-hsla-a" value="100" min="0" data-color-input max="100"
-          type="number" />
-        <p class="label-hex">#</p>
-        <!--
-            --><input class="color-input-hex" maxlength="8" id="color-data-hex" data-color-input value="ffffff"
-          type="text" />
-      </div>
-    </div>
-    <div style="display: none; visibility: hidden" id="palettes" class="drop_zone"></div>
   </div>
   <div class="layer-menu" id="layer-menu">
     <div class="layer-menu-controls">
@@ -186,7 +195,7 @@
         <i class="hi-copy-fill"></i>
       </button>
       <button class="layer-menu-button" onclick="activeLayer.delete()">
-        <i class="hi-trash-fill"></i>
+        <i class="hi-trash"></i>
       </button>
       <button class="layer-menu-button">
         <i class="hi-folder-fill"></i>
@@ -210,7 +219,8 @@
           <p class="popup-input-title">Width</p>
           <div class="popup-input-wrap">
             <div class="popup-input-field">
-              <input data-input-num-draggable class="popup-input-num" type="number" id="width" value="16" />
+              <input data-input-num-draggable class="popup-input-num" type="number" id="width" value="16" min="0"
+                max="1024" data-input-num-unit="px" />
               <p class="popup-input-unit">px</p>
             </div>
           </div>
@@ -219,7 +229,8 @@
           <p class="popup-input-title">Height</p>
           <div class="popup-input-wrap">
             <div class="popup-input-field">
-              <input data-input-num-draggable class="popup-input-num" type="number" id="height" value="16" />
+              <input data-input-num-draggable class="popup-input-num" type="number" id="height" value="16" min="0"
+                max="1024" data-input-num-unit="px" />
               <p class="popup-input-unit">px</p>
             </div>
           </div>
@@ -461,6 +472,24 @@
     <div id="eyedropper-preview-previous"></div>
   </div>
   <div id="action-blob"></div>
+  <div class="number-pad-input-wrap number-pad-input-hidden" id="number-pad">
+    <div class="number-pad-preview grid-row-1 grid-col-1-4"><span id="number-pad-preview-value">1</span><span
+        id="number-pad-preview-unit" class="number-pad-unit">px</span></div>
+    <button class="number-pad-input-button grid-row-2 grid-col-1" data-value="7">7</button>
+    <button class="number-pad-input-button grid-row-2 grid-col-2" data-value="8">8</button>
+    <button class="number-pad-input-button grid-row-2 grid-col-3" data-value="9">9</button>
+    <button class="number-pad-input-button grid-row-3 grid-col-1" data-value="4">4</button>
+    <button class="number-pad-input-button grid-row-3 grid-col-2" data-value="5">5</button>
+    <button class="number-pad-input-button grid-row-3 grid-col-3" data-value="6">6</button>
+    <button class="number-pad-input-button grid-row-4 grid-col-1" data-value="1">1</button>
+    <button class="number-pad-input-button grid-row-4 grid-col-2" data-value="2">2</button>
+    <button class="number-pad-input-button grid-row-4 grid-col-3" data-value="3">3</button>
+    <button class="number-pad-input-button grid-row-5 grid-col-1-3" data-value="0">0</button>
+    <button class="number-pad-input-button grid-col-4 grid-row-2-3 font-icon" data-backspace><i
+        class="hi-backspace-line"></i></button>
+    <button class="number-pad-input-button grid-col-4 grid-row-4-5 bg-important-t font-icon" data-confirm><i
+        class="hi-check"></i></button>
+  </div>
 </body>
 
 </html>

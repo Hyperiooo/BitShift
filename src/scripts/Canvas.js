@@ -269,11 +269,6 @@ class Canvas {
 			y = Math.floor(
 				(this.height * y) / (this.inputLayer.clientHeight * this.canvScale)
 			);
-			if (Tools.fillBucket && settings.tools.contiguous.value) {
-				this.filler(x, y, this.data[x][y]);
-			} else if (Tools.fillBucket && !settings.tools.contiguous.value) {
-				this.fillerNonContiguous(new Point(x, y));
-			}
 		};
 		this.touching = false;
 
@@ -481,6 +476,17 @@ class Canvas {
 			this.clearPreview();
 			this.tempL = [];
 		}
+		if (!wasPanning) {
+			if (Tools.fillBucket && settings.tools.contiguous.value) {
+				this.filler(
+					this.lastKnownX,
+					this.lastKnownY,
+					this.data[this.lastKnownX][this.lastKnownY]
+				);
+			} else if (Tools.fillBucket && !settings.tools.contiguous.value) {
+				this.fillerNonContiguous(new Point(this.lastKnownX, this.lastKnownY));
+			}
+		}
 		this.sX = null;
 		this.sY = null;
 		updateCanvasPreview();
@@ -533,6 +539,8 @@ class Canvas {
 		var clientY = e.clientY || e.touches[0].clientY;
 		this.currentX = x;
 		this.currentY = y;
+		this.lastKnownX = x;
+		this.lastKnownY = y;
 		if (Tools.transform) return;
 		if (Tools.eraser) {
 			drawEraserPreview(x, y);

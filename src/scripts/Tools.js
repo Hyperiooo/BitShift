@@ -314,11 +314,6 @@ function updateToolSettings(tool) {
 	var toolContent = document.getElementById("tool-settings-content");
 	let toolSettings = settings.tools.assignments[tool];
 	toolContent.innerHTML = "";
-	draggableNumInputs = [];
-	for (let i = 0; i < draggableNumInputs.length; i++) {
-		const e = draggableNumInputs[i];
-		e.clear();
-	}
 	if (!toolSettings) return;
 	for (let i = 0; i < toolSettings.length; i++) {
 		const element = toolSettings[i];
@@ -347,7 +342,6 @@ function updateToolSettings(tool) {
 			};
 			inputElement.type = "number";
 			inputElement.value = setting.value;
-			if (isMobile) inputElement.setAttribute("readonly", "true");
 			if (setting.unit) {
 				let inputUnit = document.createElement("p");
 				inputUnit.classList.add("tool-settings-ui-input-unit");
@@ -358,22 +352,10 @@ function updateToolSettings(tool) {
 			inputGroup.appendChild(inputTitle);
 			inputGroup.appendChild(inputWrap);
 			toolContent.appendChild(inputGroup);
-			var a = new NumberInputKeypad(
-				inputElement,
-				setting.value,
-				setting.unit,
-				setting.min,
-				setting.max
-			);
-			inputElement.addEventListener("click", (e) => {
-				if (!a.isopen) {
-					a.update(setting.value);
-					a.open(e.target);
-				} else {
-					a.close();
-				}
-			});
-			draggableNumInputs.push(new numberDraggable(inputElement, a));
+			inputElement.max = setting.max;
+			inputElement.min = setting.min;
+			inputElement.setAttribute("data-input-num-unit", setting.unit);
+			refreshAllNumberDraggables();
 		} else if (setting.type == "bool") {
 			let inputGroup = document.createElement("span");
 			inputGroup.classList.add("tool-settings-ui-input-group");

@@ -467,9 +467,3 @@ function getBoundingRect(x, y, width, height) {
 		bottom: y + height,
 	};
 }
-
-Element.prototype.classList.removeByPrefix = function (prefix) {
-	var regx = new RegExp("\\b" + prefix + ".*?\\b", "g");
-	this.className = this.className.replace(regx, "");
-	return this;
-};

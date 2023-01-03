@@ -188,7 +188,7 @@ window.onload = function () {
 	});
 	notify = new Alrt({
 		position: "top-center",
-		duration: 5000, //default duration
+		duration: 2000, //default duration
 		theme: "bitshift-confirmation",
 		behavior: "overwrite",
 	});
@@ -201,10 +201,7 @@ window.onload = function () {
 	hueRect = hueRange.getBoundingClientRect();
 	valueRect = valueRange.getBoundingClientRect();
 
-	var numDraggable = document.querySelectorAll("[data-input-num-draggable]");
-	numDraggable.forEach((e) => {
-		draggableNumInputs.push(new numberDraggable(e));
-	});
+	refreshAllNumberDraggables();
 
 	let canvasData = localStorage.getItem("pc-canvas-data");
 
@@ -215,6 +212,7 @@ window.onload = function () {
 		data = JSON.parse(canvasData);
 		project = data;
 		window.board = new Canvas(data.width, data.height);
+		window.numberPad = new NumberInputKeypad();
 
 		window.board.steps = data.steps;
 		window.board.redo_arr = data.redo_arr;

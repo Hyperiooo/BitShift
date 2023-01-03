@@ -40,7 +40,7 @@ A list of all the things planned to do for BitShift
 - ~~Rewrite to make class based~~
 - Rename palettes
 - Create palettes
-- Recent colors palette (20 colors max ?)
+- ~~Recent colors palette (20 colors max ?)~~
 - ~~Drag and drop to import ([Use Anypalette.js](https://1j01.github.io/anypalette.js/demo))~~
   - For mobile, add button to import palette
 - ~~Import image as palette~~
