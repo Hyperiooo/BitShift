@@ -1116,7 +1116,8 @@ foreignObject {
   justify-items: stretch;
   align-items: stretch;
   justify-content: stretch;
-  overflow: hidden;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .color-menu-panel-visible {
@@ -1465,8 +1466,7 @@ foreignObject {
   cursor: pointer;
   margin: 0;
   float: left;
-  transition: opacity 0.3s, transform 0.3s;
-  transition-timing-function: cubic-bezier(0.175, 1.8, 0.32, 1.275);
+  transition: opacity 0.3s linear, transform 0.3s cubic-bezier(0.175, 1.8, 0.32, 1.275);
   transform: scale(1);
   display: flex;
   justify-content: center;

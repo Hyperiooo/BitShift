@@ -317,7 +317,7 @@ var clickedOnce = false;
 var colPreviewTimeout;
 
 function colorPreviewClickHandler(e) {
-	return; //makes palette based off current color
+	notify.log("Smart Palette Created");
 	e.preventDefault();
 	if (!clickedOnce) {
 		clickedOnce = true;
@@ -326,7 +326,7 @@ function colorPreviewClickHandler(e) {
 			clickedOnce = false;
 		}, 1000);
 	} else {
-		let col = chroma(`rgb(${board.color.splice(0, 3).join(", ")})`);
+		let col = chroma(board.color.hex);
 		let rgba = [col.rgba()[0], col.rgba()[1], col.rgba()[2], 255];
 		let pal;
 		if (chroma.contrast(col, "black") < chroma.contrast(col, "white")) {
@@ -394,9 +394,9 @@ function colorPreviewClickHandler(e) {
 		let rgbPal = pal.map((e) => {
 			return hexToRGB(e);
 		});
-		console.log(col.hex(), rgbPal, true);
+		console.log(col.hex(), pal, true);
 		console.log(rgbPal);
-		new paletteGroup("col.hex()", rgbPal, true);
+		new paletteGroup("col.hex()", pal, true);
 		clearTimeout(colPreviewTimeout);
 		clickedOnce = false;
 	}
@@ -736,6 +736,9 @@ var filePalettes = [];
 
 class paletteGroup {
 	constructor(title, palette, scroll) {
+		if (scroll) {
+			setPickerMode("palette");
+		}
 		var pal = {
 			title: title,
 			colors: palette,
@@ -1001,13 +1004,13 @@ class paletteGroup {
 		var colorMenu = document.getElementById("color-menu");
 		if (scroll)
 			document
-				.getElementById("color-menu")
+				.getElementById("color-menu-palette-panel")
 				.scrollTo({ behavior: "smooth", top: colorMenu.scrollTop + rect.top });
 	}
 }
 
 function preparePalette() {
-	colors.forEach((g) => {
+	window.colors.forEach((g) => {
 		var title = truncate(g.title);
 		var palette = g.colors;
 		new paletteGroup(title, palette);
