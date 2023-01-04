@@ -430,7 +430,6 @@ function updatePrevious(col) {
 	document.getElementById("color-previous").onclick = () => {
 		board.setColor({ ...col });
 	};
-	notify.log("update");
 	if (previousPrevious != null) {
 		console.log(col, previousPrevious);
 		if (previousPrevious == col) return;
