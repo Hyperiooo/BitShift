@@ -21,19 +21,22 @@ function act(clr) {
 var pickerColor = [0, 0, 0, 100];
 
 document.querySelectorAll("[data-color-input]").forEach((el) => {
-	el.onblur = el.onkeyup = el.oninput = updateColorNum;
+	el.onblur = el.onkeyup = el.oninput = proxyUpdate;
+	function proxyUpdate(ev) {
+		updateColorNum(el, ev.keyCode);
+	}
 });
 
 //TODO: fix this
-function updateColorNum(el) {
-	if (el.keyCode != null) {
-		if (el.keyCode != 13) return;
+function updateColorNum(el, keycode) {
+	if (keycode != null) {
+		if (keycode != 13) return;
 	}
 	var isValid = true;
 	var color;
 	document.querySelectorAll("[data-color-input]").forEach((e) => {
 		if (e.type == "number") {
-			if (e == el.target) {
+			if (e == el) {
 				if (e.id.includes("rgba")) {
 					if (isValidNum(e.value) || e.value == "") {
 						color = new Color({
@@ -52,11 +55,6 @@ function updateColorNum(el) {
 								0,
 								255
 							),
-							a: clamp(
-								document.getElementById("color-rgba-a").value || 0,
-								0,
-								255
-							),
 						});
 					} else {
 						console.log("isntvalid");
@@ -68,7 +66,6 @@ function updateColorNum(el) {
 							h: clamp(document.getElementById("color-hsla-h").value, 0, 360),
 							s: clamp(document.getElementById("color-hsla-s").value, 0, 100),
 							l: clamp(document.getElementById("color-hsla-l").value, 0, 100),
-							a: clamp(document.getElementById("color-hsla-a").value, 0, 100),
 						});
 					} else {
 						isValid = false;
@@ -76,7 +73,7 @@ function updateColorNum(el) {
 				}
 			}
 		} else if (e.type == "text") {
-			if (e == el.target) {
+			if (e == el) {
 				if (isValidHex(e.value)) {
 					color = new Color(e.value);
 				} else {
@@ -286,17 +283,70 @@ function valueDrag(e) {
 	}
 }
 
+class ColorSlider {
+	constructor(el, value) {
+		this.mode;
+		if (value == "h" || value == "s" || value == "l") {
+			this.mode = "hsla";
+		} else if (value == "r" || value == "g" || value == "b") {
+			this.mode = "rgba";
+		}
+		this.value = value;
+		this.start = 0;
+		this.enabled = false;
+		this.el = el;
+		this.inputElement = document.getElementById(
+			"color-" + this.mode + "-" + this.value
+		);
+		this.min = this.inputElement.min;
+		this.max = this.inputElement.max;
+		this.boundingClientRect = this.el.getBoundingClientRect();
+		this.width = this.boundingClientRect.width;
+		document.addEventListener("pointerdown", handlePointerDown.bind(this));
+		document.addEventListener("pointermove", handlePointerMove.bind(this));
+		document.addEventListener("pointerup", handlePointerUp.bind(this));
+
+		this.startY = 0;
+
+		function handlePointerDown(e) {
+			if (e.target == this.el || this.el.contains(e.target)) {
+				this.inputElement.value = clamp(
+					Math.floor(
+						((e.clientX - this.boundingClientRect.left) / this.width) * this.max
+					),
+					this.min,
+					this.max
+				);
+				this.inputElement.oninput(this.inputElement, null);
+				this.enabled = true;
+			}
+		}
+		function handlePointerMove(e) {
+			if (this.enabled) {
+				this.inputElement.value = clamp(
+					Math.floor(
+						((e.clientX - this.boundingClientRect.left) / this.width) * this.max
+					),
+					this.min,
+					this.max
+				);
+				this.inputElement.oninput(this.inputElement, null);
+			}
+		}
+		function handlePointerUp(e) {
+			this.enabled = false;
+		}
+	}
+}
+
 function updatePickerColor() {
 	var colorCurrent = document.getElementById("color-current");
 	var rEl = document.getElementById("color-rgba-r");
 	var gEl = document.getElementById("color-rgba-g");
 	var bEl = document.getElementById("color-rgba-b");
-	var rgbAEl = document.getElementById("color-rgba-a");
 	var hEl = document.getElementById("color-hsla-h");
 	var sEl = document.getElementById("color-hsla-s");
 	var lEl = document.getElementById("color-hsla-l");
-	var hslAEl = document.getElementById("color-hsla-a");
-	var hexEl = document.getElementById("color-data-hex");
 	valueRange.style.setProperty("--hue", pickerColor.hsv.h);
 	document.documentElement.style.setProperty(
 		"--currentColor",
@@ -305,12 +355,41 @@ function updatePickerColor() {
 	rEl.value = pickerColor.rgba.r;
 	gEl.value = pickerColor.rgba.g;
 	bEl.value = pickerColor.rgba.b;
-	rgbAEl.value = pickerColor.rgba.a;
 	hEl.value = Math.round(pickerColor.hsla.h);
 	sEl.value = Math.round(pickerColor.hsla.s);
 	lEl.value = Math.round(pickerColor.hsla.l);
-	hslAEl.value = Math.round(pickerColor.hsla.a);
 	var hex = pickerColor.hexh;
+	//set document root css variables r to current r value, rp to current r percentage etc
+	document.documentElement.style.setProperty("--r", pickerColor.rgba.r);
+	document.documentElement.style.setProperty("--g", pickerColor.rgba.g);
+	document.documentElement.style.setProperty("--b", pickerColor.rgba.b);
+	document.documentElement.style.setProperty(
+		"--rp",
+		(pickerColor.rgba.r / 255) * 100 + "%"
+	);
+	document.documentElement.style.setProperty(
+		"--gp",
+		(pickerColor.rgba.g / 255) * 100 + "%"
+	);
+	document.documentElement.style.setProperty(
+		"--bp",
+		(pickerColor.rgba.b / 255) * 100 + "%"
+	);
+	document.documentElement.style.setProperty("--h", pickerColor.hsla.h);
+	document.documentElement.style.setProperty("--s", pickerColor.hsla.s);
+	document.documentElement.style.setProperty("--l", pickerColor.hsla.l);
+	document.documentElement.style.setProperty(
+		"--hp",
+		(pickerColor.hsla.h / 360) * 100 + "%"
+	);
+	document.documentElement.style.setProperty(
+		"--sp",
+		(pickerColor.hsla.s / 100) * 100 + "%"
+	);
+	document.documentElement.style.setProperty(
+		"--lp",
+		(pickerColor.hsla.l / 100) * 100 + "%"
+	);
 }
 
 var clickedOnce = false;

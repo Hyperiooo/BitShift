@@ -195,6 +195,14 @@ html {
   background: #ff2ed2;
 }
 
+[data-input-num-draggable] {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  cursor: w-resize;
+}
+
 #debug {
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -1116,11 +1124,12 @@ foreignObject {
   justify-items: stretch;
   align-items: stretch;
   justify-content: stretch;
+}
+
+#color-menu-palette-panel {
   overflow-y: auto;
   overflow-x: hidden;
 }
-
-#color-menu-palette-panel {}
 
 .color-menu-panel-visible {
   display: flex;
@@ -1554,30 +1563,110 @@ input[type="number"] {
 .color-rgba,
 .color-hsla {
   position: relative;
-  margin: 8px;
   display: inline-block;
   margin-right: 0;
   margin-bottom: 0;
 }
 
+.color-hex {
+  display: flex;
+  align-items: center;
+}
+
 .color-rgba p,
 .color-hsla p {
-  display: inline-block;
   margin: 0;
-  width: 26px;
-  margin: 0 -5px;
   font-size: 14px;
-  text-align: center;
   font-family: "JetBrains Mono";
 }
 
-.color-hex {
-  background: red;
+.color-slider-group {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  gap: 8px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.color-slider {
+  pointer-events: all;
+  width: 100%;
   height: 26px;
-  width: 44px;
-  border-radius: 5px 0 0 5px;
-  display: inline-block;
-  margin-bottom: -4px;
+  flex-shrink: 1;
+  transition: 0.2s width;
+  border-radius: 5px;
+  position: relative;
+}
+
+.color-slider:active .color-slider-thumb {
+  height: calc(26px + 10px);
+  width: 20px;
+  transform: translate(-5px, -7px);
+}
+
+.color-slider-thumb {
+  z-index: 100;
+  position: absolute;
+  height: 26px;
+  width: 10px;
+  border: 2px solid var(--accentText);
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.356);
+  border-radius: 50px;
+  left: calc(var(--pos) - 7px);
+  cursor: grab;
+  transform: translate(0px, -2px);
+  transition: width 0.3s, height 0.3s, transform 0.3s;
+  transition-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+#color-r-slider {
+  background: linear-gradient(to right, rgb(0, var(--g), var(--b)), rgb(255, var(--g), var(--b)));
+}
+
+#color-g-slider {
+  background: linear-gradient(to right, rgb(var(--r), 0, var(--b)), rgb(var(--r), 255, var(--b)));
+}
+
+#color-b-slider {
+  background: linear-gradient(to right, rgb(var(--r), var(--g), 0), rgb(var(--r), var(--g), 255));
+}
+
+#color-h-slider {
+  background-image: linear-gradient(to right,
+      #ff0000 0%,
+      #ffff00 17%,
+      #00ff00 33%,
+      #00ffff 50%,
+      #0000ff 67%,
+      #ff00ff 83%,
+      #ff0000 100%);
+}
+
+#color-s-slider {
+  background-image: linear-gradient(to right, hsl(var(--h), 0%, var(--lp)), hsl(var(--h), 100%, var(--lp)));
+}
+
+#color-l-slider {
+  background-image: linear-gradient(to right, hsl(var(--h), var(--sp), 0%), hsl(var(--h), var(--sp), 100%));
+}
+
+#color-r-thumb,
+#color-g-thumb,
+#color-b-thumb {
+  background: var(--currentColor);
+}
+
+#color-h-thumb {
+  background: var(--hue);
+}
+
+#color-s-thumb {
+  background: var(--currentColor);
+}
+
+#color-l-thumb {
+  background: hsl(var(--h), 0%, var(--lp));
 }
 
 .color-input-hex {
@@ -1606,7 +1695,7 @@ input[type="number"] {
   user-select: none;
   position: absolute;
   line-height: 26px;
-  transform: translateX(8px);
+  left: 20px;
 }
 
 #color-menu-topbar {
@@ -3019,6 +3108,7 @@ div[id^="alrt-main"] {
   border-radius: 100px;
   clip-path: circle(40% at 50% 50%);
   z-index: 10000000;
+  background: var(--canvasBg);
 }
 
 #eyedropper-preview-current {

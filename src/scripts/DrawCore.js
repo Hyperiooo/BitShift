@@ -249,6 +249,12 @@ window.onload = function () {
 	updateCursor();
 	createToolUI();
 	setTool("pen");
+	setPickerMode("value");
+
+	document.querySelectorAll("[data-color-slider]").forEach((e) => {
+		new ColorSlider(e, e.getAttribute("data-color-slider"));
+	});
+	setPickerMode("picker");
 };
 
 function newProject() {

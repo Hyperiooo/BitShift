@@ -336,7 +336,7 @@ class NumberInputKeypad {
 	}
 	confirm() {
 		this.target.value = Math.max(parseInt(this.value), this.min);
-		if (this.target.oninput) this.target.oninput();
+		if (this.target.oninput) this.target.oninput(this.target);
 	}
 	animate() {}
 }
