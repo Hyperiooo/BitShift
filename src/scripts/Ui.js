@@ -106,7 +106,6 @@ var draggableNumInputs = [];
 
 class numberDraggable {
 	constructor(el, numpad) {
-		console.log(el);
 		this.do = false;
 		this.startX = 0;
 		this.el = el;
@@ -239,6 +238,33 @@ class NumberInputKeypad {
 	constructor() {
 		this.target = null;
 		this.element = document.getElementById("number-pad");
+
+		this.arrow = document.getElementById("numpadArrow");
+
+		this.popper = Popper.createPopper(document.documentElement, this.element, {
+			placement: "auto",
+			modifiers: [
+				{
+					name: "preventOverflow",
+					options: {
+						mainAxis: true, // true by default
+						altAxis: true, // false by default
+					},
+				},
+				{
+					name: "offset",
+					options: {
+						offset: [0, 18],
+					},
+				},
+				{
+					name: "arrow",
+					options: {
+						element: this.arrow,
+					},
+				},
+			],
+		});
 		this.previewValue = this.element.querySelector("#number-pad-preview-value");
 		this.previewUnit = this.element.querySelector("#number-pad-preview-unit");
 		this.value = 0;
@@ -279,15 +305,10 @@ class NumberInputKeypad {
 	}
 	reposition() {
 		if (!this.target) return;
-		this.inputBoundingRect = this.target.getBoundingClientRect();
-		this.padBoundingRect = this.element.getBoundingClientRect();
-		this.element.style.top =
-			this.inputBoundingRect.top + this.inputBoundingRect.height + 20 + "px";
-		this.element.style.left =
-			this.inputBoundingRect.width / 2 +
-			this.inputBoundingRect.left -
-			this.padBoundingRect.width / 2 +
-			"px";
+		console.log(this.popper);
+		this.popper.state.elements.reference = this.target;
+		this.popper.update();
+		this.popper.forceUpdate();
 	}
 	update(targetElement) {
 		this.target = targetElement;
@@ -356,7 +377,7 @@ function refreshAllNumberDraggables() {
 }
 
 function numberDraggableClickHandler(e) {
-	console.log("click");
+	if (!isMobile) return;
 	if (!window.numberPad.isopen) {
 		window.numberPad.update(e.target);
 		window.numberPad.open(e.target);

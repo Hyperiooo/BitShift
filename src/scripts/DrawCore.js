@@ -254,7 +254,7 @@ window.onload = function () {
 	document.querySelectorAll("[data-color-slider]").forEach((e) => {
 		new ColorSlider(e, e.getAttribute("data-color-slider"));
 	});
-	setPickerMode("picker");
+	//setPickerMode("picker");
 };
 
 function newProject() {

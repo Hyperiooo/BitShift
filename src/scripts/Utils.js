@@ -147,7 +147,6 @@ function HSLToRGB(hsla) {
 		g = hue2rgb(p, q, h);
 		b = hue2rgb(p, q, h - 1 / 3);
 	}
-
 	return [
 		Math.round(r * 255),
 		Math.round(g * 255),
@@ -307,6 +306,7 @@ class Color {
 				this.hsva.v,
 				this.hsva.a,
 			]);
+			console.log("a");
 			var rgbFromHSL = HSLToRGB(hslFromHSV);
 			var hexFromRGB = rgbToHex(
 				rgbFromHSL[0],
@@ -328,8 +328,7 @@ class Color {
 			};
 			this.hex = hexFromRGB;
 		}
-		if (data.l) {
-			console.log("hsl");
+		if (data.l != undefined) {
 			if (data.a == undefined) {
 				data.a = 100;
 			}

@@ -1240,10 +1240,6 @@ class Canvas {
 		if (skipDuplicate) updatePickerColor(color);
 		this.color = color;
 		document.documentElement.style.setProperty("--currentColor", color.hex);
-		document.documentElement.style.setProperty(
-			"--hue",
-			new Color({ h: color.hsv.h, s: 100, v: 100 }).hex
-		);
 		if (this.ctx) this.ctx.fillStyle = color.hex;
 		this.pctx.fillStyle = color.hex;
 		act(document.querySelectorAll(`[data-palette-color='${color.hexh}']`));

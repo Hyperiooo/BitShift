@@ -347,7 +347,7 @@ function updatePickerColor() {
 	var hEl = document.getElementById("color-hsla-h");
 	var sEl = document.getElementById("color-hsla-s");
 	var lEl = document.getElementById("color-hsla-l");
-	valueRange.style.setProperty("--hue", pickerColor.hsv.h);
+	var hexEl = document.getElementById("color-hex");
 	document.documentElement.style.setProperty(
 		"--currentColor",
 		`hsla( ${pickerColor.hsla.h}, ${pickerColor.hsla.s}%, ${pickerColor.hsla.l}%, ${pickerColor.hsla.a}%)`
@@ -358,6 +358,7 @@ function updatePickerColor() {
 	hEl.value = Math.round(pickerColor.hsla.h);
 	sEl.value = Math.round(pickerColor.hsla.s);
 	lEl.value = Math.round(pickerColor.hsla.l);
+	hexEl.value = pickerColor.hex;
 	var hex = pickerColor.hexh;
 	//set document root css variables r to current r value, rp to current r percentage etc
 	document.documentElement.style.setProperty("--r", pickerColor.rgba.r);

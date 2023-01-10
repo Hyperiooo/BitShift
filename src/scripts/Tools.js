@@ -238,7 +238,6 @@ function createToolUI() {
 
 			t.tools.forEach((tl) => {
 				var tool = ToolParams[tl];
-				console.log(tool.action);
 				dummyDiv += `<span data-multiple-tool-parent="${t.name}" id="${tool.id}"
                 data-tool-name="${tool.name}"
                 class="item" onclick="setPopupTool('${t.name}','${tool.name}')"><i

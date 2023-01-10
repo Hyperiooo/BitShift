@@ -46,7 +46,6 @@ html {
   --vh: 0;
   --vw: 0;
   --color: #fff;
-  --hue: #fff;
   --scaledWidth: 100px;
   --scaledHeight: 200px;
   --scaledX: 100px;
@@ -129,8 +128,8 @@ html {
 
 .ui-accent-yellow {
   --accentText: #ffffff;
-  --accent: #b89600;
-  --accentT: #b89600a9;
+  --accent: #F3BB1B;
+  --accentT: #F3BB1Ba9;
 }
 
 .ui-accent-green {
@@ -1118,7 +1117,7 @@ foreignObject {
 .color-menu-panel {
   display: none;
   flex-direction: column;
-  height: 400px;
+  height: 362px;
   width: 300px;
   gap: 8px;
   justify-items: stretch;
@@ -1233,7 +1232,6 @@ foreignObject {
 }
 
 .color-menu #color-value {
-  --hue: 360;
   grid-column: 1 / 6;
   grid-row: 1/ 10;
   width: 100%;
@@ -1243,7 +1241,7 @@ foreignObject {
   background-image: linear-gradient(to bottom,
       transparent 0%,
       rgb(0, 0, 0) 100%),
-    linear-gradient(to right, transparent 0%, hsl(var(--hue), 100%, 50%) 100%),
+    linear-gradient(to right, transparent 0%, hsl(var(--h), 100%, 50%) 100%),
     linear-gradient(to bottom, white 0%, white 100%);
 }
 
@@ -1325,7 +1323,7 @@ foreignObject {
   transform: translate(0px, -2px);
   transition: width 0.3s, height 0.3s, transform 0.3s;
   transition-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  background: var(--hue);
+  background: hsl(var(--h), 100%, 50%);
 }
 
 #color-opacity-thumb {
@@ -1395,7 +1393,7 @@ foreignObject {
 
 .color-palette-group {
   position: relative;
-  background: var(--bgLight);
+  background: var(--bgMainT);
   margin-bottom: 8px;
   width: 100%;
   border-radius: 5px;
@@ -1414,7 +1412,7 @@ foreignObject {
   border-radius: 5px;
   overflow: hidden;
   transition: 0.2s width;
-  background: var(--bgDarkT);
+  background: var(--bgMainT);
   display: grid;
   grid-template-columns: repeat(10, 1fr);
   grid-template-rows: 1fr;
@@ -1439,7 +1437,7 @@ grid-template-rows: auto;
   padding: 2px;
   overflow: hidden;
   transition: 0.2s width;
-  background: var(--bgDarkT);
+  background: var(--bgMainT);
   display: flex;
   justify-content: stretch;
 }
@@ -1457,7 +1455,7 @@ grid-template-rows: auto;
 
 .color-menu-tabbar-button-active {
   color: var(--textMain);
-  background: var(--bgLight);
+  background: var(--bgDarkT);
 }
 
 .color-palette-standalone {
@@ -1545,7 +1543,7 @@ input[type="number"] {
 }
 
 .color-input-num {
-  background: var(--bgLight);
+  background: var(--bgDarkT);
   color: var(--textMain);
   margin: 0;
   padding: 0 5px;
@@ -1560,33 +1558,55 @@ input[type="number"] {
   height: 26px;
 }
 
-.color-rgba,
-.color-hsla {
-  position: relative;
-  display: inline-block;
-  margin-right: 0;
-  margin-bottom: 0;
-}
-
-.color-hex {
-  display: flex;
-  align-items: center;
-}
-
-.color-rgba p,
-.color-hsla p {
+#color-hex {
+  background: var(--bgDarkT);
+  color: var(--textMain);
   margin: 0;
+  padding: 0 5px;
   font-size: 14px;
-  font-family: "JetBrains Mono";
+  font-weight: bolder;
+  border: none;
+  border-radius: 5px;
+  width: 80px;
+  display: inline-block;
+  font-weight: 100;
+  text-align: left;
+  height: 26px;
+}
+
+#color-menu-value-panel.color-menu-panel-visible {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+#color-menu-value-panel {
+  box-sizing: border-box;
+}
+
+.color-slider-section {
+  background: var(--bgMainT);
+  border-radius: 5px;
+  display: flex;
+  gap: 23px;
+  flex-direction: column;
+  padding: 12px 8px;
+  justify-content: space-between;
+  box-sizing: border-box;
 }
 
 .color-slider-group {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   width: 100%;
   gap: 8px;
-  margin-top: 10px;
-  margin-bottom: 10px;
+}
+
+.color-slider-group p {
+  margin: 0;
+  font-size: 14px;
+  font-family: "JetBrains Mono";
 }
 
 .color-slider {
@@ -1658,7 +1678,7 @@ input[type="number"] {
 }
 
 #color-h-thumb {
-  background: var(--hue);
+  background: hsl(var(--h), 100%, 50%);
 }
 
 #color-s-thumb {
@@ -3177,6 +3197,75 @@ div[id^="alrt-main"] {
   font-family: "JetBrains Mono";
   transition: opacity 0.3s;
   z-index: 1000000;
+}
+
+.popperArrowInner,
+.popperArrowInner::before {
+  position: absolute;
+  background: var(--bgMainT);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+}
+
+.popperArrow {
+  --size: 16px;
+}
+
+.popperArrowInner::before {
+  visibility: visible;
+  content: '';
+}
+
+[data-popper-placement^='top'] .popperArrow {
+  bottom: calc(var(--size) * -1);
+}
+
+[data-popper-placement^='bottom'] .popperArrow {
+  top: calc(var(--size) * -1);
+}
+
+[data-popper-placement^='left'] .popperArrow {
+  right: calc(var(--size) * -1);
+}
+
+[data-popper-placement^='right'] .popperArrow {
+  left: calc(var(--size) * -1);
+}
+
+[data-popper-placement^='top'] .popperArrowInner {
+  clip-path: polygon(0 0, 50% 100%, 100% 0);
+}
+
+[data-popper-placement^='bottom'] .popperArrowInner {
+  clip-path: polygon(50% 0, 0 100%, 100% 100%);
+}
+
+[data-popper-placement^='left'] .popperArrowInner {
+  clip-path: polygon(0 0, 100% 50%, 0 100%);
+}
+
+[data-popper-placement^='right'] .popperArrowInner {
+  clip-path: polygon(100% 0, 0 50%, 100% 100%);
+}
+
+[data-popper-placement^='top'] .popperArrow,
+[data-popper-placement^='bottom'] .popperArrow,
+[data-popper-placement^='top'] .popperArrowInner,
+[data-popper-placement^='bottom'] .popperArrowInner,
+[data-popper-placement^='top'] .popperArrowInner::before,
+[data-popper-placement^='bottom'] .popperArrowInner::before {
+  width: calc(var(--size) * 2);
+  height: calc(var(--size) * 1);
+}
+
+[data-popper-placement^='left'] .popperArrow,
+[data-popper-placement^='right'] .popperArrow,
+[data-popper-placement^='left'] .popperArrowInner,
+[data-popper-placement^='right'] .popperArrowInner,
+[data-popper-placement^='left'] .popperArrowInner::before,
+[data-popper-placement^='right'] .popperArrowInner::before {
+  width: calc(var(--size) * 1);
+  height: calc(var(--size) * 2);
 }
 
 .number-pad-input-hidden {

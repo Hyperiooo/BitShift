@@ -109,28 +109,26 @@
           onmouseup="hueEndDrag(event)" ontouchstart="hueThumb(event);hueDrag(event);" ontouchmove="hueDrag(event)"
           ontouchend="hueEndDrag(event)"></div>
       </div>
-      <div id="color-menu-recent-colors">
-      </div>
     </div>
     <div id="color-menu-value-panel" class="color-menu-panel ">
-      <div class="color-rgba">
-        <p>Red</p>
+      <div class="color-slider-section">
         <div class="color-slider-group">
+          <p>R</p>
           <div class="color-slider" id="color-r-slider" width="40" height="200" data-color-slider="r">
             <div class="color-slider-thumb" id="color-r-thumb" style="--pos: var(--rp)"></div>
           </div>
           <input class="color-input-num" id="color-rgba-r" value="255" min="0" max="255" type="number" data-color-input
             data-input-num-draggable />
         </div>
-        <p>Green</p>
         <div class="color-slider-group">
+          <p>G</p>
           <div class="color-slider" id="color-g-slider" width="40" height="200" data-color-slider="g">
             <div class="color-slider-thumb" id="color-g-thumb" style="--pos: var(--gp)"></div>
           </div><input class="color-input-num" id="color-rgba-g" value="255" min="0" data-color-input max="255"
             type="number" data-input-num-draggable />
         </div>
-        <p>Blue</p>
         <div class="color-slider-group">
+          <p>B</p>
           <div class="color-slider" id="color-b-slider" width="40" height="200" data-color-slider="b">
             <div class="color-slider-thumb" id="color-b-thumb" style="--pos: var(--bp)"></div>
           </div>
@@ -138,43 +136,49 @@
             data-input-num-draggable />
         </div>
       </div>
-      <div class="color-hsla">
-        <p>Hue</p>
+      <div class="color-slider-section">
         <div class="color-slider-group">
+          <p>H</p>
           <div class="color-slider" id="color-h-slider" width="40" height="200" data-color-slider="h">
             <div class="color-slider-thumb" id="color-h-thumb" style="--pos: var(--hp)"></div>
           </div>
           <input class="color-input-num" data-color-input id="color-hsla-h" value="0" min="0" max="360" maxlength="3"
             type="number" data-input-num-draggable data-input-num-unit="°" />
         </div>
-        <p>Saturation</p>
         <div class="color-slider-group">
+          <p>S</p>
           <div class="color-slider" id="color-s-slider" width="40" height="200" data-color-slider="s">
             <div class="color-slider-thumb" id="color-s-thumb" style="--pos: var(--sp)"></div>
           </div>
           <input class="color-input-num" id="color-hsla-s" value="100" min="0" data-color-input max="100" type="number"
             data-input-num-draggable data-input-num-unit="%" />
         </div>
-        <p>Lightness</p>
 
         <div class="color-slider-group">
+          <p>L</p>
           <div class="color-slider" id="color-l-slider" width="40" height="200" data-color-slider="l">
             <div class="color-slider-thumb" id="color-l-thumb" style="--pos: var(--lp)"></div>
           </div><input class="color-input-num" id="color-hsla-l" value="100" min="0" data-color-input max="100"
             type="number" data-input-num-draggable data-input-num-unit="%" />
+
         </div>
       </div>
+      <div class="color-slider-section">
+        <div class="color-slider-group">
+          <p>Hex</p><input id="color-hex" data-color-input type="text" />
+        </div>
+      </div>
+
     </div>
     <div id="color-menu-palette-panel" class="color-menu-panel ">
       <div id="palettes" class="drop_zone"></div>
+    </div>
+    <div id="color-menu-recent-colors">
     </div>
     <div id="color-menu-tabbar">
       <button id="color-mode-picker" class="color-menu-tabbar-button color-menu-tabbar-button-active"
         onclick="setPickerMode('picker')">
         Picker
-      </button>
-      <button id="color-mode-value" class="color-menu-tabbar-button" onclick="setPickerMode('value')">
-        Hex
       </button>
       <button id="color-mode-value" class="color-menu-tabbar-button" onclick="setPickerMode('value')">
         Value
@@ -467,7 +471,10 @@
     <div id="eyedropper-preview-previous"></div>
   </div>
   <div id="action-blob"></div>
-  <div class="number-pad-input-wrap number-pad-input-hidden" id="number-pad">
+  <div class="number-pad-input-wrap number-pad-input-hidden" data-show id="number-pad">
+    <div id="numpadArrow" class="popperArrow" data-popper-arrow>
+      <div class="popperArrowInner"></div>
+    </div>
     <div class="number-pad-preview grid-row-1 grid-col-1-4"><span id="number-pad-preview-value">1</span><span
         id="number-pad-preview-unit" class="number-pad-unit">px</span></div>
     <button class="number-pad-input-button grid-row-2 grid-col-1" data-value="7">7</button>
