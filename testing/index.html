@@ -270,7 +270,7 @@
                 <input type='submit'>
             </form>
         </div>
-        <div class='section'>
+        <div class='section' style="display: none">
             <form id='validate'>
                 <h3>Access Token</h3>
                 <input readonly=readonly type='text' id='access-token' /> <small>Default expiry is 60 minutes</small>
@@ -286,6 +286,7 @@
             <button id='logout-button'>Logout</button>
         </div>
         <div id="projects"></div>
+        <textarea oninput="queueForSync()" id="data"></textarea>
     </div>
 </body>
 

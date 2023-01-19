@@ -6,6 +6,7 @@ var supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 window.userToken = null;
 var allLoadedProjects = [];
 var currentUser;
+var currentProject
 
 document.addEventListener("DOMContentLoaded", async function (event) {
 	var signUpForm = document.querySelector("#sign-up");
@@ -57,7 +58,7 @@ async function refreshList() {
 		projects.innerHTML = ``;
 		data.reverse().forEach((e, i) => {
 			projects.innerHTML +=
-				`<a href="javascript:void(0)" class='project' style='animation-delay: ${
+				`<button onclick="selectProject('${e.id}')" class='project' style='animation-delay: ${
 					i * 0.02
 				}s'>` +
 				e.name +
@@ -66,7 +67,7 @@ async function refreshList() {
 				" " +
 				formatDate(e.updated_at) +
 				"<br>" +
-				"</a>";
+				"</button>";
 		});
 	}
 }
@@ -205,14 +206,28 @@ async function newProject() {
 	refreshList();
 }
 async function updateProject(id, dat) {
-	const { data, error } = await supabase.from("projects").update([
+	notify.log(new Date().toISOString())
+	const { data, error } = await supabase.from("projects").update(
 		{
-			id: allLoadedProjects[0].id,
-			updated_at: new Date().toISOString(),
-		},
-	]);
-	if (error) console.log(error);
+			data:dat,
+				updated_at: new Date().toISOString(),
+		}
+	).eq("id", id)
+	if (error) notiyfy.log(error);
 	refreshList();
+}
+
+function selectProject(pID) {
+	refreshList()
+	currentProject = allLoadedProjects.find( e => e.id == pID)
+	document.getElementById("data").value = currentProject.data.msg
+}
+
+function queueForSync() {
+	notify.log(Math.random())
+	updateProject(currentProject.id, {
+		msg: document.getElementById("data").value
+	})
 }
 //loading logic: onload, detect all of the currently locally saved projects, and compare their timestamps to the hosted projects.
 //If the hosted projects are newer, download them. If the locally saved projects are newer, upload them. If they are the same, do nothing.

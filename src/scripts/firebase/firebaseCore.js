@@ -38,6 +38,7 @@ function initContent() /* calls after authChangeHandler detects if the user is l
 }
 
 export async function authChangeHandler(signedIn, user) {
+	window.closeSplash()
 	if (signedIn) {
 		console.log("signed in");
 		isSignedIn = true;

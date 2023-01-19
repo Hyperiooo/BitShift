@@ -2558,10 +2558,11 @@ div[id^="alrt-main"] {
   padding-left: 20px;
   padding-right: 20px;
   overflow: scroll;
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(125px, 1fr));  
+  grid-auto-rows: 200px;
+  grid-gap: 10px;
   overflow-x: hidden;
-  flex-wrap: wrap;
-  align-content: flex-start;
   flex: 1 1 auto;
   gap: 50px;
   flex-flow: row wrap;
