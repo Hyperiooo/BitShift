@@ -522,6 +522,11 @@ class Canvas {
 				"eyedropper-preview-visible"
 			);
 		}
+		if(this.canvasUpdated) {
+			this.canvasUpdated = false
+
+	window.dispatchEvent(window.cloudSyncEvent)
+		}
 	}
 	inputActive(e) {
 		this.touching = true;
@@ -1003,6 +1008,7 @@ class Canvas {
 	}
 	draw(coord) {
 		if (coord.constructor.name == "Point") {
+			this.canvasUpdated = true
 			var x = coord.x;
 			var y = coord.y;
 			if (x === undefined || y === undefined) return;
@@ -1025,6 +1031,7 @@ class Canvas {
 				this.ctx.fillRect(x, y, 1, 1);
 			}
 		} else if (coord.constructor.name == "Rect") {
+			this.canvasUpdated = true
 			var x1 = coord.x1;
 			var y1 = coord.y1;
 			var x2 = coord.x2;
@@ -1307,6 +1314,8 @@ class Canvas {
 		this.clearCanv();
 
 		this.putImgData(this.imageData);
+
+	window.dispatchEvent(window.cloudSyncEvent)
 	}
 
 	getPixelCol(p) {
@@ -1357,7 +1366,8 @@ class Canvas {
 				im.data[i + 3] = this.color.rgba.a;
 			}
 		}
-		this.ctx.putImageData(im, 0, 0);
+		this.imageData = im
+		this.redraw()
 	}
 
 	filler(startX, startY) {

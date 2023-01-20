@@ -2582,6 +2582,7 @@ div[id^="alrt-main"] {
 }
 
 .cardImage {
+  box-shadow: var(--boxShadow);
   width: 150px;
   height: 150px;
   background-size: 12.5%;

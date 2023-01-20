@@ -179,7 +179,7 @@ if (isMobile) {
 		docElm.webkitRequestFullScreen();
 	}
 }
-
+//initialiation
 window.onload = function () {
 	debug = new Alrt({
 		position: "bottom-left",
@@ -254,7 +254,8 @@ window.onload = function () {
 	document.querySelectorAll("[data-color-slider]").forEach((e) => {
 		new ColorSlider(e, e.getAttribute("data-color-slider"));
 	});
-	//setPickerMode("picker");
+	setPickerMode("picker");
+
 };
 
 function newProject() {
@@ -270,8 +271,7 @@ window.onbeforeunload = function () {
 window.onpagehide = function () {
 	saveData();
 };
-
-function saveData() {
+function compileData() {
 	confirmTransform();
 	project = {
 		name: projName,
@@ -281,7 +281,10 @@ function saveData() {
 		height: board.height,
 		layers: layers,
 	};
-	localStorage.setItem("pc-canvas-data", JSON.stringify(project));
+	return project
+}
+function saveData() {
+	localStorage.setItem("pc-canvas-data", JSON.stringify(compileData()));
 }
 
 var presets = [

@@ -6,39 +6,296 @@
     <link rel="icon" type="image/svg+xml" href="./assets/logo.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>HyperID Login</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Hyperiooo/HyperID@v0.1.1/style.css">
     <link rel="stylesheet" href="./styles/main.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="apple-mobile-web-app-status-bar" />
     <meta name="theme-color" />
     <meta name="apple-mobile-web-app-status-bar-style">
-    <script src="./scripts/Ui.js" defer></script>
-    <script defer>
-        setTimeout(() => {
-            setTheme(localStorage.getItem('theme') || "ui-theme-dark");
-        }, 100);
-    </script>
+
+    <script src="https://cdn.jsdelivr.net/gh/Hyperiooo/Alrt.js@v0.1.2/src/alrt.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Hyperiooo/Alrt.js@v0.1.1/src/alrt.css" />
+    
+    <link rel="stylesheet" href="./styles/alrt-theme.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+    <script src="./scripts/SupabaseCore.js" defer></script>
     <style>
-        body,
-        html {
-            background-color: unset !important;
-            height: 100vh !important;
-            min-height: 0 !important;
-            width: 100vw;
-            overflow: hidden !important;
+        /* Loader 5 */
+        .loader-5 {
+            height: 32px;
+            width: 32px;
+            -webkit-animation: loader-5-1 2s cubic-bezier(0.770, 0.000, 0.175, 1.000) infinite;
+            animation: loader-5-1 2s cubic-bezier(0.770, 0.000, 0.175, 1.000) infinite;
+        }
+
+        @-webkit-keyframes loader-5-1 {
+            0% {
+                -webkit-transform: rotate(0deg);
+            }
+
+            100% {
+                -webkit-transform: rotate(360deg);
+            }
+        }
+
+        @keyframes loader-5-1 {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .loader-5::before {
+            content: "";
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: auto;
+            margin: auto;
+            width: 8px;
+            height: 8px;
+            background: black;
+            border-radius: 50%;
+            -webkit-animation: loader-5-2 2s cubic-bezier(0.770, 0.000, 0.175, 1.000) infinite;
+            animation: loader-5-2 2s cubic-bezier(0.770, 0.000, 0.175, 1.000) infinite;
+        }
+
+        @-webkit-keyframes loader-5-2 {
+            0% {
+                -webkit-transform: translate3d(0, 0, 0) scale(1);
+            }
+
+            50% {
+                -webkit-transform: translate3d(24px, 0, 0) scale(.5);
+            }
+
+            100% {
+                -webkit-transform: translate3d(0, 0, 0) scale(1);
+            }
+        }
+
+        @keyframes loader-5-2 {
+            0% {
+                transform: translate3d(0, 0, 0) scale(1);
+            }
+
+            50% {
+                transform: translate3d(24px, 0, 0) scale(.5);
+            }
+
+            100% {
+                transform: translate3d(0, 0, 0) scale(1);
+            }
+        }
+
+        .loader-5::after {
+            content: "";
+            display: block;
+            position: absolute;
+            top: 0;
+            left: auto;
+            bottom: 0;
+            right: 0;
+            margin: auto;
+            width: 8px;
+            height: 8px;
+            background: black;
+            border-radius: 50%;
+            -webkit-animation: loader-5-3 2s cubic-bezier(0.770, 0.000, 0.175, 1.000) infinite;
+            animation: loader-5-3 2s cubic-bezier(0.770, 0.000, 0.175, 1.000) infinite;
+        }
+
+        @-webkit-keyframes loader-5-3 {
+            0% {
+                -webkit-transform: translate3d(0, 0, 0) scale(1);
+            }
+
+            50% {
+                -webkit-transform: translate3d(-24px, 0, 0) scale(.5);
+            }
+
+            100% {
+                -webkit-transform: translate3d(0, 0, 0) scale(1);
+            }
+        }
+
+        @keyframes loader-5-3 {
+            0% {
+                transform: translate3d(0, 0, 0) scale(1);
+            }
+
+            50% {
+                transform: translate3d(-24px, 0, 0) scale(.5);
+            }
+
+            100% {
+                transform: translate3d(0, 0, 0) scale(1);
+            }
+        }
+
+        .loader-5 span {
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            margin: auto;
+            height: 32px;
+            width: 32px;
+        }
+
+        .loader-5 span::before {
+            content: "";
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: auto;
+            right: 0;
+            margin: auto;
+            width: 8px;
+            height: 8px;
+            background: black;
+            border-radius: 50%;
+            -webkit-animation: loader-5-4 2s cubic-bezier(0.770, 0.000, 0.175, 1.000) infinite;
+            animation: loader-5-4 2s cubic-bezier(0.770, 0.000, 0.175, 1.000) infinite;
+        }
+
+        @-webkit-keyframes loader-5-4 {
+            0% {
+                -webkit-transform: translate3d(0, 0, 0) scale(1);
+            }
+
+            50% {
+                -webkit-transform: translate3d(0, 24px, 0) scale(.5);
+            }
+
+            100% {
+                -webkit-transform: translate3d(0, 0, 0) scale(1);
+            }
+        }
+
+        @keyframes loader-5-4 {
+            0% {
+                transform: translate3d(0, 0, 0) scale(1);
+            }
+
+            50% {
+                transform: translate3d(0, 24px, 0) scale(.5);
+            }
+
+            100% {
+                transform: translate3d(0, 0, 0) scale(1);
+            }
+        }
+
+        .loader-5 span::after {
+            content: "";
+            display: block;
+            position: absolute;
+            top: auto;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            margin: auto;
+            width: 8px;
+            height: 8px;
+            background: black;
+            border-radius: 50%;
+            -webkit-animation: loader-5-5 2s cubic-bezier(0.770, 0.000, 0.175, 1.000) infinite;
+            animation: loader-5-5 2s cubic-bezier(0.770, 0.000, 0.175, 1.000) infinite;
+        }
+
+        @-webkit-keyframes loader-5-5 {
+            0% {
+                -webkit-transform: translate3d(0, 0, 0) scale(1);
+            }
+
+            50% {
+                -webkit-transform: translate3d(0, -24px, 0) scale(.5);
+            }
+
+            100% {
+                -webkit-transform: translate3d(0, 0, 0) scale(1);
+            }
+        }
+
+        @keyframes loader-5-5 {
+            0% {
+                transform: translate3d(0, 0, 0) scale(1);
+            }
+
+            50% {
+                transform: translate3d(0, -24px, 0) scale(.5);
+            }
+
+            100% {
+                transform: translate3d(0, 0, 0) scale(1);
+            }
+        }
+
+        .project {
+            transition: 0.3s;
+            animation: fadeIn 0.2s ease-in-out forwards;
+            opacity: 0;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
         }
     </style>
-    <script src="https://cdn.jsdelivr.net/gh/Hyperiooo/HyperID@v0.1.1/scripts/injectDOM.js" defer></script>
-    <div w3-include-html="https://cdn.jsdelivr.net/gh/Hyperiooo/HyperID@v0.1.1/loginTemplate.html"></div>
-    <link href="https://cdn.jsdelivr.net/gh/Hyperiooo/Hypericons@v0.3.3/fonts/hypericons.css" rel="stylesheet"
-        type="text/css" />
 
 </head>
 
 <body>
-    <div id="app">Login</div>
-    <button class="home-span-button-imp unselect" id="signIn">Sign In</button>
-    <script type="module" src="./scripts/firebase/login.js"></script>
+    <div class='container'>
+        <div id="username"></div>
+        <div class='section'>
+            <form id='sign-up'>
+                <h3>Sign Up</h3>
+                <label>Email</label><input type='email' name='email' />
+                <label>Password</label><input type='password' name='password' />
+                <input type='submit'>
+            </form>
+        </div>
+        <div class='section'>
+            <form id='log-in'>
+                <h3>Log In</h3>
+                <label>Email</label><input type='email' name='email' />
+                <label>Password</label><input type='password' name='password' />
+                <input type='submit'>
+            </form>
+        </div>
+        <div class='section' style="display: none">
+            <form id='validate'>
+                <h3>Access Token</h3>
+                <input readonly=readonly type='text' id='access-token' /> <small>Default expiry is 60 minutes</small>
+                <h3>Refresh Token</h3>
+                <input readonly=readonly type='text' id='refresh-token' /> <small>Supabase-js will use this to
+                    automatically fetch a new accessToken for you every 60 mins whilst the client is running</small>
+            </form>
+        </div>
+        <button onclick="newProject()">New Project</button>
+        <button onclick="updateProject()">update random project</button>
+        <div class='section'>
+            <h3>Logout</h3>
+            <button id='logout-button'>Logout</button>
+        </div>
+        <div id="projects"></div>
+        <textarea oninput="queueForSync()" id="data"></textarea>
+    </div>
+
 </body>
 
 </html>
