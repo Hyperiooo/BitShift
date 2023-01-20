@@ -17,7 +17,9 @@
     
     <link rel="stylesheet" href="./styles/alrt-theme.css">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-    <script src="./scripts/SupabaseCore.js" defer></script>
+    <script src="./scripts/supabase/SupabaseCore.js" defer></script>
+    <script src="./scripts/supabase/SupabaseAuth.js" defer></script>
+    <script src="./scripts/Utils.js"></script>
     <style>
         /* Loader 5 */
         .loader-5 {
@@ -277,17 +279,7 @@
                 <input type='submit'>
             </form>
         </div>
-        <div class='section' style="display: none">
-            <form id='validate'>
-                <h3>Access Token</h3>
-                <input readonly=readonly type='text' id='access-token' /> <small>Default expiry is 60 minutes</small>
-                <h3>Refresh Token</h3>
-                <input readonly=readonly type='text' id='refresh-token' /> <small>Supabase-js will use this to
-                    automatically fetch a new accessToken for you every 60 mins whilst the client is running</small>
-            </form>
-        </div>
-        <button onclick="newProject()">New Project</button>
-        <button onclick="updateProject()">update random project</button>
+        <button onclick="newSupaProject()">New Project</button>
         <div class='section'>
             <h3>Logout</h3>
             <button id='logout-button'>Logout</button>

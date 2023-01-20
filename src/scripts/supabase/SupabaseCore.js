@@ -3,96 +3,84 @@ var SUPABASE_KEY =
 	"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt2b3BscHlkaGF6dGxtaG5lZG5xIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NjQwNDY3ODUsImV4cCI6MTk3OTYyMjc4NX0.IRkGNQij4cSJwCxrpNd7XA1qOipX869bpz7Rqz5tGCs";
 
 var supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-window.userToken = null;
-var allLoadedProjects = [];
-var currentUser;
-var currentProject
+window.allLoadedProjects = [];
+window.currentUser;
+window.currentProject;
+window.currentUserMeta
 
-document.addEventListener("DOMContentLoaded", async function (event) {
-	var signUpForm = document.querySelector("#sign-up");
-	signUpForm.onsubmit = signUpSubmitted;
-
-	var logInForm = document.querySelector("#log-in");
-	logInForm.onsubmit = logInSubmitted;
-
-	var logoutButton = document.querySelector("#logout-button");
-	logoutButton.onclick = logoutSubmitted;
-	await console.log(supabase.auth);
-});
-supabase.auth.onAuthStateChange(async (event, session) => {
-	if (event == "SIGNED_IN") {
-	}
+supabase.auth.onAuthStateChange(async (event, session) => { console.log(event)
 	const {
 		data: { user },
 	} = await supabase.auth.getUser();
-	currentUser = user;
-	refreshList();
-	getUserMeta();
+	window.currentUser = user;
+	if (event == "SIGNED_IN") {
+	queryUserMeta();
+	queryProjects();
+	}else if(event == "SIGNED_OUT") {
+		generateProjectList()
+	}
 });
-async function getUserMeta() {
+async function queryUserMeta() {
 	var { data, err } = await supabase
 		.from("users")
 		.select()
-		.eq("id", currentUser.id);
+		.eq("id", window.currentUser.id);
 
 	if (data) {
-		console.log(data[0].display_name);
+		window.currentUserMeta = data[0]
+	}else{
+		
+		const { data, error } = await supabase.from("users").insert([
+			{
+				id: window.currentUser.id,
+				display_name: "test",
+				created_at: new Date().toISOString(),
+				last_access: new Date().toISOString(),
+			},
+		]);
+
 	}
 }
-async function refreshList() {
-	console.log("a");
-	var projects = document.getElementById("projects");
-	//query for all projects in cities by owner id
-	projects.innerHTML = `<div class="loader-5 center"><span></span></div>`;
-	if (!currentUser) {
-		projects.innerHTML = "no projects. create one!";
-		return;
-	}
+async function queryProjects() {
 	var { data, err } = await supabase
 		.from("projects")
 		.select()
-		.eq("owner", currentUser.id)
+		.eq("owner", window.currentUser.id)
 		.order("updated_at", { ascending: true });
 	if (data) {
-		allLoadedProjects = data;
-		projects.innerHTML = ``;
-		data.reverse().forEach((e, i) => {
-			projects.innerHTML +=
-				`<button onclick="selectProject('${e.id}')" class='project' style='animation-delay: ${
-					i * 0.02
-				}s'>` +
-				e.name +
-				" " +
-				e.id +
-				" " +
-				formatDate(e.updated_at) +
-				"<br>" +
-				"</button>";
-		});
+		window.allLoadedProjects = data;
 	}
+	generateProjectList()
 }
 
-function formatDate(d) {
-	if (new Date().toDateString() == new Date(d).toDateString()) {
-		return (
-			"Today, " +
-			new Date(d).toLocaleTimeString(navigator.language, {
-				hour: "2-digit",
-				minute: "2-digit",
-			})
-		);
+function generateProjectList() {
+	return
+	var projects = document.getElementById("projects");
+	//query for all projects in cities by owner id
+	projects.innerHTML = `<div class="loader-5 center"><span></span></div>`;
+	if (!window.currentUser) {
+		projects.innerHTML = "no projects. create one!";
+		return;
 	}
-	return (
-		new Date(d).toLocaleDateString() +
-		", " +
-		new Date(d).toLocaleTimeString(navigator.language, {
-			hour: "2-digit",
-			minute: "2-digit",
-		})
-	);
+	projects.innerHTML = ``;
+	window.allLoadedProjects.reverse().forEach((e, i) => {
+		projects.innerHTML +=
+			`<button onclick="selectProject('${e.id}')" class='project' style='animation-delay: ${
+				i * 0.02
+			}s'>` +
+			e.name +
+			" " +
+			e.id +
+			" " +
+			formatDate(e.updated_at) +
+			"<br>" +
+			"</button></br>";
+	});
+
 }
 
-const signUpSubmitted = (event) => {
+
+async function signUpSubmitted (event) {
 	event.preventDefault();
 	const email = event.target[0].value;
 	const password = event.target[1].value;
@@ -100,7 +88,7 @@ const signUpSubmitted = (event) => {
 	supabase.auth
 		.signUp({ email, password })
 		.then((response) => {
-			response.error ? notify.log(response.error.message) : setToken(response);
+			response.error ? console.log(response.error.message) : setToken(response);
 			supabase.auth.updateUser({ data: { display_name: "test" } });
 		})
 		.catch((err) => {
@@ -122,27 +110,13 @@ const logInSubmitted = (event) => {
 	supabase.auth
 		.signInWithPassword({ email, password })
 		.then((response) => {
-			notify.log("signedin");
+			console.log("Signed In");
 			console.log(response.error ? "z" : "b");
-			response.error ? notify.log(response.error.message) : setToken(response);
+			response.error ? console.log(response.error.message) : setToken(response);
 		})
 		.catch((err) => {
-			notify.log(err.response.text);
+			console.log(err.response.text);
 		});
-	supabase.auth
-		.signInWithPassword({ email, password })
-		.then((response) => {
-			notify.log("signedin");
-			console.log(response.error ? "z" : "b");
-			response.error ? notify.log(response.error.message) : setToken(response);
-		})
-		.catch((err) => {
-			notify.log(err.response.text);
-		});
-};
-
-const fetchUserDetails = () => {
-	notify.log(JSON.stringify(currentUser));
 };
 
 const logoutSubmitted = (event) => {
@@ -151,14 +125,12 @@ const logoutSubmitted = (event) => {
 	supabase.auth
 		.signOut()
 		.then((_response) => {
-			document.querySelector("#access-token").value = "";
-			document.querySelector("#refresh-token").value = "";
-			notify.log("Logout successful");
+			console.log("Logout successful");
 		})
 		.catch((err) => {
-			notify.log(err.response.text);
+			console.log(err.response.text);
 		});
-	refreshList();
+	queryProjects();
 };
 
 async function setToken(response) {
@@ -166,13 +138,9 @@ async function setToken(response) {
 		response.data.user.confirmation_sent_at &&
 		!response?.data?.session?.access_token
 	) {
-		notify.log("Confirmation Email Sent");
+		console.log("Confirmation Email Sent");
 	} else {
-		document.querySelector("#access-token").value =
-			response.data.session.access_token;
-		document.querySelector("#refresh-token").value =
-			response.data.session.refresh_token;
-		notify.log("Logged in as " + response.data.user.email);
+		console.log("Logged in as " + response.data.user.email);
 		const { data, error } = await supabase
 			.from("users")
 			.insert(
@@ -187,13 +155,14 @@ async function setToken(response) {
 	}
 }
 
-async function newProject() {
+async function newSupaProject() {
+	console.log('asdf')
 	const { data, error } = await supabase.from("projects").insert([
 		{
 			id: crypto.randomUUID(),
-			name: "Untitled " + (allLoadedProjects.length + 1),
+			name: "Untitled " + (window.allLoadedProjects.length + 1),
 			data: {},
-			owner: currentUser.id,
+			owner: window.currentUser.id,
 			updated_at: new Date().toISOString(),
 		},
 	]);
@@ -201,31 +170,29 @@ async function newProject() {
 		console.log(error);
 	}
 	if (data) {
-		allLoadedProjects.push(data[0]);
+		window.allLoadedProjects.push(data[0]);
 	}
-	refreshList();
+	queryProjects();
 }
 async function updateProject(id, dat) {
-	notify.log(new Date().toISOString())
 	const { data, error } = await supabase.from("projects").update(
 		{
 			data:dat,
 				updated_at: new Date().toISOString(),
 		}
 	).eq("id", id)
-	if (error) notiyfy.log(error);
-	refreshList();
+	if (error) console.log(error);
+	queryProjects();
 }
 
 function selectProject(pID) {
-	refreshList()
-	currentProject = allLoadedProjects.find( e => e.id == pID)
-	document.getElementById("data").value = currentProject.data.msg
+	queryProjects()
+	window.currentProject = window.allLoadedProjects.find( e => e.id == pID)
+	//document.getElementById("data").value = window.currentProject.data.msg
 }
 
 function queueForSync() {
-	notify.log(Math.random())
-	updateProject(currentProject.id, {
+	updateProject(window.currentProject.id, {
 		msg: document.getElementById("data").value
 	})
 }
@@ -246,7 +213,7 @@ function queueForSync() {
 
 window.addEventListener("load", function (e) {
 	//load the projects
-	refreshList();
+	queryProjects();
 });
 
 window.addEventListener("projectStateChanged", function (e) {});

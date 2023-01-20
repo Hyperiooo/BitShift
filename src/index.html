@@ -50,53 +50,10 @@
     type="text/css" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+  <script src="./scripts/supabase/SupabaseCore.js" defer></script>
 
-  <script>
-    var xhr = new XMLHttpRequest();
-    var url = "DEVENV";
-    xhr.open("GET", url, true);
-
-    xhr.onreadystatechange = function () {
-      if (this.readyState == 4 && this.status == 200) {
-        document
-          .querySelector('link[rel="apple-touch-icon"]')
-          .setAttribute(
-            "href",
-            "./assets/icon-dev.png"
-          );
-
-        document
-          .querySelector('meta[name="apple-mobile-web-app-title"]')
-          .setAttribute(
-            "content",
-            "BitShift DEV"
-          );
-        document
-          .querySelector('meta[property="og:image"]')
-          .setAttribute(
-            "content",
-            "./assets/icon-dev.png"
-          );
-        document
-          .querySelector('#manifest')
-          .setAttribute(
-            "href",
-            "devmanifest.json"
-          );
-      }else {
-        document
-          .querySelector('#manifest')
-          .setAttribute(
-            "href",
-            "manifest.json"
-          );
-      }
-    };
-    // Sending our request
-    xhr.send();
-  </script>
-  <script>
-  </script>
 </head>
 
 <body>

@@ -24,6 +24,29 @@ function isValidNum(str) {
 	return !isNaN(str) && !isNaN(parseFloat(str));
 }
 
+/*
+	converts ISO date to a string
+*/
+function formatDate(d) {
+	if (new Date().toDateString() == new Date(d).toDateString()) {
+		return (
+			"Today, " +
+			new Date(d).toLocaleTimeString(navigator.language, {
+				hour: "2-digit",
+				minute: "2-digit",
+			})
+		);
+	}
+	return (
+		new Date(d).toLocaleDateString() +
+		", " +
+		new Date(d).toLocaleTimeString(navigator.language, {
+			hour: "2-digit",
+			minute: "2-digit",
+		})
+	);
+}
+
 function hexToRGB(hex) {
 	hex = hex.replace("#", "");
 	if (hex.length == 3) {
