@@ -1,4 +1,3 @@
-
 document.addEventListener("DOMContentLoaded", async function (event) {
 	var signUpForm = document.querySelector("#sign-up");
 	signUpForm.onsubmit = signUpSubmitted;
@@ -9,4 +8,12 @@ document.addEventListener("DOMContentLoaded", async function (event) {
 	var logoutButton = document.querySelector("#logout-button");
 	logoutButton.onclick = logoutSubmitted;
 	await console.log(supabase.auth);
+});
+window.addEventListener("load", async () => {
+	const {
+		data: { user },
+	} = await supabase.auth.getUser();
+	if (user) {
+		window.location.href = "/";
+	}
 });

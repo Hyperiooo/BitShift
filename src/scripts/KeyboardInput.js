@@ -4,7 +4,7 @@ window.onkeydown = keyboardInput;
 
 var keyboardAssignments = {
 	"ALT+SHIFT+C": (e) => {
-		board.clear();
+		canvasInterface.clear();
 	},
 	"ALT+C": (e) => {
 		toggleColorPicker();

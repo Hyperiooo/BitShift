@@ -419,7 +419,7 @@ var PinchZoom = (function () {
 		}
 		/**
 		 * Called when the direct children of this element change.
-		 * Until we have have shadow dom support across the board, we
+		 * Until we have have shadow dom support across the canvasInterface, we
 		 * require a single element to be the child of <pinch-zoom>, and
 		 * that's the element we pan/scale.
 		 */

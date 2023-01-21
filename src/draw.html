@@ -24,6 +24,9 @@
   <script src="./scripts/anypalette.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.0/color-thief.umd.js"></script>
   <!--SCRIPTS-->
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+  <script src="./scripts/supabase/SupabaseCore.js" defer></script>
   <script src="./scripts/popper.min.js"></script>
   <script src="./scripts/Matrix.js" defer></script>
   <script src="./scripts/Shapes.js" defer></script>
@@ -51,7 +54,7 @@
   <script src="./scripts/anime.js" defer></script>
   <script defer type="text/javascript" src="./scripts/DrawCore.js"></script>
   <!--STYLES & FONTS-->
-  <link href="https://cdn.jsdelivr.net/gh/Hyperiooo/Hypericons@v0.6.1/fonts/hypericons.css" rel="stylesheet"
+  <link href="https://cdn.jsdelivr.net/gh/Hyperiooo/Hypericons@v0.6.7/fonts/hypericons.css" rel="stylesheet"
     type="text/css" />
   <link rel="stylesheet" href="./styles/main.css" />
   <link rel="stylesheet" href="./styles/alrt-theme.css" />
@@ -70,8 +73,8 @@
     <div class="menu-btn" onclick="saveFile(); closeMenu()">Save</div>
     <div class="menu-btn" onclick="openFile(); closeMenu()">Open</div>
     <div class="menu-btn" onclick="openSettingsWindow(); closeMenu()">Settings</div>
-    <div class="menu-btn" onclick="board.recenter(); closeMenu()">Recenter</div>
-    <div class="menu-btn" onclick="board.clear(); closeMenu()">Clear</div>
+    <div class="menu-btn" onclick="canvasInterface.recenter(); closeMenu()">Recenter</div>
+    <div class="menu-btn" onclick="canvasInterface.clear(); closeMenu()">Clear</div>
   </div>
   <input type="file" id="fileOpenDialog" style="
         display: hidden;
@@ -366,6 +369,12 @@
 
     <div id="tool-settings-content"></div>
     <div id="topbar-right">
+
+      <span class="item" onclick="openGallery()">
+        <i class="hi-cloud"></i>
+        <i id="syncStatusIndicator" class="hi-check-outline icon-accent"></i>
+      </span>
+      <span class="toolbar-divider"></span>
       <span class="item" onclick="undo()"><i class="hi-undo"></i></span>
       <span class="item" onclick="redo()"><i class="hi-redo"></i></span>
       <span class="toolbar-divider"></span>

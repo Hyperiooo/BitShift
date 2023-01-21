@@ -86,7 +86,6 @@ function setAccent(accentName) {
 			e.classList.add("window-btn-imp");
 		}
 	});
-	console.log(accentName);
 	//remove other accents
 	for (var key in Accents) {
 		document.documentElement.classList.remove(Accents[key]);
@@ -163,20 +162,20 @@ function confirmNewProject() {
 	clearLayerMenu();
 	clearLayers();
 	layers = [];
-	if (typeof board !== "undefined") {
-		board.destroy();
+	if (typeof canvasInterface !== "undefined") {
+		canvasInterface.destroy();
 	}
 	var width = +document.querySelector("#width").value;
 	var height = +document.querySelector("#height").value;
-	window.board = new Canvas(width, height);
+	window.canvasInterface = new Canvas(width, height);
 	window.colors = defaultPalettes;
 	preparePalette();
-	board.setColor(new Color(colors[0].colors[0]));
+	canvasInterface.setColor(new Color(colors[0].colors[0]));
 	window.dim.close();
 	project = {
 		name: "Untitled Sprite",
 		palettes: filePalettes,
-		currColor: board.color,
+		currColor: canvasInterface.color,
 		width: width,
 		height: height,
 		layers: [],

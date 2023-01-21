@@ -907,6 +907,38 @@ foreignObject {
   --hi-accent: var(--toolBarDim);
 }
 
+.icon-accent {
+  position: absolute !important;
+  left: 45%;
+  top: 45%;
+  --hi-accent: var(--bgMain) !important;
+  font-size: 16px !important;
+}
+
+.hi-loading-outline {
+  display: block !important;
+  animation: rotate 1.5s cubic-bezier(0.37, 0, 0.63, 1) infinite;
+}
+
+.hi-loading-outline,
+.hi-check-outline {
+  --hi-base: var(--accent) !important;
+}
+
+.hi-x-outline, .hi-exclamation-outline {
+  --hi-base: var(--error) !important;
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(720deg);
+  }
+}
+
 #topbar .item,
 .input-group-item {
   display: inline-block;
@@ -2559,7 +2591,7 @@ div[id^="alrt-main"] {
   padding-right: 20px;
   overflow: scroll;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(125px, 1fr));  
+  grid-template-columns: repeat(auto-fill, minmax(125px, 1fr));
   grid-auto-rows: 200px;
   grid-gap: 10px;
   overflow-x: hidden;

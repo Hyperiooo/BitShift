@@ -2,9 +2,9 @@ function packFile() {
 	project = {
 		name: projName,
 		palettes: filePalettes,
-		currColor: board.color,
-		width: board.width,
-		height: board.height,
+		currColor: canvasInterface.color,
+		width: canvasInterface.width,
+		height: canvasInterface.height,
 		layers: layers.reverse(),
 	};
 	var packedData = btoa(JSON.stringify(project));
@@ -44,15 +44,15 @@ function loadFile(file) {
 	clearLayerMenu();
 	clearLayers();
 	layers = [];
-	if (typeof board !== "undefined") {
-		board.destroy();
+	if (typeof canvasInterface !== "undefined") {
+		canvasInterface.destroy();
 	}
 	var width = +file.width;
 	var height = +file.height;
-	window.board = new Canvas(file.width, file.height);
+	window.canvasInterface = new Canvas(file.width, file.height);
 	window.colors = defaultPalettes;
 	preparePalette();
-	board.setColor(file.currColor);
+	canvasInterface.setColor(file.currColor);
 	project = {
 		name: file.name,
 		palettes: filePalettes,

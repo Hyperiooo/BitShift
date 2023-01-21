@@ -211,15 +211,15 @@ window.onload = function () {
 	if (canvasData) {
 		data = JSON.parse(canvasData);
 		project = data;
-		window.board = new Canvas(data.width, data.height);
+		window.canvasInterface = new Canvas(data.width, data.height);
 		window.numberPad = new NumberInputKeypad();
 
-		window.board.steps = data.steps;
-		window.board.redo_arr = data.redo_arr;
+		window.canvasInterface.steps = data.steps;
+		window.canvasInterface.redo_arr = data.redo_arr;
 		if (data.palettes) window.colors = data.palettes;
 		preparePalette();
 		console.log(data);
-		window.board.setColor(data.currColor);
+		window.canvasInterface.setColor(data.currColor);
 		updatePrevious(data.currColor);
 		data.layers.reverse().forEach((e) => {
 			console.log(e);
@@ -228,8 +228,8 @@ window.onload = function () {
 		window.gif = new GIF({
 			workers: 2,
 			quality: 10,
-			width: this.canvUnit * window.board.width,
-			height: this.canvUnit * window.board.height,
+			width: this.canvUnit * window.canvasInterface.width,
+			height: this.canvUnit * window.canvasInterface.height,
 		});
 		window.gif.on("finished", function (blob) {
 			var url = URL.createObjectURL(blob);
@@ -255,7 +255,6 @@ window.onload = function () {
 		new ColorSlider(e, e.getAttribute("data-color-slider"));
 	});
 	setPickerMode("picker");
-
 };
 
 function newProject() {
@@ -276,12 +275,12 @@ function compileData() {
 	project = {
 		name: projName,
 		palettes: filePalettes,
-		currColor: board.color,
-		width: board.width,
-		height: board.height,
+		currColor: canvasInterface.color,
+		width: canvasInterface.width,
+		height: canvasInterface.height,
 		layers: layers,
 	};
-	return project
+	return project;
 }
 function saveData() {
 	localStorage.setItem("pc-canvas-data", JSON.stringify(compileData()));

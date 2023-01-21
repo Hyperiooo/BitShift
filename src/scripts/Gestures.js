@@ -1,6 +1,6 @@
 var gestureAssignments = {
 	"ALT+SHIFT+C": (e) => {
-		board.clear();
+		canvasInterface.clear();
 	},
 	"ALT+C": (e) => {
 		toggleColorPicker();
@@ -181,15 +181,14 @@ class TapGesture {
 }
 
 function initializeGestures() {
-	console.log("board");
 	var doubleTapGesture = new TapGesture(
 		{ inputs: 2, maxDelay: 300, threshold: 10 },
-		board.canvasParent,
+		canvasInterface.canvasParent,
 		undo
 	);
 	new TapGesture(
 		{ inputs: 3, maxDelay: 300, threshold: 10 },
-		board.canvasParent,
+		canvasInterface.canvasParent,
 		redo
 	);
 }

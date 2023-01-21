@@ -6,18 +6,38 @@ var supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 window.allLoadedProjects = [];
 window.currentUser;
 window.currentProject;
-window.currentUserMeta
+window.currentUserMeta;
 
-supabase.auth.onAuthStateChange(async (event, session) => { console.log(event)
+supabase.auth.onAuthStateChange(async (event, session) => {
+	console.log(event);
 	const {
 		data: { user },
 	} = await supabase.auth.getUser();
 	window.currentUser = user;
 	if (event == "SIGNED_IN") {
-	queryUserMeta();
-	queryProjects();
-	}else if(event == "SIGNED_OUT") {
-		generateProjectList()
+		queryUserMeta();
+		queryProjects();
+	} else if (event == "SIGNED_OUT") {
+		generateProjectList();
+		if (!window.location.pathname.includes("login"))
+			window.location.href = "login";
+	}
+});
+
+window.addEventListener("load", async () => {
+	const {
+		data: { user },
+	} = await supabase.auth.getUser();
+	if (!user) {
+		if (!window.location.pathname.includes("login"))
+			window.location.href = "login";
+		return;
+	}
+
+	if (window.location.hash && window.location.pathname.includes("draw")) {
+		selectProject(window.location.hash.replace("#", ""));
+	} else if (window.location.pathname.includes("draw")) {
+		//window.location.href = "/";
 	}
 });
 async function queryUserMeta() {
@@ -27,9 +47,12 @@ async function queryUserMeta() {
 		.eq("id", window.currentUser.id);
 
 	if (data) {
-		window.currentUserMeta = data[0]
-	}else{
-		
+		window.currentUserMeta = data[0];
+		if (document.getElementById("accountName")) {
+			document.getElementById("accountName").innerHTML =
+				window.currentUserMeta.display_name;
+		}
+	} else {
 		const { data, error } = await supabase.from("users").insert([
 			{
 				id: window.currentUser.id,
@@ -38,7 +61,6 @@ async function queryUserMeta() {
 				last_access: new Date().toISOString(),
 			},
 		]);
-
 	}
 }
 async function queryProjects() {
@@ -50,11 +72,11 @@ async function queryProjects() {
 	if (data) {
 		window.allLoadedProjects = data;
 	}
-	generateProjectList()
+	generateProjectList();
 }
 
 function generateProjectList() {
-	return
+	return;
 	var projects = document.getElementById("projects");
 	//query for all projects in cities by owner id
 	projects.innerHTML = `<div class="loader-5 center"><span></span></div>`;
@@ -65,9 +87,9 @@ function generateProjectList() {
 	projects.innerHTML = ``;
 	window.allLoadedProjects.reverse().forEach((e, i) => {
 		projects.innerHTML +=
-			`<button onclick="selectProject('${e.id}')" class='project' style='animation-delay: ${
-				i * 0.02
-			}s'>` +
+			`<button onclick="selectProject('${
+				e.id
+			}')" class='project' style='animation-delay: ${i * 0.02}s'>` +
 			e.name +
 			" " +
 			e.id +
@@ -76,11 +98,9 @@ function generateProjectList() {
 			"<br>" +
 			"</button></br>";
 	});
-
 }
 
-
-async function signUpSubmitted (event) {
+async function signUpSubmitted(event) {
 	event.preventDefault();
 	const email = event.target[0].value;
 	const password = event.target[1].value;
@@ -94,7 +114,7 @@ async function signUpSubmitted (event) {
 		.catch((err) => {
 			alert(err);
 		});
-};
+}
 
 notify = new Alrt({
 	position: "top-center",
@@ -113,6 +133,7 @@ const logInSubmitted = (event) => {
 			console.log("Signed In");
 			console.log(response.error ? "z" : "b");
 			response.error ? console.log(response.error.message) : setToken(response);
+			window.location.href = "/";
 		})
 		.catch((err) => {
 			console.log(err.response.text);
@@ -154,16 +175,16 @@ async function setToken(response) {
 		}
 	}
 }
-
-async function newSupaProject() {
-	console.log('asdf')
+/*creates project*/
+async function newSupaProject(projData) {
+	var id = crypto.randomUUID();
 	const { data, error } = await supabase.from("projects").insert([
 		{
-			id: crypto.randomUUID(),
-			name: "Untitled " + (window.allLoadedProjects.length + 1),
-			data: {},
+			id: id,
 			owner: window.currentUser.id,
 			updated_at: new Date().toISOString(),
+			name: projData.name,
+			data: { ...projData },
 		},
 	]);
 	if (error) {
@@ -173,28 +194,39 @@ async function newSupaProject() {
 		window.allLoadedProjects.push(data[0]);
 	}
 	queryProjects();
+	return id;
 }
 async function updateProject(id, dat) {
-	const { data, error } = await supabase.from("projects").update(
-		{
-			data:dat,
-				updated_at: new Date().toISOString(),
-		}
-	).eq("id", id)
-	if (error) console.log(error);
+	const { data, error } = await supabase
+		.from("projects")
+		.update({
+			data: dat,
+			name: dat.name,
+			updated_at: new Date().toISOString(),
+		})
+		.eq("id", id);
+	if (error) {
+		console.log(error);
+		cloudSyncError();
+	} else {
+		postCloudSync();
+	}
 	queryProjects();
 }
 
 function selectProject(pID) {
-	queryProjects()
-	window.currentProject = window.allLoadedProjects.find( e => e.id == pID)
+	queryProjects().then(() => {
+		window.currentProject = window.allLoadedProjects.find((e) => e.id == pID);
+	});
 	//document.getElementById("data").value = window.currentProject.data.msg
 }
 
 function queueForSync() {
-	updateProject(window.currentProject.id, {
-		msg: document.getElementById("data").value
-	})
+	if (!window.currentProject) {
+		cloudSyncError();
+		return;
+	}
+	updateProject(window.currentProject.id, compileData());
 }
 //loading logic: onload, detect all of the currently locally saved projects, and compare their timestamps to the hosted projects.
 //If the hosted projects are newer, download them. If the locally saved projects are newer, upload them. If they are the same, do nothing.
@@ -210,10 +242,3 @@ function queueForSync() {
 //do all of the saving logic in the background, so that the user can continue to work on the project.
 //save every 5 minutes, or when the user closes the tab. If the user has no internet connection, save every 30 seconds.
 // when you close the tab, save the project locally so that when you reopen the tab, you can load the newer, local project.
-
-window.addEventListener("load", function (e) {
-	//load the projects
-	queryProjects();
-});
-
-window.addEventListener("projectStateChanged", function (e) {});

@@ -81,7 +81,6 @@ class Canvas {
 		document.documentElement.style.setProperty("--canvScale", this.canvScale);
 		this.bggridcanvas.width = width;
 		this.bggridcanvas.height = height;
-		console.log(this.previewcanvas);
 		this.previewcanvas.width = width;
 		this.previewcanvas.height = height;
 		this.selectionCanvas.width = width;
@@ -522,10 +521,10 @@ class Canvas {
 				"eyedropper-preview-visible"
 			);
 		}
-		if(this.canvasUpdated) {
-			this.canvasUpdated = false
+		if (this.canvasUpdated) {
+			this.canvasUpdated = false;
 
-	window.dispatchEvent(window.cloudSyncEvent)
+			window.dispatchEvent(window.cloudSyncEvent);
 		}
 	}
 	inputActive(e) {
@@ -1008,7 +1007,7 @@ class Canvas {
 	}
 	draw(coord) {
 		if (coord.constructor.name == "Point") {
-			this.canvasUpdated = true
+			this.canvasUpdated = true;
 			var x = coord.x;
 			var y = coord.y;
 			if (x === undefined || y === undefined) return;
@@ -1031,7 +1030,7 @@ class Canvas {
 				this.ctx.fillRect(x, y, 1, 1);
 			}
 		} else if (coord.constructor.name == "Rect") {
-			this.canvasUpdated = true
+			this.canvasUpdated = true;
 			var x1 = coord.x1;
 			var y1 = coord.y1;
 			var x2 = coord.x2;
@@ -1238,7 +1237,7 @@ class Canvas {
 				clipPath.closePath();
 			});
 			this.ctx.clip(clipPath, "evenodd");
-			this.ctx.clearRect(0, 0, board.width, board.height);
+			this.ctx.clearRect(0, 0, canvasInterface.width, canvasInterface.height);
 			this.ctx.restore();
 		}
 	}
@@ -1315,7 +1314,7 @@ class Canvas {
 
 		this.putImgData(this.imageData);
 
-	window.dispatchEvent(window.cloudSyncEvent)
+		window.dispatchEvent(window.cloudSyncEvent);
 	}
 
 	getPixelCol(p) {
@@ -1366,8 +1365,8 @@ class Canvas {
 				im.data[i + 3] = this.color.rgba.a;
 			}
 		}
-		this.imageData = im
-		this.redraw()
+		this.imageData = im;
+		this.redraw();
 	}
 
 	filler(startX, startY) {
@@ -1549,18 +1548,18 @@ class Frames {
 			"translate(-50%,-50%) scale(1,1)";
 		document.querySelector("#frames").focus();
 		document.querySelector("#frames #gallery").innerHTML = "";
-		for (var frame of board.frames)
+		for (var frame of canvasInterface.frames)
 			document.querySelector("#frames #gallery").appendChild(frame[0]);
 		document.querySelectorAll("#frames #gallery img").forEach((x, i) => {
 			x.onclick = (e) => {
-				board.loadFrame(i);
+				canvasInterface.loadFrame(i);
 				Frames.close();
 			};
 			x.oncontextmenu = (e) => {
 				e.preventDefault();
 				var del_confirmation = confirm("Delete?");
 				if (del_confirmation) {
-					board.deleteFrame(i);
+					canvasInterface.deleteFrame(i);
 					Frames.open();
 				}
 			};

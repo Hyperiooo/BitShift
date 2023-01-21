@@ -87,7 +87,7 @@ function updateColorNum(el, keycode) {
 		pickerColor = color;
 		if (!pickerColor) return;
 		updatePickerColor();
-		board.setColor(color, true);
+		canvasInterface.setColor(color, true);
 	} else {
 		updatePickerColor();
 	}
@@ -134,7 +134,7 @@ function hueDrag(e) {
 		);
 		hThumb.style.setProperty("--posp", clamp(x / hueRect.width, 0, 1));
 		updatePickerColor();
-		board.setColor(pickerColor, true);
+		canvasInterface.setColor(pickerColor, true);
 	}
 }
 
@@ -192,7 +192,7 @@ function valueThumb(e) {
 			clamp((y / valueRect.height) * 100, 0, 100) + "%"
 		);
 		updatePickerColor();
-		board.setColor(pickerColor, true);
+		canvasInterface.setColor(pickerColor, true);
 	}
 }
 
@@ -221,7 +221,7 @@ function valueEndDrag(e) {
 				clamp((y / valueRect.height) * 100, 0, 100) + "%"
 			);
 			updatePickerColor();
-			board.setColor(pickerColor, true);
+			canvasInterface.setColor(pickerColor, true);
 		}
 	}
 	if (valueTwoFinger) {
@@ -271,7 +271,7 @@ function valueDrag(e) {
 			clamp((y / valueRect.height) * 100, 0, 100) + "%"
 		);
 		updatePickerColor();
-		board.setColor(pickerColor, true);
+		canvasInterface.setColor(pickerColor, true);
 	}
 	if (valueTwoFinger) {
 		valueTwoFingerDist = distance(
@@ -406,7 +406,7 @@ function colorPreviewClickHandler(e) {
 			clickedOnce = false;
 		}, 1000);
 	} else {
-		let col = chroma(board.color.hex);
+		let col = chroma(canvasInterface.color.hex);
 		let rgba = [col.rgba()[0], col.rgba()[1], col.rgba()[2], 255];
 		let pal;
 		if (chroma.contrast(col, "black") < chroma.contrast(col, "white")) {
@@ -508,10 +508,9 @@ var previousPrevious = null;
 function updatePrevious(col) {
 	document.documentElement.style.setProperty("--previousColor", col.hex);
 	document.getElementById("color-previous").onclick = () => {
-		board.setColor({ ...col });
+		canvasInterface.setColor({ ...col });
 	};
 	if (previousPrevious != null) {
-		console.log(col, previousPrevious);
 		if (previousPrevious == col) return;
 		else {
 			console.log("a!!!");
@@ -521,7 +520,7 @@ function updatePrevious(col) {
 			e.style.setProperty("--color", previousPrevious.hex);
 			var color = { ...previousPrevious };
 			e.addEventListener("click", () => {
-				window.board.setColor(color);
+				window.canvasInterface.setColor(color);
 			});
 			//only prepend if it's not already there
 			if (
@@ -824,7 +823,6 @@ class paletteGroup {
 		};
 		filePalettes.push(pal);
 		var id = randomString(7);
-		console.log(id);
 		var paletteParent = document.getElementById("palettes");
 		var group = document.createElement("div");
 		group.classList.add("color-palette-group");
@@ -1055,7 +1053,7 @@ class paletteGroup {
 
 		palette.forEach((x, i) => {
 			var color = new Color(x);
-			if (!setCurrent && typeof board !== "undefined") {
+			if (!setCurrent && typeof canvasInterface !== "undefined") {
 				setCurrent = true;
 			}
 			let e = document.createElement("div");
@@ -1072,13 +1070,12 @@ class paletteGroup {
 			e.addEventListener("click", () => {
 				pickerColor = color;
 				updatePickerColor();
-				board.setColor(color);
+				canvasInterface.setColor(color);
 			});
 			colorMenu.appendChild(e);
 		});
 
-		console.log(palette[0]);
-		board.setColor(new Color(palette[0]));
+		canvasInterface.setColor(new Color(palette[0]));
 		var rect = colorMenu.getBoundingClientRect();
 		var colorMenu = document.getElementById("color-menu");
 		if (scroll)

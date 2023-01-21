@@ -13,7 +13,6 @@ class Layer {
 		};
 
 		this.previousIndex = this.index;
-		console.log("as");
 
 		this.layerElement = document.createElement("div");
 		this.layerElement.classList.add("layer-wrap");
@@ -619,7 +618,6 @@ function newLayerB(n, data) {
 }
 
 function newLayer(n, data) {
-	console.log(data);
 	var nLayer = new Layer(n, data);
 	setTimeout(() => {
 		updateNormalTops();
@@ -657,9 +655,9 @@ function setLayer(id) {
 	if (layer) {
 		layer.layerElement.classList.add("layer-active");
 		activeLayer = layer;
-		board.ctx = layer.ctx;
-		board.canvas = layer.canvasElement;
-		board.setColor(board.color);
+		canvasInterface.ctx = layer.ctx;
+		canvasInterface.canvas = layer.canvasElement;
+		canvasInterface.setColor(canvasInterface.color);
 		document
 			.getElementById("previewCanvasWrapper")
 			.style.setProperty("--zindex", layer.index * 2 + 1);

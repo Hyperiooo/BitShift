@@ -8,7 +8,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>BitShift</title>
   <link rel="icon" type="image/svg" href="./assets/logo.svg" />
-  <link rel="manifest" id="manifest"/>
+  <link rel="manifest" id="manifest" />
   <!-- IOS SUPPORT -->
   <meta name="apple-mobile-web-app-status-bar" content="#0f1216" />
   <meta name="theme-color" content="#0f1216" />
@@ -46,11 +46,11 @@
   <!--STYLES & FONTS-->
   <link rel="stylesheet" href="./styles/main.css" />
   <link rel="stylesheet" href="./styles/alrt-theme.css" />
-  <link href="https://cdn.jsdelivr.net/gh/Hyperiooo/Hypericons@v0.3.3/fonts/hypericons.css" rel="stylesheet"
+  <link href="https://cdn.jsdelivr.net/gh/Hyperiooo/Hypericons@v0.6.7/fonts/hypericons.css" rel="stylesheet"
     type="text/css" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  
+
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
   <script src="./scripts/supabase/SupabaseCore.js" defer></script>
 
@@ -66,14 +66,15 @@
   <div id="galleryContent" class="visible">
     <header id="topbar" class="ui">
       <div id="topbar-left">
-        <span class="item" id="accountWidget" onclick="openGallery()">
+        <span class="item" id="accountWidget">
           <i class="hi-account-fill"></i>
           <div id="accountName"></div>
           <i class="hi-down-arrow-small-line"></i>
-          <button id="signOut">Sign Out</button>
+          <button id="signOut" onclick="supabase.auth.signOut()">Sign Out</button>
         </span>
         <span class="item" onclick="openGallery()">
           <i class="hi-cloud"></i>
+          <i class="hi-check-outline icon-accent"></i>
         </span>
         <span class="item" onclick="openSettingsWindow()">
           <i class="hi-gear"></i>
@@ -90,153 +91,6 @@
       </div>
     </header>
     <div id="galleryWrapper">
-      <div class="galleryCard">
-        <div class="cardImage">
-          <img src="" alt="">
-        </div>
-        <div class="cardTitle">Untitled</div>
-        <div class="cardDetails">12px x 12px</div>
-      </div>
-      <div class="galleryCard">
-        <div class="cardImage">
-          <img src="" alt="">
-        </div>
-        <div class="cardTitle">Untitled</div>
-        <div class="cardDetails">12px x 12px</div>
-      </div>
-      <div class="galleryCard">
-        <div class="cardImage">
-          <img src="" alt="">
-        </div>
-        <div class="cardTitle">Untitled</div>
-        <div class="cardDetails">12px x 12px</div>
-      </div>
-      <div class="galleryCard">
-        <div class="cardImage">
-          <img src="" alt="">
-        </div>
-        <div class="cardTitle">Untitled</div>
-        <div class="cardDetails">12px x 12px</div>
-      </div>
-      <div class="galleryCard">
-        <div class="cardImage">
-          <img src="" alt="">
-        </div>
-        <div class="cardTitle">Untitled</div>
-        <div class="cardDetails">12px x 12px</div>
-      </div>
-      <div class="galleryCard">
-        <div class="cardImage">
-          <img src="" alt="">
-        </div>
-        <div class="cardTitle">Untitled</div>
-        <div class="cardDetails">12px x 12px</div>
-      </div>
-      <div class="galleryCard">
-        <div class="cardImage">
-          <img src="" alt="">
-        </div>
-        <div class="cardTitle">Untitled</div>
-        <div class="cardDetails">12px x 12px</div>
-      </div>
-      <div class="galleryCard">
-        <div class="cardImage">
-          <img src="" alt="">
-        </div>
-        <div class="cardTitle">Untitled</div>
-        <div class="cardDetails">12px x 12px</div>
-      </div>
-      <div class="galleryCard">
-        <div class="cardImage">
-          <img src="" alt="">
-        </div>
-        <div class="cardTitle">Untitled</div>
-        <div class="cardDetails">12px x 12px</div>
-      </div>
-      <div class="galleryCard">
-        <div class="cardImage">
-          <img src="" alt="">
-        </div>
-        <div class="cardTitle">Untitled</div>
-        <div class="cardDetails">12px x 12px</div>
-      </div>
-      <div class="galleryCard">
-        <div class="cardImage">
-          <img src="" alt="">
-        </div>
-        <div class="cardTitle">Untitled</div>
-        <div class="cardDetails">12px x 12px</div>
-      </div>
-      <div class="galleryCard">
-        <div class="cardImage">
-          <img src="" alt="">
-        </div>
-        <div class="cardTitle">Untitled</div>
-        <div class="cardDetails">12px x 12px</div>
-      </div>
-      <div class="galleryCard">
-        <div class="cardImage">
-          <img src="" alt="">
-        </div>
-        <div class="cardTitle">Untitled</div>
-        <div class="cardDetails">12px x 12px</div>
-      </div>
-      <div class="galleryCard">
-        <div class="cardImage">
-          <img src="" alt="">
-        </div>
-        <div class="cardTitle">Untitled</div>
-        <div class="cardDetails">12px x 12px</div>
-      </div>
-      <div class="galleryCard">
-        <div class="cardImage">
-          <img src="" alt="">
-        </div>
-        <div class="cardTitle">Untitled</div>
-        <div class="cardDetails">12px x 12px</div>
-      </div>
-      <div class="galleryCard">
-        <div class="cardImage">
-          <img src="" alt="">
-        </div>
-        <div class="cardTitle">Untitled</div>
-        <div class="cardDetails">12px x 12px</div>
-      </div>
-      <div class="galleryCard">
-        <div class="cardImage">
-          <img src="" alt="">
-        </div>
-        <div class="cardTitle">Untitled</div>
-        <div class="cardDetails">12px x 12px</div>
-      </div>
-      <div class="galleryCard">
-        <div class="cardImage">
-          <img src="" alt="">
-        </div>
-        <div class="cardTitle">Untitled</div>
-        <div class="cardDetails">12px x 12px</div>
-      </div>
-      <div class="galleryCard">
-        <div class="cardImage">
-          <img src="" alt="">
-        </div>
-        <div class="cardTitle">Untitled</div>
-        <div class="cardDetails">12px x 12px</div>
-      </div>
-      <div class="galleryCard">
-        <div class="cardImage">
-          <img src="" alt="">
-        </div>
-        <div class="cardTitle">Untitled</div>
-        <div class="cardDetails">12px x 12px</div>
-      </div>
-      <div class="galleryCard">
-        <div class="cardImage">
-          <img src="" alt="">
-        </div>
-        <div class="cardTitle">Untitled</div>
-        <div class="cardDetails">12px x 12px</div>
-      </div>
       <div class="galleryCard">
         <div class="cardImage">
           <img src="" alt="">

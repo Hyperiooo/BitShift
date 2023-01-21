@@ -53,7 +53,7 @@ var eraserBufferCtx = eraserBufferCanvas.getContext("2d");
 
 function drawOnSVGCanvas(outlinePath, antiPath) {
 	cursorGroup.innerHTML = "";
-	var svgOffset = 1 / board.canvScale;
+	var svgOffset = 1 / canvasInterface.canvScale;
 	var box = document.createElementNS("http://www.w3.org/2000/svg", "path");
 	var anti = document.createElementNS("http://www.w3.org/2000/svg", "path");
 	var mask = document.createElementNS("http://www.w3.org/2000/svg", "mask");
@@ -66,8 +66,8 @@ function drawOnSVGCanvas(outlinePath, antiPath) {
 	var fill = document.createElementNS("http://www.w3.org/2000/svg", "rect");
 	fill.setAttributeNS(null, "x", 0);
 	fill.setAttributeNS(null, "y", 0);
-	fill.setAttributeNS(null, "width", board.width);
-	fill.setAttributeNS(null, "height", board.height);
+	fill.setAttributeNS(null, "width", canvasInterface.width);
+	fill.setAttributeNS(null, "height", canvasInterface.height);
 	fill.setAttributeNS(null, "fill", "white");
 	var group = document.createElementNS("http://www.w3.org/2000/svg", "g");
 	group.setAttributeNS(null, "mask", "url(#mask)");
@@ -181,12 +181,12 @@ function eBufDraw(coord) {
 var cursor = document.getElementById("cursor");
 
 function canvasResized() {
-	svgOffset = 1 / board.canvScale;
+	svgOffset = 1 / canvasInterface.canvScale;
 	if (Tools.eraser) {
-		drawEraserPreview(board.currentX, board.currentY);
+		drawEraserPreview(canvasInterface.currentX, canvasInterface.currentY);
 	}
 	if (Tools.sprayPaint) {
-		drawSprayPreview(board.currentX, board.currentY);
+		drawSprayPreview(canvasInterface.currentX, canvasInterface.currentY);
 	}
 }
 function clearSVGBrushPreviews() {

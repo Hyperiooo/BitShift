@@ -18,7 +18,7 @@ var boundingRotOffset = 0;
 
 var selectionPath = [];
 var outlinePath = [];
-var stripeWidth;
+var stripeWidth = 1;
 var selectionStripeDefs = document.createElementNS(
 	"http://www.w3.org/2000/svg",
 	"defs"
@@ -41,8 +41,8 @@ var svgOffset = 1;
 var handleWidth = boundingHandleSize;
 
 function drawOnSelectionSVG(antiPath) {
-	svgOffset = 1 / board.canvScale;
-	handleWidth = boundingHandleSize / board.canvScale;
+	svgOffset = 1 / canvasInterface.canvScale;
+	handleWidth = boundingHandleSize / canvasInterface.canvScale;
 
 	selectionMaskBox.setAttributeNS(null, "d", antiPath);
 	selectionMaskBox.setAttributeNS(null, "stroke", "white");
@@ -105,9 +105,9 @@ function modifySelectionPath(x1, y1, x2, y2, type) {
 	modifierPath = [
 		[
 			{ X: 0, Y: 0 },
-			{ X: board.width, Y: 0 },
-			{ X: board.width, Y: board.height },
-			{ X: 0, Y: board.height },
+			{ X: canvasInterface.width, Y: 0 },
+			{ X: canvasInterface.width, Y: canvasInterface.height },
+			{ X: 0, Y: canvasInterface.height },
 		],
 	];
 	var cpr2 = new ClipperLib.Clipper();
@@ -136,9 +136,9 @@ function invertSelection() {
 	modifierPath = [
 		[
 			{ X: 0, Y: 0 },
-			{ X: board.width, Y: 0 },
-			{ X: board.width, Y: board.height },
-			{ X: 0, Y: board.height },
+			{ X: canvasInterface.width, Y: 0 },
+			{ X: canvasInterface.width, Y: canvasInterface.height },
+			{ X: 0, Y: canvasInterface.height },
 		],
 	];
 	var cpr = new ClipperLib.Clipper();
@@ -191,8 +191,8 @@ function moveSelection(dx, dy) {
 function adjustBoundingRect(side, amount) {
 	var largestX = 0;
 	var largestY = 0;
-	var smallestX = board.width;
-	var smallestY = board.height;
+	var smallestX = canvasInterface.width;
+	var smallestY = canvasInterface.height;
 	selectionPath.forEach((e) => {
 		e.forEach((x) => {
 			if (x.X > largestX) largestX = x.X;
@@ -231,10 +231,10 @@ function adjustBoundingRect(side, amount) {
 }
 
 function canvasResized() {
-	stripeWidth = 6 / (board ? board.canvScale : 4);
-	svgOffset = 1 / board.canvScale;
-	handleWidth = boundingHandleSize / board.canvScale;
-	boundingRotOffset = boundingLineRotSize / board.canvScale;
+	stripeWidth = 6 / (canvasInterface ? canvasInterface.canvScale : 4);
+	svgOffset = 1 / canvasInterface.canvScale;
+	handleWidth = boundingHandleSize / canvasInterface.canvScale;
+	boundingRotOffset = boundingLineRotSize / canvasInterface.canvScale;
 	updateBounding();
 	updateSelectionOutline();
 }
@@ -287,8 +287,16 @@ function setUpSelectionSVG() {
 	//group.appendChild(selectionFill)
 	selectionFill.setAttributeNS(null, "x", -stripeWidth);
 	selectionFill.setAttributeNS(null, "y", -stripeWidth);
-	selectionFill.setAttributeNS(null, "width", board.width + stripeWidth);
-	selectionFill.setAttributeNS(null, "height", board.height + stripeWidth);
+	selectionFill.setAttributeNS(
+		null,
+		"width",
+		canvasInterface.width + stripeWidth
+	);
+	selectionFill.setAttributeNS(
+		null,
+		"height",
+		canvasInterface.height + stripeWidth
+	);
 	selectionFill.setAttributeNS(null, "fill", "url(#stripes)");
 
 	group.appendChild(selectionMaskBox);
@@ -301,7 +309,7 @@ var stripeOffset = 0;
 var previousElapsed;
 
 function stripeAnimation(elapsed) {
-	stripeOffset += 0.5 / (board.canvScale || 1);
+	stripeOffset += 0.5 / (canvasInterface.canvScale || 1);
 
 	selectionMaskAnti.setAttributeNS(null, "stroke-dashoffset", stripeOffset);
 	requestAnimationFrame(stripeAnimation);

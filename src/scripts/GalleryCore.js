@@ -178,9 +178,9 @@ function saveData() {
     project = {
         'name': projName,
         'palettes': filePalettes,
-        'currColor': board.color,
-        'width': board.width,
-        'height': board.height,
+        'currColor': canvasInterface.color,
+        'width': canvasInterface.width,
+        'height': canvasInterface.height,
         'layers': layers.reverse()
     }
     localStorage.setItem('pc-canvas-data', JSON.stringify(project));*/
