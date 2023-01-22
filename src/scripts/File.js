@@ -5,7 +5,7 @@ function packFile() {
 		currColor: canvasInterface.color,
 		width: canvasInterface.width,
 		height: canvasInterface.height,
-		layers: layers.reverse(),
+		layers: [...layers].reverse(),
 	};
 	var packedData = btoa(JSON.stringify(project));
 	return packedData;
@@ -47,29 +47,23 @@ function loadFile(file) {
 	if (typeof canvasInterface !== "undefined") {
 		canvasInterface.destroy();
 	}
-	var width = +file.width;
-	var height = +file.height;
-	window.canvasInterface = new Canvas(file.width, file.height);
-	window.colors = defaultPalettes;
+	project = file;
+	window.canvasInterface = new Canvas(project.width, project.height);
+	if (project.palettes) {
+		window.colors = project.palettes;
+	} else {
+		window.colors = defaultPalettes;
+	}
 	preparePalette();
-	canvasInterface.setColor(file.currColor);
-	project = {
-		name: file.name,
-		palettes: filePalettes,
-		currColor: file.currColor,
-		width: width,
-		height: height,
-		layers: file.layers,
-	};
-
-	projName = project.name;
-
-	document.getElementById("topbar-project-name").value = projName;
-	file.layers.forEach((e) => {
+	window.canvasInterface.setColor(project.currColor);
+	updatePrevious(project.currColor);
+	project.layers.forEach((e) => {
 		console.log(e);
 		newLayer(e.name, e.data, e.settings);
 	});
+	projName = project.name;
 	initializeGestures();
+	document.getElementById("topbar-project-name").value = project.name;
 }
 
 function openFile() {

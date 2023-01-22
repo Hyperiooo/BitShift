@@ -33,12 +33,6 @@ window.addEventListener("load", async () => {
 			window.location.href = "login";
 		return;
 	}
-
-	if (window.location.hash && window.location.pathname.includes("draw")) {
-		selectProject(window.location.hash.replace("#", ""));
-	} else if (window.location.pathname.includes("draw")) {
-		//window.location.href = "/";
-	}
 });
 async function queryUserMeta() {
 	var { data, err } = await supabase
@@ -215,8 +209,10 @@ async function updateProject(id, dat) {
 }
 
 function selectProject(pID) {
+	console.log("Loading project " + pID + "...");
 	queryProjects().then(() => {
 		window.currentProject = window.allLoadedProjects.find((e) => e.id == pID);
+		loadFile(window.currentProject.data);
 	});
 	//document.getElementById("data").value = window.currentProject.data.msg
 }

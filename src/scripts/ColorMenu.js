@@ -513,7 +513,6 @@ function updatePrevious(col) {
 	if (previousPrevious != null) {
 		if (previousPrevious == col) return;
 		else {
-			console.log("a!!!");
 			let e = document.createElement("div");
 			e.setAttribute("data-palette-color", previousPrevious.hexh);
 			e.classList.add("palette-color");

@@ -1,16 +1,21 @@
 class Layer {
-	constructor(name, data) {
+	constructor(name, data, settings) {
 		this.index = layers.length;
 		this.id = randomString(10);
 		this.name = name || "Layer " + layers.length;
 		this.data = data || null;
 		layers.unshift(this);
-
-		this.settings = {
-			visible: true,
-			locked: false,
-			alpha: false,
-		};
+		if (settings) {
+			this.settings = {
+				visible: settings.visible == undefined ? true : settings.visible,
+				locked: settings.locked == undefined ? false : settings.locked,
+				alpha: settings.alpha == undefined ? false : settings.alpha,
+			};
+		}else {
+			this.settings = {
+				visible: true, locked:false, alpha: false
+			}
+		}
 
 		this.previousIndex = this.index;
 
@@ -384,6 +389,11 @@ class Layer {
 			if (_self.moving) e.preventDefault();
 		};
 		layerMain.appendChild(this.layerElement);
+		this.injectSettings();
+	}
+	injectSettings() {
+		setLayerVisibility(this.id, this.visButton, this.settings.visible);
+		setLayerLock(this.id, this.lockButton, this.settings.locked);
 	}
 	shiftToNewLayerPosition(index) {
 		if (index > this.index) {
@@ -535,90 +545,8 @@ function arraymove(arr, fromIndex, toIndex) {
 	arr.splice(toIndex, 0, element);
 }
 
-function newLayerB(n, data) {
-	//create a blank layer
-	var nm = n || "Layer " + (layers.length + 1);
-	var id = randomString(10);
-	console.log(layers.length);
-	var wrap = document.createElement("div");
-	wrap.classList.add("layer-wrap");
-	wrap.id = "l-" + id;
-	wrap.onpointerup = function (e) {
-		e.preventDefault();
-		console.log("pointer");
-		if (e.target == wrap) setLayer(id);
-	};
-	var preview = document.createElement("canvas");
-	preview.classList.add("layer-preview");
-	preview.width = project.width;
-	preview.height = project.height;
-	var name = document.createElement("div");
-	name.classList.add("layer-name");
-	name.innerText = nm;
-	wrap.appendChild(preview);
-	wrap.appendChild(name);
-	document.getElementById("layer-main").prepend(wrap);
-
-	var visButton = document.createElement("button");
-	visButton.classList.add("layer-visibility");
-	visButton.setAttribute("onclick", `toggleLayerVisibility('${id}', this)`);
-
-	var visIcon = document.createElement("i");
-	visIcon.classList.add("hi-eye");
-
-	visButton.appendChild(visIcon);
-
-	var lockButton = document.createElement("button");
-	lockButton.classList.add("layer-locked");
-	lockButton.setAttribute("onclick", `toggleLayerLock('${id}', this)`);
-
-	var lockIcon = document.createElement("i");
-	lockIcon.classList.add("hi-lock-open");
-
-	lockButton.appendChild(lockIcon);
-
-	wrap.appendChild(visButton);
-
-	wrap.appendChild(lockButton);
-
-	var drawCanvas = document.createElement("canvas");
-	drawCanvas.setAttribute("customcursor", "");
-	drawCanvas.width = project.width;
-	drawCanvas.height = project.height;
-	drawCanvas.classList.add("drawingCanvas");
-	drawCanvas.id = "c-" + id;
-	drawCanvas.style.setProperty("--zindex", layers.length);
-	var context = drawCanvas.getContext("2d");
-	document.getElementById("layerParent").prepend(drawCanvas);
-
-	layers.unshift({
-		name: nm,
-		index: layers.length,
-		id: id,
-		previewCanvas: preview,
-		previewCTX: preview.getContext("2d"),
-		layerElement: wrap,
-		canvasElement: drawCanvas,
-		ctx: context,
-		settings: {
-			visible: true,
-			locked: false,
-		},
-		data: data || null,
-	});
-	if (data) {
-		let img = new Image();
-		img.setAttribute("src", data);
-		img.addEventListener("load", function () {
-			context.drawImage(img, 0, 0);
-			preview.getContext("2d").drawImage(img, 0, 0);
-		});
-	}
-	setLayer(id, true);
-}
-
-function newLayer(n, data) {
-	var nLayer = new Layer(n, data);
+function newLayer(n, data, settings) {
+	var nLayer = new Layer(n, data, settings);
 	setTimeout(() => {
 		updateNormalTops();
 		setLayer(nLayer.id);
@@ -630,7 +558,6 @@ function createMultipleLayers(n) {
 	}
 }
 function clearLayerMenu() {
-	console.trace("a");
 	document.getElementById("layer-main").innerText = "";
 }
 
@@ -686,10 +613,23 @@ function toggleLayerVisibility(id, el) {
 	});
 	if (layer) {
 		if (layer.settings.visible == true) {
+			setLayerVisibility(id, el, false);
+		} else if (layer.settings.visible == false) {
+			setLayerVisibility(id, el, true);
+		}
+	}
+}
+
+function setLayerVisibility(id, el, state) {
+	layer = layers.find((obj) => {
+		return obj.id == id;
+	});
+	if (layer) {
+		if (state == false) {
 			el.querySelector("i").classList.replace("hi-eye", "hi-eye-crossed");
 			layer.settings.visible = false;
 			layer.canvasElement.style.visibility = "hidden";
-		} else if (layer.settings.visible == false) {
+		} else if (state == true) {
 			el.querySelector("i").classList.replace("hi-eye-crossed", "hi-eye");
 			layer.settings.visible = true;
 			layer.canvasElement.style.visibility = "unset";
@@ -703,29 +643,26 @@ function toggleLayerLock(id, el) {
 	});
 	if (layer) {
 		if (layer.settings.locked == true) {
-			el.querySelector("i").classList.replace("hi-lock", "hi-lock-open");
-			layer.settings.locked = false;
+			setLayerLock(id, el, false);
 		} else if (layer.settings.locked == false) {
-			el.querySelector("i").classList.replace("hi-lock-open", "hi-lock");
-			layer.settings.locked = true;
+			setLayerLock(id, el, true);
 		}
 	}
 }
-function toggleAlphaLock(id, el) {
+function setLayerLock(id, el, state) {
 	layer = layers.find((obj) => {
 		return obj.id == id;
 	});
 	if (layer) {
-		if (layer.settings.locked == true) {
-			el.querySelector("i").classList.replace("hi-lock", "hi-lock-open");
-			layer.settings.locked = false;
-		} else if (layer.settings.locked == false) {
+		if (state == true) {
 			el.querySelector("i").classList.replace("hi-lock-open", "hi-lock");
 			layer.settings.locked = true;
+		} else if (state == false) {
+			el.querySelector("i").classList.replace("hi-lock", "hi-lock-open");
+			layer.settings.locked = false;
 		}
 	}
 }
-
 function openLayerSettings(layer) {
 	console.log(layer.settings);
 }

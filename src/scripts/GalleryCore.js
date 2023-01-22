@@ -135,7 +135,7 @@ if (
 	isMobile = true;
 }
 
-window.onload = function () {
+window.onload = async function () {
 	debug = new Alrt({
 		position: "bottom-left",
 		duration: 2000,
@@ -154,18 +154,39 @@ window.onload = function () {
 		draggableNumInputs.push(new numberDraggable(e));
 	});
 
-	let canvasData = localStorage.getItem("pc-canvas-data");
-
 	setTheme(localStorage.getItem("theme") || "ui-theme-dark");
 
-	if (canvasData) {
-		data = JSON.parse(canvasData);
-		project = data;
-		projName = data.name;
-	} else {
-		newProject();
-	}
+	const {
+		data: { user },
+	} = await supabase.auth.getUser();
+	queryProjects().then(() => {
+		window.allLoadedProjects.forEach((project) => {
+			console.log(project.name);
+			var orientation = "";
+			if (project.data.width > project.data.height) {
+				orientation = "--width: var(--maxSize)";
+			} else if (project.data.width < project.data.height) {
+				orientation = "--height: var(--maxSize)";
+			} else {
+				orientation = "--width: var(--maxSize); --height: var(--maxSize)";
+			}
+			var html = `
+			<button class="galleryCard" onclick="openProject('${project.id}')">
+			  <br><div class="cardImage" style="${orientation}">
+				<img src="${project.data.previewImage}" alt="">
+			  </div><div>
+			  <div class="cardTitle">${project.name}</div>
+			  <div class="cardDetails">${project.data.width}px x ${project.data.height}px</div>
+			  </div></button>
+			`;
+			document.getElementById("galleryWrapper").innerHTML += html;
+		});
+		console.log(window.allLoadedProjects);
+	});
 };
+function openProject(id) {
+	window.location.href = "/draw#" + id;
+}
 
 function newProject() {
 	closeMenu();

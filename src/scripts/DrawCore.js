@@ -180,7 +180,7 @@ if (isMobile) {
 	}
 }
 //initialiation
-window.onload = function () {
+window.onload = async function () {
 	debug = new Alrt({
 		position: "bottom-left",
 		duration: 2000,
@@ -203,46 +203,18 @@ window.onload = function () {
 
 	refreshAllNumberDraggables();
 
-	let canvasData = localStorage.getItem("pc-canvas-data");
-
 	setTheme(localStorage.getItem("theme") || "ui-theme-dark");
 	setAccent(localStorage.getItem("accent") || "ui-accent-blue");
+	window.numberPad = new NumberInputKeypad();
 
-	if (canvasData) {
-		data = JSON.parse(canvasData);
-		project = data;
-		window.canvasInterface = new Canvas(data.width, data.height);
-		window.numberPad = new NumberInputKeypad();
+	const {
+		data: { user },
+	} = await supabase.auth.getUser();
 
-		window.canvasInterface.steps = data.steps;
-		window.canvasInterface.redo_arr = data.redo_arr;
-		if (data.palettes) window.colors = data.palettes;
-		preparePalette();
-		console.log(data);
-		window.canvasInterface.setColor(data.currColor);
-		updatePrevious(data.currColor);
-		data.layers.reverse().forEach((e) => {
-			console.log(e);
-			newLayer(e.name, e.data);
-		});
-		window.gif = new GIF({
-			workers: 2,
-			quality: 10,
-			width: this.canvUnit * window.canvasInterface.width,
-			height: this.canvUnit * window.canvasInterface.height,
-		});
-		window.gif.on("finished", function (blob) {
-			var url = URL.createObjectURL(blob);
-			var link = document.createElement("a");
-			link.download = "canvas.gif";
-			link.href = url;
-			link.click();
-		});
-		projName = data.name;
-		document.getElementById("topbar-project-name").value = data.name;
-		initializeGestures();
-	} else {
-		newProject();
+	if (window.location.hash && window.location.pathname.includes("draw")) {
+		selectProject(window.location.hash.replace("#", ""));
+	} else if (window.location.pathname.includes("draw")) {
+		window.location.href = "/";
 	}
 	setUpSelectionSVG();
 	populatePresets();
@@ -278,10 +250,27 @@ function compileData() {
 		currColor: canvasInterface.color,
 		width: canvasInterface.width,
 		height: canvasInterface.height,
-		layers: layers,
+		layers: [...layers].reverse(),
+		previewImage: createPreviewImage(),
 	};
 	return project;
 }
+
+function createPreviewImage() {
+	var dummyCanvas = document.createElement("canvas");
+	dummyCanvas.width = project.width;
+	dummyCanvas.height = project.height;
+	var dCtx = dummyCanvas.getContext("2d");
+	dCtx.clearRect(0, 0, project.width, project.height);
+	dCtx.imageSmoothingEnabled = false;
+	var reversed = [...layers].reverse();
+	reversed.forEach((e) => {
+		dCtx.globalCompositeOperation = "source-over";
+		if (e.settings.visible) dCtx.drawImage(e.canvasElement, 0, 0);
+	});
+	return dummyCanvas.toDataURL("image/png");
+}
+
 function saveData() {
 	localStorage.setItem("pc-canvas-data", JSON.stringify(compileData()));
 }
@@ -337,5 +326,6 @@ function renameProject(el) {
 		return;
 	} else {
 		projName = el.value;
+		project.name = el.value;
 	}
 }

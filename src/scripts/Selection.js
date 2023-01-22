@@ -36,7 +36,7 @@ var selectionStripeFill = document.createElementNS(
 	"rect"
 );
 
-var selectionMaskBox, selectionMaskAnti, selectionMask, selectionFill;
+var selectionMaskBox, selectionMaskAnti, selectionMask;
 var svgOffset = 1;
 var handleWidth = boundingHandleSize;
 
@@ -278,26 +278,8 @@ function setUpSelectionSVG() {
 		"mask"
 	);
 	selectionMask.setAttributeNS(null, "id", "selectMask");
-	selectionFill = document.createElementNS(
-		"http://www.w3.org/2000/svg",
-		"rect"
-	);
 	var group = document.createElementNS("http://www.w3.org/2000/svg", "g");
 	//group.setAttributeNS(null, "mask", "url(#selectMask)")
-	//group.appendChild(selectionFill)
-	selectionFill.setAttributeNS(null, "x", -stripeWidth);
-	selectionFill.setAttributeNS(null, "y", -stripeWidth);
-	selectionFill.setAttributeNS(
-		null,
-		"width",
-		canvasInterface.width + stripeWidth
-	);
-	selectionFill.setAttributeNS(
-		null,
-		"height",
-		canvasInterface.height + stripeWidth
-	);
-	selectionFill.setAttributeNS(null, "fill", "url(#stripes)");
 
 	group.appendChild(selectionMaskBox);
 	group.appendChild(selectionMaskAnti);

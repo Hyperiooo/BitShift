@@ -512,11 +512,11 @@ function compileForEyedropper() {
 	eyedropperPreviewCanvas.height = project.height;
 	var eCtx = eyedropperPreviewCanvas.getContext("2d");
 	eCtx.clearRect(0, 0, project.width, project.height);
-	eCtx.globalCompositeOperation = "source-over";
 	eCtx.imageSmoothingEnabled = false;
 	eCtx.drawImage(canvasInterface.bggridcanvas, 0, 0);
 	var reversed = [...layers].reverse();
 	reversed.forEach((e) => {
+		eCtx.globalCompositeOperation = "source-over";
 		if (e.settings.visible) eCtx.drawImage(e.canvasElement, 0, 0);
 	});
 }
