@@ -1,9 +1,9 @@
 document.addEventListener("DOMContentLoaded", async function (event) {
 	var signUpForm = document.querySelector("#sign-up");
-	signUpForm.onsubmit = signUpSubmitted;
+	if (signUpForm) signUpForm.onsubmit = signUpSubmitted;
 
 	var logInForm = document.querySelector("#log-in");
-	logInForm.onsubmit = logInSubmitted;
+	if (logInForm) logInForm.onsubmit = logInSubmitted;
 
 	var logoutButton = document.querySelector("#logout-button");
 	logoutButton.onclick = logoutSubmitted;
