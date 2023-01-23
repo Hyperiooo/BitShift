@@ -75,6 +75,8 @@ html {
   --textDim: #cacaca;
   --error: #ff163d;
   --errorT: #ff163da9;
+  --success: #40d893;
+  --successT: #40d893a9;
   --accentText: #ffffff;
   --scrollTrack: #201f22;
   --scrollHover: #3b3a3d;
@@ -103,6 +105,8 @@ html {
   --textDim: #1b1c2e;
   --error: #ff2d3e;
   --errorT: #ff2d3ea9;
+  --success: #40d893;
+  --successT: #40d893a9;
   --accentText: #ffffff;
   --scrollTrack: #eaeaee;
   --scrollHover: #c0c2c9;

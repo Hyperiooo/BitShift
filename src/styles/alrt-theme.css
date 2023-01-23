@@ -127,3 +127,55 @@ div[id*='alrt-main'].alrt-top-center {
     overflow: hidden;
     animation-fill-mode: forwards;
 }
+
+/*success*/
+.alrt-wrap[data-theme="bitshift-success"] {
+    color: black;
+    background: var(--success);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    padding: 0;
+    border-radius: 10px;
+}
+
+.alrt-wrap[data-theme="bitshift-success"] p {
+    margin: 15px 25px;
+    font-size: 18px;
+}
+
+.alrt-wrap[data-theme="bitshift-success"] p i {
+    font-size: 18px;
+    color: var(--textDim);
+    margin-right: 5px;
+}
+
+.alrt-wrap[data-theme="bitshift-success"] .alrt-close-button {
+    height: 30px;
+    width: 30px;
+    margin: 0;
+    padding: 0;
+    pointer-events: all;
+    text-align: center;
+    font-size: 20px;
+    line-height: 20px;
+    background: none;
+    outline: none;
+    border: none;
+    color: transparent;
+    cursor: pointer;
+    margin-left: 5px;
+}
+
+.alrt-top-left .alrt-wrap[data-theme="bitshift-success"],
+.alrt-top-right .alrt-wrap[data-theme="bitshift-success"],
+.alrt-top-center .alrt-wrap[data-theme="bitshift-success"] {
+    animation-name: bitshift-top-in;
+    margin-top: 10px;
+}
+
+.alrt-wrap[data-theme="bitshift-success"].alrt-top-out {
+    animation-name: bitshift-top-out !important;
+    animation-duration: 0.4s;
+    overflow: hidden;
+    animation-fill-mode: forwards;
+}

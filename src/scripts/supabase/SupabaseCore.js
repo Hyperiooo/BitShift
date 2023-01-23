@@ -110,6 +110,9 @@ async function signUpSubmitted(event) {
 		.then((response) => {
 			response.error ? console.log(response.error.message) : setToken(response);
 			supabase.auth.updateUser({ data: { display_name: "test" } });
+			notifySuccess.log(
+				"Confirmation Email Sent. If you have not received one in 5 minutes, check your spam folder."
+			);
 		})
 		.catch((err) => {
 			alert(err);
@@ -120,6 +123,12 @@ notifyError = new Alrt({
 	position: "top-center",
 	duration: 10000, //default duration
 	theme: "bitshift-error",
+	behavior: "overwrite",
+});
+notifySuccess = new Alrt({
+	position: "top-center",
+	duration: 10000, //default duration
+	theme: "bitshift-success",
 	behavior: "overwrite",
 });
 const logInSubmitted = (event) => {
