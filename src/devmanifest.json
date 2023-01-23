@@ -6,7 +6,7 @@
 	"orientation": "landscape-primary",
 	"icons": [
 		{
-			"src": "./assets/logo.svg",
+			"src": "./assets/logo.png",
 			"sizes": "512x512",
 			"type": "image/svg"
 		}

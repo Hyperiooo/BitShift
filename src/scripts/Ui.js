@@ -143,50 +143,6 @@ class numberDraggable {
 		document.removeEventListener("pointermove", this.pointerMoveHandler);
 	}
 }
-class Popup {
-	constructor(s) {
-		this.s = s;
-		document.querySelector(this.s).classList.add("popup-open");
-	}
-	close() {
-		document.querySelector(this.s).classList.remove("popup-open");
-	}
-}
-
-function closePopup() {
-	window.dim.close();
-}
-
-function confirmNewProject() {
-	clearPalettes();
-	clearLayerMenu();
-	clearLayers();
-	layers = [];
-	if (typeof canvasInterface !== "undefined") {
-		canvasInterface.destroy();
-	}
-	var width = +document.querySelector("#width").value;
-	var height = +document.querySelector("#height").value;
-	window.canvasInterface = new Canvas(width, height);
-	window.colors = defaultPalettes;
-	preparePalette();
-	canvasInterface.setColor(new Color(colors[0].colors[0]));
-	window.dim.close();
-	project = {
-		name: "Untitled Sprite",
-		palettes: filePalettes,
-		currColor: canvasInterface.color,
-		width: width,
-		height: height,
-		layers: [],
-	};
-
-	projName = project.name;
-
-	document.getElementById("topbar-project-name").value = projName;
-	newLayer();
-	initializeGestures();
-}
 
 function toggleMenu() {
 	document.querySelector(".menu").classList.toggle("menu-open");
@@ -225,12 +181,12 @@ window.closeSplash = () => {
 };
 
 //replace when you have a functioning window system
-function openSettingsWindow() {
-	document.getElementById("window-settings").classList.remove("window-closed");
+function openWindow(window) {
+	document.getElementById("window-" + window).classList.remove("window-closed");
 }
 
-function closeSettingsWindow() {
-	document.getElementById("window-settings").classList.add("window-closed");
+function closeWindow(window) {
+	document.getElementById("window-" + window).classList.add("window-closed");
 }
 
 class NumberInputKeypad {
@@ -304,7 +260,6 @@ class NumberInputKeypad {
 	}
 	reposition() {
 		if (!this.target) return;
-		console.log(this.popper);
 		this.popper.state.elements.reference = this.target;
 		this.popper.update();
 		this.popper.forceUpdate();

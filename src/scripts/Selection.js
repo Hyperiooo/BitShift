@@ -291,7 +291,7 @@ var stripeOffset = 0;
 var previousElapsed;
 
 function stripeAnimation(elapsed) {
-	stripeOffset += 0.5 / (canvasInterface.canvScale || 1);
+	if (canvasInterface) stripeOffset += 0.5 / canvasInterface.canvScale;
 
 	selectionMaskAnti.setAttributeNS(null, "stroke-dashoffset", stripeOffset);
 	requestAnimationFrame(stripeAnimation);

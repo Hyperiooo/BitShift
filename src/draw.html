@@ -8,7 +8,7 @@
   <meta name="viewport"
     content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no" />
   <title>BitShift</title>
-  <link rel="icon" type="image/svg" href="./assets/logo.svg" />
+  <link rel="icon" type="image/svg" href="./assets/logo.png" />
   <link rel="manifest" href="manifest.json" />
   <!-- IOS SUPPORT -->
   <meta name="apple-mobile-web-app-status-bar" />
@@ -54,7 +54,7 @@
   <script src="./scripts/anime.js" defer></script>
   <script defer type="text/javascript" src="./scripts/DrawCore.js"></script>
   <!--STYLES & FONTS-->
-  <link href="https://cdn.jsdelivr.net/gh/Hyperiooo/Hypericons@v0.6.7/fonts/hypericons.css" rel="stylesheet"
+  <link href="https://cdn.jsdelivr.net/gh/Hyperiooo/Hypericons@v0.6.8/fonts/hypericons.css" rel="stylesheet"
     type="text/css" />
   <link rel="stylesheet" href="./styles/main.css" />
   <link rel="stylesheet" href="./styles/alrt-theme.css" />
@@ -69,10 +69,9 @@
   <div id="cursor" class="invertBackground"></div>
   <img id="img" />
   <div class="menu">
-    <div class="menu-btn" onclick="newProject(); closeMenu()">New</div>
     <div class="menu-btn" onclick="saveFile(); closeMenu()">Save</div>
     <div class="menu-btn" onclick="openFile(); closeMenu()">Open</div>
-    <div class="menu-btn" onclick="openSettingsWindow(); closeMenu()">Settings</div>
+    <div class="menu-btn" onclick="openWindow('settings'); closeMenu()">Settings</div>
     <div class="menu-btn" onclick="canvasInterface.recenter(); closeMenu()">Recenter</div>
     <div class="menu-btn" onclick="canvasInterface.clear(); closeMenu()">Clear</div>
   </div>
@@ -194,56 +193,20 @@
   <div class="layer-menu" id="layer-menu">
     <div class="layer-menu-controls">
       <button class="layer-menu-button">
-        <i class="hi-copy-fill"></i>
+        <i class="hi-copy"></i>
       </button>
       <button class="layer-menu-button" onclick="activeLayer.delete()">
         <i class="hi-trash"></i>
       </button>
       <button class="layer-menu-button">
-        <i class="hi-folder-fill"></i>
+        <i class="hi-folder"></i>
       </button>
       <button onclick="newLayer()" class="layer-menu-button">
-        <i class="hi-plus-large-line"></i>
+        <i class="hi-plus-large"></i>
       </button>
     </div>
     <div id="layer-main">
       <div id="layer-position-preview-horizontal"></div>
-    </div>
-  </div>
-  <div id="popup" class="popup">
-    <div class="popup-top-bar">
-      <h1>New File</h1>
-    </div>
-    <div class="popup-content">
-      <div class="popup-preset-group" id="popup-presets"></div>
-      <div class="popup-sidebar">
-        <span class="popup-input-group">
-          <p class="popup-input-title">Width</p>
-          <div class="popup-input-wrap">
-            <div class="popup-input-field">
-              <input data-input-num-draggable class="popup-input-num" type="number" id="width" value="16" min="0"
-                max="1024" data-input-num-unit="px" />
-              <p class="popup-input-unit">px</p>
-            </div>
-          </div>
-        </span>
-        <span class="popup-input-group">
-          <p class="popup-input-title">Height</p>
-          <div class="popup-input-wrap">
-            <div class="popup-input-field">
-              <input data-input-num-draggable class="popup-input-num" type="number" id="height" value="16" min="0"
-                max="1024" data-input-num-unit="px" />
-              <p class="popup-input-unit">px</p>
-            </div>
-          </div>
-        </span>
-        <div class="popup-btn-group">
-          <button onclick="confirmNewProject()" id="close" class="popup-btn popup-btn-imp">
-            OK
-          </button>
-          <button onclick="closePopup()" class="popup-btn">Cancel</button>
-        </div>
-      </div>
     </div>
   </div>
   <div id="export-menu" class="export-menu">
@@ -357,15 +320,14 @@
 
   <div id="topbar" class="ui">
     <div id="topbar-left">
-      <span class="item" onclick="openGallery()"><i class="hi-left-arrow-large-line"></i></span>
+      <span class="item" onclick="openGallery()"><i class="hi-carat-left"></i></span>
       <button class="topbar-button" onclick="toggleMenu()">File</button>
       <button class="item" onclick="openExportMenu()" id="exportButton">
         <i class="hi-export"></i>
       </button>
     </div>
 
-    <input  type="text" id="topbar-project-name" value=""
-      onblur="renameProject(this)" />
+    <input type="text" id="topbar-project-name" value="" onblur="renameProject(this)" />
 
     <div id="tool-settings-content"></div>
     <div id="topbar-right">
@@ -396,6 +358,9 @@
 
   <div id="window-settings" class="window-wrap window-closed">
     <div class="window-content">
+      <button class="window-close" onclick="closeWindow('settings')">
+        <i class="hi-x"></i>
+      </button>
       <div class="window-sidebar">
         <h1>Settings</h1>
         <button class="window-sidebar-button window-sidebar-button-active">
@@ -426,50 +391,50 @@
           <p>Help</p>
         </button>
       </div>
-      <div class="window-header">
-        <h1>General</h1>
-        <button class="window-close" onclick="closeSettingsWindow()">
-          <i class="hi-x"></i>
-        </button>
-      </div>
-      <div class="window-inner">
-        <span class="window-input-group">
-          <p class="window-input-title">Theme</p>
-          <div class="window-input-wrap">
-            <div class="window-btn-group">
-              <button id="ui-theme-light" onclick="setTheme(Themes.light)" class="window-btn theme-button">
-                Light
-              </button>
-              <button id="ui-theme-dark" onclick="setTheme(Themes.dark)" class="window-btn theme-button">
-                Dark
-              </button>
-              <button id="ui-theme-system-default" onclick="setTheme(Themes.system)" class="window-btn theme-button">
-                System Theme
-              </button>
+      <div class="window-main">
+        <div class="window-header">
+          <h1>General</h1>
+        </div>
+        <div class="window-inner">
+          <span class="window-input-group">
+            <p class="window-input-title">Theme</p>
+            <div class="window-input-wrap">
+              <div class="window-btn-group">
+                <button id="ui-theme-light" onclick="setTheme(Themes.light)" class="window-btn theme-button">
+                  Light
+                </button>
+                <button id="ui-theme-dark" onclick="setTheme(Themes.dark)" class="window-btn theme-button">
+                  Dark
+                </button>
+                <button id="ui-theme-system-default" onclick="setTheme(Themes.system)" class="window-btn theme-button">
+                  System Theme
+                </button>
+              </div>
             </div>
-          </div>
-        </span>
-        <span class="window-input-group">
-          <p class="window-input-title">Accent Color</p>
-          <div class="window-input-wrap">
-            <div class="window-btn-group">
-              <button id="ui-accent-red" onclick="setAccent(Accents.red)" class="window-btn accent-button">
-              </button><button id="ui-accent-orange" onclick="setAccent(Accents.orange)"
-                class="window-btn accent-button">
-              </button><button id="ui-accent-yellow" onclick="setAccent(Accents.yellow)"
-                class="window-btn accent-button">
-              </button><button id="ui-accent-green" onclick="setAccent(Accents.green)" class="window-btn accent-button">
-              </button>
-              <button id="ui-accent-teal" onclick="setAccent(Accents.teal)" class="window-btn accent-button">
-              </button><button id="ui-accent-blue" onclick="setAccent(Accents.blue)" class="window-btn accent-button">
-              </button><button id="ui-accent-purple" onclick="setAccent(Accents.purple)"
-                class="window-btn accent-button">
-              </button><button id="ui-accent-pink" onclick="setAccent(Accents.pink)" class="window-btn accent-button">
-              </button>
+          </span>
+          <span class="window-input-group">
+            <p class="window-input-title">Accent Color</p>
+            <div class="window-input-wrap">
+              <div class="window-btn-group">
+                <button id="ui-accent-red" onclick="setAccent(Accents.red)" class="window-btn accent-button">
+                </button><button id="ui-accent-orange" onclick="setAccent(Accents.orange)"
+                  class="window-btn accent-button">
+                </button><button id="ui-accent-yellow" onclick="setAccent(Accents.yellow)"
+                  class="window-btn accent-button">
+                </button><button id="ui-accent-green" onclick="setAccent(Accents.green)"
+                  class="window-btn accent-button">
+                </button>
+                <button id="ui-accent-teal" onclick="setAccent(Accents.teal)" class="window-btn accent-button">
+                </button><button id="ui-accent-blue" onclick="setAccent(Accents.blue)" class="window-btn accent-button">
+                </button><button id="ui-accent-purple" onclick="setAccent(Accents.purple)"
+                  class="window-btn accent-button">
+                </button><button id="ui-accent-pink" onclick="setAccent(Accents.pink)" class="window-btn accent-button">
+                </button>
 
+              </div>
             </div>
-          </div>
-        </span>
+          </span>
+        </div>
       </div>
     </div>
   </div>

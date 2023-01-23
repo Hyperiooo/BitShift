@@ -61,9 +61,27 @@ function loadFile(file) {
 		console.log(e);
 		newLayer(e.name, e.data, e.settings);
 	});
+	if (project.layers.length == 0) {
+		newLayer();
+	}
 	projName = project.name;
 	initializeGestures();
 	document.getElementById("topbar-project-name").value = project.name;
+}
+
+function createNewProject() {
+	var width = +document.querySelector("#width").value;
+	var height = +document.querySelector("#height").value;
+	project = {
+		name: "Untitled Sprite",
+		palettes: defaultPalettes,
+		currColor: new Color(colors[0].colors[0]),
+		width: width,
+		height: height,
+		layers: [],
+	};
+	newSupaProject(project);
+	closeWindow("newfile");
 }
 
 function openFile() {

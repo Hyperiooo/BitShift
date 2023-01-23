@@ -121,17 +121,18 @@ const logInSubmitted = (event) => {
 	const email = event.target[0].value;
 	const password = event.target[1].value;
 
-	supabase.auth
-		.signInWithPassword({ email, password })
-		.then((response) => {
+	supabase.auth.signInWithPassword({ email, password }).then((response) => {
+		console.log(response.error ? "z" : "b", response);
+		if (response.error) {
+			if (response.error.message == "Invalid login credentials") {
+				notify.log("Invalid login credentials");
+			}
+		} else {
 			console.log("Signed In");
-			console.log(response.error ? "z" : "b");
-			response.error ? console.log(response.error.message) : setToken(response);
+			setToken(response);
 			window.location.href = "/";
-		})
-		.catch((err) => {
-			console.log(err.response.text);
-		});
+		}
+	});
 };
 
 const logoutSubmitted = (event) => {
@@ -171,7 +172,8 @@ async function setToken(response) {
 }
 /*creates project*/
 async function newSupaProject(projData) {
-	var id = crypto.randomUUID();
+	var id = uuidv4();
+	console.log(id);
 	const { data, error } = await supabase.from("projects").insert([
 		{
 			id: id,
@@ -188,7 +190,20 @@ async function newSupaProject(projData) {
 		window.allLoadedProjects.push(data[0]);
 	}
 	queryProjects();
+	populateProjects();
+	openProject(id);
 	return id;
+}
+//function to create random uuid
+function uuidv4() {
+	if (crypto.randomUUID) {
+		return crypto.randomUUID();
+	}
+	return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
+		var r = (Math.random() * 16) | 0,
+			v = c == "x" ? r : (r & 0x3) | 0x8;
+		return v.toString(16);
+	});
 }
 async function updateProject(id, dat) {
 	const { data, error } = await supabase
