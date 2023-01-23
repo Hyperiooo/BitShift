@@ -31,12 +31,16 @@ function parseFile() {
 			let reader = new FileReader();
 			reader.addEventListener("load", (event) => {
 				var file = JSON.parse(atob(event.target.result));
-				loadFile(file);
+				importFile(file);
 			});
 
 			reader.readAsText(file);
 		}
 	}
+}
+
+function importFile(file) {
+	newSupaProject(file);
 }
 
 function loadFile(file) {
