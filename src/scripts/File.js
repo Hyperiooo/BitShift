@@ -71,6 +71,9 @@ function loadFile(file) {
 	projName = project.name;
 	initializeGestures();
 	document.getElementById("topbar-project-name").value = project.name;
+	setTimeout(() => {
+		window.dispatchEvent(window.cloudSyncEvent);
+	}, 1);
 }
 
 function createNewProject() {

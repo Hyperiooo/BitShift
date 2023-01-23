@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="./assets/logo.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HyperID Login</title>
+    <link rel="stylesheet" href="./styles/main.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-status-bar" />
+    <meta name="theme-color" />
+    <meta name="apple-mobile-web-app-status-bar-style">
+
+    <script src="https://cdn.jsdelivr.net/gh/Hyperiooo/Alrt.js@v0.1.2/src/alrt.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Hyperiooo/Alrt.js@v0.1.1/src/alrt.css" />
+
+    <link rel="stylesheet" href="./styles/alrt-theme.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+    <script src="./scripts/supabase/SupabaseCore.js" defer></script>
+    <script src="./scripts/supabase/SupabaseLoginPage.js" defer></script>
+    <script src="./scripts/Utils.js"></script>
+    <link rel="stylesheet" href="./styles/auth.css">
+    <script src="./scripts/AuthBackground.js"></script>
+
+</head>
+
+<body class="ui-theme-dark">
+    <div class="main">
+        <div id="right-main">
+        </div>
+        <div id="card">
+            <div id="card-header"><img id="hyperio-logo" src="./assets/logo.svg" alt="Hyperio Logo" srcset="">
+            </div>
+            <div id="card-signin" class="card-content">
+                <h1>Sign In</h1><!--
+                <div class="form-multi-button">
+                    <button class="button-social button-social-github" onclick="
+                    var googleSignInEvent = new Event('attempt-google-login');window.dispatchEvent(googleSignInEvent)"
+                        id="google-login">
+                        <i class="hi-logo-github-line"></i>GitHub
+                    </button>
+                    <button class="button-social button-social-twitter" onclick="
+                    var googleSignInEvent = new Event('attempt-google-login');window.dispatchEvent(googleSignInEvent)"
+                        id="google-login">
+                        <i class="hi-logo-twitter-fill"></i>Twitter
+                    </button>
+                    <button class="button-social button-social-google" onclick="
+                    var googleSignInEvent = new Event('attempt-google-login');window.dispatchEvent(googleSignInEvent)"
+                        id="google-login">
+                        <i class="hi-logo-google-line"></i>Google
+                    </button>
+
+                </div>
+                <div class="divider">
+                    <span class="divider-arm divider-arm-left"></span>
+                    <p class="divider-text"> or</p>
+                    <span class="divider-arm divider-arm-right"></span>
+                </div>-->
+                <form id='log-in'>
+                    <div class="form-group">
+                        <p class="form-label">Email Address</p>
+                        <input type="email" name="email">
+                    </div>
+                    <div class="form-group">
+                        <p class="form-label">Password</p>
+                        <input type="password" name="password">
+                    </div>
+                    <input type="submit" value="Log In" />
+                    <div class="dialog">
+                        New to Hyperio? <a href="./signup.html">Sign Up</a>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+    <script>
+        var host = window.location.host
+        var subdomain = host.split('.')[0] || "none"
+        var colorList = {
+            "bitshift": BitShiftGradient,
+            "waveshape": WaveShapeGradient,
+            "none": HyperIDGradient
+        }
+        colors = colorList[subdomain] || HyperIDGradient
+        new Background();
+    </script>
+
+</body>
+
+</html>

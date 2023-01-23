@@ -19,8 +19,11 @@ supabase.auth.onAuthStateChange(async (event, session) => {
 		queryProjects();
 	} else if (event == "SIGNED_OUT") {
 		generateProjectList();
-		if (!window.location.pathname.includes("login"))
-			window.location.href = "login";
+		if (
+			!window.location.pathname.includes("signin") &&
+			!window.location.pathname.includes("signup")
+		)
+			window.location.href = "signin";
 	}
 });
 
@@ -29,8 +32,11 @@ window.addEventListener("load", async () => {
 		data: { user },
 	} = await supabase.auth.getUser();
 	if (!user) {
-		if (!window.location.pathname.includes("login"))
-			window.location.href = "login";
+		if (
+			!window.location.pathname.includes("signin") &&
+			!window.location.pathname.includes("signup")
+		)
+			window.location.href = "signin";
 		return;
 	}
 });
@@ -110,10 +116,10 @@ async function signUpSubmitted(event) {
 		});
 }
 
-notify = new Alrt({
+notifyError = new Alrt({
 	position: "top-center",
-	duration: 2000, //default duration
-	theme: "bitshift-confirmation",
+	duration: 10000, //default duration
+	theme: "bitshift-error",
 	behavior: "overwrite",
 });
 const logInSubmitted = (event) => {
@@ -125,7 +131,7 @@ const logInSubmitted = (event) => {
 		console.log(response.error ? "z" : "b", response);
 		if (response.error) {
 			if (response.error.message == "Invalid login credentials") {
-				notify.log("Invalid login credentials");
+				notifyError.log("Incorrect Email or Password.");
 			}
 		} else {
 			console.log("Signed In");
