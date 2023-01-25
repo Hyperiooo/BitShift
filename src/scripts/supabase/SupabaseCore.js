@@ -45,14 +45,16 @@ async function queryUserMeta() {
 		.from("users")
 		.select()
 		.eq("id", window.currentUser.id);
-
+	console.log(data[0].display_name +" name")
 	if (data) {
+		console.log("user data found", data[0])
 		window.currentUserMeta = data[0];
 		if (document.getElementById("accountName")) {
 			document.getElementById("accountName").innerHTML =
 				window.currentUserMeta.display_name;
 		}
 	} else {
+		console.log("inserting user metadata")
 		const { data, error } = await supabase.from("users").insert([
 			{
 				id: window.currentUser.id,

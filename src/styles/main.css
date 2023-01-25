@@ -835,7 +835,7 @@ foreignObject {
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  background: var(--bgDarkT);
+  background-image: linear-gradient(to bottom, var(--appBarThemeColor),var(--bgDarkT));
   backdrop-filter: saturate(180%) blur(20px);
   -webkit-backdrop-filter: saturate(180%) blur(20px);
   height: 50px;
