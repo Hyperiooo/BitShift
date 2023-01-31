@@ -531,6 +531,11 @@ html {
   text-decoration: none;
 }
 
+foreignObject {
+  width: 100vw !important;
+  height: 100vh !important;
+}
+
 .drawingCanvas {
   --zindex: 0;
   position: absolute;
@@ -545,6 +550,7 @@ html {
 #input-layer {
   position: absolute;
   display: block !important;
+  background: rgba(255, 0, 0, 0.418);
 }
 
 #layerParent {
@@ -559,15 +565,6 @@ html {
 #newLayerWrapper {
   width: var(--canvX);
   height: var(--canvY);
-}
-
-.drawingCanvas * {
-  position: fixed !important;
-  width: var(--canvX);
-  height: var(--canvY);
-  image-rendering: pixelated !important;
-  display: contents;
-  transform-origin: 0;
 }
 
 canvas * {
@@ -622,12 +619,8 @@ canvas * {
   opacity: var(--opac);
 }
 
-.drawingCanvas * {
-  position: relative;
-  display: block;
-  width: var(--scaledWidth) !important;
-  height: var(--scaledHeight) !important;
-  transform: translate(var(--scaledX), var(--scaledY));
+.followsPanzoom {
+  transform: var(--panzoomTransformMatrix);
 }
 
 foreignObject {
@@ -690,11 +683,6 @@ foreignObject {
   --originY: 1.5px;
   transform: rotate(var(--rotate));
   transform-origin: var(--originX) var(--originY);
-}
-
-.followsPanzoom {
-  transform: var(--panzoomTransformMatrix);
-  transform-origin: var(--panzoomTransformOrigin);
 }
 
 #eraserBrushBufferParent {

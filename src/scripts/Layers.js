@@ -11,10 +11,12 @@ class Layer {
 				locked: settings.locked == undefined ? false : settings.locked,
 				alpha: settings.alpha == undefined ? false : settings.alpha,
 			};
-		}else {
+		} else {
 			this.settings = {
-				visible: true, locked:false, alpha: false
-			}
+				visible: true,
+				locked: false,
+				alpha: false,
+			};
 		}
 
 		this.previousIndex = this.index;
@@ -87,6 +89,7 @@ class Layer {
 		this.canvasElement.width = project.width;
 		this.canvasElement.height = project.height;
 		this.canvasElement.classList.add("drawingCanvas");
+		this.canvasElement.classList.add("followsPanzoom");
 		this.canvasElement.id = "c-" + this.id;
 		this.svgWrapper.style.setProperty("--zindex", layers.length);
 		updateAllIndices();

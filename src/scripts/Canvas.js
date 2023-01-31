@@ -131,57 +131,32 @@ class Canvas {
 		this.currentX = 0;
 		this.currentY = 0;
 
-		this.panzoom = panzoom(this.inputLayer, {
-			smoothScroll: false,
-			initialZoom: settings.ui.canvasScale,
-			zoomSpeed: 0.15,
-			onDoubleClick: function (e) {
-				return false;
-			},
-			beforeMouseDown: function (e) {
-				return e.button != 1;
-			},
-			beforeTouchDown: function (e) {
-				return !(e.touches.length > 1);
-			},
-			zoomDoubleClickSpeed: 1,
-			maxZoom: 200,
-			minZoom: 0.1,
+		this.canvAngle = 0;
+		this.canvCenterX = 0;
+		this.canvCenterY = 0;
+
+		this.zoom = new Zoom(this.inputLayer, {
+			callback: function (e) {
+				this.setCanvScale(this.zoom.getTransform().scale);
+				this.setCanvTransform(
+					this.zoom.getTransform().x,
+					this.zoom.getTransform().y
+				);
+				this.canvCenterX = this.zoom.getTransform().x;
+				this.canvCenterY = this.zoom.getTransform().y;
+				this.canvAngle = this.zoom.getTransform().radians;
+			}.bind(this),
 		});
-
-		this.panzoom.moveTo(
-			(window.innerWidth - this.width * settings.ui.canvasScale) / 2,
-			(window.innerHeight - this.height * settings.ui.canvasScale) / 2
-		);
-		var _self = this;
-		this.panzoom.on(
-			"transform",
-			function (e) {
-				_self.inputLayer.style.transform;
-				_self.inputLayer.style.transformOrigin;
-				_self.setCanvScale(_self.panzoom.getTransform().scale);
-				_self.setCanvTransform(
-					_self.panzoom.getTransform().x,
-					_self.panzoom.getTransform().y
-				);
-				document.body.style.setProperty(
-					"--panzoomTransformMatrix",
-					_self.inputLayer.style.transform
-				);
-				document.body.style.setProperty(
-					"--panzoomTransformOrigin",
-					_self.inputLayer.style.transformOrigin
-				);
-				var rect = _self.inputLayer.getBoundingClientRect();
-				document.body.style.setProperty("--scaledX", rect.left + "px");
-				document.body.style.setProperty("--scaledY", rect.top + "px");
-
-				document.body.style.setProperty("--scaledWidth", rect.width + "px");
-
-				document.body.style.setProperty("--scaledHeight", rect.height + "px");
-			}.bind(this)
-		);
-
+		setTimeout(() => {
+			var zm = new ZoomTransform(
+				[
+					[settings.ui.canvasScale, 0],
+					[0, settings.ui.canvasScale],
+				],
+				[window.innerWidth / 2, window.innerHeight / 2]
+			);
+			canvasInterface.zoom.setZoom(zm);
+		}, 1);
 		this.startZoomX = 0;
 		this.startZoomY = 0;
 		this.deltaX = 0;
@@ -223,7 +198,6 @@ class Canvas {
 
 			if (e.touches && e.touches.length > 1) {
 				this.panning = true;
-				this.panzoom.moveBy(-(this.deltaX - x), -(this.deltaY - y));
 				this.deltaX = (e.touches[0].clientX + e.touches[1].clientX) / 2;
 				this.deltaY = (e.touches[0].clientY + e.touches[1].clientY) / 2;
 				return;
@@ -302,8 +276,8 @@ class Canvas {
 				lerp(settings.ui.canvasScale, targetCanvasScale, lerpFactor)
 			);
 			_self.panzoom.moveTo(
-				lerp(_self.panzoom.getTransform().x, targetX, lerpFactor),
-				lerp(_self.panzoom.getTransform().y, targetY, lerpFactor)
+				lerp(_self.zoom.getTransform().x, targetX, lerpFactor),
+				lerp(_self.zoom.getTransform().y, targetY, lerpFactor)
 			);
 			if (Math.abs(settings.ui.canvasScale - targetCanvasScale) < 0.01) {
 				settings.ui.canvasScale = targetCanvasScale;
@@ -311,8 +285,8 @@ class Canvas {
 			//cancel request if close enough
 			if (
 				Math.abs(settings.ui.canvasScale - targetCanvasScale) >= 0.01 ||
-				Math.abs(targetX - _self.panzoom.getTransform().x) >= 0.01 ||
-				Math.abs(targetY - _self.panzoom.getTransform().y) >= 0.01
+				Math.abs(targetX - _self.zoom.getTransform().x) >= 0.01 ||
+				Math.abs(targetY - _self.zoom.getTransform().y) >= 0.01
 			) {
 				requestAnimationFrame(animateSmoothRecenter);
 			} else {
@@ -325,8 +299,8 @@ class Canvas {
 			}
 		}
 		var transf = {
-			x: { ..._self.panzoom.getTransform() }.x,
-			y: { ..._self.panzoom.getTransform() }.y,
+			x: { ..._self.zoom.getTransform() }.x,
+			y: { ..._self.zoom.getTransform() }.y,
 			scale: settings.ui.canvasScale,
 		};
 		if (
@@ -356,7 +330,7 @@ class Canvas {
 		//requestAnimationFrame(animateSmoothRecenter);
 	}
 	destroy() {
-		this.panzoom.dispose();
+		this.zoom.destroy();
 		this.canvasParent.removeEventListener("touchmove", this.moveEvent);
 		this.canvasParent.removeEventListener("mousemove", this.moveEvent);
 		this.canvasParent.removeEventListener("touchstart", this.touchStartEvent);
@@ -535,10 +509,23 @@ class Canvas {
 		var rect = this.inputLayer.getBoundingClientRect();
 		var x = e.clientX - rect.left || e.touches[0].clientX - rect.left || -1;
 		var y = e.clientY - rect.top || e.touches[0].clientY - rect.top || -1;
-		var rawX = x / this.canvScale;
-		var rawY = y / this.canvScale;
-		x = Math.floor(x / this.canvScale);
-		y = Math.floor(y / this.canvScale);
+		var centerX = rect.width / 2
+		var centerY = rect.height / 2
+		x -= centerX;
+		y -= centerY;
+		var r = Math.sqrt(x * x + y * y);
+		var theta = Math.atan2(y, x);
+		//rotate theta 90deg
+		theta -= this.canvAngle;
+		x = r * Math.cos(theta);
+		y = r * Math.sin(theta);
+
+
+		var rawX = (x + centerX) / this.canvScale;
+		var rawY = (y + centerY) / this.canvScale;
+		x = Math.floor(rawX);
+		y = Math.floor(rawY);
+		console.log(x,y)
 		var clientX = e.clientX || e.touches[0].clientX;
 		var clientY = e.clientY || e.touches[0].clientY;
 		this.currentX = x;
