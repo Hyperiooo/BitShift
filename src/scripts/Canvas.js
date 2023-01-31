@@ -135,7 +135,7 @@ class Canvas {
 		this.canvCenterX = 0;
 		this.canvCenterY = 0;
 
-		this.zoom = new Zoom(this.inputLayer, {
+		/*this.zoom = new Zoom(this.inputLayer, {
 			callback: function (e) {
 				this.setCanvScale(this.zoom.getTransform().scale);
 				this.setCanvTransform(
@@ -146,17 +146,47 @@ class Canvas {
 				this.canvCenterY = this.zoom.getTransform().y;
 				this.canvAngle = this.zoom.getTransform().radians;
 			}.bind(this),
-		});
+		});*/
+		this.zoom =  new SuperZoom(this.inputLayer, {
+            minZoom: 0.25,
+			initialZoom: settings.ui.canvasScale,
+            onTransform: function (e) {
+				if(!this.zoom.getTransform) return
+				this.setCanvScale(this.zoom.getTransform().scale);
+				document.body.style.setProperty(
+					"--panzoomTransformOrigin",
+					this.zoom.getTransform().origin
+				);
+				document.body.style.setProperty(
+					"--panzoomTransform",
+					this.zoom.getTransform().transform
+				);
+				document.body.style.setProperty("--scaledX", this.zoom.getTransform().x + "px");
+				document.body.style.setProperty("--scaledY", this.zoom.getTransform().y + "px");
+
+				document.body.style.setProperty("--scaledWidth", this.zoom.getTransform().width + "px");
+
+				document.body.style.setProperty("--scaledHeight", this.zoom.getTransform().height + "px");
+            }.bind(this), validateMousePan: function (e) {
+                console.log('a', e.button)
+                if(e.button == 1)
+                return true;
+            },
+            validateTouchPan: function (e) {
+                console.log('b', e.touches.length)
+                if(e.touches.length == 2)
+                return true;
+            },
+            zoomStep: 10,
+            snapRotation: true,
+            snapRotationStep: 45,
+            snapRotationTolerance: 10,
+        });
 		setTimeout(() => {
-			var zm = new ZoomTransform(
-				[
-					[settings.ui.canvasScale, 0],
-					[0, settings.ui.canvasScale],
-				],
-				[window.innerWidth / 2, window.innerHeight / 2]
-			);
-			canvasInterface.zoom.setZoom(zm);
+			this.zoom.options.onTransform().bind(this)
+			
 		}, 1);
+
 		this.startZoomX = 0;
 		this.startZoomY = 0;
 		this.deltaX = 0;

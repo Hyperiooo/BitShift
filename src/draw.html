@@ -52,6 +52,8 @@
   <script src="./scripts/panzoom.js" defer></script>
   <script src="./scripts/zoom.js" defer></script>
   <script src="./scripts/anime.js" defer></script>
+  
+  <script src="https://cdn.jsdelivr.net/gh/FakeDazon/SuperZoom@v0.0.3/src/superzoom.js"></script>
   <script defer type="text/javascript" src="./scripts/DrawCore.js"></script>
   <!--STYLES & FONTS-->
   <link href="https://cdn.jsdelivr.net/gh/Hyperiooo/Hypericons@v0.6.8/fonts/hypericons.css" rel="stylesheet"
@@ -278,13 +280,13 @@
       <svg id="previewCanvasWrapper" class="layerWrapperWrapper nodelete" customcursor
         xmlns="http://www.w3.org/2000/svg">
         <foreignObject class="drawingCanvas">
-          <canvas class="followsPanzoom" id="previewcanv" customcursor></canvas>
+          <canvas id="previewcanv" customcursor></canvas>
         </foreignObject>
       </svg>
       <svg id="backgroundCanvasWrapper" class="layerWrapperWrapper nodelete" customcursor
         xmlns="http://www.w3.org/2000/svg" style="--zindex: -1;">
         <foreignObject class="drawingCanvas">
-          <canvas class="followsPanzoom" id="bggridcanv" customcursor></canvas>
+          <canvas  id="bggridcanv" customcursor></canvas>
         </foreignObject>
       </svg>
     </div>

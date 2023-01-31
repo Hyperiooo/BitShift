@@ -89,7 +89,6 @@ class Layer {
 		this.canvasElement.width = project.width;
 		this.canvasElement.height = project.height;
 		this.canvasElement.classList.add("drawingCanvas");
-		this.canvasElement.classList.add("followsPanzoom");
 		this.canvasElement.id = "c-" + this.id;
 		this.svgWrapper.style.setProperty("--zindex", layers.length);
 		updateAllIndices();

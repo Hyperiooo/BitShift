@@ -50,7 +50,7 @@ html {
   --scaledHeight: 200px;
   --scaledX: 100px;
   --scaledY: 100px;
-  --panzoomTransformMatrix: matrix(0, 0, 0, 0, 0, 0);
+  --panzoomTransform: matrix(0, 0, 0, 0, 0, 0);
   --panzoomTransformOrigin: 0px 0px;
   --boxShadowT: 0.25;
   --boxShadow: 0px 8px 15px rgba(0, 0, 0, var(--boxShadowT));
@@ -531,11 +531,6 @@ html {
   text-decoration: none;
 }
 
-foreignObject {
-  width: 100vw !important;
-  height: 100vh !important;
-}
-
 .drawingCanvas {
   --zindex: 0;
   position: absolute;
@@ -565,6 +560,15 @@ foreignObject {
 #newLayerWrapper {
   width: var(--canvX);
   height: var(--canvY);
+}
+
+.drawingCanvas * {
+  position: fixed !important;
+  width: var(--canvX);
+  height: var(--canvY);
+  image-rendering: pixelated !important;
+  display: contents;
+  transform-origin: 0;
 }
 
 canvas * {
@@ -619,8 +623,13 @@ canvas * {
   opacity: var(--opac);
 }
 
-.followsPanzoom {
-  transform: var(--panzoomTransformMatrix);
+.drawingCanvas * {
+  position: relative;
+  display: block;
+  width: var(--scaledWidth) !important;
+  height: var(--scaledHeight) !important;
+  transform: var(--panzoomTransform);
+  transform-origin: var(--panzoomTransformOrigin);
 }
 
 foreignObject {
