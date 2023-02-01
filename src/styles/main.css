@@ -745,6 +745,7 @@ foreignObject {
   align-items: center;
 }
 
+
 .item i {
   font-size: 24px;
   transform: scale(100%);
@@ -816,11 +817,55 @@ foreignObject {
   opacity: 0;
   transition: opacity 0.3s;
 }
+.tool-popup .item {
+  margin:4px !important;
+}
 
 .tool-popup[data-show] {
   pointer-events: all;
   opacity: 1;
 }
+
+
+@media screen and (max-width: 600px){
+  #dynamic-tool-wrap {
+    display: flex;
+    flex-shrink: 1;
+    height: 100%;
+    width: fit-content;
+    align-items: center;
+    overflow: scroll;
+  }
+  #dynamic-tool-wrap .item {
+    flex-shrink: 0;
+  }
+  
+  #toolbar {
+    width:100%;
+    top:unset;
+    bottom: 0px;
+    border-radius: 0;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    padding-left: 4px;
+    padding-bottom: 20px;
+  }
+
+  #toolbar .item {
+margin-left: 0;
+  margin-bottom: 4px;
+  margin-top: 4px;
+  margin-right: 4px;
+  }
+  #toolbar .toolbar-divider {
+    height: 30px;
+    width:2px;
+    margin: 0;
+    margin-right: 4px;
+    flex-shrink: 0;
+  }
+  }
 
 #topbar {
   position: fixed;
