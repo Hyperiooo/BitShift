@@ -292,24 +292,9 @@ class Canvas {
 	inputDown(e) {
 		closeAllToolPopups();
 		updatePrevious(this.color);
-		var rect = this.inputLayer.getBoundingClientRect();
-		var x = e.clientX - rect.left || e.touches[0].clientX - rect.left || -1;
-		var y = e.clientY - rect.top || e.touches[0].clientY - rect.top || -1;
-		var centerX = rect.width / 2;
-		var centerY = rect.height / 2;
-		x -= centerX;
-		y -= centerY;
-		var r = Math.sqrt(x * x + y * y);
-		var theta = Math.atan2(y, x);
-		//rotate theta 90deg
-		theta -= this.zoom.toRadians(this.canvAngle);
-		x = r * Math.cos(theta);
-		y = r * Math.sin(theta);
+		
 
-		var rawX = (x + centerX) / this.canvScale;
-		var rawY = (y + centerY) / this.canvScale;
-		x = Math.floor(rawX);
-		y = Math.floor(rawY);
+		var {rawX, rawY, x, y} = this.getCoordinatesFromInputEvent(e)
 		if (
 			Tools.circle ||
 			Tools.ellipse ||
@@ -329,6 +314,8 @@ class Canvas {
 
 		this.undoBuffer = layer.canvasElement.toDataURL();
 	}
+
+
 	inputUp(e, wasPanning) {
 		if (
 			Tools.circle ||
@@ -460,11 +447,8 @@ class Canvas {
 			window.dispatchEvent(window.cloudSyncEvent);
 		}
 	}
-	inputActive(e) {
-		this.touching = true;
-		this.shiftKey = e.shiftKey;
-		this.ctrlKey = e.ctrlKey;
-		this.altKey = e.altKey;
+	getCoordinatesFromInputEvent(e) {
+		
 		var rect = this.inputLayer.getBoundingClientRect();
 		var x = e.clientX - rect.left || e.touches[0].clientX - rect.left || -1;
 		var y = e.clientY - rect.top || e.touches[0].clientY - rect.top || -1;
@@ -474,17 +458,28 @@ class Canvas {
 		y -= centerY;
 		var r = Math.sqrt(x * x + y * y);
 		var theta = Math.atan2(y, x);
-		//rotate theta 90deg
 		theta -= this.zoom.toRadians(this.canvAngle);
 		x = r * Math.cos(theta);
 		y = r * Math.sin(theta);
 
 		var rawX = (x + centerX) / this.canvScale;
 		var rawY = (y + centerY) / this.canvScale;
+    	rawX += (0.5 - ((rect.width /(this.canvScale * this.width) )    / 2) ) * this.width;
+    	rawY += (0.5 - ((rect.height / (this.canvScale * this.height) ) / 2)) * this.height;
 		x = Math.floor(rawX);
 		y = Math.floor(rawY);
+		return {rawX, rawY, x, y}
+
+	}
+	inputActive(e) {
+		this.touching = true;
+		this.shiftKey = e.shiftKey;
+		this.ctrlKey = e.ctrlKey;
+		this.altKey = e.altKey;
 		var clientX = e.clientX || e.touches[0].clientX;
 		var clientY = e.clientY || e.touches[0].clientY;
+
+		var {rawX, rawY, x, y} = this.getCoordinatesFromInputEvent(e)
 		this.currentX = x;
 		this.currentY = y;
 		this.lastKnownX = x;

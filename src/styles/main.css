@@ -545,7 +545,6 @@ html {
 #input-layer {
   position: absolute;
   display: block !important;
-  background: rgba(255, 0, 0, 0.418);
 }
 
 #layerParent {
@@ -834,8 +833,13 @@ foreignObject {
     height: 100%;
     width: fit-content;
     align-items: center;
-    overflow: scroll;
+    overflow: auto;
+    overflow-y:  hidden;
   }
+  #dynamic-tool-wrap::-webkit-scrollbar {
+    display: none;
+  }
+  
   #dynamic-tool-wrap .item {
     flex-shrink: 0;
   }
@@ -2442,7 +2446,10 @@ canvas {
   image-rendering: -webkit-crisp-edges;
   image-rendering: pixelated;
   image-rendering: crisp-edges;
-  transition: opacity 0.5s;
+  transition: opacity 0.2s;
+}
+.cursor-hidden {
+  opacity: 0;
 }
 
 .invertBackground {

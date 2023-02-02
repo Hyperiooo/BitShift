@@ -21,7 +21,8 @@ var cursors = {
 
 var curCursor = "eyedropper";
 
-document.onmousemove = (e) => {
+document.addEventListener("mousemove",(e) => {
+	
 	if (!e.target.getAttribute) return;
 	cursor.style.left =
 		e.clientX -
@@ -32,11 +33,16 @@ document.onmousemove = (e) => {
 		Math.floor(cursors[curCursor].origin[1] * cursors[curCursor].height) +
 		"px";
 	if (e.target.getAttribute("customcursor") == null) {
-		cursor.style.display = "none";
+		cursor.classList.add("cursor-hidden")
 	} else {
-		cursor.style.display = "block";
+		cursor.classList.remove("cursor-hidden")
 	}
-};
+})
+
+document.addEventListener("touchmove", e=>{
+	
+	cursor.classList.add("cursor-hidden")
+})
 
 function updateCursor() {
 	document.getElementById("cursor").style.webkitMaskImage =
