@@ -677,6 +677,15 @@ foreignObject {
   height: var(--canvY) !important;
 }
 
+.followsPanzoom {
+  transform: translate(var(--scaledX), var(--scaledY)) scale(var(--scale));
+}
+.followsPanzoom  > * {
+  transform: rotate(var(--angle));
+  transform-origin: 0 0;
+  fill: red;
+}
+
 #selectionGroup {
   z-index: 888888888;
 }
@@ -853,7 +862,7 @@ foreignObject {
     justify-content: left;
     align-items: center;
     padding-left: 4px;
-    padding-bottom: 20px;
+    padding-bottom: env(safe-area-inset-bottom,0px);
   }
 
   #toolbar .item {

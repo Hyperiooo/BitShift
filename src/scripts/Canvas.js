@@ -143,14 +143,32 @@ class Canvas {
 				var transf = this.zoom.getTransform();
 				this.setCanvScale(transf.scale);
 				this.canvAngle = transf.angle;
+				var r = this.inputLayer.getBoundingClientRect()
 				document.body.style.setProperty(
 					"--panzoomTransformOrigin",
 					transf.origin
 				);
 				document.body.style.setProperty("--panzoomTransform", transf.transform);
-
-				document.body.style.setProperty("--scaledX", transf.x + "px");
-				document.body.style.setProperty("--scaledY", transf.y + "px");
+				var xPos = r.x
+				var yPos = r.y
+				var rotations = (Math.floor(transf.angle / 90) < 0 ?4 - Math.abs( Math.floor(transf.angle/90)) : Math.floor(transf.angle/90)) % 4
+				if(rotations == 0) {
+					xPos  +=(transf.height * Math.sin(this.zoom.toRadians(transf.angle)))
+				}else if (rotations == 1) {
+					xPos += r.width
+					yPos  -= (transf.height * Math.cos(this.zoom.toRadians(transf.angle)))
+				
+				}else if (rotations == 2) {
+					yPos += r.height
+					xPos  += r.width + (transf.height * Math.sin(this.zoom.toRadians(transf.angle)))
+				}else if (rotations == 3) {
+					yPos  -= (transf.width * Math.sin(this.zoom.toRadians(transf.angle)))
+				
+				}
+				document.body.style.setProperty("--scale", transf.scale)
+				document.body.style.setProperty("--angle", transf.angle + "deg")
+				document.body.style.setProperty("--scaledX", xPos + "px");
+				document.body.style.setProperty("--scaledY", yPos + "px");
 
 				document.body.style.setProperty("--scaledWidth", transf.width + "px");
 
