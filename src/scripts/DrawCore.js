@@ -18,9 +18,9 @@ var settings = {
 	},
 	tools: {
 		assignments: {
-			pen: ["penBrushSize", "brushSquare", "brushPixelPerfect"],
-			eraser: ["eraserBrushSize", "brushSquare", "brushPixelPerfect"],
-			sprayPaint: ["sprayBrushSize", "brushSquare", "spraySpeed", "spraySize"],
+			pen: ["penBrushSize"],
+			eraser: ["eraserBrushSize"],
+			sprayPaint: ["sprayBrushSize", "spraySpeed", "spraySize"],
 			fillBucket: ["contiguous"],
 			rectangleMarquee: ["selectionMode"],
 			ellipseMarquee: ["selectionMode"],
@@ -38,7 +38,7 @@ var settings = {
 			},
 		},
 		eraserBrushSize: {
-			title: "Brush Size",
+			title: "Eraser Size",
 			value: 1,
 			type: "int",
 			draggable: true,

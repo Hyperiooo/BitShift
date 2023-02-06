@@ -139,6 +139,7 @@ class Canvas {
 			initialAngle: 45,
 			initialZoom: settings.ui.canvasScale,
 			onTransform: function (e) {
+				
 				if (!this.zoom.getTransform) return;
 				var transf = this.zoom.getTransform();
 				this.setCanvScale(transf.scale);

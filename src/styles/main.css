@@ -602,7 +602,6 @@ canvas * {
   -moz-user-select: none;
   -ms-user-select: none;
 }
-
 #bggridcanv {
   position: absolute;
   display: none;
@@ -717,9 +716,27 @@ foreignObject {
   cursor: none;
 }
 
-#toolbar {
+#sidebar {
   position: fixed;
   top: 50px;
+  width: 48px;
+}
+
+#tool-settings-content {
+  color: var(--textDim);
+  transition: 0.3s height, 0.15s opacity, 0.3s margin-bottom;
+  left: 0;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  background: var(--bgMainT);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  border-radius: 0 9px 9px 0;
+}
+
+#toolbar {
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -728,6 +745,7 @@ foreignObject {
   backdrop-filter: saturate(180%) blur(20px);
   -webkit-backdrop-filter: saturate(180%) blur(20px);
   border-radius: 0 0 9px 0;
+  margin-bottom: 10px;
 }
 
 .toolbar-top {
@@ -1873,10 +1891,6 @@ input {
   pointer-events: all;
 }
 
-#tool-settings-content {
-  color: var(--textDim);
-  transition: 0.3s height, 0.15s opacity, 0.3s margin-bottom;
-}
 
 .tool-settings-content-hidden {
   opacity: 0;

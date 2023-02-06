@@ -224,6 +224,7 @@ class NumberInputKeypad {
 		this.previewUnit = this.element.querySelector("#number-pad-preview-unit");
 		this.value = 0;
 		this.unit = false;
+		this.title = "title"
 		this.overwriteDefault = false;
 		this.min = 0;
 		this.max = Infinity;
