@@ -734,9 +734,11 @@ foreignObject {
   backdrop-filter: saturate(180%) blur(20px);
   -webkit-backdrop-filter: saturate(180%) blur(20px);
   border-radius: 0 9px 9px 0;
+  padding-top: 4px;
 }
 
 #toolbar {
+  padding-top: 4px;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -1116,7 +1118,7 @@ margin-left: 0;
   --hi-base: var(--accentText);
 }
 
-#topbar .tool-active i {
+#tool-settings-content .tool-active i {
   color: var(--accent) !important;
   --hi-accent: var(--accent);
   --hi-base: var(--accent);
@@ -1899,7 +1901,6 @@ input {
 .tool-settings-ui-input-group {
   display: inline-flex;
   justify-content: space-between;
-  margin: 8px;
 }
 
 .tool-settings-ui-input-wrap {
@@ -1912,28 +1913,32 @@ input {
   display: inline-flex;
   align-content: center;
   align-items: center;
-  margin-left: 8px;
 }
 
 .tool-settings-ui-input-field-group {
   display: block;
-  padding-bottom: 8px;
 }
 
 .tool-settings-ui-input-num {
-  background: var(--bgLight);
+  background: var(--scrollTrack);
   color: var(--textMain) !important;
   margin: 0;
   padding: 0 5px;
   font-size: 14px;
   font-weight: bolder;
-  border: none;
+  border: 1px solid var(--bgLight);
   border-radius: 5px;
-  width: 43px;
+  box-sizing: border-box;
+  width: 40px !important;
+  height: 40px;
+  
+  margin-bottom: 4px;
+  margin-left: 4px;
+  margin-right: 4px;
+
   display: block;
   font-weight: 100;
   text-align: left;
-  height: 28px;
   cursor: e-resize;
   font-weight: 300;
   user-select: none;

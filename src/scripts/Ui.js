@@ -106,13 +106,16 @@ var draggableNumInputs = [];
 class numberDraggable {
 	constructor(el, numpad) {
 		this.do = false;
-		this.startX = 0;
+		this.startP = 0;
 		this.el = el;
+		this.direction = this.el.getAttribute("data-input-num-draggable-vertical") ? true : false;
+		console.log(this.direction)
+		console.log()
 		this.startVal = this.el.value;
 		self = this;
 		this.pointerDown = function (e) {
 			this.do = true;
-			this.startX = e.clientX;
+			this.startP = this.direction ? e.clientY : e.clientX;
 			this.startVal = this.el.value;
 		};
 		this.pointerUp = function (e) {
@@ -121,7 +124,7 @@ class numberDraggable {
 		this.pointerMove = function (e) {
 			if (this.do) {
 				this.el.value = clamp(
-					parseInt(this.startVal) + Math.floor((e.clientX - this.startX) / 10),
+					parseInt(this.startVal) + Math.floor(((this.direction ?  this.startP - e.clientY : e.clientX- this.startP) ) / 10),
 					this.el.min,
 					this.el.max
 				);

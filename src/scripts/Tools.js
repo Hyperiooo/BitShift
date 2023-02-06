@@ -332,8 +332,8 @@ function updateToolSettings(tool) {
 			inputElement.setAttribute("data-input-filter", "true");
 			inputElement.min = setting.min;
 			inputElement.max = setting.max;
-			if (setting.draggable)
-				inputElement.setAttribute("data-input-num-draggable", "true");
+			inputElement.setAttribute("data-input-num-draggable", "true");
+			inputElement.setAttribute("data-input-num-draggable-vertical", "true");
 			inputElement.classList.add("tool-settings-ui-input-num");
 			inputElement.onchange = "console.log('a')";
 			inputElement.oninput = (e) => {
@@ -348,7 +348,6 @@ function updateToolSettings(tool) {
 				inputField.appendChild(inputUnit);
 			}
 			inputField.appendChild(inputElement);
-			inputGroup.appendChild(inputTitle);
 			inputGroup.appendChild(inputWrap);
 			toolContent.appendChild(inputGroup);
 			inputElement.max = setting.max;
