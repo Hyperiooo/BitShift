@@ -50,7 +50,7 @@ html {
   --scaledHeight: 200px;
   --scaledX: 100px;
   --scaledY: 100px;
-  --panzoomTransformMatrix: matrix(0, 0, 0, 0, 0, 0);
+  --panzoomTransform: matrix(0, 0, 0, 0, 0, 0);
   --panzoomTransformOrigin: 0px 0px;
   --boxShadowT: 0.25;
   --boxShadow: 0px 8px 15px rgba(0, 0, 0, var(--boxShadowT));
@@ -627,7 +627,8 @@ canvas * {
   display: block;
   width: var(--scaledWidth) !important;
   height: var(--scaledHeight) !important;
-  transform: translate(var(--scaledX), var(--scaledY));
+  transform: var(--panzoomTransform);
+  transform-origin: var(--panzoomTransformOrigin);
 }
 
 foreignObject {
@@ -676,6 +677,15 @@ foreignObject {
   height: var(--canvY) !important;
 }
 
+.followsPanzoom {
+  transform: translate(var(--scaledX), var(--scaledY)) scale(var(--scale));
+}
+.followsPanzoom  > * {
+  transform: rotate(var(--angle));
+  transform-origin: 0 0;
+  fill: red;
+}
+
 #selectionGroup {
   z-index: 888888888;
 }
@@ -690,11 +700,6 @@ foreignObject {
   --originY: 1.5px;
   transform: rotate(var(--rotate));
   transform-origin: var(--originX) var(--originY);
-}
-
-.followsPanzoom {
-  transform: var(--panzoomTransformMatrix);
-  transform-origin: var(--panzoomTransformOrigin);
 }
 
 #eraserBrushBufferParent {
@@ -747,6 +752,7 @@ foreignObject {
   justify-content: center;
   align-items: center;
 }
+
 
 .item i {
   font-size: 24px;
@@ -819,11 +825,60 @@ foreignObject {
   opacity: 0;
   transition: opacity 0.3s;
 }
+.tool-popup .item {
+  margin:4px !important;
+}
 
 .tool-popup[data-show] {
   pointer-events: all;
   opacity: 1;
 }
+
+
+@media screen and (max-width: 600px){
+  #dynamic-tool-wrap {
+    display: flex;
+    flex-shrink: 1;
+    height: 100%;
+    width: fit-content;
+    align-items: center;
+    overflow: auto;
+    overflow-y:  hidden;
+  }
+  #dynamic-tool-wrap::-webkit-scrollbar {
+    display: none;
+  }
+  
+  #dynamic-tool-wrap .item {
+    flex-shrink: 0;
+  }
+  
+  #toolbar {
+    width:100%;
+    top:unset;
+    bottom: 0px;
+    border-radius: 0;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    padding-left: 4px;
+    padding-bottom: env(safe-area-inset-bottom,0px);
+  }
+
+  #toolbar .item {
+margin-left: 0;
+  margin-bottom: 4px;
+  margin-top: 4px;
+  margin-right: 4px;
+  }
+  #toolbar .toolbar-divider {
+    height: 30px;
+    width:2px;
+    margin: 0;
+    margin-right: 4px;
+    flex-shrink: 0;
+  }
+  }
 
 #topbar {
   position: fixed;
@@ -2400,7 +2455,10 @@ canvas {
   image-rendering: -webkit-crisp-edges;
   image-rendering: pixelated;
   image-rendering: crisp-edges;
-  transition: opacity 0.5s;
+  transition: opacity 0.2s;
+}
+.cursor-hidden {
+  opacity: 0;
 }
 
 .invertBackground {

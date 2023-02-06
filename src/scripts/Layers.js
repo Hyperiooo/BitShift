@@ -11,10 +11,12 @@ class Layer {
 				locked: settings.locked == undefined ? false : settings.locked,
 				alpha: settings.alpha == undefined ? false : settings.alpha,
 			};
-		}else {
+		} else {
 			this.settings = {
-				visible: true, locked:false, alpha: false
-			}
+				visible: true,
+				locked: false,
+				alpha: false,
+			};
 		}
 
 		this.previousIndex = this.index;

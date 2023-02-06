@@ -50,8 +50,10 @@
   <script src="./scripts/Compressor.js" defer></script>
   <script src="./scripts/Transform.js" defer></script>
   <script src="./scripts/panzoom.js" defer></script>
-  <script src="./scripts/pinchzoom.js"></script>
+  <script src="./scripts/zoom.js" defer></script>
   <script src="./scripts/anime.js" defer></script>
+  
+  <script src="https://cdn.jsdelivr.net/gh/FakeDazon/SuperZoom@v0.0.7/src/superzoom.js"></script>
   <script defer type="text/javascript" src="./scripts/DrawCore.js"></script>
   <!--STYLES & FONTS-->
   <link href="https://cdn.jsdelivr.net/gh/Hyperiooo/Hypericons@v0.6.8/fonts/hypericons.css" rel="stylesheet"
@@ -66,7 +68,7 @@
 
 <body>
 
-  <div id="cursor" class="invertBackground"></div>
+  <div id="cursor" class="invertBackground cursor-hidden"></div>
   <img id="img" />
   <div class="menu">
     <div class="menu-btn" onclick="saveFile(); closeMenu()">Save</div>
@@ -83,7 +85,7 @@
         pointer-events: none;
       " accept=".bspr" />
   <div id="tool-settings"></div>
-  <div class="color-menu color-open" id="color-menu" ondrop="dropHandler(event);" ondragover="dragOverHandler(event);"
+  <div class="color-menu" id="color-menu" ondrop="dropHandler(event);" ondragover="dragOverHandler(event);"
     ondragleave="dragLeaveHandler(event);" ondragend="dragLeaveHandler(event);">
     <div class="color-menu-topbar">
       <div id="color-preview" onclick="colorPreviewClickHandler(event)" ontouchstart="colorPreviewClickHandler(event)">
@@ -284,7 +286,7 @@
       <svg id="backgroundCanvasWrapper" class="layerWrapperWrapper nodelete" customcursor
         xmlns="http://www.w3.org/2000/svg" style="--zindex: -1;">
         <foreignObject class="drawingCanvas">
-          <canvas id="bggridcanv" customcursor></canvas>
+          <canvas  id="bggridcanv" customcursor></canvas>
         </foreignObject>
       </svg>
     </div>
@@ -353,7 +355,7 @@
     <span id="tool-btn-eyedropper" class="item" data-tool-name="eyedropper"
       onclick="previousTool = getTool();compileForEyedropper(); setTool('eyedropper', this)"><i
         class="hi-eyedropper"></i></span>
-    <!---test-->
+    
   </div>
 
   <div id="window-settings" class="window-wrap window-closed">

@@ -131,63 +131,70 @@ class Canvas {
 		this.currentX = 0;
 		this.currentY = 0;
 
-		this.panzoom = panzoom(this.inputLayer, {
-			smoothScroll: false,
+		this.canvAngle = 0;
+		this.canvCenterX = 0;
+		this.canvCenterY = 0;
+		this.zoom = new SuperZoom(this.inputLayer, {
+			minZoom: 0.25,
+			initialAngle: 45,
 			initialZoom: settings.ui.canvasScale,
-			zoomSpeed: 0.15,
-			onDoubleClick: function (e) {
-				return false;
-			},
-			beforeMouseDown: function (e) {
-				return e.button != 1;
-			},
-			beforeTouchDown: function (e) {
-				return !(e.touches.length > 1);
-			},
-			zoomDoubleClickSpeed: 1,
-			maxZoom: 200,
-			minZoom: 0.1,
-		});
-
-		this.panzoom.moveTo(
-			(window.innerWidth - this.width * settings.ui.canvasScale) / 2,
-			(window.innerHeight - this.height * settings.ui.canvasScale) / 2
-		);
-		var _self = this;
-		this.panzoom.on(
-			"transform",
-			function (e) {
-				_self.inputLayer.style.transform;
-				_self.inputLayer.style.transformOrigin;
-				_self.setCanvScale(_self.panzoom.getTransform().scale);
-				_self.setCanvTransform(
-					_self.panzoom.getTransform().x,
-					_self.panzoom.getTransform().y
-				);
-				document.body.style.setProperty(
-					"--panzoomTransformMatrix",
-					_self.inputLayer.style.transform
-				);
+			onTransform: function (e) {
+				if (!this.zoom.getTransform) return;
+				var transf = this.zoom.getTransform();
+				this.setCanvScale(transf.scale);
+				this.canvAngle = transf.angle;
+				var r = this.inputLayer.getBoundingClientRect()
 				document.body.style.setProperty(
 					"--panzoomTransformOrigin",
-					_self.inputLayer.style.transformOrigin
+					transf.origin
 				);
-				var rect = _self.inputLayer.getBoundingClientRect();
-				document.body.style.setProperty("--scaledX", rect.left + "px");
-				document.body.style.setProperty("--scaledY", rect.top + "px");
+				document.body.style.setProperty("--panzoomTransform", transf.transform);
+				var xPos = r.x
+				var yPos = r.y
+				var rotations = (Math.floor(transf.angle / 90) < 0 ?4 - Math.abs( Math.floor(transf.angle/90)) : Math.floor(transf.angle/90)) % 4
+				if(rotations == 0) {
+					xPos  +=(transf.height * Math.sin(this.zoom.toRadians(transf.angle)))
+				}else if (rotations == 1) {
+					xPos += r.width
+					yPos  -= (transf.height * Math.cos(this.zoom.toRadians(transf.angle)))
+				
+				}else if (rotations == 2) {
+					yPos += r.height
+					xPos  += r.width + (transf.height * Math.sin(this.zoom.toRadians(transf.angle)))
+				}else if (rotations == 3) {
+					yPos  -= (transf.width * Math.sin(this.zoom.toRadians(transf.angle)))
+				
+				}
+				document.body.style.setProperty("--scale", transf.scale)
+				document.body.style.setProperty("--angle", transf.angle + "deg")
+				document.body.style.setProperty("--scaledX", xPos + "px");
+				document.body.style.setProperty("--scaledY", yPos + "px");
 
-				document.body.style.setProperty("--scaledWidth", rect.width + "px");
+				document.body.style.setProperty("--scaledWidth", transf.width + "px");
 
-				document.body.style.setProperty("--scaledHeight", rect.height + "px");
-			}.bind(this)
-		);
+				document.body.style.setProperty("--scaledHeight", transf.height + "px");
+			}.bind(this),
+			validateMousePan: function (e) {
+				console.log("a", e.button);
+				if (e.button == 1) return true;
+			},
+			validateTouchPan: function (e) {
+				console.log("b", e.touches.length);
+				if (e.touches.length == 2) return true;
+			},
+			zoomStep: 10,
+			snapRotation: true,
+			snapRotationStep: 45,
+			snapRotationTolerance: 10,
+		});
+		setTimeout(() => {
+			this.zoom.options.onTransform().bind(this);
+		}, 1);
+		setTimeout(() => {
+			this.zoom.setRotationOrigin(0, 0);
+			this.zoom.recenter();
+		}, 10);
 
-		this.startZoomX = 0;
-		this.startZoomY = 0;
-		this.deltaX = 0;
-		this.deltaY = 0;
-		this.deltaPanX = 0;
-		this.deltaPanY = 0;
 		this.panning = false;
 
 		this.mouseDownEvent = (e) => {
@@ -203,32 +210,14 @@ class Canvas {
 			this.inputDown(e);
 			if (e.touches.length > 1) {
 				this.panning = true;
-				this.deltaX = (e.touches[0].clientX + e.touches[1].clientX) / 2;
-				this.deltaY = (e.touches[0].clientY + e.touches[1].clientY) / 2;
-			} else {
-				this.deltaX = e.touches[0].clientX;
-				this.deltaY = e.touches[0].clientY;
 			}
 		};
 
 		this.moveEvent = (e) => {
-			var x, y;
-			if (e.touches && e.touches.length > 1) {
-				x = (e.touches[0].clientX + e.touches[1].clientX) / 2;
-				y = (e.touches[0].clientY + e.touches[1].clientY) / 2;
-			} else if (e.touches) {
-				x = e.touches[0].clientX;
-				y = e.touches[0].clientY;
-			}
-
 			if (e.touches && e.touches.length > 1) {
 				this.panning = true;
-				this.panzoom.moveBy(-(this.deltaX - x), -(this.deltaY - y));
-				this.deltaX = (e.touches[0].clientX + e.touches[1].clientX) / 2;
-				this.deltaY = (e.touches[0].clientY + e.touches[1].clientY) / 2;
 				return;
-			} else {
-			}
+			} 
 
 			if (e.button) {
 				if (e.button != 0) return;
@@ -249,26 +238,6 @@ class Canvas {
 
 			if (e.touches.length == 0) this.panning = false;
 		};
-
-		this.clickEvent = (e) => {
-			var rect = this.inputLayer.getBoundingClientRect();
-			var x, y;
-			if (e.touches) {
-				x = e.touches[0].clientX;
-				y = e.touches[0].clientY;
-			} else {
-				x = e.clientX;
-				y = e.clientY;
-			}
-			x = x - rect.left;
-			y = y - rect.top;
-			x = Math.floor(
-				(this.width * x) / (this.inputLayer.clientWidth * this.canvScale)
-			);
-			y = Math.floor(
-				(this.height * y) / (this.inputLayer.clientHeight * this.canvScale)
-			);
-		};
 		this.touching = false;
 
 		this.canvasParent.addEventListener("touchmove", this.moveEvent);
@@ -279,7 +248,6 @@ class Canvas {
 		this.canvasParent.addEventListener("touchend", this.touchEndEvent);
 		this.canvasParent.addEventListener("mouseup", this.mouseUpEvent);
 		this.canvasParent.addEventListener("touchstart", this.clickEvent);
-		this.canvasParent.addEventListener("click", this.clickEvent);
 	}
 	recenter() {
 		var targetCanvasScale;
@@ -293,70 +261,44 @@ class Canvas {
 		}
 		var targetX = (window.innerWidth - this.width * targetCanvasScale) / 2;
 		var targetY = (window.innerHeight - this.height * targetCanvasScale) / 2;
+		var targetCanvasAngle = 0;
 		var _self = this;
-		var lerpFactor = 0.25;
-		function animateSmoothRecenter() {
-			_self.panzoom.zoomAbs(
-				window.innerWidth / 2,
-				window.innerHeight / 2,
-				lerp(settings.ui.canvasScale, targetCanvasScale, lerpFactor)
-			);
-			_self.panzoom.moveTo(
-				lerp(_self.panzoom.getTransform().x, targetX, lerpFactor),
-				lerp(_self.panzoom.getTransform().y, targetY, lerpFactor)
-			);
-			if (Math.abs(settings.ui.canvasScale - targetCanvasScale) < 0.01) {
-				settings.ui.canvasScale = targetCanvasScale;
-			}
-			//cancel request if close enough
-			if (
-				Math.abs(settings.ui.canvasScale - targetCanvasScale) >= 0.01 ||
-				Math.abs(targetX - _self.panzoom.getTransform().x) >= 0.01 ||
-				Math.abs(targetY - _self.panzoom.getTransform().y) >= 0.01
-			) {
-				requestAnimationFrame(animateSmoothRecenter);
-			} else {
-				_self.panzoom.zoomAbs(
-					window.innerWidth / 2,
-					window.innerHeight / 2,
-					targetCanvasScale
-				);
-				_self.panzoom.moveTo(targetX, targetY);
-			}
-		}
 		var transf = {
-			x: { ..._self.panzoom.getTransform() }.x,
-			y: { ..._self.panzoom.getTransform() }.y,
+			x: { ...this.zoom.getTransform() }.x,
+			y: { ...this.zoom.getTransform() }.y,
 			scale: settings.ui.canvasScale,
+			angle: { ...this.zoom.getTransform() }.angle,
 		};
 		if (
 			transf.x == targetX &&
 			transf.y == targetY &&
-			transf.scale == targetCanvasScale
+			transf.scale == targetCanvasScale &&
+			transf.angle == targetCanvasAngle
 		)
 			return;
+		this.zoom.setRotationOriginPercent(0.5, 0.5);
 
 		anime({
 			targets: transf,
 			x: targetX,
 			y: targetY,
 			scale: targetCanvasScale,
-			easing: "linear",
-			duration: 800,
-			easing: "easeInOutBack",
+			angle: targetCanvasAngle,
+			duration: 300,
+			easing: "spring(0.5, 100, 10, 0)",
 			update: function () {
-				_self.panzoom.zoomAbs(
+				this.zoom.zoomTo(
+					transf.scale,
 					window.innerWidth / 2,
-					window.innerHeight / 2,
-					transf.scale
+					window.innerHeight / 2
 				);
-				_self.panzoom.moveTo(transf.x, transf.y);
-			},
+				this.zoom.rotateTo(transf.angle);
+				this.zoom.moveTo(transf.x, transf.y);
+			}.bind(this),
 		});
-		//requestAnimationFrame(animateSmoothRecenter);
 	}
 	destroy() {
-		this.panzoom.dispose();
+		this.zoom.destroy();
 		this.canvasParent.removeEventListener("touchmove", this.moveEvent);
 		this.canvasParent.removeEventListener("mousemove", this.moveEvent);
 		this.canvasParent.removeEventListener("touchstart", this.touchStartEvent);
@@ -368,15 +310,9 @@ class Canvas {
 	inputDown(e) {
 		closeAllToolPopups();
 		updatePrevious(this.color);
-		var rect = this.inputLayer.getBoundingClientRect();
-		var x = e.clientX - rect.left || e.touches[0].clientX - rect.left;
-		var y = e.clientY - rect.top || e.touches[0].clientY - rect.top;
-		x = Math.floor(
-			(this.width * x) / (this.inputLayer.clientWidth * this.canvScale)
-		);
-		y = Math.floor(
-			(this.height * y) / (this.inputLayer.clientHeight * this.canvScale)
-		);
+		
+
+		var {rawX, rawY, x, y} = this.getCoordinatesFromInputEvent(e)
 		if (
 			Tools.circle ||
 			Tools.ellipse ||
@@ -396,6 +332,8 @@ class Canvas {
 
 		this.undoBuffer = layer.canvasElement.toDataURL();
 	}
+
+
 	inputUp(e, wasPanning) {
 		if (
 			Tools.circle ||
@@ -527,20 +465,39 @@ class Canvas {
 			window.dispatchEvent(window.cloudSyncEvent);
 		}
 	}
+	getCoordinatesFromInputEvent(e) {
+		
+		var rect = this.inputLayer.getBoundingClientRect();
+		var x = e.clientX - rect.left || e.touches[0].clientX - rect.left || -1;
+		var y = e.clientY - rect.top || e.touches[0].clientY - rect.top || -1;
+		var centerX = rect.width / 2;
+		var centerY = rect.height / 2;
+		x -= centerX;
+		y -= centerY;
+		var r = Math.sqrt(x * x + y * y);
+		var theta = Math.atan2(y, x);
+		theta -= this.zoom.toRadians(this.canvAngle);
+		x = r * Math.cos(theta);
+		y = r * Math.sin(theta);
+
+		var rawX = (x + centerX) / this.canvScale;
+		var rawY = (y + centerY) / this.canvScale;
+    	rawX += (0.5 - ((rect.width /(this.canvScale * this.width) )    / 2) ) * this.width;
+    	rawY += (0.5 - ((rect.height / (this.canvScale * this.height) ) / 2)) * this.height;
+		x = Math.floor(rawX);
+		y = Math.floor(rawY);
+		return {rawX, rawY, x, y}
+
+	}
 	inputActive(e) {
 		this.touching = true;
 		this.shiftKey = e.shiftKey;
 		this.ctrlKey = e.ctrlKey;
 		this.altKey = e.altKey;
-		var rect = this.inputLayer.getBoundingClientRect();
-		var x = e.clientX - rect.left || e.touches[0].clientX - rect.left || -1;
-		var y = e.clientY - rect.top || e.touches[0].clientY - rect.top || -1;
-		var rawX = x / this.canvScale;
-		var rawY = y / this.canvScale;
-		x = Math.floor(x / this.canvScale);
-		y = Math.floor(y / this.canvScale);
 		var clientX = e.clientX || e.touches[0].clientX;
 		var clientY = e.clientY || e.touches[0].clientY;
+
+		var {rawX, rawY, x, y} = this.getCoordinatesFromInputEvent(e)
 		this.currentX = x;
 		this.currentY = y;
 		this.lastKnownX = x;
