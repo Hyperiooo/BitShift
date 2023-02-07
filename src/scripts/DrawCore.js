@@ -226,6 +226,7 @@ window.onload = async function () {
 		new ColorSlider(e, e.getAttribute("data-color-slider"));
 	});
 	setPickerMode("picker");
+	refreshAllTooltips()
 };
 
 window.onbeforeunload = function () {

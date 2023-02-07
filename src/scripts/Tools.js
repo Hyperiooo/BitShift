@@ -336,9 +336,13 @@ function updateToolSettings(tool) {
 			inputElement.setAttribute("data-input-num-draggable-vertical", "true");
 			inputElement.classList.add("tool-settings-ui-input-num");
 			inputElement.onchange = "console.log('a')";
+			inputElement.setAttribute("data-tooltip", setting.title)
 			inputElement.oninput = (e) => {
 				setting.callback(inputElement);
 			};
+
+			
+
 			inputElement.type = "number";
 			inputElement.value = setting.value;
 			if (setting.unit) {
@@ -405,6 +409,10 @@ function updateToolSettings(tool) {
 			toolContent.appendChild(inputGroup);
 		}
 	}
+	setTimeout(() => {
+		refreshAllTooltips()
+		
+	}, 1);
 }
 
 function setTool(tool, el) {
