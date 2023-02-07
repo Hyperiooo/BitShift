@@ -54,6 +54,7 @@ html {
   --panzoomTransformOrigin: 0px 0px;
   --boxShadowT: 0.25;
   --boxShadow: 0px 8px 15px rgba(0, 0, 0, var(--boxShadowT));
+  --smallBoxShadow: 0px 8px 15px rgba(0, 0, 0, calc(var(--boxShadowT) * 0.5));
   --previousColor: #000000;
   --currentColor: #000;
 }
@@ -602,7 +603,6 @@ canvas * {
   -moz-user-select: none;
   -ms-user-select: none;
 }
-
 #bggridcanv {
   position: absolute;
   display: none;
@@ -717,9 +717,30 @@ foreignObject {
   cursor: none;
 }
 
-#toolbar {
+#sidebar {
   position: fixed;
   top: 50px;
+  width: 48px;
+  height: 100%;
+}
+
+#tool-settings-content {
+  color: var(--textDim);
+  transition: 0.3s height, 0.15s opacity, 0.3s margin-bottom;
+  left: 0;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  background: var(--bgMainT);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  border-radius: 0 9px 9px 0;
+  padding-top: 4px;
+}
+
+#toolbar {
+  padding-top: 5px;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -728,6 +749,7 @@ foreignObject {
   backdrop-filter: saturate(180%) blur(20px);
   -webkit-backdrop-filter: saturate(180%) blur(20px);
   border-radius: 0 0 9px 0;
+  margin-bottom: 10px;
 }
 
 .toolbar-top {
@@ -775,6 +797,9 @@ foreignObject {
 
 #toolbar .item:first-of-type {
   margin-top: 4px;
+}
+#toolbar .item:last-of-type {
+  margin-bottom: 8px;
 }
 
 #toolbar .item [data-tool-color-menu-button] {
@@ -835,50 +860,6 @@ foreignObject {
 }
 
 
-@media screen and (max-width: 600px){
-  #dynamic-tool-wrap {
-    display: flex;
-    flex-shrink: 1;
-    height: 100%;
-    width: fit-content;
-    align-items: center;
-    overflow: auto;
-    overflow-y:  hidden;
-  }
-  #dynamic-tool-wrap::-webkit-scrollbar {
-    display: none;
-  }
-  
-  #dynamic-tool-wrap .item {
-    flex-shrink: 0;
-  }
-  
-  #toolbar {
-    width:100%;
-    top:unset;
-    bottom: 0px;
-    border-radius: 0;
-    display: flex;
-    justify-content: left;
-    align-items: center;
-    padding-left: 4px;
-    padding-bottom: env(safe-area-inset-bottom,0px);
-  }
-
-  #toolbar .item {
-margin-left: 0;
-  margin-bottom: 4px;
-  margin-top: 4px;
-  margin-right: 4px;
-  }
-  #toolbar .toolbar-divider {
-    height: 30px;
-    width:2px;
-    margin: 0;
-    margin-right: 4px;
-    flex-shrink: 0;
-  }
-  }
 
 #topbar {
   position: fixed;
@@ -1098,7 +1079,7 @@ margin-left: 0;
   --hi-base: var(--accentText);
 }
 
-#topbar .tool-active i {
+#tool-settings-content .tool-active i {
   color: var(--accent) !important;
   --hi-accent: var(--accent);
   --hi-base: var(--accent);
@@ -1766,7 +1747,7 @@ input[type="number"] {
   font-size: 22px;
 }
 
-@media only screen and (max-width: 1000px) {
+@media only screen and (max-width: 600px) {
   .color-menu {
     top: unset !important;
     bottom: 0px;
@@ -1777,6 +1758,7 @@ input[type="number"] {
     grid-template-rows: 35px repeat(14, 30px);
     gap: 8px;
     padding: 24px;
+    padding-bottom: calc(8px + env(safe-area-inset-bottom));
     width: calc(100vw - 60px);
     left: 50%;
     transform: translate(-50%, 50%);
@@ -1873,10 +1855,10 @@ input {
   pointer-events: all;
 }
 
-#tool-settings-content {
-  color: var(--textDim);
-  transition: 0.3s height, 0.15s opacity, 0.3s margin-bottom;
+[data-input-num-draggable-vertical] {
+  cursor: n-resize !important;
 }
+
 
 .tool-settings-content-hidden {
   opacity: 0;
@@ -1885,7 +1867,6 @@ input {
 .tool-settings-ui-input-group {
   display: inline-flex;
   justify-content: space-between;
-  margin: 8px;
 }
 
 .tool-settings-ui-input-wrap {
@@ -1895,34 +1876,38 @@ input {
 
 .tool-settings-ui-input-field {
   position: relative;
-  display: inline-flex;
   align-content: center;
   align-items: center;
-  margin-left: 8px;
 }
 
 .tool-settings-ui-input-field-group {
   display: block;
-  padding-bottom: 8px;
 }
 
 .tool-settings-ui-input-num {
-  background: var(--bgLight);
+  background: var(--scrollTrack);
   color: var(--textMain) !important;
   margin: 0;
   padding: 0 5px;
   font-size: 14px;
   font-weight: bolder;
-  border: none;
+  border: 1px solid var(--bgLight);
   border-radius: 5px;
-  width: 43px;
+  box-sizing: border-box;
+  width: 40px !important;
+  height: 40px;
+  
+  margin-bottom: 4px;
+  margin-left: 4px;
+  margin-right: 4px;
+
   display: block;
   font-weight: 100;
   text-align: left;
-  height: 28px;
   cursor: e-resize;
   font-weight: 300;
   user-select: none;
+  text-align: center;
   -webkit-user-select: none;
 }
 
@@ -2059,7 +2044,7 @@ input {
   padding: 10px 15px 10px 15px;
   font-size: 16px;
   font-weight: bolder;
-  display: inline-block;
+  display: block;
   border: none;
   border-radius: 5px;
   transition: 0.2s all;
@@ -2076,6 +2061,76 @@ input {
   margin: 8px;
   margin-top: 0px;
 }
+
+
+@media screen and (max-width: 600px){
+  #dynamic-tool-wrap {
+    display: flex;
+    flex-shrink: 1;
+    height: 100%;
+    width: fit-content;
+    align-items: center;
+    overflow: auto;
+    overflow-y:  hidden;
+  }
+  #dynamic-tool-wrap::-webkit-scrollbar {
+    display: none;
+  }
+  
+  #dynamic-tool-wrap .item {
+    flex-shrink: 0;
+  }
+  #topbar-project-name {
+    display: none;
+    visibility: hidden;
+  }
+  #sidebar {
+    top:0;
+    height: 100%;
+  }
+
+  #tool-settings-content {
+    bottom: 50%;
+    position: absolute;
+    transform: translateY(50%);
+  }
+/*
+  .tool-settings-ui-input-num {
+    --percent: 50%;
+    height: 150px;
+    background-image: linear-gradient(to top, var(--accent) var(--percent), var(--scrollTrack) var(--percent));
+  }*/
+  
+  #toolbar {
+    position: fixed;
+    width:100%;
+    top:unset;
+    bottom: 0px;
+    border-radius: 0;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    padding-top:0;
+    padding-left: 4px;
+    margin-bottom: 0;
+    padding-bottom: env(safe-area-inset-bottom,0px);
+  }
+
+  #toolbar .item {
+margin-left: 0;
+  margin-bottom: 4px;
+  margin-top: 4px;
+  margin-right: 4px;
+  }
+  #toolbar .toolbar-divider {
+    height: 30px;
+    width:2px;
+    margin: 0;
+    margin-right: 4px;
+    flex-shrink: 0;
+  }
+  }
+
 
 #toolbar .item.toolbar-portrait-only {
   visibility: hidden;
@@ -3517,4 +3572,23 @@ div[id^="alrt-main"] {
   width: 110px;
   height: 110px;
   opacity: 1;
+}
+
+
+.tooltip {
+  background: var(--bgMainT);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  color: var(--textDim);
+  padding: 10px 15px;
+  border-radius: 5px;
+  box-shadow: var(--smallBoxShadow);
+  pointer-events: none;
+  opacity: 0;
+  transition: 0.3s;
+  transition-delay: 0s;
+}
+.tooltip-visible {
+  opacity: 1;
+  transition-delay: 300ms;
 }

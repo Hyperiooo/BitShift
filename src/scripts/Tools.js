@@ -332,24 +332,28 @@ function updateToolSettings(tool) {
 			inputElement.setAttribute("data-input-filter", "true");
 			inputElement.min = setting.min;
 			inputElement.max = setting.max;
-			if (setting.draggable)
-				inputElement.setAttribute("data-input-num-draggable", "true");
+			inputElement.setAttribute("data-input-num-draggable", "true");
+			inputElement.setAttribute("data-input-num-draggable-vertical", "true");
 			inputElement.classList.add("tool-settings-ui-input-num");
 			inputElement.onchange = "console.log('a')";
+			inputElement.setAttribute("data-tooltip", setting.title)
 			inputElement.oninput = (e) => {
 				setting.callback(inputElement);
 			};
+
+			
+
 			inputElement.type = "number";
 			inputElement.value = setting.value;
 			if (setting.unit) {
 				let inputUnit = document.createElement("p");
 				inputUnit.classList.add("tool-settings-ui-input-unit");
 				inputUnit.innerHTML = setting.unit;
-				inputField.appendChild(inputUnit);
+				//inputField.appendChild(inputUnit);
 			}
 			inputField.appendChild(inputElement);
-			inputGroup.appendChild(inputTitle);
 			inputGroup.appendChild(inputWrap);
+			//inputGroup.appendChild(inputTitle);
 			toolContent.appendChild(inputGroup);
 			inputElement.max = setting.max;
 			inputElement.min = setting.min;
@@ -405,6 +409,10 @@ function updateToolSettings(tool) {
 			toolContent.appendChild(inputGroup);
 		}
 	}
+	setTimeout(() => {
+		refreshAllTooltips()
+		
+	}, 1);
 }
 
 function setTool(tool, el) {

@@ -84,7 +84,6 @@
         width: 0px;
         pointer-events: none;
       " accept=".bspr" />
-  <div id="tool-settings"></div>
   <div class="color-menu" id="color-menu" ondrop="dropHandler(event);" ondragover="dragOverHandler(event);"
     ondragleave="dragLeaveHandler(event);" ondragend="dragLeaveHandler(event);">
     <div class="color-menu-topbar">
@@ -331,7 +330,6 @@
 
     <input type="text" id="topbar-project-name" value="" onblur="renameProject(this)" />
 
-    <div id="tool-settings-content"></div>
     <div id="topbar-right">
 
       <span class="item" onclick="openGallery()">
@@ -339,24 +337,29 @@
         <i id="syncStatusIndicator" class="hi-loading-outline icon-accent"></i>
       </span>
       <span class="toolbar-divider"></span>
-      <span class="item" onclick="undo()"><i class="hi-undo"></i></span>
-      <span class="item" onclick="redo()"><i class="hi-redo"></i></span>
+      <span class="item" onclick="undo()" data-tooltip="Undo"><i class="hi-undo"></i></span>
+      <span class="item" onclick="redo()"data-tooltip="Redo"><i class="hi-redo"></i></span>
       <span class="toolbar-divider"></span>
       <span id="layer-toggle-button" class="item" onclick="toggleLayerMenu()"><i class="hi-layer"></i></span>
     </div>
   </div>
   <div id="actionButtons" class="actionButtonsHidden"></div>
-  <div id="toolbar" class="ui">
-    <div id="dynamic-tool-wrap"></div>
-    <span class="toolbar-divider"></span>
-    <span class="item toolbar-landscape-only" onclick="toggleColorPicker()"><i class="hi-circle-small-fill"
-        data-tool-color-menu-button></i>
-    </span>
-    <span id="tool-btn-eyedropper" class="item" data-tool-name="eyedropper"
-      onclick="previousTool = getTool();compileForEyedropper(); setTool('eyedropper', this)"><i
-        class="hi-eyedropper"></i></span>
-    
+
+  <div id="sidebar">
+    <div id="toolbar" class="ui">
+      <div id="dynamic-tool-wrap"></div>
+      <span class="toolbar-divider"></span>
+      <span class="item toolbar-landscape-only" onclick="toggleColorPicker()"><i class="hi-circle-small-fill"
+          data-tool-color-menu-button></i>
+      </span>
+      <span id="tool-btn-eyedropper" class="item" data-tool-name="eyedropper"
+        onclick="previousTool = getTool();compileForEyedropper(); setTool('eyedropper', this)"><i
+          class="hi-eyedropper"></i></span>
+      
+    </div>
+    <div id="tool-settings-content"></div>
   </div>
+  
 
   <div id="window-settings" class="window-wrap window-closed">
     <div class="window-content">

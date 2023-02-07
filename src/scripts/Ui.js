@@ -106,22 +106,28 @@ var draggableNumInputs = [];
 class numberDraggable {
 	constructor(el, numpad) {
 		this.do = false;
-		this.startX = 0;
+		this.startP = 0;
 		this.el = el;
+		this.direction = this.el.getAttribute("data-input-num-draggable-vertical") ? true : false;
+		console.log(this.direction)
+		console.log()
 		this.startVal = this.el.value;
 		self = this;
 		this.pointerDown = function (e) {
+			e.preventDefault()
 			this.do = true;
-			this.startX = e.clientX;
+			this.startP = this.direction ? e.clientY : e.clientX;
 			this.startVal = this.el.value;
 		};
 		this.pointerUp = function (e) {
 			this.do = false;
 		};
 		this.pointerMove = function (e) {
+			e.preventDefault()
+			e.stopPropagation()
 			if (this.do) {
 				this.el.value = clamp(
-					parseInt(this.startVal) + Math.floor((e.clientX - this.startX) / 10),
+					parseInt(this.startVal) + Math.floor(((this.direction ?  this.startP - e.clientY : e.clientX- this.startP) ) / 10),
 					this.el.min,
 					this.el.max
 				);
@@ -224,6 +230,7 @@ class NumberInputKeypad {
 		this.previewUnit = this.element.querySelector("#number-pad-preview-unit");
 		this.value = 0;
 		this.unit = false;
+		this.title = "title"
 		this.overwriteDefault = false;
 		this.min = 0;
 		this.max = Infinity;
@@ -276,6 +283,8 @@ class NumberInputKeypad {
 		this.reposition();
 		this.previewValue.innerHTML = this.value;
 		this.previewUnit.innerHTML = this.unit;
+		this.target.style.setProperty("--percent", (this.value - this.min) / (this.max - this.min) * 100 + "%" )
+				
 	}
 	open(targetElement) {
 		this.target = targetElement;
@@ -312,6 +321,8 @@ class NumberInputKeypad {
 	confirm() {
 		this.target.value = Math.max(parseInt(this.value), this.min);
 		if (this.target.oninput) this.target.oninput(this.target);
+		this.target.style.setProperty("--percent", (this.value - this.min) / (this.max - this.min) * 100 + "%" )
+		
 	}
 	animate() {}
 }
@@ -330,6 +341,8 @@ function refreshAllNumberDraggables() {
 	});
 }
 
+var tooltips = []
+
 function numberDraggableClickHandler(e) {
 	if (!isMobile) return;
 	if (!window.numberPad.isopen) {
@@ -338,4 +351,70 @@ function numberDraggableClickHandler(e) {
 	} else {
 		window.numberPad.close();
 	}
+}
+
+function refreshAllTooltips() {
+	tooltips.forEach((e) => {
+		e[0].destroy();
+	});
+
+	tooltips = []
+
+	var toolEls = document.querySelectorAll(".tooltip") 
+	toolEls.forEach(e => {
+		e.remove()
+	})
+	
+	var ttp = document.querySelectorAll("[data-tooltip]");
+	ttp.forEach((e) => {
+		let tooltip = document.createElement("div")
+		tooltip.innerHTML = e.getAttribute("data-tooltip")
+		tooltip.classList.add("tooltip")
+		var popInstance = Popper.createPopper(e, tooltip, {
+			placement: "auto",
+			modifiers: [
+				{
+					name: "preventOverflow",
+					options: {
+						mainAxis: true, // true by default
+						altAxis: true, // false by default
+					},
+				},
+				{
+					name: "offset",
+					options: {
+						offset: [0, 10],
+					},
+				},
+				{
+					name: "arrow",
+					options: {
+						element: this.arrow,
+					},
+				},
+			],
+		});
+		console.log(e)
+		e.removeEventListener("touchstart", tooltipDownHandler, true);
+		e.addEventListener("touchstart", tooltipDownHandler, true);
+		document.body.removeEventListener("touchend", tooltipUpHandler, true);
+		document.body.addEventListener("touchend", tooltipUpHandler, true);
+		e.removeEventListener("mouseover", tooltipDownHandler, true);
+		e.addEventListener("mouseover", tooltipDownHandler, true);
+		e.removeEventListener("mouseout", tooltipUpHandler, true);
+		e.addEventListener("mouseout", tooltipUpHandler, true);
+		document.body.appendChild(tooltip)
+		tooltips.push([popInstance, tooltip, e])
+	});
+}
+
+function tooltipDownHandler(e) {
+	if(!tooltips.find(l => l[2] == e.target))return
+	tooltips.find(l => l[2] == e.target)[1].classList.add("tooltip-visible")
+
+}
+function tooltipUpHandler(e) {
+	if(!tooltips.find(l => l[2] == e.target))return
+	tooltips.find(l => l[2] == e.target)[1].classList.remove("tooltip-visible")
+
 }
