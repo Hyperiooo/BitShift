@@ -720,6 +720,7 @@ foreignObject {
   position: fixed;
   top: 50px;
   width: 48px;
+  height: 100%;
 }
 
 #tool-settings-content {
@@ -738,7 +739,7 @@ foreignObject {
 }
 
 #toolbar {
-  padding-top: 4px;
+  padding-top: 5px;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -795,6 +796,9 @@ foreignObject {
 
 #toolbar .item:first-of-type {
   margin-top: 4px;
+}
+#toolbar .item:last-of-type {
+  margin-bottom: 8px;
 }
 
 #toolbar .item [data-tool-color-menu-button] {
@@ -872,8 +876,22 @@ foreignObject {
   #dynamic-tool-wrap .item {
     flex-shrink: 0;
   }
+  #topbar-project-name {
+    display: none;
+    visibility: hidden;
+  }
+  #sidebar {
+    height: 100%;
+  }
+
+  #tool-settings-content {
+    bottom: 50%;
+    position: absolute;
+    transform: translateY(50%);
+  }
   
   #toolbar {
+    position: fixed;
     width:100%;
     top:unset;
     bottom: 0px;
@@ -881,7 +899,9 @@ foreignObject {
     display: flex;
     justify-content: left;
     align-items: center;
+    padding-top:0;
     padding-left: 4px;
+    margin-bottom: 0;
     padding-bottom: env(safe-area-inset-bottom,0px);
   }
 
@@ -1942,6 +1962,7 @@ input {
   cursor: e-resize;
   font-weight: 300;
   user-select: none;
+  text-align: center;
   -webkit-user-select: none;
 }
 

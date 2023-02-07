@@ -345,10 +345,11 @@ function updateToolSettings(tool) {
 				let inputUnit = document.createElement("p");
 				inputUnit.classList.add("tool-settings-ui-input-unit");
 				inputUnit.innerHTML = setting.unit;
-				inputField.appendChild(inputUnit);
+				//inputField.appendChild(inputUnit);
 			}
 			inputField.appendChild(inputElement);
 			inputGroup.appendChild(inputWrap);
+			//inputGroup.appendChild(inputTitle);
 			toolContent.appendChild(inputGroup);
 			inputElement.max = setting.max;
 			inputElement.min = setting.min;
