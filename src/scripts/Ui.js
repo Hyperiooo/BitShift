@@ -113,24 +113,41 @@ class numberDraggable {
 		console.log()
 		this.startVal = this.el.value;
 		self = this;
+		this.rawValue = this.el.value
+		this.startEffectPosition = 0
 		this.pointerDown = function (e) {
 			e.preventDefault()
 			this.do = true;
 			this.startP = this.direction ? e.clientY : e.clientX;
 			this.startVal = this.el.value;
+			this.rawValue = parseInt(this.startVal)
+			this.startEffectPosition = this.direction ? e.clientX : e.clientY
+			this.deltaX = e.clientX
+			this.deltaY = e.clientY
 		};
 		this.pointerUp = function (e) {
 			this.do = false;
 		};
+		this.deltaX
+		this.deltaY
 		this.pointerMove = function (e) {
 			e.preventDefault()
 			e.stopPropagation()
 			if (this.do) {
+				var pullDistance = 200;
+				let deltaMultiplier = this.startEffectPosition - (this.direction ? e.clientX : e.clientY)
+				deltaMultiplier = pullDistance - Math.abs(deltaMultiplier)
+				deltaMultiplier = clamp(deltaMultiplier/pullDistance, 0.1, 1)
+				
+				this.rawValue += ((this.direction ?  this.deltaY - e.clientY : -this.deltaX +e.clientX) ) / 10 * deltaMultiplier
+				notify.log(this.rawValue)
 				this.el.value = clamp(
-					parseInt(this.startVal) + Math.floor(((this.direction ?  this.startP - e.clientY : e.clientX- this.startP) ) / 10),
+					 Math.floor(this.rawValue),
 					this.el.min,
 					this.el.max
 				);
+				this.deltaX = e.clientX
+			this.deltaY = e.clientY
 				window.numberPad.update(this.el);
 				if (this.el.oninput) this.el.oninput(e);
 			}
@@ -138,28 +155,41 @@ class numberDraggable {
 		this.pointerDownHandler = this.pointerDown.bind(this);
 		this.pointerUpHandler = this.pointerUp.bind(this);
 		this.pointerMoveHandler = this.pointerMove.bind(this);
-		this.el.addEventListener("pointerdown", this.pointerDownHandler);
-		document.addEventListener("pointerup", this.pointerUpHandler);
-		document.addEventListener("pointermove", this.pointerMoveHandler);
+		this.el.addEventListener("pointerdown", this.pointerDownHandler,  {passive: false});
+		document.addEventListener("pointerup", this.pointerUpHandler,  {passive: false});
+		document.addEventListener("pointermove", this.pointerMoveHandler,  {passive: false});
 	}
 	clear() {}
 	destroy() {
-		this.el.removeEventListener("pointerdown", this.pointerDownHandler);
-		document.removeEventListener("pointerup", this.pointerUpHandler);
-		document.removeEventListener("pointermove", this.pointerMoveHandler);
+		this.el.removeEventListener("pointerdown", this.pointerDownHandler,  {passive: false});
+		document.removeEventListener("pointerup", this.pointerUpHandler,  {passive: false});
+		document.removeEventListener("pointermove", this.pointerMoveHandler,  {passive: false});
 	}
 }
 
-function toggleMenu() {
-	document.querySelector(".menu").classList.toggle("menu-open");
+function toggleMenu(menu) {
+	if(menu.nodeName) {
+		menu.parentElement.classList.toggle("menu-open")
+		return
+	}
+	document.getElementById("menu-" + menu).classList.toggle("menu-open");
 }
 
-function closeMenu() {
-	document.querySelector(".menu").classList.remove("menu-open");
+
+function closeMenu(menu) {
+	if(menu.nodeName) {
+		menu.parentElement.classList.remove("menu-open")
+		return
+	}
+	document.getElementById("menu-" + menu).classList.remove("menu-open");
 }
 
-function openMenu() {
-	document.querySelector(".menu").classList.add("menu-open");
+function openMenu(menu) {
+	if(menu.nodeName) {
+		menu.parentElement.classList.add("menu-open")
+		return
+	}
+	document.getElementById("menu-" + menu).classList.add("menu-open");
 }
 
 function toggleFile() {}
@@ -417,4 +447,12 @@ function tooltipUpHandler(e) {
 	if(!tooltips.find(l => l[2] == e.target))return
 	tooltips.find(l => l[2] == e.target)[1].classList.remove("tooltip-visible")
 
+}
+
+function mobileDesktopCallback(mobileCallback, desktopCallback) {
+	if(isMobile) {
+		mobileCallback()
+	}else {
+		desktopCallback()
+	}
 }

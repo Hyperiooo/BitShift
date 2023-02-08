@@ -70,12 +70,12 @@
 
   <div id="cursor" class="invertBackground cursor-hidden"></div>
   <img id="img" />
-  <div class="menu">
-    <div class="menu-btn" onclick="saveFile(); closeMenu()">Save</div>
-    <div class="menu-btn" onclick="openFile(); closeMenu()">Open</div>
-    <div class="menu-btn" onclick="openWindow('settings'); closeMenu()">Settings</div>
-    <div class="menu-btn" onclick="canvasInterface.recenter(); closeMenu()">Recenter</div>
-    <div class="menu-btn" onclick="canvasInterface.clear(); closeMenu()">Clear</div>
+  <div id="menu-file" class="menu">
+    <div class="menu-btn" onclick="saveFile(); closeMenu(this)">Save</div>
+    <div class="menu-btn" onclick="openFile(); closeMenu(this)">Open</div>
+    <div class="menu-btn" onclick="openWindow('settings'); closeMenu(this)">Settings</div>
+    <div class="menu-btn" onclick="canvasInterface.recenter(); closeMenu(this)">Recenter</div>
+    <div class="menu-btn txt-col-red" onclick="canvasInterface.clear(); closeMenu(this)">Clear</div>
   </div>
   <input type="file" id="fileOpenDialog" style="
         display: hidden;
@@ -105,6 +105,7 @@
           onmouseup="valueEndDrag(event)" ontouchstart="valueThumb(event);valueDrag(event);"
           ontouchmove="valueDrag(event)" ontouchend="valueEndDrag(event)"></div>
       </div>
+      
       <div class="color-selector" id="color-hue" width="40" height="200" onmousedown="hueThumb(event);hueDrag(event);"
         onmousemove="hueDrag(event)" onmouseup="hueEndDrag(event)" ontouchstart="hueThumb(event);hueDrag(event);"
         ontouchmove="hueDrag(event)" ontouchend="hueEndDrag(event)">
@@ -322,7 +323,7 @@
   <div id="topbar" class="ui">
     <div id="topbar-left">
       <span class="item" onclick="openGallery()"><i class="hi-carat-left"></i></span>
-      <button class="topbar-button" onclick="toggleMenu()">File</button>
+      <button class="topbar-button" onclick="toggleMenu('file')">File</button>
       <button class="item" onclick="openExportMenu()" id="exportButton">
         <i class="hi-export"></i>
       </button>
@@ -449,7 +450,8 @@
     <div id="eyedropper-preview-current"></div>
     <div id="eyedropper-preview-previous"></div>
   </div>
-  <div id="action-blob"></div>
+  <!--
+  <div id="action-blob"></div>-->
   <div class="number-pad-input-wrap number-pad-input-hidden" data-show id="number-pad">
     <div id="numpadArrow" class="popperArrow" data-popper-arrow>
       <div class="popperArrowInner"></div>

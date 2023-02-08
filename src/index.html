@@ -64,20 +64,28 @@
       <h1 id="splashTitle">BitShift</h1>
     </div>
   </div>
+  <div id="menu-account" class="menu">
+    <div class="menu-btn" onclick="saveFile(); closeMenu(this)">Save</div>
+    <div class="menu-btn" onclick="openFile(); closeMenu(this)">Open</div>
+    <div class="menu-btn" onclick="openWindow('settings'); closeMenu(this)">Settings</div>
+    <div class="menu-btn" onclick="canvasInterface.recenter(); closeMenu(this)">Recenter</div>
+    <div class="menu-btn txt-col-red" onclick="supabase.auth.signOut(); closeMenu(this)">Sign Out</div>
+  </div>
   <div id="galleryContent" class="visible">
     <header id="topbar" class="ui">
       <div id="topbar-left">
         <span class="item" id="accountWidget">
           <i class="hi-account"></i>
           <div id="accountName"></div>
-          <i class="hi-carat-down"></i>
-          <button id="signOut" onclick="supabase.auth.signOut()">Sign Out</button>
         </span>
-        <span class="item" onclick="openGallery()">
-          <i class="hi-cloud"></i>
-          <i class="hi-check-outline icon-accent"></i>
-        </span>
-        <span class="item" onclick="openWindow('settings')">
+        <span class="item" onclick="mobileDesktopCallback(
+          () => {
+            
+            openWindow('settings')
+          }, () => {
+            openMenu('account')
+          }
+        )">
           <i class="hi-gear"></i>
         </span>
       </div>
@@ -86,8 +94,7 @@
       <div id="topbar-right">
         <span class="item" onclick="openGallery()"><i class="hi-folder-add"></i></span>
         <span class="item" onclick="openFile()"><i class="hi-import"></i></span>
-        <span class="item" onclick="openWindow('newfile')"><i class="hi-plus-large"></i></span>
-      </div>
+       </div>
     </header>
     <div id="galleryWrapper">
     </div>
@@ -220,9 +227,8 @@
         </span>
         <div class="window-btn-group">
           <button onclick="createNewProject()" id="close" class="window-btn window-btn-imp">
-            OK
+            Create
           </button>
-          <button onclick="closeWindow('newfile')" class="window-btn">Cancel</button>
         </div>
       </div>
     </div>
@@ -248,6 +254,10 @@
     <button class="number-pad-input-button grid-col-4 grid-row-4-5 bg-important-t font-icon" data-confirm><i
         class="hi-check"></i></button>
   </div>
+  <button class="floating-action-button" onclick="openWindow('newfile')"><div class="fab-icon">
+    <i class="hi-plus-large"></i></div>
+    <div class="fab-text">New Project</div>
+  </button>
 </body>
 
 </html>

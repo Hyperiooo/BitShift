@@ -302,18 +302,27 @@ class ColorSlider {
 		this.max = this.inputElement.max;
 		this.boundingClientRect = this.el.getBoundingClientRect();
 		this.width = this.boundingClientRect.width;
-		document.addEventListener("pointerdown", handlePointerDown.bind(this));
-		document.addEventListener("pointermove", handlePointerMove.bind(this));
-		document.addEventListener("pointerup", handlePointerUp.bind(this));
+		document.addEventListener("pointerdown", handlePointerDown.bind(this), {passive: false});
+		document.addEventListener("pointermove", handlePointerMove.bind(this), {passive: false});
+		document.addEventListener("pointerup", handlePointerUp.bind(this), {passive: false});
 
 		this.startY = 0;
+		this.rawValue
+		this.rawX = 0
+		this.pX = 0
+
+		this.startEffectPosition = 0
 
 		function handlePointerDown(e) {
 			if (e.target == this.el || this.el.contains(e.target)) {
+				this.rawX = (e.clientX - this.boundingClientRect.left)
+				this.startEffectPosition = e.clientY
+				this.pX = this.rawX
+				this.rawValue = (this.rawX / this.width) * this.max
+					
 				this.inputElement.value = clamp(
-					Math.floor(
-						((e.clientX - this.boundingClientRect.left) / this.width) * this.max
-					),
+					Math.floor(this.rawValue
+						),
 					this.min,
 					this.max
 				);
@@ -322,14 +331,28 @@ class ColorSlider {
 			}
 		}
 		function handlePointerMove(e) {
+			
 			if (this.enabled) {
+				var pullDistance = 200;
+				let deltaMultiplier = this.startEffectPosition - (e.clientY)
+				
+				deltaMultiplier = pullDistance - Math.abs(deltaMultiplier)
+				
+				deltaMultiplier = clamp(deltaMultiplier/pullDistance, 0.1, 1)
+				
+				let delta =this.pX - (e.clientX - this.boundingClientRect.left)
+				
+				this.rawX -= delta * deltaMultiplier
+				this.rawValue = (this.rawX / this.width) * this.max
+				
 				this.inputElement.value = clamp(
 					Math.floor(
-						((e.clientX - this.boundingClientRect.left) / this.width) * this.max
-					),
+						this.rawValue
+						),
 					this.min,
 					this.max
 				);
+				this.pX = (e.clientX - this.boundingClientRect.left)
 				this.inputElement.oninput(this.inputElement, null);
 			}
 		}
