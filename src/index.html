@@ -1,263 +1,466 @@
 <!DOCTYPE html>
 <html lang="en" class="ui-theme-dark">
+  <head>
+    <!--METADATA-->
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <title>BitShift</title>
+    <link rel="icon" type="image/svg" href="./assets/logo.png" />
+    <link rel="manifest" id="manifest" />
+    <!-- IOS SUPPORT -->
+    <meta name="apple-mobile-web-app-status-bar" content="#0f1216" />
+    <meta name="theme-color" content="#0f1216" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="#0f1216" />
 
-<head>
-  <!--METADATA-->
-  <meta charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>BitShift</title>
-  <link rel="icon" type="image/svg" href="./assets/logo.png" />
-  <link rel="manifest" id="manifest" />
-  <!-- IOS SUPPORT -->
-  <meta name="apple-mobile-web-app-status-bar" content="#0f1216" />
-  <meta name="theme-color" content="#0f1216" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="#0f1216">
+    <meta
+      name="description"
+      content="A free, open source, cloud synced pixel art tool."
+    />
+    <meta property="og:image" content="./assets/icon.png" />
+    <meta property="og:title" content="BitShift" />
+    <meta property="og:url" content="https://bitshift.hyperio.org/" />
+    <meta
+      property="og:description"
+      content="A free, cloud synced pixel art tool."
+    />
+    <meta
+      name="keywords"
+      content="BitShift, Hyperio, Pixel Art, Art, Art editing, Drawing, Free drawing, art editor, open source"
+    />
+    <link rel="apple-touch-icon" href="./assets/icon.png" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="BitShift" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
 
-  <meta name="description" content="A free, open source, cloud synced pixel art tool." />
-  <meta property="og:image" content="./assets/icon.png" />
-  <meta property="og:title" content="BitShift">
-  <meta property="og:url" content="https://bitshift.hyperio.org/">
-  <meta property="og:description" content="A free, cloud synced pixel art tool.">
-  <meta name="keywords"
-    content="BitShift, Hyperio, Pixel Art, Art, Art editing, Drawing, Free drawing, art editor, open source">
-  <link rel="apple-touch-icon" href="./assets/icon.png">
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-title" content="BitShift">
-  <meta name="apple-mobile-web-app-capable" content="yes">
+    <!--REMOVE THESE AND REPLACE WITH ACTUAL debug-->
+    <script src="https://cdn.jsdelivr.net/gh/Hyperiooo/Alrt.js@v0.1.2/src/alrt.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/gh/Hyperiooo/Alrt.js@v0.1.1/src/alrt.css"
+    />
 
+    <!--COLOR-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chroma-js/2.1.0/chroma.min.js"></script>
+    <script src="./scripts/anypalette.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.0/color-thief.umd.js"></script>
+    <!--SCRIPTS-->
+    <script src="./scripts/popper.min.js"></script>
+    <script src="./scripts/Utils.js" defer></script>
+    <script src="./scripts/Ui.js" defer></script>
+    <script src="./scripts/ColorMenu.js" defer></script>
+    <script src="./scripts/Exporter.js" defer></script>
+    <script src="./scripts/Compressor.js" defer></script>
+    <script src="./scripts/File.js" defer></script>
+    <script
+      defer
+      type="text/javascript"
+      src="./scripts/GalleryCore.js"
+    ></script>
+    <!--STYLES & FONTS-->
+    <link rel="stylesheet" href="./styles/main.css" />
+    <link rel="stylesheet" href="./styles/alrt-theme.css" />
+    <link
+      href="https://cdn.jsdelivr.net/gh/Hyperiooo/Hypericons@v0.6.8/fonts/hypericons.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
-  <!--REMOVE THESE AND REPLACE WITH ACTUAL debug-->
-  <script src="https://cdn.jsdelivr.net/gh/Hyperiooo/Alrt.js@v0.1.2/src/alrt.js"></script>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Hyperiooo/Alrt.js@v0.1.1/src/alrt.css" />
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+    <script src="./scripts/supabase/SupabaseCore.js" defer></script>
+  </head>
 
-  <!--COLOR-->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/chroma-js/2.1.0/chroma.min.js"></script>
-  <script src="./scripts/anypalette.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.0/color-thief.umd.js"></script>
-  <!--SCRIPTS-->
-  <script src="./scripts/popper.min.js"></script>
-  <script src="./scripts/Utils.js" defer></script>
-  <script src="./scripts/Ui.js" defer></script>
-  <script src="./scripts/ColorMenu.js" defer></script>
-  <script src="./scripts/Exporter.js" defer></script>
-  <script src="./scripts/Compressor.js" defer></script>
-  <script src="./scripts/File.js" defer></script>
-  <script defer type="text/javascript" src="./scripts/GalleryCore.js"></script>
-  <!--STYLES & FONTS-->
-  <link rel="stylesheet" href="./styles/main.css" />
-  <link rel="stylesheet" href="./styles/alrt-theme.css" />
-  <link href="https://cdn.jsdelivr.net/gh/Hyperiooo/Hypericons@v0.6.8/fonts/hypericons.css" rel="stylesheet"
-    type="text/css" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-  <script src="./scripts/supabase/SupabaseCore.js" defer></script>
-
-</head>
-
-<body>
-  <div id="splash" class="hidden">
-    <div id="splashContent">
-      <div id="splashLogo"> <img src="./assets/logo.svg" alt="BitShift Logo"></div>
-      <h1 id="splashTitle">BitShift</h1>
+  <body>
+    <div id="splash" class="hidden">
+      <div id="splashContent">
+        <div id="splashLogo">
+          <img src="./assets/logo.svg" alt="BitShift Logo" />
+        </div>
+        <h1 id="splashTitle">BitShift</h1>
+      </div>
     </div>
-  </div>
-  <div id="menu-account" class="menu">
-    <div class="menu-btn" onclick="saveFile(); closeMenu(this)">Save</div>
-    <div class="menu-btn" onclick="openFile(); closeMenu(this)">Open</div>
-    <div class="menu-btn" onclick="openWindow('settings'); closeMenu(this)">Settings</div>
-    <div class="menu-btn" onclick="canvasInterface.recenter(); closeMenu(this)">Recenter</div>
-    <div class="menu-btn txt-col-red" onclick="supabase.auth.signOut(); closeMenu(this)">Sign Out</div>
-  </div>
-  <div id="galleryContent" class="visible">
-    <header id="topbar" class="ui">
-      <div id="topbar-left">
-        <span class="item" id="accountWidget">
-          <i class="hi-account"></i>
-          <div id="accountName"></div>
-        </span>
-        <span class="item" onclick="mobileDesktopCallback(
+    <div id="menu-account" class="menu">
+      <div class="menu-btn" onclick="saveFile(); closeMenu(this)">Save</div>
+      <div class="menu-btn" onclick="openFile(); closeMenu(this)">Open</div>
+      <div class="menu-btn" onclick="openWindow('settings'); closeMenu(this)">
+        Settings
+      </div>
+      <div
+        class="menu-btn"
+        onclick="canvasInterface.recenter(); closeMenu(this)"
+      >
+        Recenter
+      </div>
+      <div
+        class="menu-btn txt-col-red"
+        onclick="supabase.auth.signOut(); closeMenu(this)"
+      >
+        Sign Out
+      </div>
+    </div>
+    <div id="galleryContent" class="visible">
+      <header id="topbar" class="ui">
+        <div id="topbar-left">
+          <span class="item" id="accountWidget">
+            <i class="hi-account"></i>
+            <div id="accountName"></div>
+          </span>
+          <span
+            class="item"
+            onclick="mobileDesktopCallback(
           () => {
             
             openWindow('settings')
           }, () => {
             openMenu('account')
           }
-        )">
-          <i class="hi-gear"></i>
-        </span>
-      </div>
-      <img id="topbar-logo" src="./assets/logo.svg" alt="BitShift Logo" />
-      <div id="tool-settings-content"></div>
-      <div id="topbar-right">
-        <span class="item" onclick="openGallery()"><i class="hi-folder-add"></i></span>
-        <span class="item" onclick="openFile()"><i class="hi-import"></i></span>
-       </div>
-    </header>
-    <div id="galleryWrapper">
+        )"
+          >
+            <i class="hi-gear"></i>
+          </span>
+        </div>
+        <img id="topbar-logo" src="./assets/logo.svg" alt="BitShift Logo" />
+        <div id="tool-settings-content"></div>
+        <div id="topbar-right">
+          <span class="item" onclick="openGallery()"
+            ><i class="hi-folder-add"></i
+          ></span>
+          <span class="item" onclick="openFile()"
+            ><i class="hi-import"></i
+          ></span>
+        </div>
+      </header>
+      <div id="galleryWrapper"></div>
     </div>
-  </div>
 
-  <input type="file" id="fileOpenDialog" style="
+    <input
+      type="file"
+      id="fileOpenDialog"
+      style="
         display: hidden;
         visibility: hidden;
         height: 0px;
         width: 0px;
         pointer-events: none;
-      " accept=".bspr" />
-  <div id="window-settings" class="window-wrap window-closed">
-    <div class="window-content">
-      <button class="window-close" onclick="closeWindow('settings')">
-        <i class="hi-x"></i>
-      </button>
-      <div class="window-sidebar">
-        <h1>Settings</h1>
-        <button class="window-sidebar-button window-sidebar-button-active">
-          <i class="hi-gear"></i>
-          <p>General</p>
+      "
+      accept=".bspr"
+    />
+    <div id="window-settings" class="window-wrap window-closed">
+      <div class="window-content">
+        <button
+          class="window-back window-mobile-only"
+          onclick="document.getElementById('settings-sidebar').classList.add('window-sidebar-open')"
+        >
+          <i class="hi-carat-left"></i>
         </button>
-        <button class="window-sidebar-button">
-          <i class="hi-ui-line"></i>
-          <p>Interface</p>
+        <button class="window-close" onclick="closeWindow('settings')">
+          <i class="hi-x"></i>
         </button>
-        <button class="window-sidebar-button">
-          <i class="hi-pencil"></i>
-          <p>Input</p>
-        </button><button class="window-sidebar-button">
-          <i class="hi-keyboard-line"></i>
-          <p>Keybinds</p>
-        </button>
-        <button class="window-sidebar-button">
-          <i class="hi-account-fill"></i>
-          <p>Account</p>
-        </button>
-        <button class="window-sidebar-button">
-          <i class="hi-info-line"></i>
-          <p>About</p>
-        </button>
-        <button class="window-sidebar-button">
-          <i class="hi-help-line"></i>
-          <p>Help</p>
-        </button>
-      </div>
-      <div class="window-main">
-        <div class="window-header">
-          <h1>General</h1>
-        </div>
-        <div class="window-inner">
-          <span class="window-input-group">
-            <p class="window-input-title">Theme</p>
-            <div class="window-input-wrap">
-              <div class="window-btn-group">
-                <button id="ui-theme-light" onclick="setTheme(Themes.light)" class="window-btn theme-button">
-                  Light
-                </button>
-                <button id="ui-theme-dark" onclick="setTheme(Themes.dark)" class="window-btn theme-button">
-                  Dark
-                </button>
-                <button id="ui-theme-system-default" onclick="setTheme(Themes.system)" class="window-btn theme-button">
-                  System Theme
-                </button>
-              </div>
-            </div>
-          </span>
-          <span class="window-input-group">
-            <p class="window-input-title">Accent Color</p>
-            <div class="window-input-wrap">
-              <div class="window-btn-group">
-                <button id="ui-accent-red" onclick="setAccent(Accents.red)" class="window-btn accent-button">
-                </button><button id="ui-accent-orange" onclick="setAccent(Accents.orange)"
-                  class="window-btn accent-button">
-                </button><button id="ui-accent-yellow" onclick="setAccent(Accents.yellow)"
-                  class="window-btn accent-button">
-                </button><button id="ui-accent-green" onclick="setAccent(Accents.green)"
-                  class="window-btn accent-button">
-                </button>
-                <button id="ui-accent-teal" onclick="setAccent(Accents.teal)" class="window-btn accent-button">
-                </button><button id="ui-accent-blue" onclick="setAccent(Accents.blue)" class="window-btn accent-button">
-                </button><button id="ui-accent-purple" onclick="setAccent(Accents.purple)"
-                  class="window-btn accent-button">
-                </button><button id="ui-accent-pink" onclick="setAccent(Accents.pink)" class="window-btn accent-button">
-                </button>
-
-              </div>
-            </div>
-          </span>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div id="window-newfile" class="window-wrap window-closed">
-    <div class="window-content">
-      <button class="window-close" onclick="closeWindow('newfile')">
-        <i class="hi-x"></i>
-      </button>
-      <div class="window-main">
-        <div class="window-header">
-          <h1>General</h1>
-        </div>
-        <div class="window-inner">
-          <div class="file-preset-group" id="file-presets"></div>
-        </div>
-      </div>
-      <div class="window-sidebar">
-        <h1>New File</h1>
-
-        <span class="window-input-group">
-          <p class="window-input-title">Width</p>
-          <div class="window-input-wrap">
-            <div class="window-input-field">
-              <input data-input-num-draggable class="window-input-num" type="number" id="width" value="16" min="0"
-                max="1024" data-input-num-unit="px" />
-              <p class="window-input-unit">px</p>
-            </div>
-          </div>
-        </span>
-        <span class="window-input-group">
-          <p class="window-input-title">Height</p>
-          <div class="window-input-wrap">
-            <div class="window-input-field">
-              <input data-input-num-draggable class="window-input-num" type="number" id="height" value="16" min="0"
-                max="1024" data-input-num-unit="px" />
-              <p class="window-input-unit">px</p>
-            </div>
-          </div>
-        </span>
-        <div class="window-btn-group">
-          <button onclick="createNewProject()" id="close" class="window-btn window-btn-imp">
-            Create
+        <div id="settings-sidebar" class="window-sidebar window-sidebar-open">
+          <h1>Settings</h1>
+          <button
+            onclick="setSettingSection('general')"
+            id="setting-button-general"
+            class="window-sidebar-button setting-button window-sidebar-button-active"
+          >
+            <i class="hi-gear"></i>
+            <p>General</p>
+          </button>
+          <button
+            onclick="setSettingSection('interface')"
+            id="setting-button-interface"
+            class="window-sidebar-button setting-button"
+          >
+            <i class="hi-ui-line"></i>
+            <p>Interface</p>
+          </button>
+          <button
+            onclick="setSettingSection('input')"
+            id="setting-button-input"
+            class="window-sidebar-button setting-button"
+          >
+            <i class="hi-pencil"></i>
+            <p>Input</p></button
+          ><button
+            onclick="setSettingSection('keybinds')"
+            id="setting-button-keybinds"
+            class="window-sidebar-button setting-button"
+          >
+            <i class="hi-keyboard-line"></i>
+            <p>Keybinds</p>
+          </button>
+          <button
+            onclick="setSettingSection('account')"
+            id="setting-button-account"
+            class="window-sidebar-button setting-button"
+          >
+            <i class="hi-account-fill"></i>
+            <p>Account</p>
+          </button>
+          <button
+            onclick="setSettingSection('about')"
+            id="setting-button-about"
+            class="window-sidebar-button setting-button"
+          >
+            <i class="hi-info-line"></i>
+            <p>About</p>
+          </button>
+          <button
+            onclick="setSettingSection('help')"
+            id="setting-button-help"
+            class="window-sidebar-button setting-button"
+          >
+            <i class="hi-help-line"></i>
+            <p>Help</p>
           </button>
         </div>
+
+        <div
+          class="window-main window-main-show setting-section"
+          id="setting-section-general"
+        >
+          <div class="window-header">
+            <h1>General</h1>
+          </div>
+          <div class="window-inner">
+            <span class="window-input-group">
+              <p class="window-input-title">Theme</p>
+              <div class="window-input-wrap">
+                <div class="window-btn-group">
+                  <button
+                    id="ui-theme-light"
+                    onclick="setTheme(Themes.light)"
+                    class="window-btn theme-button"
+                  >
+                    Light
+                  </button>
+                  <button
+                    id="ui-theme-dark"
+                    onclick="setTheme(Themes.dark)"
+                    class="window-btn theme-button"
+                  >
+                    Dark
+                  </button>
+                  <button
+                    id="ui-theme-system-default"
+                    onclick="setTheme(Themes.system)"
+                    class="window-btn theme-button"
+                  >
+                    System Theme
+                  </button>
+                </div>
+              </div>
+            </span>
+            <span class="window-input-group">
+              <p class="window-input-title">Accent Color</p>
+              <div class="window-input-wrap">
+                <div class="window-btn-group">
+                  <button
+                    id="ui-accent-red"
+                    onclick="setAccent(Accents.red)"
+                    class="window-btn accent-button"
+                  ></button
+                  ><button
+                    id="ui-accent-orange"
+                    onclick="setAccent(Accents.orange)"
+                    class="window-btn accent-button"
+                  ></button
+                  ><button
+                    id="ui-accent-yellow"
+                    onclick="setAccent(Accents.yellow)"
+                    class="window-btn accent-button"
+                  ></button
+                  ><button
+                    id="ui-accent-green"
+                    onclick="setAccent(Accents.green)"
+                    class="window-btn accent-button"
+                  ></button>
+                  <button
+                    id="ui-accent-teal"
+                    onclick="setAccent(Accents.teal)"
+                    class="window-btn accent-button"
+                  ></button
+                  ><button
+                    id="ui-accent-blue"
+                    onclick="setAccent(Accents.blue)"
+                    class="window-btn accent-button"
+                  ></button
+                  ><button
+                    id="ui-accent-purple"
+                    onclick="setAccent(Accents.purple)"
+                    class="window-btn accent-button"
+                  ></button
+                  ><button
+                    id="ui-accent-pink"
+                    onclick="setAccent(Accents.pink)"
+                    class="window-btn accent-button"
+                  ></button>
+                </div>
+              </div>
+            </span>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-  <div class="number-pad-input-wrap number-pad-input-hidden" data-show id="number-pad">
-    <div id="numpadArrow" class="popperArrow" data-popper-arrow>
-      <div class="popperArrowInner"></div>
-    </div>
-    <div class="number-pad-preview grid-row-1 grid-col-1-4"><span id="number-pad-preview-value">1</span><span
-        id="number-pad-preview-unit" class="number-pad-unit">px</span></div>
-    <button class="number-pad-input-button grid-row-2 grid-col-1" data-value="7">7</button>
-    <button class="number-pad-input-button grid-row-2 grid-col-2" data-value="8">8</button>
-    <button class="number-pad-input-button grid-row-2 grid-col-3" data-value="9">9</button>
-    <button class="number-pad-input-button grid-row-3 grid-col-1" data-value="4">4</button>
-    <button class="number-pad-input-button grid-row-3 grid-col-2" data-value="5">5</button>
-    <button class="number-pad-input-button grid-row-3 grid-col-3" data-value="6">6</button>
-    <button class="number-pad-input-button grid-row-4 grid-col-1" data-value="1">1</button>
-    <button class="number-pad-input-button grid-row-4 grid-col-2" data-value="2">2</button>
-    <button class="number-pad-input-button grid-row-4 grid-col-3" data-value="3">3</button>
-    <button class="number-pad-input-button grid-row-5 grid-col-1-3" data-value="0">0</button>
-    <button class="number-pad-input-button grid-col-4 grid-row-2-3 font-icon" data-backspace><i
-        class="hi-backspace-line"></i></button>
-    <button class="number-pad-input-button grid-col-4 grid-row-4-5 bg-important-t font-icon" data-confirm><i
-        class="hi-check"></i></button>
-  </div>
-  <button class="floating-action-button" onclick="openWindow('newfile')"><div class="fab-icon">
-    <i class="hi-plus-large"></i></div>
-    <div class="fab-text">New Project</div>
-  </button>
-</body>
+    <div id="window-newfile" class="window-wrap window-closed">
+      <div class="window-content">
+        <button class="window-close" onclick="closeWindow('newfile')">
+          <i class="hi-x"></i>
+        </button>
+        <div class="window-main window-main-show">
+          <div class="window-header">
+            <h1>Presets</h1>
+          </div>
+          <div class="window-inner">
+            <div class="file-preset-group" id="file-presets"></div>
+          </div>
+        </div>
+        <div class="window-sidebar window-sidebar-open">
+          <h1>New File</h1>
 
+          <span class="window-input-group">
+            <p class="window-input-title">Width</p>
+            <div class="window-input-wrap">
+              <div class="window-input-field">
+                <input
+                  data-input-num-draggable
+                  class="window-input-num"
+                  type="number"
+                  id="width"
+                  value="16"
+                  min="0"
+                  max="1024"
+                  data-input-num-unit="px"
+                />
+                <p class="window-input-unit">px</p>
+              </div>
+            </div>
+          </span>
+          <span class="window-input-group">
+            <p class="window-input-title">Height</p>
+            <div class="window-input-wrap">
+              <div class="window-input-field">
+                <input
+                  data-input-num-draggable
+                  class="window-input-num"
+                  type="number"
+                  id="height"
+                  value="16"
+                  min="0"
+                  max="1024"
+                  data-input-num-unit="px"
+                />
+                <p class="window-input-unit">px</p>
+              </div>
+            </div>
+          </span>
+          <div class="window-btn-group">
+            <button
+              onclick="createNewProject()"
+              id="close"
+              class="window-btn window-btn-imp"
+            >
+              Create
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="number-pad-input-wrap number-pad-input-hidden"
+      data-show
+      id="number-pad"
+    >
+      <div id="numpadArrow" class="popperArrow" data-popper-arrow>
+        <div class="popperArrowInner"></div>
+      </div>
+      <div class="number-pad-preview grid-row-1 grid-col-1-4">
+        <span id="number-pad-preview-value">1</span
+        ><span id="number-pad-preview-unit" class="number-pad-unit">px</span>
+      </div>
+      <button
+        class="number-pad-input-button grid-row-2 grid-col-1"
+        data-value="7"
+      >
+        7
+      </button>
+      <button
+        class="number-pad-input-button grid-row-2 grid-col-2"
+        data-value="8"
+      >
+        8
+      </button>
+      <button
+        class="number-pad-input-button grid-row-2 grid-col-3"
+        data-value="9"
+      >
+        9
+      </button>
+      <button
+        class="number-pad-input-button grid-row-3 grid-col-1"
+        data-value="4"
+      >
+        4
+      </button>
+      <button
+        class="number-pad-input-button grid-row-3 grid-col-2"
+        data-value="5"
+      >
+        5
+      </button>
+      <button
+        class="number-pad-input-button grid-row-3 grid-col-3"
+        data-value="6"
+      >
+        6
+      </button>
+      <button
+        class="number-pad-input-button grid-row-4 grid-col-1"
+        data-value="1"
+      >
+        1
+      </button>
+      <button
+        class="number-pad-input-button grid-row-4 grid-col-2"
+        data-value="2"
+      >
+        2
+      </button>
+      <button
+        class="number-pad-input-button grid-row-4 grid-col-3"
+        data-value="3"
+      >
+        3
+      </button>
+      <button
+        class="number-pad-input-button grid-row-5 grid-col-1-3"
+        data-value="0"
+      >
+        0
+      </button>
+      <button
+        class="number-pad-input-button grid-col-4 grid-row-2-3 font-icon"
+        data-backspace
+      >
+        <i class="hi-backspace-line"></i>
+      </button>
+      <button
+        class="number-pad-input-button grid-col-4 grid-row-4-5 bg-important-t font-icon"
+        data-confirm
+      >
+        <i class="hi-check"></i>
+      </button>
+    </div>
+    <button class="floating-action-button" onclick="openWindow('newfile')">
+      <div class="fab-icon">
+        <i class="hi-plus-large"></i>
+      </div>
+      <div class="fab-text">New Project</div>
+    </button>
+  </body>
 </html>

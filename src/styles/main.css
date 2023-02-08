@@ -728,10 +728,6 @@ foreignObject {
   color: var(--textDim);
   transition: 0.3s height, 0.15s opacity, 0.3s margin-bottom;
   left: 0;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
   background: var(--bgMainT);
   backdrop-filter: saturate(180%) blur(20px);
   -webkit-backdrop-filter: saturate(180%) blur(20px);
@@ -2717,7 +2713,7 @@ div[id^="alrt-main"] {
   height: 100vh;
   top: 0;
   left: 0;
-  z-index: 100000;
+  z-index: 1000000;
   background: var(--windowT);
   animation: window-blur 0.1s linear;
   animation-fill-mode: forwards;
@@ -2779,6 +2775,24 @@ div[id^="alrt-main"] {
   right: 10px;
   padding: 0;
   margin: 0;
+  z-index: 999999;
+}
+
+.window-close i , .window-back i{
+  font-size: 30px;
+  color: var(--textMain);
+  --hi-accent: var(--textMain);
+  --hi-base: var(--textMain);
+}
+.window-back {
+  position: absolute;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  top: 10px;
+  left: 10px;
+  padding: 0;
+  margin: 0;
   z-index: 99999;
 }
 
@@ -2792,7 +2806,14 @@ div[id^="alrt-main"] {
   z-index: -10;
   box-sizing: border-box;
   flex-grow: 1;
+  display: none;
+  visibility: hidden;
 }
+.window-main-show{
+  display: inline-block;
+  visibility: visible;
+}
+
 
 .window-inner {
   position: absolute;
@@ -2829,12 +2850,6 @@ div[id^="alrt-main"] {
   width: fit-content;
 }
 
-.window-close i {
-  font-size: 30px;
-  color: var(--textMain);
-  --hi-accent: var(--textMain);
-  --hi-base: var(--textMain);
-}
 
 .window-sidebar {
   position: relative;
@@ -2844,8 +2859,30 @@ div[id^="alrt-main"] {
   -webkit-backdrop-filter: saturate(180%) blur(20px);
   min-width: 200px;
   height: 100%;
+  overflow: hidden;
+  overflow: hidden;
+  transition: all 0.3s;
+  z-index: 99999;
 }
+@media screen and (max-width: 1000px){
+  .window-sidebar {
+    width: 0;
+    min-width: 0;
 
+  }
+  .window-sidebar-open {
+    width: 100%;
+  }
+  .window-sidebar + .window-main {
+    width: 100%;
+    transition: width 0.3s;
+  }
+  .window-sidebar-open + .window-main {
+    width: 0;
+  }
+  
+
+}
 .window-sidebar h1 {
   margin: 0;
   padding: 20px;
@@ -2903,6 +2940,10 @@ div[id^="alrt-main"] {
   color: var(--textMain);
   font-size: 18px;
 }
+.window-mobile-only {
+  display: none;
+  visibility: hidden;
+}
 
 /*media query that activates only on landscape and under 1000px*/
 @media (max-width: 1000px) {
@@ -2910,6 +2951,10 @@ div[id^="alrt-main"] {
     width: 100vw;
     height: 100vh;
     border-radius: 0;
+  }
+  .window-mobile-only {
+    display: block;
+    visibility: visible;
   }
 }
 
@@ -3067,6 +3112,23 @@ div[id^="alrt-main"] {
   color: var(--textMain);
   font-weight: bold;
   vertical-align: center;
+}
+@media (max-width: 1000px) {
+  
+.window-input-title {
+  font-size: 16px;
+  color: var(--textDim);
+}
+
+.window-input-group {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin: 8px;
+  height: 65px;
+  margin-bottom: 16px;
+}
 }
 
 .window-input-unit {
@@ -3372,7 +3434,7 @@ div[id^="alrt-main"] {
   box-shadow: var(--boxShadow);
   font-family: "JetBrains Mono";
   transition: opacity 0.3s;
-  z-index: 1000000;
+  z-index: 1000000000000;
 }
 
 .popperArrowInner,

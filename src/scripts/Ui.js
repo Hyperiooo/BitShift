@@ -116,7 +116,7 @@ class numberDraggable {
 		this.rawValue = this.el.value
 		this.startEffectPosition = 0
 		this.pointerDown = function (e) {
-			e.preventDefault()
+			if(isMobile)e.preventDefault()
 			this.do = true;
 			this.startP = this.direction ? e.clientY : e.clientX;
 			this.startVal = this.el.value;
@@ -455,4 +455,17 @@ function mobileDesktopCallback(mobileCallback, desktopCallback) {
 	}else {
 		desktopCallback()
 	}
+}
+
+function setSettingSection(section) {
+	document.querySelectorAll(".setting-section").forEach(e=> {
+		e.classList.remove('window-main-show')
+	})
+	document.querySelectorAll(".setting-button").forEach(e=> {
+		e.classList.remove('window-sidebar-button-active')
+	})
+	document.getElementById('settings-sidebar').classList.remove('window-sidebar-open')
+	document.getElementById("setting-button-" + section).classList.add("window-sidebar-button-active")
+
+	document.getElementById("setting-section-" + section).classList.add("window-main-show")
 }
