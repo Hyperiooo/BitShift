@@ -203,6 +203,8 @@ function setSelectionMode(m) {
 }
 
 function openGallery() {
+	
+	window.dispatchEvent(window.cloudSyncEvent);
 	window.location.href = "./";
 }
 

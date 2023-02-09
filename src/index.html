@@ -105,7 +105,8 @@
     </div>
     <div id="galleryContent" class="visible">
       <header id="topbar" class="ui">
-        <div id="topbar-left">
+        <img id="topbar-logo" src="./assets/logo.svg" alt="BitShift Logo" />
+        <div id="topbar-right">
           <span class="item" id="accountWidget">
             <i class="hi-account"></i>
             <div id="accountName"></div>
@@ -123,16 +124,6 @@
           >
             <i class="hi-gear"></i>
           </span>
-        </div>
-        <img id="topbar-logo" src="./assets/logo.svg" alt="BitShift Logo" />
-        <div id="tool-settings-content"></div>
-        <div id="topbar-right">
-          <span class="item" onclick="openGallery()"
-            ><i class="hi-folder-add"></i
-          ></span>
-          <span class="item" onclick="openFile()"
-            ><i class="hi-import"></i
-          ></span>
         </div>
       </header>
       <div id="galleryWrapper"></div>
@@ -456,11 +447,18 @@
         <i class="hi-check"></i>
       </button>
     </div>
-    <button class="floating-action-button" onclick="openWindow('newfile')">
-      <div class="fab-icon">
-        <i class="hi-plus-large"></i>
-      </div>
-      <div class="fab-text">New Project</div>
-    </button>
+    <div class="fab-set">
+      <button class="floating-action-button fab-secondary" onclick="openFile()">
+        <div class="fab-icon">
+          <i class="hi-import"></i>
+        </div>
+      </button>
+      <button class="floating-action-button" onclick="openWindow('newfile')">
+        <div class="fab-icon">
+          <i class="hi-plus-large"></i>
+        </div>
+        <div class="fab-text">New Project</div>
+      </button>
+    </div>
   </body>
 </html>

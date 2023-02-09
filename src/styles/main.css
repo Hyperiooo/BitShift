@@ -732,7 +732,6 @@ foreignObject {
   backdrop-filter: saturate(180%) blur(20px);
   -webkit-backdrop-filter: saturate(180%) blur(20px);
   border-radius: 0 9px 9px 0;
-  padding-top: 4px;
 }
 
 #toolbar {
@@ -1878,6 +1877,10 @@ input {
 
 .tool-settings-ui-input-field-group {
   display: block;
+}
+
+.tool-settings-ui-input-num:first-child {
+  margin-top:4px ;
 }
 
 .tool-settings-ui-input-num {
@@ -3655,16 +3658,20 @@ div[id^="alrt-main"] {
   transition-delay: 300ms;
 }
 
-.floating-action-button {
+.fab-set {
   position: fixed;
-  bottom: 0;
-  right: 0;
+  right: 32px;
+  bottom: 32px;
+
+}
+
+.floating-action-button {
   z-index: 99;
   --hi-accent: var(--accentText);
   --hi-base: var(--accentText);
   background: var(--accent);
   padding: 0;
-  display: flex;
+  display: inline-flex;
   justify-content: center;
   align-items: center;
   font-family: "Roboto";
@@ -3673,13 +3680,12 @@ div[id^="alrt-main"] {
   width: fit-content;
   white-space: nowrap;
   gap: 8px;
-  right: 32px;
-  bottom: 32px;
   padding: 20px;
   gap: 8px;
   border-radius: 15px;
   box-shadow: var(--boxShadow);
   overflow: hidden;
+  margin-left: 16px;
 }
 
 .fab-icon {
@@ -3706,4 +3712,13 @@ div[id^="alrt-main"] {
 
 .txt-col-red {
   color: var(--error);
+}
+
+.fab-secondary {
+  background: white;
+}
+
+.fab-secondary .fab-icon {
+  --hi-accent: var(--accentT);
+  --hi-base: var(--accent);
 }

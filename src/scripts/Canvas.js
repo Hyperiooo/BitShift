@@ -1123,6 +1123,7 @@ class Canvas {
 	}
 	erase(coord) {
 		if (coord.constructor.name == "Point") {
+			this.canvasUpdated = true;
 			var x = coord.x;
 			var y = coord.y;
 			if (isSelected()) {
@@ -1143,6 +1144,7 @@ class Canvas {
 				this.ctx.fillRect(x, y, 1, 1);
 			}
 		} else if (coord.constructor.name == "Rect") {
+			this.canvasUpdated = true;
 			var x1 = coord.x1;
 			var y1 = coord.y1;
 			var x2 = coord.x2;
