@@ -497,9 +497,8 @@ function colorPreviewClickHandler(e) {
 		let rgbPal = pal.map((e) => {
 			return hexToRGB(e);
 		});
-		console.log(col.hex(), pal, true);
-		console.log(rgbPal);
-		new paletteGroup("col.hex()", pal, true);
+		console.log(pal);
+		new paletteGroup(paletteName(pal), pal, true);
 		clearTimeout(colPreviewTimeout);
 		clickedOnce = false;
 	}
@@ -1087,6 +1086,8 @@ class paletteGroup {
 					e.style.opacity = 1;
 				}, 200);
 			}
+			e.innerHTML = color.name
+			e.style.color = color.contrastingColor
 			e.classList.add("palette-color");
 			e.style.setProperty("--color", color.hex);
 			e.addEventListener("click", () => {

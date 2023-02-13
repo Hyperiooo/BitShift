@@ -227,6 +227,10 @@ window.onload = async function () {
 	});
 	setPickerMode("picker");
 	refreshAllTooltips()
+	
+const namedCols = window.namedColors.reduce((o, { name, hex }) => Object.assign(o, { [name]: hex }), {});
+ nCol = nearestColor.from(namedCols);
+
 };
 
 window.onbeforeunload = function () {
