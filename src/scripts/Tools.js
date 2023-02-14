@@ -149,7 +149,8 @@ var ToolbarActionMenus = {
 		{
 			name: "Deselect",
 			action: "deselect()",
-			icon: "hi-x",
+			icon: "hi-deselect",
+			textAlwaysVisible: true,
 			condition: () => {
 				return isSelected() || ToolParams[getTool()].actionMenu == "selection";
 			},
@@ -164,49 +165,44 @@ var ToolbarActionMenus = {
 		{
 			name: "Flip Horizontal",
 			action: "flipHorizontal()",
-			icon: "hi-flip-horizontal-line",
+			icon: "hi-flip-horizontal",
 		},
 		{
 			name: "Flip Vertical",
 			action: "flipVertical()",
-			icon: "hi-flip-vertical-line",
+			icon: "hi-flip-vertical",
 		},
 		{
 			name: "Rotate Left",
 			action: "rotateLeft()",
-			icon: "hi-rotate-left-line",
+			icon: "hi-rotate-left",
 		},
 		{
 			name: "Rotate Right",
 			action: "rotateRight()",
-			icon: "hi-rotate-right-line",
-		},
-		{
-			name: "Reset Transform",
-			action: "resetTransform()",
-			icon: "hi-undo",
-		},
+			icon: "hi-rotate-right",
+		}
 	],
 	selection: [
 		{
 			name: "Invert",
 			action: "invertSelection()",
-			icon: "hi-invert-line",
+			icon: "hi-invert",
 		},
 		{
 			name: "Cut",
 			action: "cutSelection()",
-			icon: "hi-scissors-line",
+			icon: "hi-scissors",
 		},
 		{
 			name: "Copy",
 			action: "copySelection()",
-			icon: "hi-copy-line",
+			icon: "hi-copy",
 		},
 		{
 			name: "Paste",
 			action: "pasteSelection()",
-			icon: "hi-paste-line",
+			icon: "hi-paste",
 		},
 	],
 };
@@ -481,10 +477,11 @@ function createActionMenu(menu) {
 	var universal = false;
 	ToolbarActionMenus["universal"].forEach((e) => {
 		if (e.condition()) {
+			universal = true;
+			var cls = e.textAlwaysVisible && universal && menu != "noAction"?  "actionButtonText" : ""
 			actionMenu.innerHTML += `<button class="actionButton" onclick="${e.action}">
 			<i class="${e.icon}"></i>
-			${e.name}</button>`;
-			universal = true;
+			<span class="${cls}">${e.name}</span></button>`;
 		}
 	});
 	if (universal && menu != "noAction") {
@@ -494,7 +491,7 @@ function createActionMenu(menu) {
 	menu.forEach((e) => {
 		actionMenu.innerHTML += `<button class="actionButton" onclick="${e.action}">
 		<i class="${e.icon}"></i>
-		${e.name}</button>`;
+		<span class="actionButtonText">${e.name}</span></button>`;
 	});
 }
 //find true in Tools

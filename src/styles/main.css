@@ -921,7 +921,7 @@ foreignObject {
   transition: 0.1s background, 0.3s color, 0.3s fill;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: center;  --hi-accent: var(--toolBarDim);--hi-base: var(--toolBarHover);
 }
 
 .topbar-button {
@@ -2173,6 +2173,12 @@ margin-left: 0;
   align-items: center;
   box-shadow: var(--boxShadow);
 }
+@media screen and (max-width: 600px){
+  
+  #actionButtons {
+    bottom: 100px;
+  }
+}
 
 .actionButtonDivider {
   position: relative;
@@ -2207,7 +2213,14 @@ margin-left: 0;
 
 .actionButton i {
   font-size: 24px;
+  --hi-base:  var(--textDim);
+  --hi-accent:  var(--toolBarHover);
 }
+.ui-theme-light .actionButton i {
+  --hi-base:  var(--textDim);
+  --hi-accent:  var(--toolBarDim);
+}
+
 
 #layer-menu {
   position: fixed;
@@ -2971,6 +2984,10 @@ div[id^="alrt-main"] {
     display: block;
     visibility: visible;
   }
+  
+.actionButtonText {
+  display: none;
+}
 }
 
 .window-closed {
