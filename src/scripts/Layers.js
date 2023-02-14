@@ -117,12 +117,11 @@ class Layer {
 		this.layerElement.onpointerdown = function (e) {
 			//sets startingTouchPosition to mouse position if there is mouse position, or touch position if theres a touch position. array of [x,y]
 			startingTouchPosition = [e.clientX, e.clientY];
-			timeout = setTimeout(function () {
+			_self.timeout = setTimeout(function () {
 				_self.moving = true;
 				_self.layerElement.classList.add("moving");
 				_self.layerElement.classList.add("movingIndex");
 				boundingRect = _self.layerElement.getBoundingClientRect();
-				//requestAnimationFrame(animateIn);
 				distanceBetweenPointerAndCenterOfBoundingRect = [
 					(boundingRect.left + boundingRect.right) / 2 -
 						startingTouchPosition[0],
@@ -130,13 +129,15 @@ class Layer {
 						startingTouchPosition[1],
 				];
 				inAnimating = true;
+
 				pickedUp = true;
+				
 				beginningScroll = layerMain.scrollTop;
 				requestAnimationFrame(animateIn);
 			}, 400);
-		};
+		}
 		this.layerElement.onpointerup = function (e) {
-			clearTimeout(timeout);
+			clearTimeout(_self.timeout);
 
 			_self.layerElement.classList.remove("moving");
 			_self.layerElement.classList.add("movingIndex");
@@ -165,7 +166,7 @@ class Layer {
 			deltaMovingY = 0;
 			centerCorrection = [0, 0];
 			distanceBetweenPointerAndCenterOfBoundingRect = [0, 0];
-		};
+		}
 		this.endAnimating = false;
 		var inAnimating = false;
 		var centerAnimating = false;
@@ -216,7 +217,7 @@ class Layer {
 				requestAnimationFrame(animateOut);
 			}
 		}
-
+		
 		function animateIn() {
 			if (!inAnimating || centerAnimating) return;
 			//gets current value of offsetx and offsety & converts to integers, pruning px
@@ -305,7 +306,8 @@ class Layer {
 			);
 		}
 		//on pointermove, if there is more than X threshold on the movement based on the startingtouchposition and the current touch position, then move the layer.
-		document.onpointermove = function (e) {
+		
+		document.addEventListener("pointermove", e=> {
 			let currentTouchPosition = [e.clientX, e.clientY];
 			deltaMovingX = currentTouchPosition[0] - startingTouchPosition[0];
 			deltaMovingY = currentTouchPosition[1] - startingTouchPosition[1];
@@ -378,12 +380,11 @@ class Layer {
 			deltaPosition[0] += Math.abs(deltaMovingX);
 			deltaPosition[1] += Math.abs(deltaMovingY);
 			if (deltaPosition[0] > 20 || deltaPosition[1] > 20) {
-				clearTimeout(timeout);
+				clearTimeout(_self.timeout);
 			}
-		};
-
+		})
 		//timeout that acts as a delay where, if you are still touching the layer when it fires, it does something
-		var timeout;
+		this.timeout;
 		this.moving = false;
 		var startingTouchPosition = [0, 0];
 		var deltaPosition = [0, 0];
