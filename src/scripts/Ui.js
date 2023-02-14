@@ -164,16 +164,24 @@ class numberDraggable {
 	}
 }
 
-function toggleMenu(menu) {
+function toggleMenu(menu, el) {
 	if(menu.nodeName) {
-		menu.parentElement.classList.toggle("menu-open")
+		if(menu.parentElement.classList.contains("menu-open")) {
+			closeMenu(menu, el)
+		} else {
+			openMenu(menu, el)
+		}
 		return
 	}
-	document.getElementById("menu-" + menu).classList.toggle("menu-open");
+	if(document.getElementById("menu-" + menu).classList.contains("menu-open")) {
+		closeMenu(menu, el)
+	}else {
+		openMenu(menu, el)
+	}
 }
 
 
-function closeMenu(menu) {
+function closeMenu(menu, el) {
 	if(menu.nodeName) {
 		menu.parentElement.classList.remove("menu-open")
 		return
@@ -181,12 +189,38 @@ function closeMenu(menu) {
 	document.getElementById("menu-" + menu).classList.remove("menu-open");
 }
 
-function openMenu(menu) {
+function openMenu(menu, el) {
 	if(menu.nodeName) {
 		menu.parentElement.classList.add("menu-open")
 		return
 	}
 	document.getElementById("menu-" + menu).classList.add("menu-open");
+	Popper.createPopper(el, document.getElementById("menu-" + menu), {
+		placement: "auto",
+		modifiers: [
+			{
+				name: "preventOverflow",
+				options: {
+					mainAxis: true, // true by default
+					altAxis: true, // false by default
+					padding: 10,
+				},
+			},
+			
+			{
+				name: "offset",
+				options: {
+					offset: [0, 10],
+				},
+			},
+			{
+				name: "arrow",
+				options: {
+					element: this.arrow,
+				},
+			},
+		],
+	});
 }
 
 function toggleFile() {}

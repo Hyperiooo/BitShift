@@ -87,16 +87,8 @@
       </div>
     </div>
     <div id="menu-account" class="menu">
-      <div class="menu-btn" onclick="saveFile(); closeMenu(this)">Save</div>
-      <div class="menu-btn" onclick="openFile(); closeMenu(this)">Open</div>
       <div class="menu-btn" onclick="openWindow('settings'); closeMenu(this)">
         Settings
-      </div>
-      <div
-        class="menu-btn"
-        onclick="canvasInterface.recenter(); closeMenu(this)"
-      >
-        Recenter
       </div>
       <div
         class="menu-btn txt-col-red"
@@ -120,7 +112,7 @@
             
             openWindow('settings')
           }, () => {
-            openMenu('account')
+            toggleMenu('account', this)
           }
         )"
           >

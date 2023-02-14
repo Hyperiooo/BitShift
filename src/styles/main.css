@@ -488,13 +488,15 @@ html {
   left: 8px;
   opacity: 0;
   transform: translate(0, -10px);
-  transition: 0.2s opacity, 0.2s transform;
+  transition: 0.2s opacity;
   border-radius: 13px;
   overflow: hidden;
   padding: 0px;
   margin: 0;
   color: var(--textDim);
-  background: var(--bgDark);
+  background: var(--bgMainT);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
   z-index: 200001;
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -502,6 +504,7 @@ html {
   user-select: none;
   pointer-events: none;
   min-width: 125px;
+  box-shadow: var(--boxShadow);
 }
 
 .menu.menu-open {
