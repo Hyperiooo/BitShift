@@ -471,7 +471,6 @@ function paletteName(array) {
 	array.forEach(e=>{
 		colors.push(new Color(e).name)
 	})
-	console.log(colors)
 	var firstName = colors[Math.floor(Math.random() * colors.length)]
 	var lastName = colors[Math.floor(Math.random() * colors.length)]
 	var first = firstName.split(" ")[0]

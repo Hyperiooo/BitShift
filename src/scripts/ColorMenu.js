@@ -57,7 +57,6 @@ function updateColorNum(el, keycode) {
 							),
 						});
 					} else {
-						console.log("isntvalid");
 						isValid = false;
 					}
 				} else if (e.id.includes("hsla")) {
@@ -491,13 +490,11 @@ function colorPreviewClickHandler(e) {
 					col.set("hsv.h", "-60").set("hsv.s", "*3").set("hsv.v", "*.3").hex(),
 				]);
 			}
-			debug.log(col.hsv()[0]);
 		}
 		pal = pal.mode("lch").correctLightness().colors(8);
 		let rgbPal = pal.map((e) => {
 			return hexToRGB(e);
 		});
-		console.log(pal);
 		new paletteGroup(paletteName(pal), pal, true);
 		clearTimeout(colPreviewTimeout);
 		clickedOnce = false;
@@ -574,7 +571,6 @@ function dragLeaveHandler(e) {
 }
 
 async function dropHandler(e) {
-	console.log("File(s) dropped");
 	document
 		.getElementById("color-menu-drop-effect")
 		.classList.remove("color-menu-drop-effect-on");
@@ -585,7 +581,6 @@ async function dropHandler(e) {
 	const dt = e.dataTransfer;
 	if (!dt) return;
 	if (dt.items) {
-		console.log(dt.items);
 		const items = await getAllFileEntries(dt.items);
 		if (!items) return;
 		const files = await Promise.all(
@@ -669,13 +664,6 @@ function addPaletteViewsFromFiles(files) {
 					file,
 					function (err, palette, formatUsed, matchedFileExtension) {
 						if (palette) {
-							console.log(
-								file.name.replaceArray(
-									formatUsed.fileExtensionsPretty.split(", "),
-									""
-								)
-							);
-							console.log(palette);
 							var finPalette = formatAnyPalette(
 								AnyPalette.uniqueColors(palette)
 							).map((e) => {

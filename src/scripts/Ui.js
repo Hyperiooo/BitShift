@@ -109,8 +109,6 @@ class numberDraggable {
 		this.startP = 0;
 		this.el = el;
 		this.direction = this.el.getAttribute("data-input-num-draggable-vertical") ? true : false;
-		console.log(this.direction)
-		console.log()
 		this.startVal = this.el.value;
 		self = this;
 		this.rawValue = this.el.value
@@ -140,7 +138,6 @@ class numberDraggable {
 				deltaMultiplier = clamp(deltaMultiplier/pullDistance, 0.1, 1)
 				
 				this.rawValue += ((this.direction ?  this.deltaY - e.clientY : -this.deltaX +e.clientX) ) / 10 * deltaMultiplier
-				notify.log(this.rawValue)
 				this.el.value = clamp(
 					 Math.floor(this.rawValue),
 					this.el.min,
@@ -410,8 +407,10 @@ function refreshAllTooltips() {
 					options: {
 						mainAxis: true, // true by default
 						altAxis: true, // false by default
+						padding: 55,
 					},
 				},
+				
 				{
 					name: "offset",
 					options: {
@@ -426,7 +425,6 @@ function refreshAllTooltips() {
 				},
 			],
 		});
-		console.log(e)
 		e.removeEventListener("touchstart", tooltipDownHandler, true);
 		e.addEventListener("touchstart", tooltipDownHandler, true);
 		document.body.removeEventListener("touchend", tooltipUpHandler, true);

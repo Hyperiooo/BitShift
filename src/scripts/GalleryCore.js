@@ -181,7 +181,6 @@ function populateProjects() {
 			`;
       document.getElementById("galleryWrapper").innerHTML += html;
     });
-    console.log(window.allLoadedProjects);
   });
 }
 function openProject(id) {
@@ -233,7 +232,6 @@ function setPreset(w, h, el) {
 
 function populatePresets() {
   var parent = document.getElementById("file-presets");
-  console.log(presets);
 
   for (let i = 0; i < presets.length; i++) {
     let preset = presets[i];

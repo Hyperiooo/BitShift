@@ -48,7 +48,6 @@ class TapGesture {
 			threshold: options.threshold || 10,
 			duration: options.duration || 1000,
 		};
-		console.log(options, this.options);
 		this.callback = callback;
 		this.totalTouches = 0;
 		this.currentTouches = 0;
@@ -57,7 +56,6 @@ class TapGesture {
 		this.beginningPositions = {};
 		this.previousPositions = {};
 		this.positionDeltas = {};
-		console.log(element);
 
 		var _self = this;
 		element.addEventListener("touchstart", function (e) {

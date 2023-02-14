@@ -778,6 +778,7 @@ foreignObject {
   transform: scale(1);
   transition: transform 0.3s !important;
   transition-timing-function: cubic-bezier(0.175, 1.8, 0.32, 1.275) !important;
+  pointer-events: none;
 }
 
 

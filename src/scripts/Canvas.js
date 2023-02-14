@@ -176,11 +176,9 @@ class Canvas {
 				document.body.style.setProperty("--scaledHeight", transf.height + "px");
 			}.bind(this),
 			validateMousePan: function (e) {
-				console.log("a", e.button);
 				if (e.button == 1) return true;
 			},
 			validateTouchPan: function (e) {
-				console.log("b", e.touches.length);
 				if (e.touches.length == 2) return true;
 			},
 			zoomStep: 10,
@@ -766,11 +764,9 @@ class Canvas {
 							this.tempL = filledEllipse(q.x1, q.y1, q.x2, q.y2);
 						var p;
 						for (p of this.tempL) this.pDraw(p);
-						//if(this.ctrlKey) console.log('control hehe')
 					}
 				}
 				if (Tools.line) {
-					console.log("a");
 					let c = new Point(this.sX, this.sY);
 					this.tempL = line(c, new Point(x, y));
 					var p;
@@ -1281,7 +1277,6 @@ class Canvas {
 		var imgData = this.ctx.getImageData(0, 0, this.width, this.height);
 
 		var pixel = (p.y * this.width + p.x) * 4;
-		console.log(imgData.data[pixel + 3]);
 		return new Color({
 			r: imgData.data[pixel],
 			g: imgData.data[pixel + 1],
@@ -1309,9 +1304,7 @@ class Canvas {
 
 	fillerNonContiguous(p) {
 		var src = this.getPixelCol(p).rgba;
-		console.log(src);
 		var im = this.ctx.getImageData(0, 0, this.width, this.height);
-		console.log(im.data[0], im.data[1], im.data[2], im.data[3]);
 		for (var i = 0; i < im.data.length; i += 4) {
 			if (
 				im.data[i] === src.r &&
