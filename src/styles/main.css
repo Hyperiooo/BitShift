@@ -104,8 +104,8 @@ html {
   --bgDarkT: #eef0f5e3;
   --textMain: #0b0c1a;
   --textDim: #1b1c2e;
-  --error: #ff2d3e;
-  --errorT: #ff2d3ea9;
+  --error: #e90013;
+  --errorT: #e90013a9;
   --success: #40d893;
   --successT: #40d893a9;
   --accentText: #ffffff;
@@ -503,8 +503,13 @@ html {
   -ms-user-select: none;
   user-select: none;
   pointer-events: none;
-  min-width: 125px;
+  width: 125px;
   box-shadow: var(--boxShadow);
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 8px;
 }
 
 .menu.menu-open {
@@ -514,12 +519,19 @@ html {
 }
 
 .menu .menu-btn {
+  text-align: left;
   position: relative;
   padding: 10px;
-  margin: 8px;
+  margin: 0;
   border-radius: 5px;
   list-style: none;
   cursor: pointer;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  --hi-accent: var(--toolBarHover);
+  --hi-base: var(--textDim);
 }
 
 .menu .menu-btn:hover {
@@ -528,7 +540,6 @@ html {
 }
 
 .menu .menu-btn i {
-  padding-right: 10px;
 }
 
 .menu .menu-btn a {
@@ -3744,6 +3755,8 @@ div[id^="alrt-main"] {
 
 .txt-col-red {
   color: var(--error);
+  --hi-accent: var(--errorT) !important;
+  --hi-base: var(--error) !important;
 }
 
 .fab-secondary {

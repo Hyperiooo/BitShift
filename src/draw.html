@@ -58,7 +58,7 @@
   <script src="https://cdn.jsdelivr.net/gh/FakeDazon/SuperZoom@v0.0.7/src/superzoom.js"></script>
   <script defer type="text/javascript" src="./scripts/DrawCore.js"></script>
   <!--STYLES & FONTS-->
-  <link href="https://cdn.jsdelivr.net/gh/Hyperiooo/Hypericons@v0.7.0/fonts/hypericons.css" rel="stylesheet"
+  <link href="https://cdn.jsdelivr.net/gh/Hyperiooo/Hypericons@v0.7.1/fonts/hypericons.css" rel="stylesheet"
     type="text/css" />
   <link rel="stylesheet" href="./styles/main.css" />
   <link rel="stylesheet" href="./styles/alrt-theme.css" />
@@ -73,11 +73,11 @@
   <div id="cursor" class="invertBackground cursor-hidden"></div>
   <img id="img" />
   <div id="menu-file" class="menu">
-    <div class="menu-btn" onclick="saveFile(); closeMenu(this)">Save</div>
-    <div class="menu-btn" onclick="openFile(); closeMenu(this)">Open</div>
-    <div class="menu-btn" onclick="openWindow('settings'); closeMenu(this)">Settings</div>
-    <div class="menu-btn" onclick="canvasInterface.recenter(); closeMenu(this)">Recenter</div>
-    <div class="menu-btn txt-col-red" onclick="canvasInterface.clear(); closeMenu(this)">Clear</div>
+    <button class="menu-btn" onclick="saveFile(); closeMenu(this)"><i class="hi-save"></i>Save</button>
+    <button class="menu-btn" onclick="openFile(); closeMenu(this)"><i class="hi-file"></i>Open</button>
+    <button class="menu-btn" onclick="openWindow('settings'); closeMenu(this)"><i class="hi-gear"></i>Settings</button>
+    <button class="menu-btn" onclick="canvasInterface.recenter(); closeMenu(this)"><i class="hi-recenter"></i>Recenter</button>
+    <button class="menu-btn txt-col-red" onclick="canvasInterface.clear(); closeMenu(this)"><i class="hi-trash"></i>Clear</button>
   </div>
   <input type="file" id="fileOpenDialog" style="
         display: hidden;

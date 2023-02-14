@@ -87,15 +87,15 @@
       </div>
     </div>
     <div id="menu-account" class="menu">
-      <div class="menu-btn" onclick="openWindow('settings'); closeMenu(this)">
-        Settings
-      </div>
-      <div
+      <button class="menu-btn" onclick="openWindow('settings'); closeMenu(this)">
+        <i class="hi-gear"></i>Settings
+      </button>
+      <button
         class="menu-btn txt-col-red"
         onclick="supabase.auth.signOut(); closeMenu(this)"
       >
-        Sign Out
-      </div>
+      <i class="hi-export" style="transform: rotate(90deg)"></i>Sign Out
+      </butt>
     </div>
     <div id="galleryContent" class="visible">
       <header id="topbar" class="ui">
