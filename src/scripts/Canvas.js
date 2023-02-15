@@ -139,11 +139,11 @@ class Canvas {
 			initialAngle: 45,
 			initialZoom: settings.ui.canvasScale,
 			onTransform: function (e) {
-				
 				if (!this.zoom.getTransform) return;
 				var transf = this.zoom.getTransform();
 				this.setCanvScale(transf.scale);
 				this.canvAngle = transf.angle;
+				return
 				var r = this.inputLayer.getBoundingClientRect()
 				document.body.style.setProperty(
 					"--panzoomTransformOrigin",
@@ -247,6 +247,9 @@ class Canvas {
 		this.canvasParent.addEventListener("touchend", this.touchEndEvent);
 		this.canvasParent.addEventListener("mouseup", this.mouseUpEvent);
 		this.canvasParent.addEventListener("touchstart", this.clickEvent);
+
+		
+		renderCanvas()
 	}
 	recenter() {
 		var targetCanvasScale;

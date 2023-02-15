@@ -33,6 +33,7 @@
   <script src="./scripts/Utils.js" defer></script>
   <script src="./scripts/Ui.js" defer></script>
   <script src="./scripts/Canvas.js" defer></script>
+  <script src="./scripts/CanvasRenderer.js" defer></script>
   <script src="./scripts/CloudSync.js" defer></script>
   <script src="./scripts/Tools.js" defer></script>
   <script src="./scripts/Layers.js" defer></script>
@@ -55,10 +56,10 @@
   <script src="./scripts/zoom.js" defer></script>
   <script src="./scripts/anime.js" defer></script>
   
-  <script src="https://cdn.jsdelivr.net/gh/FakeDazon/SuperZoom@v0.0.7/src/superzoom.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/FakeDazon/SuperZoom@v0.0.8/src/superzoom.js"></script>
   <script defer type="text/javascript" src="./scripts/DrawCore.js"></script>
   <!--STYLES & FONTS-->
-  <link href="https://cdn.jsdelivr.net/gh/Hyperiooo/Hypericons@v0.7.1/fonts/hypericons.css" rel="stylesheet"
+  <link href="https://cdn.jsdelivr.net/gh/Hyperiooo/Hypericons@v0.7.2/fonts/hypericons.css" rel="stylesheet"
     type="text/css" />
   <link rel="stylesheet" href="./styles/main.css" />
   <link rel="stylesheet" href="./styles/alrt-theme.css" />
@@ -430,6 +431,7 @@
     </div>
   </div>
   <canvas id="eraserBrushBufferParent"></canvas>
+  <canvas id="viewport"></canvas>
   <div id="canvas-parent" customcursor>
     <svg id="cursorSVG" customcursor>
       <g id="cursorGroup" class="followsPanzoom"></g>
@@ -479,7 +481,6 @@
     </svg>
     <div id="input-layer" customcursor></div>
   </div>
-  <canvas id="viewport"></canvas>
 
   <div id="topbar" class="ui">
     <div id="topbar-left">

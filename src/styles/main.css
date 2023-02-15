@@ -557,9 +557,21 @@ html {
   z-index: var(--zindex) !important;
 }
 
+#viewport {
+  position: fixed !important;
+  left:0;
+  top:0;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: -webkit-crisp-edges;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  height: 100%;
+  width: 100%;
+}
+
 #input-layer {
   position: absolute;
-  display: block !important;
+  display: block !important; 
 }
 
 #layerParent {
@@ -2331,13 +2343,16 @@ margin-left: 0;
 
 .layer-menu-button i {
   transform: scale(100%);
-  transition: transform 0.1s ease-in-out, color 0.1s;
+  transition: transform 0.2s cubic-bezier(0.175, 1.8, 0.32, 1.275), color 0.2s;
+  
+  --hi-accent: var(--toolBarHover);
+  --hi-base: var(--textDim);
 }
 
 .layer-menu-button:active i {
   transform: scale(80%);
   color: var(--accent);
-  --hi-accent: var(--accent);
+  --hi-accent: var(--accentT);
   --hi-base: var(--accent);
 }
 
