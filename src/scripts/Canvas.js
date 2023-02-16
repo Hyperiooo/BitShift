@@ -136,7 +136,7 @@ class Canvas {
 		this.canvCenterY = 0;
 		this.zoom = new SuperZoom(this.inputLayer, {
 			minZoom: 0.25,
-			initialAngle: 45,
+			initialAngle: 0,
 			initialZoom: settings.ui.canvasScale,
 			onTransform: function (e) {
 				if (!this.zoom.getTransform) return;
@@ -209,9 +209,8 @@ class Canvas {
 			this.zoom.options.onTransform().bind(this);
 		}, 1);
 		setTimeout(() => {
-			this.zoom.setRotationOrigin(0, 0);
-			this.zoom.recenter();
-		}, 10);
+			this.recenter();
+		}, 1);
 
 		this.panning = false;
 
