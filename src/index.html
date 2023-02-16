@@ -43,8 +43,8 @@
       history.pushState({}, "", "/");
       document.getElementById("icon").href = iconUrl
       let manifest = {
-        name: "BitShift" +( devMode ? "" : " Dev"),
-        short_name: "BitShift" + (devMode ? "" : " Dev"),
+        name: "BitShift" +( devMode ? " Dev" : ""),
+        short_name: "BitShift" + (devMode ? " Dev" : ""),
         "start_url": window.location.href,
         display: "standalone",
         icons: [
