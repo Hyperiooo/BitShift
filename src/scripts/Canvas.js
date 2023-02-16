@@ -175,6 +175,25 @@ class Canvas {
 
 				document.body.style.setProperty("--scaledHeight", transf.height + "px");
 			}.bind(this),
+
+            onTouchPanComplete: function(e) {
+                var threshold = 5
+                var snapAngle = 90
+                var targetAngle  = snapAngle * Math.round(e.angle/snapAngle)
+                var curAngle = e.angle
+				let _slf = this
+                if((e.angle) % snapAngle < threshold || e.angle%snapAngle > snapAngle-threshold){
+                    rn()
+                }
+                function rn() {
+                    if(Math.abs(targetAngle - curAngle) < 0.1 || _slf.zoom.transforming) {
+                        _slf.zoom.rotateTo(targetAngle)
+                        return}
+                    curAngle = lerp(curAngle, targetAngle, 0.2)
+                    _slf.zoom.rotateTo(curAngle)
+                    requestAnimationFrame(rn)
+                }
+            }.bind(this),
 			validateMousePan: function (e) {
 				if (e.button == 1) return true;
 			},
@@ -263,7 +282,8 @@ class Canvas {
 		}
 		var targetX = (window.innerWidth - this.width * targetCanvasScale) / 2;
 		var targetY = (window.innerHeight - this.height * targetCanvasScale) / 2;
-		var targetCanvasAngle = 0;
+		var snapAngle = 90
+		var targetCanvasAngle  = snapAngle * Math.round({ ...this.zoom.getTransform() }.angle/snapAngle)
 		var _self = this;
 		var transf = {
 			x: { ...this.zoom.getTransform() }.x,
@@ -278,9 +298,9 @@ class Canvas {
 			transf.angle == targetCanvasAngle
 		)
 			return;
-		this.zoom.setRotationOriginPercent(0.5, 0.5);
+		this.zoom.rotateTo({ ...this.zoom.getTransform() }.angle);
 
-		anime({
+		var am = anime({
 			targets: transf,
 			x: targetX,
 			y: targetY,
@@ -289,6 +309,7 @@ class Canvas {
 			duration: 300,
 			easing: "spring(0.5, 100, 10, 0)",
 			update: function () {
+				if(this.zoom.transforming) am.pause()
 				this.zoom.zoomTo(
 					transf.scale,
 					window.innerWidth / 2,
