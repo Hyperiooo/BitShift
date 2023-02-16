@@ -38,6 +38,7 @@
     <link rel="apple-touch-icon" id="icon" href="./assets/icon.png">
     <script>
       var devMode = window.location.href.includes("dev")
+      devMode = true
       let iconUrl = devMode ? "/assets/icon-dev.png" : "/assets/icon.png";
       iconUrl= window.location.origin + iconUrl
       history.pushState({}, "", "/");
