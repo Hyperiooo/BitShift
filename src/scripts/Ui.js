@@ -305,6 +305,11 @@ class NumberInputKeypad {
 			});
 		});
 		document.addEventListener("keydown", e=>{
+			if(e.key == "Backspace")this.backspace();
+			if(e.key == "Enter"){
+				this.confirm(); 
+				this.close();
+			}
 			if(!isNaN(parseInt(e.key))) this.addToValue((e.key))
 		})
 		this.element

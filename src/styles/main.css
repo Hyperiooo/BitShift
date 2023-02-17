@@ -2794,7 +2794,7 @@ div[id^="alrt-main"] {
   top: 50%;
   left: 50%;
   transition: all 0.3s;
-  transition-timing-function: ease-out;
+  transition-timing-function: ease-in-out;
   transform: translate(-50%, 0%);
   width: 900px;
   height: 600px;
@@ -2807,6 +2807,7 @@ div[id^="alrt-main"] {
   justify-content: center;
 }
 .window-open .window-content {
+  transition-timing-function: cubic-bezier(0.03, .81, .43, .95);
   transform: translate(-50%, -50%) !important;
 }
 
