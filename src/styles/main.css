@@ -2124,12 +2124,14 @@ input {
   #sidebar {
     top:0;
     height: 100%;
+    pointer-events: none;
   }
 
   #tool-settings-content {
     bottom: 50%;
     position: absolute;
     transform: translateY(50%);
+    pointer-events: all;
   }
 /*
   .tool-settings-ui-input-num {
@@ -2772,46 +2774,28 @@ div[id^="alrt-main"] {
   left: 0;
   z-index: 1000000;
   background: var(--windowT);
-  animation: window-blur 0.1s linear;
-  animation-fill-mode: forwards;
+  transition: all 0.3s;
+  backdrop-filter: blur(0px);
+  -webkit-backdrop-filter: blur(0px);
+  opacity: 0;
   user-select: none;
+  pointer-events: none;
   -webkit-user-select: none;
 }
-
-/*animation that blurs from 0 to 5px on backdrop filter and changes opacity*/
-@keyframes window-blur {
-  0% {
-    backdrop-filter: blur(0px);
-    -webkit-backdrop-filter: blur(0px);
-    opacity: 0;
-  }
-
-  100% {
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
-    opacity: 1;
-  }
-}
-
-@keyframes window-blur-out {
-  0% {
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
-    opacity: 1;
-  }
-
-  100% {
-    backdrop-filter: blur(0px);
-    -webkit-backdrop-filter: blur(0px);
-    opacity: 0;
-  }
+.window-open {
+  pointer-events: all !important;
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  opacity: 1;
 }
 
 .window-content {
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transition: all 0.3s;
+  transition-timing-function: ease-out;
+  transform: translate(-50%, 0%);
   width: 900px;
   height: 600px;
   background: var(--windowMain);
@@ -2821,6 +2805,9 @@ div[id^="alrt-main"] {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+.window-open .window-content {
+  transform: translate(-50%, -50%) !important;
 }
 
 .window-close {
@@ -3019,11 +3006,6 @@ div[id^="alrt-main"] {
 }
 }
 
-.window-closed {
-  pointer-events: none;
-  animation: window-blur-out 0.1s linear;
-  animation-fill-mode: forwards;
-}
 
 .window-input-group {
   display: flex;

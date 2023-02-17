@@ -251,11 +251,11 @@ window.closeSplash = () => {
 
 //replace when you have a functioning window system
 function openWindow(window) {
-	document.getElementById("window-" + window).classList.remove("window-closed");
+	document.getElementById("window-" + window).classList.add("window-open");
 }
 
 function closeWindow(window) {
-	document.getElementById("window-" + window).classList.add("window-closed");
+	document.getElementById("window-" + window).classList.remove("window-open");
 }
 
 class NumberInputKeypad {
@@ -304,6 +304,9 @@ class NumberInputKeypad {
 				this.addToValue(e.getAttribute("data-value"));
 			});
 		});
+		document.addEventListener("keydown", e=>{
+			if(!isNaN(parseInt(e.key))) this.addToValue((e.key))
+		})
 		this.element
 			.querySelector("[data-backspace]")
 			.addEventListener("click", () => {
