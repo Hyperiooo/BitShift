@@ -184,7 +184,6 @@ class Canvas {
 				var snapAngle = 90;
 				var targetAngle = snapAngle * Math.round(e.angle / snapAngle);
 				var curAngle = e.angle;
-				let _slf = this;
 				var transf = {
 					angle: curAngle,
 				};
@@ -207,26 +206,6 @@ class Canvas {
 							);
 						}.bind(this),
 					});
-				}
-				function rn() {
-					if (
-						Math.abs(targetAngle - curAngle) < 0.1 ||
-						_slf.zoom.transforming
-					) {
-						_slf.zoom.rotateTo(
-							targetAngle,
-							Math.floor(window.innerWidth / 2),
-							Math.floor(window.innerHeight / 2)
-						);
-						return;
-					}
-					curAngle = lerp(curAngle, targetAngle, 0.15);
-					_slf.zoom.rotateTo(
-						curAngle,
-						Math.floor(window.innerWidth / 2),
-						Math.floor(window.innerHeight / 2)
-					);
-					requestAnimationFrame(rn);
 				}
 			}.bind(this),
 			validateMousePan: function (e) {
