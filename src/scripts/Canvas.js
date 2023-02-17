@@ -143,31 +143,34 @@ class Canvas {
 				var transf = this.zoom.getTransform();
 				this.setCanvScale(transf.scale);
 				this.canvAngle = transf.angle;
-				return
-				var r = this.inputLayer.getBoundingClientRect()
+				return;
+				var r = this.inputLayer.getBoundingClientRect();
 				document.body.style.setProperty(
 					"--panzoomTransformOrigin",
 					transf.origin
 				);
 				document.body.style.setProperty("--panzoomTransform", transf.transform);
-				var xPos = r.x
-				var yPos = r.y
-				var rotations = (Math.floor(transf.angle / 90) < 0 ?4 - Math.abs( Math.floor(transf.angle/90)) : Math.floor(transf.angle/90)) % 4
-				if(rotations == 0) {
-					xPos  +=(transf.height * Math.sin(this.zoom.toRadians(transf.angle)))
-				}else if (rotations == 1) {
-					xPos += r.width
-					yPos  -= (transf.height * Math.cos(this.zoom.toRadians(transf.angle)))
-				
-				}else if (rotations == 2) {
-					yPos += r.height
-					xPos  += r.width + (transf.height * Math.sin(this.zoom.toRadians(transf.angle)))
-				}else if (rotations == 3) {
-					yPos  -= (transf.width * Math.sin(this.zoom.toRadians(transf.angle)))
-				
+				var xPos = r.x;
+				var yPos = r.y;
+				var rotations =
+					(Math.floor(transf.angle / 90) < 0
+						? 4 - Math.abs(Math.floor(transf.angle / 90))
+						: Math.floor(transf.angle / 90)) % 4;
+				if (rotations == 0) {
+					xPos += transf.height * Math.sin(this.zoom.toRadians(transf.angle));
+				} else if (rotations == 1) {
+					xPos += r.width;
+					yPos -= transf.height * Math.cos(this.zoom.toRadians(transf.angle));
+				} else if (rotations == 2) {
+					yPos += r.height;
+					xPos +=
+						r.width +
+						transf.height * Math.sin(this.zoom.toRadians(transf.angle));
+				} else if (rotations == 3) {
+					yPos -= transf.width * Math.sin(this.zoom.toRadians(transf.angle));
 				}
-				document.body.style.setProperty("--scale", transf.scale)
-				document.body.style.setProperty("--angle", transf.angle + "deg")
+				document.body.style.setProperty("--scale", transf.scale);
+				document.body.style.setProperty("--angle", transf.angle + "deg");
 				document.body.style.setProperty("--scaledX", xPos + "px");
 				document.body.style.setProperty("--scaledY", yPos + "px");
 
@@ -176,24 +179,56 @@ class Canvas {
 				document.body.style.setProperty("--scaledHeight", transf.height + "px");
 			}.bind(this),
 
-            onTouchPanComplete: function(e) {
-                var threshold = 5
-                var snapAngle = 90
-                var targetAngle  = snapAngle * Math.round(e.angle/snapAngle)
-                var curAngle = e.angle
-				let _slf = this
-                if((e.angle) % snapAngle < threshold || e.angle%snapAngle > snapAngle-threshold){
-                    rn()
-                }
-                function rn() {
-                    if(Math.abs(targetAngle - curAngle) < 0.1 || _slf.zoom.transforming) {
-                        _slf.zoom.rotateTo(targetAngle)
-                        return}
-                    curAngle = lerp(curAngle, targetAngle, 0.2)
-                    _slf.zoom.rotateTo(curAngle)
-                    requestAnimationFrame(rn)
-                }
-            }.bind(this),
+			onTouchPanComplete: function (e, x, y) {
+				var threshold = 5;
+				var snapAngle = 90;
+				var targetAngle = snapAngle * Math.round(e.angle / snapAngle);
+				var curAngle = e.angle;
+				let _slf = this;
+				var transf = {
+					angle: curAngle,
+				};
+				if (
+					e.angle % snapAngle < threshold ||
+					e.angle % snapAngle > snapAngle - threshold
+				) {
+					//rn();
+					var am = anime({
+						targets: transf,
+						angle: targetAngle,
+						duration: 100,
+						easing: "easeOutCirc",
+						update: function () {
+							if (this.zoom.transforming) am.pause();
+							this.zoom.rotateTo(
+								transf.angle,
+								x,
+								y
+							);
+						}.bind(this),
+					});
+				}
+				function rn() {
+					if (
+						Math.abs(targetAngle - curAngle) < 0.1 ||
+						_slf.zoom.transforming
+					) {
+						_slf.zoom.rotateTo(
+							targetAngle,
+							Math.floor(window.innerWidth / 2),
+							Math.floor(window.innerHeight / 2)
+						);
+						return;
+					}
+					curAngle = lerp(curAngle, targetAngle, 0.15);
+					_slf.zoom.rotateTo(
+						curAngle,
+						Math.floor(window.innerWidth / 2),
+						Math.floor(window.innerHeight / 2)
+					);
+					requestAnimationFrame(rn);
+				}
+			}.bind(this),
 			validateMousePan: function (e) {
 				if (e.button == 1) return true;
 			},
@@ -234,7 +269,7 @@ class Canvas {
 			if (e.touches && e.touches.length > 1) {
 				this.panning = true;
 				return;
-			} 
+			}
 
 			if (e.button) {
 				if (e.button != 0) return;
@@ -266,8 +301,7 @@ class Canvas {
 		this.canvasParent.addEventListener("mouseup", this.mouseUpEvent);
 		this.canvasParent.addEventListener("touchstart", this.clickEvent);
 
-		
-		renderCanvas()
+		renderCanvas();
 	}
 	recenter() {
 		var targetCanvasScale;
@@ -281,8 +315,9 @@ class Canvas {
 		}
 		var targetX = (window.innerWidth - this.width * targetCanvasScale) / 2;
 		var targetY = (window.innerHeight - this.height * targetCanvasScale) / 2;
-		var snapAngle = 90
-		var targetCanvasAngle  = snapAngle * Math.round({ ...this.zoom.getTransform() }.angle/snapAngle)
+		var snapAngle = 90;
+		var targetCanvasAngle =
+			snapAngle * Math.round({ ...this.zoom.getTransform() }.angle / snapAngle);
 		var _self = this;
 		var transf = {
 			x: { ...this.zoom.getTransform() }.x,
@@ -308,7 +343,7 @@ class Canvas {
 			duration: 300,
 			easing: "spring(0.5, 100, 10, 0)",
 			update: function () {
-				if(this.zoom.transforming) am.pause()
+				if (this.zoom.transforming) am.pause();
 				this.zoom.zoomTo(
 					transf.scale,
 					window.innerWidth / 2,
@@ -332,9 +367,8 @@ class Canvas {
 	inputDown(e) {
 		closeAllToolPopups();
 		updatePrevious(this.color);
-		
 
-		var {rawX, rawY, x, y} = this.getCoordinatesFromInputEvent(e)
+		var { rawX, rawY, x, y } = this.getCoordinatesFromInputEvent(e);
 		if (
 			Tools.circle ||
 			Tools.ellipse ||
@@ -354,7 +388,6 @@ class Canvas {
 
 		this.undoBuffer = layer.canvasElement.toDataURL();
 	}
-
 
 	inputUp(e, wasPanning) {
 		if (
@@ -488,7 +521,6 @@ class Canvas {
 		}
 	}
 	getCoordinatesFromInputEvent(e) {
-		
 		var rect = this.inputLayer.getBoundingClientRect();
 		var x = e.clientX - rect.left || e.touches[0].clientX - rect.left || -1;
 		var y = e.clientY - rect.top || e.touches[0].clientY - rect.top || -1;
@@ -504,12 +536,12 @@ class Canvas {
 
 		var rawX = (x + centerX) / this.canvScale;
 		var rawY = (y + centerY) / this.canvScale;
-    	rawX += (0.5 - ((rect.width /(this.canvScale * this.width) )    / 2) ) * this.width;
-    	rawY += (0.5 - ((rect.height / (this.canvScale * this.height) ) / 2)) * this.height;
+		rawX += (0.5 - rect.width / (this.canvScale * this.width) / 2) * this.width;
+		rawY +=
+			(0.5 - rect.height / (this.canvScale * this.height) / 2) * this.height;
 		x = Math.floor(rawX);
 		y = Math.floor(rawY);
-		return {rawX, rawY, x, y}
-
+		return { rawX, rawY, x, y };
 	}
 	inputActive(e) {
 		this.touching = true;
@@ -519,7 +551,7 @@ class Canvas {
 		var clientX = e.clientX || e.touches[0].clientX;
 		var clientY = e.clientY || e.touches[0].clientY;
 
-		var {rawX, rawY, x, y} = this.getCoordinatesFromInputEvent(e)
+		var { rawX, rawY, x, y } = this.getCoordinatesFromInputEvent(e);
 		this.currentX = x;
 		this.currentY = y;
 		this.lastKnownX = x;
