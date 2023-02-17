@@ -43,35 +43,40 @@ function renderCanvas() {
   });
 
   //draw grid lines
+  var targetGridOpacity = 0
+  
   if (transform.scale > 20) {
-    vCtx.strokeStyle = "#ffffff21";
-    vCtx.lineWidth = .5
-    vCtx.translate(
-      transform.centerX - transform.width / 2,
-      transform.centerY - transform.height / 2
-    );
-    for (let x = 1; x < project.width; x++) {
-      vCtx.beginPath();
-      vCtx.moveTo(transform.scale * x, 0);
-      vCtx.lineTo(transform.scale * x, transform.height);
-      vCtx.stroke();
-    }
-    for (let y = 1; y < project.height; y++) {
-      vCtx.beginPath();
-      vCtx.moveTo(0, transform.scale * y);
-      vCtx.lineTo(transform.width, transform.scale * y);
-      vCtx.stroke();
-    }
-    vCtx.translate(
-      -(transform.centerX - transform.width / 2),
-      -(transform.centerY - transform.height / 2)
-    );
+    targetGridOpacity = 100
   }
+  vCtx.strokeStyle = "#ffffff" + intToHex(parseInt(gridOpacity));
+  vCtx.lineWidth = .5
+  vCtx.translate(
+    transform.centerX - transform.width / 2,
+    transform.centerY - transform.height / 2
+  );
+  for (let x = 1; x < project.width; x++) {
+    vCtx.beginPath();
+    vCtx.moveTo(transform.scale * x, 0);
+    vCtx.lineTo(transform.scale * x, transform.height);
+    vCtx.stroke();
+  }
+  for (let y = 1; y < project.height; y++) {
+    vCtx.beginPath();
+    vCtx.moveTo(0, transform.scale * y);
+    vCtx.lineTo(transform.width, transform.scale * y);
+    vCtx.stroke();
+  }
+  vCtx.translate(
+    -(transform.centerX - transform.width / 2),
+    -(transform.centerY - transform.height / 2)
+  );
+  gridOpacity = lerp(gridOpacity, targetGridOpacity, 0.35)
+  
 
   vCtx.setTransform(1, 0, 0, 1, 0, 0);
   requestAnimationFrame(renderCanvas);
 }
-
+var gridOpacity = 0
 var viewport = document.getElementById("viewport");
 var vCtx = viewport.getContext("2d");
 viewport.width = window.innerWidth * window.devicePixelRatio;
