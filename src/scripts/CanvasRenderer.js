@@ -124,11 +124,45 @@ function renderCanvas() {
 		vCtx.stroke();
 	});
 	vCtx.setLineDash([]);
+
+	vCtx.strokeStyle = "grey";
+	vCtx.lineWidth = 1;
+
+	cursorOutlinePath.forEach((e, i) => {
+		if (isMobile) {
+			if (!canvasInterface.touching) {
+				return;
+			}
+			if (!Tools.eraser && !Tools.sprayPaint) {
+				return;
+			}
+		} else {
+			if (!Tools.eraser && !Tools.sprayPaint) {
+				return;
+			}
+		}
+		vCtx.beginPath();
+		vCtx.moveTo(
+			Math.floor(e[0].X * transform.scale),
+			Math.floor(e[0].Y * transform.scale)
+		);
+		for (let j = 1; j < e.length; j++) {
+			vCtx.lineTo(
+				Math.floor(e[j].X * transform.scale),
+				Math.floor(e[j].Y * transform.scale)
+			);
+		}
+		vCtx.lineTo(
+			Math.floor(e[0].X * transform.scale),
+			Math.floor(e[0].Y * transform.scale)
+		);
+		vCtx.stroke();
+	});
+
 	vCtx.translate(
 		-(transform.centerX - transform.width / 2),
 		-(transform.centerY - transform.height / 2)
 	);
-
 
 	vCtx.setTransform(1, 0, 0, 1, 0, 0);
 	requestAnimationFrame(renderCanvas);

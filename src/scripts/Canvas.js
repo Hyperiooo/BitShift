@@ -223,7 +223,16 @@ class Canvas {
 			this.zoom.options.onTransform().bind(this);
 		}, 1);
 		setTimeout(() => {
-			this.recenter();
+			var targetX = (window.innerWidth - this.width * settings.ui.canvasScale) / 2;
+			var targetY = (window.innerHeight - this.height * settings.ui.canvasScale) / 2;
+			
+			this.zoom.zoomTo(
+				settings.ui.canvasScale,
+				window.innerWidth / 2,
+				window.innerHeight / 2
+			);
+			this.zoom.rotateTo(0);
+			this.zoom.moveTo(targetX, targetY);
 		}, 1);
 
 		this.panning = false;

@@ -101,7 +101,7 @@ function modifySelectionPath(x1, y1, x2, y2, type) {
 		ClipperLib.PolyFillType.pftNonZero
 	);
 	selectionPath = modifiedPaths;
-
+	//bind it to canvas
 	modifierPath = [
 		[
 			{ X: 0, Y: 0 },
@@ -172,7 +172,6 @@ function drawSelectionPreview() {
 	});
 	drawOnSelectionSVG(paths2string(selectionPath));
 	if (isSelected()) {
-		//show action button if selected, hide if not
 	} else {
 		hideBoundingBox();
 	}

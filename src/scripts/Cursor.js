@@ -21,8 +21,7 @@ var cursors = {
 
 var curCursor = "eyedropper";
 
-document.addEventListener("mousemove",(e) => {
-	
+document.addEventListener("mousemove", (e) => {
 	if (!e.target.getAttribute) return;
 	cursor.style.left =
 		e.clientX -
@@ -33,16 +32,15 @@ document.addEventListener("mousemove",(e) => {
 		Math.floor(cursors[curCursor].origin[1] * cursors[curCursor].height) +
 		"px";
 	if (e.target.getAttribute("customcursor") == null) {
-		cursor.classList.add("cursor-hidden")
+		cursor.classList.add("cursor-hidden");
 	} else {
-		cursor.classList.remove("cursor-hidden")
+		cursor.classList.remove("cursor-hidden");
 	}
-})
+});
 
-document.addEventListener("touchmove", e=>{
-	
-	cursor.classList.add("cursor-hidden")
-})
+document.addEventListener("touchmove", (e) => {
+	cursor.classList.add("cursor-hidden");
+});
 
 function updateCursor() {
 	document.getElementById("cursor").style.webkitMaskImage =
@@ -80,7 +78,7 @@ function drawOnSVGCanvas(outlinePath, antiPath) {
 	group.appendChild(fill);
 
 	mask.appendChild(box);
-	mask.appendChild(anti);
+	//mask.appendChild(anti);
 	cursorGroup.appendChild(mask);
 	cursorGroup.appendChild(group);
 }
@@ -93,11 +91,6 @@ function pathString(x, y, x2, y2, offset) {
 var svgOffset = 0;
 
 function drawEraserPreview(x, y) {
-	cursorGroup.innerHTML = "";
-	eraserBufferCanvas.width = project.width;
-	eraserBufferCanvas.height = project.height;
-	eraserBufferCtx.clearRect(0, 0, project.width, project.height);
-	eraserBufferCtx.fillStyle = "white";
 	let brushSize = parseInt(settings.tools.eraserBrushSize.value);
 	let r = brushSize - 1;
 	if (Tools.fillBucket) r = 0;
@@ -113,22 +106,35 @@ function drawEraserPreview(x, y) {
 		c = filledEllipse(x - r / 2, y - r / 2, x + r / 2, y + r / 2);
 	}
 	var b;
-	//for (b of c) { eBufDraw(b) }
-	var outlinePath = "";
-	var antiPath = "";
-	for (b of c) {
-		outlinePath += pathString(b.x1, b.y1, b.x2, b.y2, svgOffset);
-		antiPath += pathString(b.x1, b.y1, b.x2, b.y2, 0);
-	}
 
-	drawOnSVGCanvas(outlinePath, antiPath);
+	cursorOutlinePath = [];
+	for (b of c) {
+		var modifierPath = [
+			[
+				{ X: b.x1, Y: b.y1 },
+				{ X: b.x2, Y: b.y1 },
+				{ X: b.x2, Y: b.y2+1 },
+				{ X: b.x1, Y: b.y2+1 },
+			],
+		];
+		var cpr = new ClipperLib.Clipper();
+		var cliptype = ClipperLib.ClipType.ctUnion;
+
+		cpr.AddPaths(cursorOutlinePath, ClipperLib.PolyType.ptSubject, true);
+		cpr.AddPaths(modifierPath, ClipperLib.PolyType.ptClip, true);
+		var modifiedPaths = new ClipperLib.Paths();
+		cpr.Execute(
+			cliptype,
+			modifiedPaths,
+			ClipperLib.PolyFillType.pftNonZero,
+			ClipperLib.PolyFillType.pftNonZero
+		);
+		cursorOutlinePath = modifiedPaths;
+	}
 }
+var cursorOutlinePath = []
 
 function drawSprayPreview(x, y) {
-	eraserBufferCanvas.width = project.width;
-	eraserBufferCanvas.height = project.height;
-	eraserBufferCtx.clearRect(0, 0, project.width, project.height);
-	eraserBufferCtx.fillStyle = "white";
 	let brushSize = parseInt(settings.tools.spraySize.value);
 	let r = brushSize - 1;
 	if (Tools.fillBucket) r = 0;
@@ -144,43 +150,30 @@ function drawSprayPreview(x, y) {
 		c = filledEllipse(x - r / 2, y - r / 2, x + r / 2, y + r / 2);
 	}
 	var b;
-	var outlinePath = "";
-	var antiPath = "";
-	for (b of c) {
-		outlinePath += pathString(b.x1, b.y1, b.x2, b.y2, svgOffset);
-		antiPath += pathString(b.x1, b.y1, b.x2, b.y2, 0);
-	}
-	drawOnSVGCanvas(outlinePath, antiPath);
-}
 
-function eBufDraw(coord) {
-	eraserBufferCtx.globalCompositeOperation = "source-over";
-	if (coord.constructor.name == "Point") {
-		var x = coord.x;
-		var y = coord.y;
-		eraserBufferCtx.fillRect(x, y, 1, 1);
-	} else if (coord.constructor.name == "Rect") {
-		var x1 = coord.x1;
-		var y1 = coord.y1;
-		var x2 = coord.x2;
-		var y2 = coord.y2;
-		var ax1, ax2, ay1, ay2;
-		if (x1 >= x2) {
-			ax1 = x2;
-			ax2 = x1;
-		} else if (x1 < x2) {
-			ax1 = x1;
-			ax2 = x2;
-		}
-		if (y1 >= y2) {
-			ay1 = y2;
-			ay2 = y1;
-		} else if (y1 < y2) {
-			ay1 = y1;
-			ay2 = y2;
-		}
-		if (ay2 - ay1 == 0) ay2 = ay1 + 1;
-		eraserBufferCtx.fillRect(ax1, ay1, ax2 - ax1, ay2 - ay1);
+	cursorOutlinePath = [];
+	for (b of c) {
+		var modifierPath = [
+			[
+				{ X: b.x1, Y: b.y1 },
+				{ X: b.x2, Y: b.y1 },
+				{ X: b.x2, Y: b.y2+1 },
+				{ X: b.x1, Y: b.y2+1 },
+			],
+		];
+		var cpr = new ClipperLib.Clipper();
+		var cliptype = ClipperLib.ClipType.ctUnion;
+
+		cpr.AddPaths(cursorOutlinePath, ClipperLib.PolyType.ptSubject, true);
+		cpr.AddPaths(modifierPath, ClipperLib.PolyType.ptClip, true);
+		var modifiedPaths = new ClipperLib.Paths();
+		cpr.Execute(
+			cliptype,
+			modifiedPaths,
+			ClipperLib.PolyFillType.pftNonZero,
+			ClipperLib.PolyFillType.pftNonZero
+		);
+		cursorOutlinePath = modifiedPaths;
 	}
 }
 

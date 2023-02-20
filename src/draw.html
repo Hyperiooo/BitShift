@@ -512,15 +512,17 @@
     <div id="toolbar" class="ui">
       <div id="dynamic-tool-wrap"></div>
       <span class="toolbar-divider"></span>
-      <span class="item toolbar-landscape-only" onclick="toggleColorPicker()"><i class="hi-circle-small-fill"
-          data-tool-color-menu-button></i>
-      </span>
       <span id="tool-btn-eyedropper" class="item" data-tool-name="eyedropper"
         onclick="previousTool = getTool();compileForEyedropper(); setTool('eyedropper', this)"><i
           class="hi-eyedropper"></i></span>
       
     </div>
-    <div id="tool-settings-content"></div>
+    <div id="tool-settings">
+      <span class="item toolbar-landscape-only" onclick="toggleColorPicker()"><i class="hi-circle-fill"
+          data-tool-color-menu-button></i>
+      </span>
+      <div id="tool-settings-content"></div>
+    </div>
   </div>
   
 
