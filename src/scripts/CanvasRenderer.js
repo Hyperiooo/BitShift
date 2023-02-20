@@ -32,6 +32,9 @@ function renderCanvas() {
 			transform.height
 		);
 		if (layer == e) {
+			if (Tools.rectangleMarquee || Tools.ellipseMarquee) {
+				vCtx.globalAlpha = 0.5;
+			}
 			vCtx.drawImage(
 				canvasInterface.previewcanvas,
 				transform.centerX - transform.width / 2,
@@ -39,6 +42,7 @@ function renderCanvas() {
 				transform.width,
 				transform.height
 			);
+			vCtx.globalAlpha = 1;
 		}
 	});
 
@@ -68,49 +72,68 @@ function renderCanvas() {
 			-(transform.centerY - transform.height / 2)
 		);
 	}
-  vCtx.translate(
-    transform.centerX - transform.width / 2,
-    transform.centerY - transform.height / 2
-  );
-  
-  vCtx.strokeStyle = "white";
-  vCtx.lineWidth = 1;
-  vCtx.lineDashOffset = offset;
+	vCtx.translate(
+		transform.centerX - transform.width / 2,
+		transform.centerY - transform.height / 2
+	);
 
-  offset += 0.5;
+	vCtx.strokeStyle = "white";
+	vCtx.lineWidth = 1;
+	vCtx.lineDashOffset = offset;
+
+	offset += 0.5;
 
 	vCtx.setLineDash([]);
-  selectionPath.forEach((e, i) => {
-    vCtx.beginPath();
-    vCtx.moveTo(Math.floor(e[0].X * transform.scale), Math.floor(e[0].Y * transform.scale));
-    for(let j = 1; j < e.length; j++) {
-      vCtx.lineTo(Math.floor(e[j].X * transform.scale), Math.floor(e[j].Y * transform.scale));
-    }
-    vCtx.lineTo(Math.floor(e[0].X * transform.scale), Math.floor(e[0].Y * transform.scale));
-    vCtx.stroke();
-  });
-  vCtx.strokeStyle = "black";
-  
-	vCtx.setLineDash([7,7]);
-  selectionPath.forEach((e, i) => {
-    vCtx.beginPath();
-    vCtx.moveTo(Math.floor(e[0].X * transform.scale), Math.floor(e[0].Y * transform.scale));
-    for(let j = 1; j < e.length; j++) {
-      vCtx.lineTo(Math.floor(e[j].X * transform.scale), Math.floor(e[j].Y * transform.scale));
-    }
-    vCtx.lineTo(Math.floor(e[0].X * transform.scale), Math.floor(e[0].Y * transform.scale));
-    vCtx.stroke();
-  });
+	selectionPath.forEach((e, i) => {
+		vCtx.beginPath();
+		vCtx.moveTo(
+			Math.floor(e[0].X * transform.scale),
+			Math.floor(e[0].Y * transform.scale)
+		);
+		for (let j = 1; j < e.length; j++) {
+			vCtx.lineTo(
+				Math.floor(e[j].X * transform.scale),
+				Math.floor(e[j].Y * transform.scale)
+			);
+		}
+		vCtx.lineTo(
+			Math.floor(e[0].X * transform.scale),
+			Math.floor(e[0].Y * transform.scale)
+		);
+		vCtx.stroke();
+	});
+	vCtx.strokeStyle = "black";
+
+	vCtx.setLineDash([7, 7]);
+	selectionPath.forEach((e, i) => {
+		vCtx.beginPath();
+		vCtx.moveTo(
+			Math.floor(e[0].X * transform.scale),
+			Math.floor(e[0].Y * transform.scale)
+		);
+		for (let j = 1; j < e.length; j++) {
+			vCtx.lineTo(
+				Math.floor(e[j].X * transform.scale),
+				Math.floor(e[j].Y * transform.scale)
+			);
+		}
+		vCtx.lineTo(
+			Math.floor(e[0].X * transform.scale),
+			Math.floor(e[0].Y * transform.scale)
+		);
+		vCtx.stroke();
+	});
 	vCtx.setLineDash([]);
-  vCtx.translate(
-    -(transform.centerX - transform.width / 2),
-    -(transform.centerY - transform.height / 2)
-  );
+	vCtx.translate(
+		-(transform.centerX - transform.width / 2),
+		-(transform.centerY - transform.height / 2)
+	);
+
 
 	vCtx.setTransform(1, 0, 0, 1, 0, 0);
 	requestAnimationFrame(renderCanvas);
 }
-var offset = 0
+var offset = 0;
 var viewport = document.getElementById("viewport");
 var vCtx = viewport.getContext("2d");
 viewport.width = window.innerWidth * window.devicePixelRatio;

@@ -383,7 +383,7 @@ class Canvas {
 			this.clearPreview();
 			this.tempL = [];
 		}
-		if (Tools.rectangleMarquee) {
+		if (Tools.rectangleMarquee && !wasPanning) {
 			var p;
 			if (settings.tools.selectionMode.value == "replace") {
 				selectionPath = [];
@@ -425,7 +425,7 @@ class Canvas {
 			this.clearPreview();
 			this.tempL = [];
 		}
-		if (Tools.ellipseMarquee) {
+		if (Tools.ellipseMarquee && !wasPanning) {
 			var p;
 			if (settings.tools.selectionMode.value == "replace") {
 				selectionPath = [];
