@@ -301,7 +301,7 @@ var minY = 0;
 var maxY = 0;
 
 function updateBounding() {
-	var rect = getSelectionRect();
+	var rect = getSelectionBounds();
 	boundingRectElement.setAttributeNS(null, "x", rect.x);
 	boundingRectElement.setAttributeNS(null, "y", rect.y);
 	boundingRectElement.setAttributeNS(null, "width", rect.width);
@@ -348,7 +348,7 @@ function hideBoundingBox() {
 	boundingSVG.classList.add("boundingHidden");
 }
 
-function getSelectionRect() {
+function getSelectionBounds() {
 	var a = ClipperLib.Clipper.GetBounds(selectionPath);
 	return {
 		width: a.right - a.left,

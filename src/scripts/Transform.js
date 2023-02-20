@@ -1,5 +1,5 @@
 function prepareTransform() {
-	var selectionRect = getSelectionRect();
+	var selectionRect = getSelectionBounds();
 	transformDummyCanvas.width = selectionRect.width;
 	transformDummyCanvas.height = selectionRect.height;
 	transformDummyCtx.save();
@@ -78,15 +78,9 @@ var allHandles = [
 	handlemr, // right
 ];
 document.body.addEventListener("pointerdown", function (e) {
-	if (!Tools.transform) return;
-	if (e.target == boundingRectElement || allHandles.includes(e.target)) {
-		var rect = canvasInterface.bggridcanvas.getBoundingClientRect();
-		var x = e.clientX - rect.left || e.touches[0].clientX - rect.left || -1;
-		var y = e.clientY - rect.top || e.touches[0].clientY - rect.top || -1;
-		x = Math.floor(x / canvasInterface.canvScale);
-		y = Math.floor(y / canvasInterface.canvScale);
-		prevMovementPosition = [x, y];
-	}
+	if (!Tools.transform || canvasInterface.panning) return;
+	var { rawX, rawY, x, y } = canvasInterface.getCoordinatesFromInputEvent(e);
+	prevMovementPosition = [x, y];
 	if (!scaleAlreadyMoving) {
 		scaleWidth = transformDummyCanvas.width;
 		scaleHeight = transformDummyCanvas.height;
@@ -113,6 +107,9 @@ document.body.addEventListener("pointerdown", function (e) {
 		} else if (e.target == handletr) {
 			scaleMovingHandle = "tr";
 		}
+	}else if(Tools.transform) {
+		selectionMoving = true;
+
 	}
 });
 document.body.addEventListener("pointerup", function (e) {
@@ -121,14 +118,11 @@ document.body.addEventListener("pointerup", function (e) {
 });
 
 document.body.addEventListener("pointermove", function (e) {
+	if(canvasInterface.panning) return;
 	if (!scaleMoving && !selectionMoving) return;
-	var rect = canvasInterface.bggridcanvas.getBoundingClientRect();
-	var x = e.clientX - rect.left || e.touches[0].clientX - rect.left || -1;
-	var y = e.clientY - rect.top || e.touches[0].clientY - rect.top || -1;
-	x = Math.floor(x / canvasInterface.canvScale);
-	y = Math.floor(y / canvasInterface.canvScale);
+	var { rawX, rawY, x, y } = canvasInterface.getCoordinatesFromInputEvent(e);
 
-	var selectionRect = getSelectionRect();
+	var selectionRect = getSelectionBounds();
 	var dx = x - prevMovementPosition[0];
 	var dy = y - prevMovementPosition[1];
 	canvasInterface.pctx.clearRect(
@@ -186,7 +180,7 @@ document.body.addEventListener("pointermove", function (e) {
 		}
 		scale();
 
-		var selectionRect = getSelectionRect();
+		var selectionRect = getSelectionBounds();
 
 		canvasInterface.pctx.drawImage(
 			scaleDummyCanvas,
@@ -218,11 +212,11 @@ function cutSelection() {
 }
 function copySelection() {
 	copyDummyCtx.clearRect(0, 0, copyDummyCanvas.width, copyDummyCanvas.height);
-	var selectionRect = getSelectionRect();
+	var selectionRect = getSelectionBounds();
 	copiedSelectionRect = JSON.parse(JSON.stringify(selectionRect));
 	copiedSelectionPath = JSON.parse(JSON.stringify(selectionPath));
-	copyDummyCanvas.width = getSelectionRect().width;
-	copyDummyCanvas.height = getSelectionRect().height;
+	copyDummyCanvas.width = getSelectionBounds().width;
+	copyDummyCanvas.height = getSelectionBounds().height;
 	copyDummyCtx.save();
 	var clipPath = new Path2D();
 	selectionPath.forEach((e) => {
@@ -236,14 +230,14 @@ function copySelection() {
 	copyDummyCtx.clip(clipPath, "evenodd");
 	copyDummyCtx.drawImage(
 		canvasInterface.canvas,
-		getSelectionRect().x,
-		getSelectionRect().y,
-		getSelectionRect().width,
-		getSelectionRect().height,
+		getSelectionBounds().x,
+		getSelectionBounds().y,
+		getSelectionBounds().width,
+		getSelectionBounds().height,
 		0,
 		0,
-		getSelectionRect().width,
-		getSelectionRect().height
+		getSelectionBounds().width,
+		getSelectionBounds().height
 	);
 	copyDummyCtx.restore();
 }

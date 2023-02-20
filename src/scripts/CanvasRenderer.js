@@ -96,10 +96,7 @@ function renderCanvas() {
 				Math.floor(e[j].Y * transform.scale)
 			);
 		}
-		vCtx.lineTo(
-			Math.floor(e[0].X * transform.scale),
-			Math.floor(e[0].Y * transform.scale)
-		);
+		vCtx.closePath()
 		vCtx.stroke();
 	});
 	vCtx.strokeStyle = "black";
@@ -117,15 +114,59 @@ function renderCanvas() {
 				Math.floor(e[j].Y * transform.scale)
 			);
 		}
-		vCtx.lineTo(
-			Math.floor(e[0].X * transform.scale),
-			Math.floor(e[0].Y * transform.scale)
-		);
+		vCtx.closePath()
 		vCtx.stroke();
 	});
 	vCtx.setLineDash([]);
 
-	vCtx.strokeStyle = "grey";
+	if(Tools.transform){
+		vCtx.beginPath()
+		var rect = getSelectionBounds();
+		vCtx.lineWidth = 2;
+		vCtx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue('--accent');
+		vCtx.rect(rect.x * transform.scale, rect.y * transform.scale, rect.width * transform.scale, rect.height * transform.scale)
+		//rotation handle line
+		vCtx.moveTo(rect.x * transform.scale + rect.width * transform.scale / 2, rect.y * transform.scale - 50)
+		vCtx.lineTo(rect.x * transform.scale + rect.width * transform.scale / 2, rect.y * transform.scale)
+		vCtx.stroke();   
+		//draw handles
+		vCtx.beginPath()
+		vCtx.fillStyle = "white"
+		var handleSize = 12;
+		vCtx.rect(rect.x * transform.scale - handleSize / 2, rect.y * transform.scale - handleSize / 2, handleSize, handleSize)
+		vCtx.rect(rect.x * transform.scale + rect.width * transform.scale - handleSize / 2, rect.y * transform.scale - handleSize / 2, handleSize, handleSize)
+		vCtx.rect(rect.x * transform.scale - handleSize / 2, rect.y * transform.scale + rect.height * transform.scale - handleSize / 2, handleSize, handleSize)
+		vCtx.rect(rect.x * transform.scale + rect.width * transform.scale - handleSize / 2, rect.y * transform.scale + rect.height * transform.scale - handleSize / 2, handleSize, handleSize)
+
+		//middle handles
+		if(rect.width * transform.scale > 50){
+			vCtx.rect(rect.x * transform.scale + rect.width * transform.scale / 2 - handleSize / 2, rect.y * transform.scale - handleSize / 2, handleSize, handleSize)
+			vCtx.rect(rect.x * transform.scale + rect.width * transform.scale / 2 - handleSize / 2, rect.y * transform.scale + rect.height * transform.scale - handleSize / 2, handleSize, handleSize)
+		}
+		if(rect.height * transform.scale > 50){
+			vCtx.rect(rect.x * transform.scale - handleSize / 2, rect.y * transform.scale + rect.height * transform.scale / 2 - handleSize / 2, handleSize, handleSize)
+			vCtx.rect(rect.x * transform.scale + rect.width * transform.scale - handleSize / 2, rect.y * transform.scale + rect.height * transform.scale / 2 - handleSize / 2, handleSize, handleSize)
+		}
+		//rotation handle
+		vCtx.rect(rect.x * transform.scale + rect.width * transform.scale / 2 - handleSize / 2, rect.y * transform.scale - 50 - handleSize / 2, handleSize, handleSize)
+		
+		vCtx.fill();
+		vCtx.stroke()
+		
+	}
+
+	var tempCanvas = document.createElement("canvas");
+	tempCanvas.width = viewport.width;
+	tempCanvas.height = viewport.height;
+	var tCtx = tempCanvas.getContext("2d");
+
+	tCtx.scale(window.devicePixelRatio, window.devicePixelRatio);
+	tCtx.translate(
+		transform.centerX - transform.width / 2,
+		transform.centerY - transform.height / 2
+	);
+
+	tCtx.strokeStyle = vCtx.strokeStyle = "white";
 	vCtx.lineWidth = 1;
 
 	cursorOutlinePath.forEach((e, i) => {
@@ -141,28 +182,40 @@ function renderCanvas() {
 				return;
 			}
 		}
-		vCtx.beginPath();
-		vCtx.moveTo(
+		tCtx.beginPath();
+		tCtx.moveTo(
 			Math.floor(e[0].X * transform.scale),
 			Math.floor(e[0].Y * transform.scale)
 		);
 		for (let j = 1; j < e.length; j++) {
-			vCtx.lineTo(
+			tCtx.lineTo(
 				Math.floor(e[j].X * transform.scale),
 				Math.floor(e[j].Y * transform.scale)
 			);
 		}
-		vCtx.lineTo(
+		tCtx.lineTo(
 			Math.floor(e[0].X * transform.scale),
 			Math.floor(e[0].Y * transform.scale)
 		);
-		vCtx.stroke();
+		tCtx.stroke();
 	});
+
+	tCtx.globalCompositeOperation = "source-in";
+
+
+	tCtx.translate(
+		-(transform.centerX - transform.width / 2),
+		-(transform.centerY - transform.height / 2)
+	);
+	tCtx.filter = "invert(1) contrast(10000%) grayscale(100%)"
+	tCtx.drawImage(viewport, 0, 0);
 
 	vCtx.translate(
 		-(transform.centerX - transform.width / 2),
 		-(transform.centerY - transform.height / 2)
 	);
+
+	vCtx.drawImage(tempCanvas, 0, 0);
 
 	vCtx.setTransform(1, 0, 0, 1, 0, 0);
 	requestAnimationFrame(renderCanvas);

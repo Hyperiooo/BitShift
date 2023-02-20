@@ -118,7 +118,7 @@ html {
   --boxShadowT: 0.15;
   --accent: #1E7DF0;
   --accentT: #1E7DF0a9;
-  --uiOutline: 1px solid #2b2b30;
+  --uiOutline: 1px solid rgba(68, 68, 68, 0.055);
 }
 
 .ui-accent-red {
@@ -790,7 +790,8 @@ foreignObject {
   height: fit-content;
 }
 
-#toolbar .item, #tool-settings .item {
+#toolbar .item,
+#tool-settings .item {
   position: relative;
   margin: 0px auto;
   cursor: pointer;
@@ -819,7 +820,8 @@ foreignObject {
   transform: scale(.8) !important;
 }
 
-#toolbar .item:hover,  #tool-settings .item:hover {
+#toolbar .item:hover,
+#tool-settings .item:hover {
   background: var(--scrollTrack);
 }
 
@@ -827,8 +829,7 @@ foreignObject {
   margin-top: 4px;
 }
 
-#toolbar .item:last-of-type {
-}
+#toolbar .item:last-of-type {}
 
 #tool-settings .item [data-tool-color-menu-button] {
   --hi-base: var(--currentColor) !important;
@@ -1111,6 +1112,11 @@ foreignObject {
 }
 
 #tool-settings .tool-active i {
+  color: var(--accent) !important;
+  --hi-accent: var(--accent);
+  --hi-base: var(--accent);
+}
+#topbar .tool-active i {
   color: var(--accent) !important;
   --hi-accent: var(--accent);
   --hi-base: var(--accent);
@@ -1872,6 +1878,7 @@ input[type="number"] {
 input {
   font-family: "JetBrains Mono";
 }
+
 [data-input-num-draggable-vertical] {
   cursor: n-resize !important;
 }
@@ -1899,7 +1906,6 @@ input {
 .tool-settings-ui-input-field-group {
   display: block;
 }
-
 
 .tool-settings-ui-input-num {
   background: var(--scrollTrack);
@@ -2137,7 +2143,8 @@ input {
     border-top: var(--uiOutline);
   }
 
-  #toolbar .item,  #tool-settings .item {
+  #toolbar .item,
+  #tool-settings .item {
     margin-left: 0;
     margin-bottom: 4px;
     margin-top: 4px;
@@ -2956,8 +2963,10 @@ div[id^="alrt-main"] {
 .window-sidebar-button i {
   font-size: 22px;
   color: var(--toolBarDim);
-  --hi-accent: var(--toolBarDim);
-  --hi-base: var(--toolBarDim);
+  --hi-accent: var(--textMain);
+  --hi-accent-opacity: 0.5;
+  --hi-base: var(--textMain);
+  --hi-base-opacity: 0.8;
 }
 
 .window-sidebar-button:hover i,
@@ -2967,6 +2976,7 @@ div[id^="alrt-main"] {
   color: var(--accentText) !important;
   --hi-accent: var(--accentText);
   --hi-base: var(--accentText);
+  --hi-base-opacity:1;
 }
 
 .window-sidebar-button p {

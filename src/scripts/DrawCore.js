@@ -101,7 +101,7 @@ var settings = {
       },
     },
     spraySize: {
-      title: "Spray Size",
+      title: "Spray Radius",
       value: 10,
       type: "int",
       draggable: true,
