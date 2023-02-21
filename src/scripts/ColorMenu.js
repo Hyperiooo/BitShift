@@ -1060,3 +1060,12 @@ function setPickerMode(m) {
 		.getElementById(`color-mode-${m}`)
 		.classList.add("color-menu-tabbar-button-active");
 }
+
+function initEyedropper(clientX, clientY) {
+	
+	canvasInterface.eyedropperPreviewElement.style.top = clientY + "px";
+	canvasInterface.eyedropperPreviewElement.style.left = clientX + "px";
+	canvasInterface.eyedropperPreviewElement.classList.add(
+		"eyedropper-preview-visible"
+	);
+}

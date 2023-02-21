@@ -355,6 +355,9 @@ class Canvas {
 	inputDown(e) {
 		closeAllToolPopups();
 		updatePrevious(this.color);
+		
+		var clientX = e.clientX || e.touches[0].clientX;
+		var clientY = e.clientY || e.touches[0].clientY;
 
 		var { rawX, rawY, x, y } = this.getCoordinatesFromInputEvent(e);
 		if (
@@ -371,6 +374,10 @@ class Canvas {
 		) {
 			this.sX = x;
 			this.sY = y;
+		}
+
+		if(Tools.eyedropper) {
+			initEyedropper(clientX, clientY)
 		}
 		this.touching = true;
 
@@ -673,19 +680,7 @@ class Canvas {
 				this.sY = y;
 				this.ctx.globalCompositeOperation = "source-over";
 			} else if (Tools.eyedropper) {
-				this.eyedropperPreviewElement.style.top = clientY + "px";
-				this.eyedropperPreviewElement.style.left = clientX + "px";
-				this.eyedropperPreviewElement.classList.add(
-					"eyedropper-preview-visible"
-				);
-				this.eyedropperPreviewCanvas.style.setProperty(
-					"--x",
-					rawX / this.width
-				);
-				this.eyedropperPreviewCanvas.style.setProperty(
-					"--y",
-					rawY / this.width
-				);
+				initEyedropper(clientX, clientY)
 				this.setColor(this.getEyedropperPixelCol(new Point(x, y)));
 			}
 			if (preview) {

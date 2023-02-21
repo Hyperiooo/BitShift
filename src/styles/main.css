@@ -548,10 +548,13 @@ html {
   text-decoration: none;
 }
 
+
 .drawingCanvas {
   --zindex: 0;
   position: absolute;
   z-index: var(--zindex) !important;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 .layerWrapperWrapper {
@@ -574,6 +577,8 @@ html {
 #input-layer {
   position: absolute;
   display: block !important;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 #layerParent {
@@ -2476,7 +2481,7 @@ canvas {
   image-rendering: pixelated;
   -ms-interpolation-mode: nearest-neighbor;
   user-select: none;
-  -webkit-user-select: none;
+  -webkit-user-select: none !important;
   -moz-user-select: none;
   -ms-user-select: none;
 }
