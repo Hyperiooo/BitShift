@@ -104,15 +104,13 @@ function renderCanvas() {
 
 		tCtx.setTransform(1, 0, 0, 1, 0, 0);
 		tCtx.scale(window.devicePixelRatio, window.devicePixelRatio);
-		tCtx.globalAlpha = 0.2;/*
+		/*
 		lineOffset++
 		lineOffset %= 30
 		tCtx.drawImage(diagonalStripeCanvas, lineOffset, 0)
 		tCtx.drawImage(diagonalStripeCanvas, lineOffset - window.innerWidth * window.devicePixelRatio, 0)*/
-		tCtx.fillStyle = "#000";
-		tCtx.fillRect(0, 0, viewport.width, viewport.height);
 		tCtx.globalAlpha = 1;
-		tCtx.globalCompositeOperation = "destination-out"
+		tCtx.globalCompositeOperation = "xor"
 		tCtx.fillStyle = "#0f0";
 		
 		tCtx.translate(transform.centerX, transform.centerY);
@@ -139,6 +137,11 @@ function renderCanvas() {
 			tCtx.fill();
 		});
 		tCtx.setTransform(1, 0, 0, 1, 0, 0);
+		tCtx.globalCompositeOperation = "source-out"
+		tCtx.scale(window.devicePixelRatio, window.devicePixelRatio);
+		tCtx.globalAlpha = 0.2;
+		tCtx.fillStyle = "#000";
+		tCtx.fillRect(0, 0, viewport.width, viewport.height);
 
 		vCtx.setTransform(1, 0, 0, 1, 0, 0);
 		vCtx.drawImage(tempCanvas, 0, 0);
