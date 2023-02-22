@@ -1682,6 +1682,7 @@ input[type="number"] {
   transition: 0.2s width;
   border-radius: 5px;
   position: relative;
+  touch-action: none;
 }
 
 .color-slider:active .color-slider-thumb {
