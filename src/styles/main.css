@@ -2199,6 +2199,7 @@ input {
   transition: opacity 0.3s;
   align-items: center;
   box-shadow: var(--boxShadow);
+  pointer-events: all !important;
 }
 
 @media screen and (max-width: 600px) {
@@ -2231,6 +2232,7 @@ input {
   width: fit-content;
   white-space: nowrap;
   gap: 8px;
+  pointer-events: all;
 }
 
 .actionButtonsHidden {
@@ -2807,11 +2809,13 @@ div[id^="alrt-main"] {
   grid-template-columns: 200px 700px;
   grid-template-rows: 600px;
   overflow: hidden;
+  pointer-events: none;
 }
 
 .window-open .window-content {
   transition-timing-function: cubic-bezier(0.03, .81, .43, .95);
   transform: translate(-50%, -50%) !important;
+  pointer-events: all;
 }
 
 .window-close {
@@ -2864,7 +2868,7 @@ div[id^="alrt-main"] {
   transition: opacity 0.2s
 }
 
-.window-main-show {
+.window-open .window-main-show {
   pointer-events: all;
   opacity:1;
 }
