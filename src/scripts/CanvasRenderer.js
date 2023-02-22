@@ -48,7 +48,6 @@ function renderCanvas() {
 
 	//draw grid lines
 
-	
 	vCtx.translate(
 		transform.centerX - transform.width / 2,
 		transform.centerY - transform.height / 2
@@ -110,9 +109,9 @@ function renderCanvas() {
 		tCtx.drawImage(diagonalStripeCanvas, lineOffset, 0)
 		tCtx.drawImage(diagonalStripeCanvas, lineOffset - window.innerWidth * window.devicePixelRatio, 0)*/
 		tCtx.globalAlpha = 1;
-		tCtx.globalCompositeOperation = "xor"
+		tCtx.globalCompositeOperation = "xor";
 		tCtx.fillStyle = "#0f0";
-		
+
 		tCtx.translate(transform.centerX, transform.centerY);
 		tCtx.rotate((transform.angle * Math.PI) / 180);
 		tCtx.translate(-transform.centerX, -transform.centerY);
@@ -137,7 +136,7 @@ function renderCanvas() {
 			tCtx.fill();
 		});
 		tCtx.setTransform(1, 0, 0, 1, 0, 0);
-		tCtx.globalCompositeOperation = "source-out"
+		tCtx.globalCompositeOperation = "source-out";
 		tCtx.scale(window.devicePixelRatio, window.devicePixelRatio);
 		tCtx.globalAlpha = 0.2;
 		tCtx.fillStyle = "#000";
@@ -263,9 +262,10 @@ function renderCanvas() {
 		vCtx.stroke();
 	}
 
+	/*
 	var tempCanvas = document.createElement("canvas");
-	tempCanvas.width = viewport.width;
-	tempCanvas.height = viewport.height;
+	tempCanvas.width = window.innerWidth * window.devicePixelRatio;
+	tempCanvas.height = window.innerHeight * window.devicePixelRatio;
 	var tCtx = tempCanvas.getContext("2d");
 
 	tCtx.scale(window.devicePixelRatio, window.devicePixelRatio);
@@ -276,9 +276,7 @@ function renderCanvas() {
 
 	tCtx.strokeStyle = vCtx.strokeStyle = "white";
 	tCtx.lineWidth = 2;
-
 	cursorOutlinePath.forEach((e, i) => {
-		
 		if (isMobile) {
 			if (!canvasInterface.touching) {
 				return;
@@ -317,38 +315,82 @@ function renderCanvas() {
 	);
 	tCtx.filter = "invert(1) contrast(100000000%) grayscale(100%)";
 	tCtx.drawImage(viewport, 0, 0);
-	
-
+*/
+vCtx.globalCompositeOperation = "difference";
+vCtx.strokeStyle = "white"
+	cursorOutlinePath.forEach((e, i) => {
+		if (isMobile) {
+			if(canvasInterface.panning) {
+				return
+			}
+			if (!canvasInterface.touching) {
+				return;
+			}
+			if (!Tools.eraser && !Tools.sprayPaint) {
+				return;
+			}
+		} else {
+			if (!Tools.eraser && !Tools.sprayPaint) {
+				return;
+			}
+		}
+		vCtx.beginPath();
+		vCtx.moveTo(
+			Math.floor(e[0].X * transform.scale),
+			Math.floor(e[0].Y * transform.scale)
+		);
+		for (let j = 1; j < e.length; j++) {
+			vCtx.lineTo(
+				Math.floor(e[j].X * transform.scale),
+				Math.floor(e[j].Y * transform.scale)
+			);
+		}
+		vCtx.lineTo(
+			Math.floor(e[0].X * transform.scale),
+			Math.floor(e[0].Y * transform.scale)
+		);
+		vCtx.stroke();
+	});
+	vCtx.globalCompositeOperation = "source-over";
 	vCtx.translate(
 		-(transform.centerX - transform.width / 2),
 		-(transform.centerY - transform.height / 2)
 	);
+	vCtx.translate(
+		transform.centerX - transform.width / 2,
+		transform.centerY - transform.height / 2
+	);
+	vCtx.strokeStyle = "#ffffff56";
+	vCtx.lineWidth = 0.5;
+	/* INCREDIBLY slow. figure out a solution
 	if (transform.scale > 25) {
-		vCtx.strokeStyle = "#ffffff56";
-		vCtx.lineWidth = 0.5;
-		vCtx.translate(
-			transform.centerX - transform.width / 2,
-			transform.centerY - transform.height / 2
-		);
-		for (let x = 1; x < project.width; x++) {
-			vCtx.beginPath();
-			vCtx.moveTo(transform.scale * x, 0);
-			vCtx.lineTo(transform.scale * x, transform.height);
-			vCtx.stroke();
-		}
-		for (let y = 1; y < project.height; y++) {
-			vCtx.beginPath();
-			vCtx.moveTo(0, transform.scale * y);
-			vCtx.lineTo(transform.width, transform.scale * y);
-			vCtx.stroke();
-		}
-		vCtx.translate(
-			-(transform.centerX - transform.width / 2),
-			-(transform.centerY - transform.height / 2)
-		);
-	}
+		vCtx.beginPath();
+		vCtx.moveTo(0, 0);
+		var step = 0;
+		for (let x = 0; x < project.width + 1; x++) {
+			step += 1;
+			step %= 2;
 
-	vCtx.drawImage(tempCanvas, 0, 0);
+			vCtx.lineTo(transform.scale * x, transform.height * step);
+			vCtx.lineTo(transform.scale * x, transform.height * (1 - step));
+		}
+		vCtx.moveTo(0, 0);
+		step = 0;
+		for (let y = 0; y < project.height + 1; y++) {
+			step += 1;
+			step %= 2;
+
+			vCtx.lineTo(transform.width * step, transform.scale * y);
+			vCtx.lineTo(transform.width * (1 - step), transform.scale * y);
+		}
+		vCtx.stroke();
+	}*/
+	vCtx.translate(
+		-(transform.centerX - transform.width / 2),
+		-(transform.centerY - transform.height / 2)
+	);
+
+	//vCtx.drawImage(tempCanvas, 0, 0);
 
 	vCtx.setTransform(1, 0, 0, 1, 0, 0);
 	requestAnimationFrame(renderCanvas);
@@ -362,27 +404,32 @@ var dCtx = diagonalStripeCanvas.getContext("2d");
 dCtx.fillStyle = "white";
 dCtx.fillRect(0, 0, diagonalStripeCanvas.width, diagonalStripeCanvas.height);
 
-generateStripes()
+generateStripes();
 
 function generateStripes() {
-	dCtx.clearRect(0, 0, diagonalStripeCanvas.width, diagonalStripeCanvas.height)
+	dCtx.clearRect(0, 0, diagonalStripeCanvas.width, diagonalStripeCanvas.height);
 	//generate diagonal stripes. 45 degrees
 	var stripeWidth = 15;
 	dCtx.lineWidth = stripeWidth;
 	var totalWidth = diagonalStripeCanvas.width + diagonalStripeCanvas.height;
-	for (let i = 0; i < totalWidth/stripeWidth; i ++) {
-		if(i % 2 == 0) {
-			dCtx.strokeStyle = "white"
+	for (let i = 0; i < totalWidth / stripeWidth; i++) {
+		if (i % 2 == 0) {
+			dCtx.strokeStyle = "white";
 		} else {
-			dCtx.strokeStyle = "#9c9c9c"
+			dCtx.strokeStyle = "#9c9c9c";
 		}
-		dCtx.beginPath()
-		dCtx.moveTo(i * stripeWidth, 0)
-		dCtx.lineTo(i * stripeWidth - diagonalStripeCanvas.height, diagonalStripeCanvas.height)
-		dCtx.lineTo(i * stripeWidth + stripeWidth - diagonalStripeCanvas.height, diagonalStripeCanvas.height)
-		dCtx.lineTo(i * stripeWidth + stripeWidth, 0)
-		dCtx.stroke()
-
+		dCtx.beginPath();
+		dCtx.moveTo(i * stripeWidth, 0);
+		dCtx.lineTo(
+			i * stripeWidth - diagonalStripeCanvas.height,
+			diagonalStripeCanvas.height
+		);
+		dCtx.lineTo(
+			i * stripeWidth + stripeWidth - diagonalStripeCanvas.height,
+			diagonalStripeCanvas.height
+		);
+		dCtx.lineTo(i * stripeWidth + stripeWidth, 0);
+		dCtx.stroke();
 	}
 }
 
@@ -397,5 +444,5 @@ window.addEventListener("resize", () => {
 	viewport.height = window.innerHeight * window.devicePixelRatio;
 	diagonalStripeCanvas.width = window.innerWidth * window.devicePixelRatio;
 	diagonalStripeCanvas.height = window.innerHeight * window.devicePixelRatio;
-	generateStripes()
+	generateStripes();
 });
