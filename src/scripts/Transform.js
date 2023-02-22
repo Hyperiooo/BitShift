@@ -79,6 +79,7 @@ var allHandles = [
 ];
 document.body.addEventListener("pointerdown", function (e) {
 	if (!Tools.transform || canvasInterface.panning) return;
+	if(e.target != canvasInterface.canvasParent) return;
 	var { rawX, rawY, x, y } = canvasInterface.getCoordinatesFromInputEvent(e);
 	prevMovementPosition = [x, y];
 	if (!scaleAlreadyMoving) {
