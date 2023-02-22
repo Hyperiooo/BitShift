@@ -115,6 +115,7 @@ class numberDraggable {
 		this.startEffectPosition = 0
 		this.pointerDown = function (e) {
 			if(isMobile)e.preventDefault()
+			e.stopPropagation()
 			this.do = true;
 			this.startP = this.direction ? e.clientY : e.clientX;
 			this.startVal = this.el.value;
@@ -152,6 +153,9 @@ class numberDraggable {
 		this.pointerDownHandler = this.pointerDown.bind(this);
 		this.pointerUpHandler = this.pointerUp.bind(this);
 		this.pointerMoveHandler = this.pointerMove.bind(this);
+		document.addEventListener("pointerdown", e =>{
+			
+		})
 		this.el.addEventListener("pointerdown", this.pointerDownHandler,  {passive: false});
 		document.addEventListener("pointerup", this.pointerUpHandler,  {passive: false});
 		document.addEventListener("pointermove", this.pointerMoveHandler,  {passive: false});
@@ -405,7 +409,7 @@ function refreshAllNumberDraggables() {
 	draggableNumInputs = [];
 	var numDraggable = document.querySelectorAll("[data-input-num-draggable]");
 	numDraggable.forEach((e) => {
-		if (isMobile) e.setAttribute("readonly", "true");
+		//if (isMobile) e.setAttribute("readonly", "true");
 		e.removeEventListener("click", numberDraggableClickHandler, true);
 		e.addEventListener("click", numberDraggableClickHandler, true);
 		draggableNumInputs.push(new numberDraggable(e));
@@ -416,6 +420,7 @@ var tooltips = []
 
 function numberDraggableClickHandler(e) {
 	if (!isMobile) return;
+	if(isMobile) e.preventDefault()
 	if (!window.numberPad.isopen) {
 		window.numberPad.update(e.target);
 		window.numberPad.open(e.target);

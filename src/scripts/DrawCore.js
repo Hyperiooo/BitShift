@@ -166,7 +166,10 @@ var project = {
 var lc = [];
 var preview = true;
 var isMobile = window.matchMedia("(pointer: coarse)").matches;
-
+document.addEventListener("pointerdown", e=>{
+  if(e.pointerType == "touch") isMobile = true
+  if(e.pointerType == "mouse") isMobile = false
+})
 if (isMobile) {
   var docElm = document.documentElement;
   if (docElm.requestFullscreen) {

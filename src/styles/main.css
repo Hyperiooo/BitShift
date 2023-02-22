@@ -765,6 +765,7 @@ foreignObject {
 
 #tool-settings {
   color: var(--textDim);
+  touch-action: none;
   transition: 0.3s height, 0.15s opacity, 0.3s margin-bottom;
   left: 0;
   background: var(--bgMainT);
@@ -898,6 +899,7 @@ foreignObject {
 }
 
 #topbar {
+  touch-action: none;
   position: fixed;
   top: 0;
   padding: 0px;
@@ -2145,6 +2147,7 @@ input {
     padding-top: 0;
     padding-left: 4px;
     margin-bottom: 0;
+    pointer-events: all;
     padding-bottom: env(safe-area-inset-bottom, 0px);
     border: none;
     border-top: var(--uiOutline);
