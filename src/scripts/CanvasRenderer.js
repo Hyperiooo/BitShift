@@ -362,7 +362,7 @@ vCtx.strokeStyle = "white"
 	);
 	vCtx.strokeStyle = "#ffffff56";
 	vCtx.lineWidth = 0.5;
-	/* INCREDIBLY slow. figure out a solution
+
 	if (transform.scale > 25) {
 		vCtx.beginPath();
 		vCtx.moveTo(0, 0);
@@ -384,7 +384,7 @@ vCtx.strokeStyle = "white"
 			vCtx.lineTo(transform.width * (1 - step), transform.scale * y);
 		}
 		vCtx.stroke();
-	}*/
+	}
 	vCtx.translate(
 		-(transform.centerX - transform.width / 2),
 		-(transform.centerY - transform.height / 2)
