@@ -89,163 +89,164 @@
       " accept=".bspr" />
       
 
-      <div id="window-settings" class="window-wrap">
-        <div class="window-content">
+      
+    <div id="window-settings" class="window-wrap">
+      <div class="window-content">
+        <button class="window-close" onclick="closeWindow('settings')">
+          <i class="hi-x"></i>
+        </button>
+        <div id="settings-sidebar" class="window-sidebar window-sidebar-open">
+          <h1>Settings</h1>
           <button
-            class="window-back window-mobile-only"
-            onclick="document.getElementById('settings-sidebar').classList.add('window-sidebar-open')"
+            onclick="setSettingSection('general')"
+            id="setting-button-general"
+            class="window-sidebar-button setting-button window-sidebar-button-active"
           >
-            <i class="hi-carat-left"></i>
+            <i class="hi-gear"></i>
+            <p>General</p>
           </button>
-          <button class="window-close" onclick="closeWindow('settings')">
-            <i class="hi-x"></i>
+          <button
+            onclick="setSettingSection('interface')"
+            id="setting-button-interface"
+            class="window-sidebar-button setting-button"
+          >
+            <i class="hi-ui"></i>
+            <p>Interface</p>
           </button>
-          <div id="settings-sidebar" class="window-sidebar window-sidebar-open">
-            <h1>Settings</h1>
-            <button
-              onclick="setSettingSection('general')"
-              id="setting-button-general"
-              class="window-sidebar-button setting-button window-sidebar-button-active"
-            >
-              <i class="hi-gear"></i>
-              <p>General</p>
-            </button>
-            <button
-              onclick="setSettingSection('interface')"
-              id="setting-button-interface"
-              class="window-sidebar-button setting-button"
-            >
-              <i class="hi-ui"></i>
-              <p>Interface</p>
-            </button>
-            <button
-              onclick="setSettingSection('input')"
-              id="setting-button-input"
-              class="window-sidebar-button setting-button"
-            >
-              <i class="hi-pencil"></i>
-              <p>Input</p></button
-            ><button
-              onclick="setSettingSection('keybinds')"
-              id="setting-button-keybinds"
-              class="window-sidebar-button setting-button"
-            >
-              <i class="hi-keyboard"></i>
-              <p>Keybinds</p>
-            </button>
-            <button
-              onclick="setSettingSection('account')"
-              id="setting-button-account"
-              class="window-sidebar-button setting-button"
-            >
-              <i class="hi-account"></i>
-              <p>Account</p>
-            </button>
-            <button
-              onclick="setSettingSection('about')"
-              id="setting-button-about"
-              class="window-sidebar-button setting-button"
-            >
-              <i class="hi-info"></i>
-              <p>About</p>
-            </button>
-            <button
-              onclick="setSettingSection('help')"
-              id="setting-button-help"
-              class="window-sidebar-button setting-button"
-            >
-              <i class="hi-help"></i>
-              <p>Help</p>
-            </button>
+          <button
+            onclick="setSettingSection('input')"
+            id="setting-button-input"
+            class="window-sidebar-button setting-button"
+          >
+            <i class="hi-pencil"></i>
+            <p>Input</p></button
+          ><button
+            onclick="setSettingSection('keybinds')"
+            id="setting-button-keybinds"
+            class="window-sidebar-button setting-button"
+          >
+            <i class="hi-keyboard"></i>
+            <p>Keybinds</p>
+          </button>
+          <button
+            onclick="setSettingSection('account')"
+            id="setting-button-account"
+            class="window-sidebar-button setting-button"
+          >
+            <i class="hi-account"></i>
+            <p>Account</p>
+          </button>
+          <button
+            onclick="setSettingSection('about')"
+            id="setting-button-about"
+            class="window-sidebar-button setting-button"
+          >
+            <i class="hi-info"></i>
+            <p>About</p>
+          </button>
+          <button
+            onclick="setSettingSection('help')"
+            id="setting-button-help"
+            class="window-sidebar-button setting-button"
+          >
+            <i class="hi-help"></i>
+            <p>Help</p>
+          </button>
+        </div>
+
+        <button
+          class="window-back window-mobile-only"
+          onclick="document.getElementById('settings-sidebar').classList.add('window-sidebar-open')"
+        >
+          <i class="hi-carat-left"></i>
+        </button>
+        <div
+          class="window-main window-main-show setting-section"
+          id="setting-section-general"
+        >
+          <div class="window-header">
+            <h1>General</h1>
           </div>
-  
-          <div
-            class="window-main window-main-show setting-section"
-            id="setting-section-general"
-          >
-            <div class="window-header">
-              <h1>General</h1>
-            </div>
-            <div class="window-inner">
-              <span class="window-input-group">
-                <p class="window-input-title">Theme</p>
-                <div class="window-input-wrap">
-                  <div class="window-btn-group">
-                    <button
-                      id="ui-theme-light"
-                      onclick="setTheme(Themes.light)"
-                      class="window-btn theme-button"
-                    >
-                      Light
-                    </button>
-                    <button
-                      id="ui-theme-dark"
-                      onclick="setTheme(Themes.dark)"
-                      class="window-btn theme-button"
-                    >
-                      Dark
-                    </button>
-                    <button
-                      id="ui-theme-system-default"
-                      onclick="setTheme(Themes.system)"
-                      class="window-btn theme-button"
-                    >
-                      System Theme
-                    </button>
-                  </div>
+          <div class="window-inner">
+            <span class="window-input-group">
+              <p class="window-input-title">Theme</p>
+              <div class="window-input-wrap">
+                <div class="window-btn-group">
+                  <button
+                    id="ui-theme-light"
+                    onclick="setTheme(Themes.light)"
+                    class="window-btn theme-button"
+                  >
+                    Light
+                  </button>
+                  <button
+                    id="ui-theme-dark"
+                    onclick="setTheme(Themes.dark)"
+                    class="window-btn theme-button"
+                  >
+                    Dark
+                  </button>
+                  <button
+                    id="ui-theme-system-default"
+                    onclick="setTheme(Themes.system)"
+                    class="window-btn theme-button"
+                  >
+                    System Theme
+                  </button>
                 </div>
-              </span>
-              <span class="window-input-group">
-                <p class="window-input-title">Accent Color</p>
-                <div class="window-input-wrap">
-                  <div class="window-btn-group">
-                    <button
-                      id="ui-accent-red"
-                      onclick="setAccent(Accents.red)"
-                      class="window-btn accent-button"
-                    ></button
-                    ><button
-                      id="ui-accent-orange"
-                      onclick="setAccent(Accents.orange)"
-                      class="window-btn accent-button"
-                    ></button
-                    ><button
-                      id="ui-accent-yellow"
-                      onclick="setAccent(Accents.yellow)"
-                      class="window-btn accent-button"
-                    ></button
-                    ><button
-                      id="ui-accent-green"
-                      onclick="setAccent(Accents.green)"
-                      class="window-btn accent-button"
-                    ></button>
-                    <button
-                      id="ui-accent-teal"
-                      onclick="setAccent(Accents.teal)"
-                      class="window-btn accent-button"
-                    ></button
-                    ><button
-                      id="ui-accent-blue"
-                      onclick="setAccent(Accents.blue)"
-                      class="window-btn accent-button"
-                    ></button
-                    ><button
-                      id="ui-accent-purple"
-                      onclick="setAccent(Accents.purple)"
-                      class="window-btn accent-button"
-                    ></button
-                    ><button
-                      id="ui-accent-pink"
-                      onclick="setAccent(Accents.pink)"
-                      class="window-btn accent-button"
-                    ></button>
-                  </div>
+              </div>
+            </span>
+            <span class="window-input-group">
+              <p class="window-input-title">Accent Color</p>
+              <div class="window-input-wrap">
+                <div class="window-btn-group">
+                  <button
+                    id="ui-accent-red"
+                    onclick="setAccent(Accents.red)"
+                    class="window-btn accent-button"
+                  ></button
+                  ><button
+                    id="ui-accent-orange"
+                    onclick="setAccent(Accents.orange)"
+                    class="window-btn accent-button"
+                  ></button
+                  ><button
+                    id="ui-accent-yellow"
+                    onclick="setAccent(Accents.yellow)"
+                    class="window-btn accent-button"
+                  ></button
+                  ><button
+                    id="ui-accent-green"
+                    onclick="setAccent(Accents.green)"
+                    class="window-btn accent-button"
+                  ></button>
+                  <button
+                    id="ui-accent-teal"
+                    onclick="setAccent(Accents.teal)"
+                    class="window-btn accent-button"
+                  ></button
+                  ><button
+                    id="ui-accent-blue"
+                    onclick="setAccent(Accents.blue)"
+                    class="window-btn accent-button"
+                  ></button
+                  ><button
+                    id="ui-accent-purple"
+                    onclick="setAccent(Accents.purple)"
+                    class="window-btn accent-button"
+                  ></button
+                  ><button
+                    id="ui-accent-pink"
+                    onclick="setAccent(Accents.pink)"
+                    class="window-btn accent-button"
+                  ></button>
                 </div>
-              </span>
-            </div>
+              </div>
+            </span>
           </div>
         </div>
       </div>
+    </div>
   <div class="color-menu" id="color-menu" ondrop="dropHandler(event);" ondragover="dragOverHandler(event);"
     ondragleave="dragLeaveHandler(event);" ondragend="dragLeaveHandler(event);">
     <div class="color-menu-topbar">

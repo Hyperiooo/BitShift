@@ -163,12 +163,6 @@
     />
     <div id="window-settings" class="window-wrap">
       <div class="window-content">
-        <button
-          class="window-back window-mobile-only"
-          onclick="document.getElementById('settings-sidebar').classList.add('window-sidebar-open')"
-        >
-          <i class="hi-carat-left"></i>
-        </button>
         <button class="window-close" onclick="closeWindow('settings')">
           <i class="hi-x"></i>
         </button>
@@ -231,6 +225,12 @@
           </button>
         </div>
 
+        <button
+          class="window-back window-mobile-only"
+          onclick="document.getElementById('settings-sidebar').classList.add('window-sidebar-open')"
+        >
+          <i class="hi-carat-left"></i>
+        </button>
         <div
           class="window-main window-main-show setting-section"
           id="setting-section-general"
@@ -316,6 +316,76 @@
             </span>
           </div>
         </div>
+
+        <div
+          class="window-main setting-section"
+          id="setting-section-interface"
+        >
+          <div class="window-header">
+            <h1>Interface</h1>
+          </div>
+          <div class="window-inner">
+          </div>
+        </div>
+        <div
+          class="window-main setting-section"
+          id="setting-section-input"
+        >
+          <div class="window-header">
+            <h1>Input</h1>
+          </div>
+          <div class="window-inner">
+          </div>
+        </div>
+
+
+        <div
+          class="window-main setting-section"
+          id="setting-section-keybinds"
+        >
+          <div class="window-header">
+            <h1>Keybinds</h1>
+          </div>
+          <div class="window-inner">
+          </div>
+        </div>
+
+
+        <div
+          class="window-main setting-section"
+          id="setting-section-account"
+        >
+          <div class="window-header">
+            <h1>Account</h1>
+          </div>
+          <div class="window-inner">
+          </div>
+        </div>
+
+
+        <div
+        class="window-main setting-section"
+        id="setting-section-about"
+      >
+        <div class="window-header">
+          <h1>About</h1>
+        </div>
+        <div class="window-inner">
+        </div>
+      </div>
+
+
+      <div
+      class="window-main setting-section"
+      id="setting-section-help"
+    >
+      <div class="window-header">
+        <h1>Help</h1>
+      </div>
+      <div class="window-inner">
+      </div>
+    </div>
+
       </div>
     </div>
     <div id="window-newfile" class="window-wrap window-closed">
