@@ -84,9 +84,9 @@ html {
   --toolBarDim: #49484a;
   --toolBarHover: #7f7f80;
   --lightT: #99999991;
-  --boxShadowT: .35;
+  --boxShadowT: 0.35;
   --accent: #1e78ff;
-  --accentT: #1E7DF0a9;
+  --accentT: #1e7df0a9;
   --uiOutline: 1px solid rgba(255, 255, 255, 0.055);
 }
 
@@ -116,8 +116,8 @@ html {
   --toolBarHover: #181e31;
   --lightT: #99999991;
   --boxShadowT: 0.15;
-  --accent: #1E7DF0;
-  --accentT: #1E7DF0a9;
+  --accent: #1e7df0;
+  --accentT: #1e7df0a9;
   --uiOutline: 1px solid rgba(68, 68, 68, 0.055);
 }
 
@@ -135,8 +135,8 @@ html {
 
 .ui-accent-yellow {
   --accentText: #ffffff;
-  --accent: #F3BB1B;
-  --accentT: #F3BB1Ba9;
+  --accent: #f3bb1b;
+  --accentT: #f3bb1ba9;
 }
 
 .ui-accent-green {
@@ -154,7 +154,7 @@ html {
 .ui-accent-blue {
   --accentText: #ffffff;
   --accent: #1e78ff;
-  --accentT: #1E7DF0a9;
+  --accentT: #1e7df0a9;
 }
 
 .ui-accent-purple {
@@ -357,13 +357,13 @@ html {
   opacity: 0;
 }
 
-.popup-input-check:focus~.checkmark {
+.popup-input-check:focus ~ .checkmark {
   outline-color: var(--accent);
   outline-style: solid;
   outline-width: 2px;
 }
 
-.popup-input-check~.checkmark {
+.popup-input-check ~ .checkmark {
   position: absolute;
   top: 0;
   left: 0;
@@ -376,27 +376,27 @@ html {
   border-radius: 5px;
 }
 
-.popup-input-check:hover~.checkmark {
+.popup-input-check:hover ~ .checkmark {
   background-color: var(--scrollHover);
 }
 
-.popup-input-check:checked~.checkmark {
+.popup-input-check:checked ~ .checkmark {
   box-shadow: none;
   background-color: var(--accent);
 }
 
-.popup-input-check~.checkmark:after {
+.popup-input-check ~ .checkmark:after {
   content: "";
   position: absolute;
   opacity: 0;
   transition: 0.2s opacity;
 }
 
-.popup-input-check:checked~.checkmark:after {
+.popup-input-check:checked ~ .checkmark:after {
   opacity: 1;
 }
 
-.popup-input-check~.checkmark:after {
+.popup-input-check ~ .checkmark:after {
   left: 11px;
   top: 6px;
   width: 5px;
@@ -512,7 +512,7 @@ html {
   flex-direction: column;
   justify-content: space-between;
   gap: 8px;
-  border: var(--uiOutline)
+  border: var(--uiOutline);
 }
 
 .menu.menu-open {
@@ -542,12 +542,12 @@ html {
   color: var(--textMain);
 }
 
-.menu .menu-btn i {}
+.menu .menu-btn i {
+}
 
 .menu .menu-btn a {
   text-decoration: none;
 }
-
 
 .drawingCanvas {
   --zindex: 0;
@@ -719,7 +719,7 @@ foreignObject {
   transform: translate(var(--scaledX), var(--scaledY)) scale(var(--scale));
 }
 
-.followsPanzoom>* {
+.followsPanzoom > * {
   transform: rotate(var(--angle));
   transform-origin: 0 0;
   fill: red;
@@ -825,7 +825,7 @@ foreignObject {
 }
 
 .item:active i {
-  transform: scale(.8) !important;
+  transform: scale(0.8) !important;
 }
 
 #toolbar .item:hover,
@@ -837,7 +837,8 @@ foreignObject {
   margin-top: 4px;
 }
 
-#toolbar .item:last-of-type {}
+#toolbar .item:last-of-type {
+}
 
 #tool-settings .item [data-tool-color-menu-button] {
   --hi-base: var(--currentColor) !important;
@@ -873,9 +874,11 @@ foreignObject {
   top: 0;
   left: 0;
   background: var(--toolBarHover);
-  clip-path: polygon(var(--inside) var(--edge),
-      var(--edge) var(--edge),
-      var(--edge) var(--inside));
+  clip-path: polygon(
+    var(--inside) var(--edge),
+    var(--edge) var(--edge),
+    var(--edge) var(--inside)
+  );
 }
 
 .tool-popup {
@@ -909,7 +912,11 @@ foreignObject {
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  background-image: linear-gradient(to bottom, var(--appBarThemeColor), var(--bgDarkT));
+  background-image: linear-gradient(
+    to bottom,
+    var(--appBarThemeColor),
+    var(--bgDarkT)
+  );
   backdrop-filter: saturate(180%) blur(20px);
   -webkit-backdrop-filter: saturate(180%) blur(20px);
   height: 50px;
@@ -921,7 +928,25 @@ foreignObject {
 #topbar i {
   --hi-accent: var(--toolBarDim);
 }
+.loading-icon {
+  position: absolute !important;
+  left: 50%;
+  top:100px;
+  --hi-accent: #0000 !important;
+  font-size: 36px !important;
+  display: block !important;
+  animation: loading 1.5s cubic-bezier(0.37, 0, 0.63, 1) infinite;
+  --hi-base: var(--toolBarDim) !important;
+}
+@keyframes loading {
+  0% {
+    transform:translate(-50%) rotate(0deg);
+  }
 
+  100% {
+    transform:translate(-50%) rotate(720deg);
+  }
+}
 .icon-accent {
   position: absolute !important;
   left: 45%;
@@ -930,18 +955,18 @@ foreignObject {
   font-size: 16px !important;
 }
 
-.hi-loading-outline {
+.icon-accent.hi-loading-outline {
   display: block !important;
   animation: rotate 1.5s cubic-bezier(0.37, 0, 0.63, 1) infinite;
 }
 
-.hi-loading-outline,
-.hi-check-outline {
+.icon-accent.hi-loading-outline,
+.icon-accent.hi-check-outline {
   --hi-base: var(--accent) !important;
 }
 
-.hi-x-outline,
-.hi-exclamation-outline {
+.icon-accent.hi-x-outline,
+.icon-accent.hi-exclamation-outline {
   --hi-base: var(--error) !important;
 }
 
@@ -1150,7 +1175,8 @@ foreignObject {
   user-select: none;
   display: block;
   opacity: 0;
-  transition: 0.3s opacity, 0.3s transform cubic-bezier(0.4, 0, 1, .64), max-height 0.3s;
+  transition: 0.3s opacity, 0.3s transform cubic-bezier(0.4, 0, 1, 0.64),
+    max-height 0.3s;
   overflow: visible !important;
   pointer-events: none;
   user-select: none;
@@ -1193,7 +1219,8 @@ foreignObject {
 .color-menu.color-open {
   opacity: 1;
   pointer-events: all;
-  transition: 0.2s opacity, 0.3s transform cubic-bezier(0, .48, 0, 1), max-height 0.3s;
+  transition: 0.2s opacity, 0.3s transform cubic-bezier(0, 0.48, 0, 1),
+    max-height 0.3s;
 }
 
 #color-menu-drop-effect {
@@ -1293,9 +1320,11 @@ foreignObject {
   height: 100%;
   z-index: 200;
   transition: 0.2s width;
-  background-image: linear-gradient(to bottom,
+  background-image: linear-gradient(
+      to bottom,
       transparent 0%,
-      rgb(0, 0, 0) 100%),
+      rgb(0, 0, 0) 100%
+    ),
     linear-gradient(to right, transparent 0%, hsl(var(--h), 100%, 50%) 100%),
     linear-gradient(to bottom, white 0%, white 100%);
 }
@@ -1305,23 +1334,27 @@ foreignObject {
   height: 30px;
   flex-shrink: 0;
   transition: 0.2s width;
-  background-image: linear-gradient(to right,
-      #ff0000 0%,
-      #ffff00 17%,
-      #00ff00 33%,
-      #00ffff 50%,
-      #0000ff 67%,
-      #ff00ff 83%,
-      #ff0000 100%);
+  background-image: linear-gradient(
+    to right,
+    #ff0000 0%,
+    #ffff00 17%,
+    #00ff00 33%,
+    #00ffff 50%,
+    #0000ff 67%,
+    #ff00ff 83%,
+    #ff0000 100%
+  );
 }
 
 .color-menu #color-opacity {
   position: absolute;
   right: 0;
   background: white;
-  background-image: linear-gradient(to bottom,
+  background-image: linear-gradient(
+      to bottom,
       rgba(255, 255, 255, 0),
-      var(--currentColor)),
+      var(--currentColor)
+    ),
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 8 8'%3E%3Cg fill='%23bababa' fill-opacity='0.4'%3E%3Cpath fill-rule='evenodd' d='M0 0h4v4H0V0zm4 4h4v4H4V4z'/%3E%3C/g%3E%3C/svg%3E");
   margin-left: 0;
   width: 40px;
@@ -1543,7 +1576,8 @@ grid-template-rows: auto;
   cursor: pointer;
   margin: 0;
   float: left;
-  transition: opacity 0.3s linear, transform 0.3s cubic-bezier(0.175, 1.8, 0.32, 1.275);
+  transition: opacity 0.3s linear,
+    transform 0.3s cubic-bezier(0.175, 1.8, 0.32, 1.275);
   transform: scale(1);
   display: flex;
   justify-content: center;
@@ -1707,34 +1741,56 @@ input[type="number"] {
 }
 
 #color-r-slider {
-  background: linear-gradient(to right, rgb(0, var(--g), var(--b)), rgb(255, var(--g), var(--b)));
+  background: linear-gradient(
+    to right,
+    rgb(0, var(--g), var(--b)),
+    rgb(255, var(--g), var(--b))
+  );
 }
 
 #color-g-slider {
-  background: linear-gradient(to right, rgb(var(--r), 0, var(--b)), rgb(var(--r), 255, var(--b)));
+  background: linear-gradient(
+    to right,
+    rgb(var(--r), 0, var(--b)),
+    rgb(var(--r), 255, var(--b))
+  );
 }
 
 #color-b-slider {
-  background: linear-gradient(to right, rgb(var(--r), var(--g), 0), rgb(var(--r), var(--g), 255));
+  background: linear-gradient(
+    to right,
+    rgb(var(--r), var(--g), 0),
+    rgb(var(--r), var(--g), 255)
+  );
 }
 
 #color-h-slider {
-  background-image: linear-gradient(to right,
-      #ff0000 0%,
-      #ffff00 17%,
-      #00ff00 33%,
-      #00ffff 50%,
-      #0000ff 67%,
-      #ff00ff 83%,
-      #ff0000 100%);
+  background-image: linear-gradient(
+    to right,
+    #ff0000 0%,
+    #ffff00 17%,
+    #00ff00 33%,
+    #00ffff 50%,
+    #0000ff 67%,
+    #ff00ff 83%,
+    #ff0000 100%
+  );
 }
 
 #color-s-slider {
-  background-image: linear-gradient(to right, hsl(var(--h), 0%, var(--lp)), hsl(var(--h), 100%, var(--lp)));
+  background-image: linear-gradient(
+    to right,
+    hsl(var(--h), 0%, var(--lp)),
+    hsl(var(--h), 100%, var(--lp))
+  );
 }
 
 #color-l-slider {
-  background-image: linear-gradient(to right, hsl(var(--h), var(--sp), 0%), hsl(var(--h), var(--sp), 100%));
+  background-image: linear-gradient(
+    to right,
+    hsl(var(--h), var(--sp), 0%),
+    hsl(var(--h), var(--sp), 100%)
+  );
 }
 
 #color-r-thumb,
@@ -1990,13 +2046,13 @@ input {
   opacity: 0;
 }
 
-.tool-settings-ui-input-check:focus~.checkmark {
+.tool-settings-ui-input-check:focus ~ .checkmark {
   outline-color: var(--accent);
   outline-style: solid;
   outline-width: 2px;
 }
 
-.tool-settings-ui-input-check~.checkmark {
+.tool-settings-ui-input-check ~ .checkmark {
   position: absolute;
   top: 0;
   left: 0;
@@ -2009,27 +2065,27 @@ input {
   border-radius: 5px;
 }
 
-.tool-settings-ui-input-check:hover~.checkmark {
+.tool-settings-ui-input-check:hover ~ .checkmark {
   background-color: var(--scrollHover);
 }
 
-.tool-settings-ui-input-check:checked~.checkmark {
+.tool-settings-ui-input-check:checked ~ .checkmark {
   box-shadow: none;
   background-color: var(--accent);
 }
 
-.tool-settings-ui-input-check~.checkmark:after {
+.tool-settings-ui-input-check ~ .checkmark:after {
   content: "";
   position: absolute;
   opacity: 0;
   transition: 0.2s opacity;
 }
 
-.tool-settings-ui-input-check:checked~.checkmark:after {
+.tool-settings-ui-input-check:checked ~ .checkmark:after {
   opacity: 1;
 }
 
-.tool-settings-ui-input-check~.checkmark:after {
+.tool-settings-ui-input-check ~ .checkmark:after {
   left: 11px;
   top: 6px;
   width: 5px;
@@ -2302,7 +2358,7 @@ input {
   position: relative;
 }
 
-#layer-main.active>div {
+#layer-main.active > div {
   transition: all 0.1s ease-out;
 }
 
@@ -2546,7 +2602,8 @@ canvas {
 }
 
 /* media queries */
-@media screen and (max-width: 600px) and (orientation: portrait) {}
+@media screen and (max-width: 600px) and (orientation: portrait) {
+}
 
 .canvas-outline {
   position: absolute;
@@ -2813,8 +2870,39 @@ div[id^="alrt-main"] {
   pointer-events: none;
 }
 
+.window-main {
+  width: 700px;
+  right: 0;
+  position: relative;
+  display: inline-block;
+  top: 0;
+  height: 100%;
+  z-index: -10;
+  box-sizing: border-box;
+  flex-grow: 1;
+  flex-shrink: 0;
+  grid-column: 2;
+  grid-row: 1;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.window-sidebar-right {
+  grid-template-columns: 700px 200px;
+
+}
+.window-sidebar-right .window-sidebar {
+  grid-column: 2;
+  grid-row: 1;
+}
+.window-sidebar-right .window-main {
+  grid-column: 1;
+  grid-row: 1;
+}
+
 .window-open .window-content {
-  transition-timing-function: cubic-bezier(0.03, .81, .43, .95);
+  transition-timing-function: cubic-bezier(0.03, 0.81, 0.43, 0.95);
   transform: translate(-50%, -50%) !important;
   pointer-events: all;
 }
@@ -2851,27 +2939,10 @@ div[id^="alrt-main"] {
   z-index: 99999;
 }
 
-.window-main {
-  width: 700px;
-  right: 0;
-  position: relative;
-  display: inline-block;
-  top: 0;
-  height: 100%;
-  z-index: -10;
-  box-sizing: border-box;
-  flex-grow: 1;
-  flex-shrink: 0;
-  grid-column: 2;
-  grid-row: 1;
-  pointer-events: none;
-  opacity:0;
-  transition: opacity 0.2s
-}
 
 .window-open .window-main-show {
   pointer-events: all;
-  opacity:1;
+  opacity: 1;
 }
 
 .window-inner {
@@ -2925,19 +2996,18 @@ div[id^="alrt-main"] {
 }
 
 @media screen and (max-width: 1000px) {
-
-.window-content {
-  display: block;
-  align-items: center;
-  justify-content: center;
-}
+  .window-content {
+    display: block;
+    align-items: center;
+    justify-content: center;
+  }
   .window-sidebar {
     width: 100%;
     min-width: 0;
     transform: translateX(-20%);
     z-index: 100;
   }
-  .window-main-show {
+  .window-open .window-main-show {
     width: 100%;
     position: fixed;
     transform: translateX(0);
@@ -2945,30 +3015,44 @@ div[id^="alrt-main"] {
     background: var(--windowMain);
     box-shadow: 0px 0px 100px #0005;
     pointer-events: all;
-    width: 100%;
-    transition:  transform 0.3s;
+    transition: transform 0.3s;
   }
   .window-main {
-    transition: transform 0.3s
+    transition: transform 0.3s;
   }
 
   .window-sidebar-open {
     transform: translateX(0);
   }
 
-  .window-back{
+  .window-back {
     transition: 0.3s;
   }
-  
-  .window-sidebar-open~.window-back{
+
+  .window-sidebar-open ~ .window-back {
     opacity: 0;
   }
 
-  .window-sidebar-open~.window-main {
+  .window-sidebar-open ~ .window-main {
     transform: translateX(100%);
     box-shadow: 0px 0px 0px #000;
-    opacity:1;
+    opacity: 1;
     pointer-events: none;
+  }
+  .window-mobile-vertical {
+    display: flex;
+    flex-direction: column;
+  }
+  .window-mobile-vertical * {
+    flex-shrink: 1;
+    justify-content: center;
+    align-items: center;
+  }
+  .window-mobile-vertical .window-sidebar,
+  .window-mobile-vertical .window-main {
+    position: relative;
+    transform: unset;
+    box-shadow: none;
   }
 }
 
@@ -2999,22 +3083,20 @@ div[id^="alrt-main"] {
   transition: background 0.3s;
 }
 @media (min-width: 1000px) {
+  .window-sidebar-button:hover,
+  .window-sidebar-button-active {
+    background: var(--accent);
+  }
 
-
-.window-sidebar-button:hover,
-.window-sidebar-button-active {
-  background: var(--accent);
-}
-
-.window-sidebar-button:hover i,
-.window-sidebar-button:hover p,
-.window-sidebar-button-active i,
-.window-sidebar-button-active p {
-  color: var(--accentText);
-  --hi-accent: var(--accentText);
-  --hi-base: var(--accentText);
-  --hi-base-opacity:1;
-}
+  .window-sidebar-button:hover i,
+  .window-sidebar-button:hover p,
+  .window-sidebar-button-active i,
+  .window-sidebar-button-active p {
+    color: var(--accentText);
+    --hi-accent: var(--accentText);
+    --hi-base: var(--accentText);
+    --hi-base-opacity: 1;
+  }
 }
 
 .window-sidebar-button i,
@@ -3030,7 +3112,6 @@ div[id^="alrt-main"] {
   --hi-base: var(--textMain);
   --hi-base-opacity: 0.8;
 }
-
 
 .window-sidebar-button p {
   color: var(--textMain);
@@ -3150,13 +3231,13 @@ div[id^="alrt-main"] {
   opacity: 0;
 }
 
-.window-input-check:focus~.checkmark {
+.window-input-check:focus ~ .checkmark {
   outline-color: var(--accent);
   outline-style: solid;
   outline-width: 2px;
 }
 
-.window-input-check~.checkmark {
+.window-input-check ~ .checkmark {
   position: absolute;
   top: 0;
   left: 0;
@@ -3169,27 +3250,27 @@ div[id^="alrt-main"] {
   border-radius: 5px;
 }
 
-.window-input-check:hover~.checkmark {
+.window-input-check:hover ~ .checkmark {
   background-color: var(--scrollHover);
 }
 
-.window-input-check:checked~.checkmark {
+.window-input-check:checked ~ .checkmark {
   box-shadow: none;
   background-color: var(--accent);
 }
 
-.window-input-check~.checkmark:after {
+.window-input-check ~ .checkmark:after {
   content: "";
   position: absolute;
   opacity: 0;
   transition: 0.2s opacity;
 }
 
-.window-input-check:checked~.checkmark:after {
+.window-input-check:checked ~ .checkmark:after {
   opacity: 1;
 }
 
-.window-input-check~.checkmark:after {
+.window-input-check ~ .checkmark:after {
   left: 11px;
   top: 6px;
   width: 5px;
@@ -3351,7 +3432,7 @@ div[id^="alrt-main"] {
 
 .accent-button.window-btn-imp {
   border: 3px solid var(--textMain);
-  box-sizing: border-box
+  box-sizing: border-box;
 }
 
 .boundingHidden {
@@ -3423,7 +3504,8 @@ div[id^="alrt-main"] {
   transform: translate(-50%, -50%) scale(0);
   width: 100px;
   height: 100px;
-  box-shadow: inset 0px 0px 0px 2px white, 0px 0px 0px 2px rgb(255, 255, 255), var(--boxShadow);
+  box-shadow: inset 0px 0px 0px 2px white, 0px 0px 0px 2px rgb(255, 255, 255),
+    var(--boxShadow);
   border-bottom: 16px solid var(--previousColor);
   border-right: 16px solid var(--previousColor);
   border-top: 16px solid var(--currentColor);
@@ -3449,10 +3531,12 @@ div[id^="alrt-main"] {
 .eyedropper-preview-visible {
   transform: translate(-50%, -50%) scale(1) !important;
   transition: transform 0.3s !important;
-  transition-timing-function: cubic-bezier(0.175,
-      0.885,
-      0.32,
-      1.275) !important;
+  transition-timing-function: cubic-bezier(
+    0.175,
+    0.885,
+    0.32,
+    1.275
+  ) !important;
 }
 
 #eyedropper-canvas-parent {
@@ -3496,8 +3580,12 @@ div[id^="alrt-main"] {
   --y: 0;
   width: calc(var(--canvX) * 40);
   height: calc(var(--canvY) * 40);
-  left: calc((var(--x) * ((var(--canvX) * 40) - 120px) * -1) - (120px * (var(--x) - 0.5)));
-  top: calc((var(--y) * ((var(--canvY) * 40) - 120px) * -1) - (120px * (var(--y) - 0.5)));
+  left: calc(
+    (var(--x) * ((var(--canvX) * 40) - 120px) * -1) - (120px * (var(--x) - 0.5))
+  );
+  top: calc(
+    (var(--y) * ((var(--canvY) * 40) - 120px) * -1) - (120px * (var(--y) - 0.5))
+  );
 }
 
 #transformdummycanvas {
@@ -3553,57 +3641,57 @@ div[id^="alrt-main"] {
 
 .popperArrowInner::before {
   visibility: visible;
-  content: '';
+  content: "";
 }
 
-[data-popper-placement^='top'] .popperArrow {
+[data-popper-placement^="top"] .popperArrow {
   bottom: calc(var(--size) * -1);
 }
 
-[data-popper-placement^='bottom'] .popperArrow {
+[data-popper-placement^="bottom"] .popperArrow {
   top: calc(var(--size) * -1);
 }
 
-[data-popper-placement^='left'] .popperArrow {
+[data-popper-placement^="left"] .popperArrow {
   right: calc(var(--size) * -1);
 }
 
-[data-popper-placement^='right'] .popperArrow {
+[data-popper-placement^="right"] .popperArrow {
   left: calc(var(--size) * -1);
 }
 
-[data-popper-placement^='top'] .popperArrowInner {
+[data-popper-placement^="top"] .popperArrowInner {
   clip-path: polygon(0 0, 50% 100%, 100% 0);
 }
 
-[data-popper-placement^='bottom'] .popperArrowInner {
+[data-popper-placement^="bottom"] .popperArrowInner {
   clip-path: polygon(50% 0, 0 100%, 100% 100%);
 }
 
-[data-popper-placement^='left'] .popperArrowInner {
+[data-popper-placement^="left"] .popperArrowInner {
   clip-path: polygon(0 0, 100% 50%, 0 100%);
 }
 
-[data-popper-placement^='right'] .popperArrowInner {
+[data-popper-placement^="right"] .popperArrowInner {
   clip-path: polygon(100% 0, 0 50%, 100% 100%);
 }
 
-[data-popper-placement^='top'] .popperArrow,
-[data-popper-placement^='bottom'] .popperArrow,
-[data-popper-placement^='top'] .popperArrowInner,
-[data-popper-placement^='bottom'] .popperArrowInner,
-[data-popper-placement^='top'] .popperArrowInner::before,
-[data-popper-placement^='bottom'] .popperArrowInner::before {
+[data-popper-placement^="top"] .popperArrow,
+[data-popper-placement^="bottom"] .popperArrow,
+[data-popper-placement^="top"] .popperArrowInner,
+[data-popper-placement^="bottom"] .popperArrowInner,
+[data-popper-placement^="top"] .popperArrowInner::before,
+[data-popper-placement^="bottom"] .popperArrowInner::before {
   width: calc(var(--size) * 2);
   height: calc(var(--size) * 1);
 }
 
-[data-popper-placement^='left'] .popperArrow,
-[data-popper-placement^='right'] .popperArrow,
-[data-popper-placement^='left'] .popperArrowInner,
-[data-popper-placement^='right'] .popperArrowInner,
-[data-popper-placement^='left'] .popperArrowInner::before,
-[data-popper-placement^='right'] .popperArrowInner::before {
+[data-popper-placement^="left"] .popperArrow,
+[data-popper-placement^="right"] .popperArrow,
+[data-popper-placement^="left"] .popperArrowInner,
+[data-popper-placement^="right"] .popperArrowInner,
+[data-popper-placement^="left"] .popperArrowInner::before,
+[data-popper-placement^="right"] .popperArrowInner::before {
   width: calc(var(--size) * 1);
   height: calc(var(--size) * 2);
 }

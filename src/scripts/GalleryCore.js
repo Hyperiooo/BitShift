@@ -155,11 +155,11 @@ window.onload = async function () {
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  populateProjects();
 };
 function populateProjects() {
-  document.getElementById("galleryWrapper").innerHTML = "";
+  document.getElementById("galleryWrapper").innerHTML = "<i class='hi-loading-outline loading-icon'></i>";
   queryProjects().then(() => {
+    document.getElementById("galleryWrapper").innerHTML = "";
     [...window.allLoadedProjects].reverse().forEach((project) => {
       console.log(project.name);
       var orientation = "";
