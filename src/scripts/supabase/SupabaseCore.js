@@ -17,7 +17,7 @@ supabase.auth.onAuthStateChange(async (event, session) => {
 	if (event == "SIGNED_IN") {
 		queryUserMeta();
 		queryProjects();
-		if (populateProjects)populateProjects();
+		if(typeof populateProjects === "function")populateProjects();
 	} else if (event == "SIGNED_OUT") {
 		generateProjectList();
 		if (

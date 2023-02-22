@@ -220,7 +220,7 @@ class Canvas {
 			snapRotationTolerance: 10,
 		});
 		setTimeout(() => {
-			this.zoom.options.onTransform().bind(this);
+			this.zoom.options.onTransform()
 		}, 1);
 		setTimeout(() => {
 			var targetX = (window.innerWidth - this.width * settings.ui.canvasScale) / 2;
