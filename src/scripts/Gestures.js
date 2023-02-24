@@ -201,7 +201,6 @@ class HoldGesture {
 		this.beginningPositions = {};
 		this.previousPositions = {};
 		this.positionDeltas = {};
-		notify.log("asdf");
 
 		var _self = this;
 		element.addEventListener(
@@ -245,7 +244,6 @@ class HoldGesture {
 		clearTimeout(this.timeout);
 		this.timeout = setTimeout(() => {
 			this.evaluateGesture(e).bind(this);
-			console.log("e");
 		}, this.options.duration);
 
 	}
@@ -290,9 +288,6 @@ class HoldGesture {
 		clientX /= Object.keys(this.beginningPositions).length
 		clientY /= Object.keys(this.beginningPositions).length
 
-		console.log(e);
-		notify.log(this.totalTouches);
-		//console.log(this.totalTouches)
 		var pass = true;
 		if (
 			this.touchStarts[this.touchStarts.length - 1] - this.touchStarts[0] >

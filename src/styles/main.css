@@ -87,9 +87,10 @@ html {
   --boxShadowT: 0.35;
   --accent: #1e78ff;
   --accentT: #1e7df0a9;
-  --contrastingBackground: #ffffff8c;
+  --contrastingBackground: #ffffff;
+  --contrastingHover: #a1a1a18c;
   --contrastingText: #0b0c1a;
-  --contrastingTextT: #0b0c1a8c;
+  --contrastingTextT: #0b0c1abe;
   --uiOutline: 1px solid rgba(255, 255, 255, 0.055);
 }
 
@@ -121,10 +122,10 @@ html {
   --boxShadowT: 0.15;
   --accent: #1e7df0;
   --accentT: #1e7df0a9;
-  --contrastingBackground: #ffffff8c;
-  --contrastingHover: #dfdfdf1a;
+  --contrastingBackground: #ffffff;
+  --contrastingHover: #ff00008c;
   --contrastingText: #0b0c1a;
-  --contrastingTextT: #0b0c1a8c;
+  --contrastingTextT: #0b0c1abe;
   --uiOutline: 1px solid rgba(68, 68, 68, 0.055);
 }
 
@@ -938,7 +939,7 @@ foreignObject {
 .loading-icon {
   position: absolute !important;
   left: 50%;
-  top:100px;
+  top: 100px;
   --hi-accent: #0000 !important;
   font-size: 36px !important;
   display: block !important;
@@ -947,11 +948,11 @@ foreignObject {
 }
 @keyframes loading {
   0% {
-    transform:translate(-50%) rotate(0deg);
+    transform: translate(-50%) rotate(0deg);
   }
 
   100% {
-    transform:translate(-50%) rotate(720deg);
+    transform: translate(-50%) rotate(720deg);
   }
 }
 .icon-accent {
@@ -2552,7 +2553,7 @@ canvas {
   image-rendering: pixelated;
   -ms-interpolation-mode: nearest-neighbor;
   user-select: none;
-  -webkit-user-select: none !important;
+  -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
 }
@@ -2576,6 +2577,21 @@ canvas {
   position: absolute;
   top: 18px;
   left: 60px;
+}
+
+.layer-name input[type="text"]{
+  background: transparent;
+  border: none;
+  font-size: 16px;
+  font-family: 'roboto';
+  width: 120px;
+  border-radius: 2px;
+}
+.layer-name input[type="text"]:focus {
+  background: white;
+  color: black;
+  border: none;
+  outline: none
 }
 
 .layer-visibility {
@@ -2897,7 +2913,6 @@ div[id^="alrt-main"] {
 
 .window-sidebar-right {
   grid-template-columns: 700px 200px;
-
 }
 .window-sidebar-right .window-sidebar {
   grid-column: 2;
@@ -2945,7 +2960,6 @@ div[id^="alrt-main"] {
   margin: 0;
   z-index: 99999;
 }
-
 
 .window-open .window-main-show {
   pointer-events: all;
@@ -3908,7 +3922,8 @@ div[id^="alrt-main"] {
 
 .txt-col-red {
   color: var(--error);
-  --hi-accent: var(--errorT) !important;
+  --hi-accent-opacity: 0.65;
+  --hi-accent: var(--error) !important;
   --hi-base: var(--error) !important;
 }
 
@@ -3922,7 +3937,6 @@ div[id^="alrt-main"] {
 }
 
 .context-menu {
-  
   position: fixed;
   opacity: 0;
   transition: 0.1s opacity;
@@ -3941,11 +3955,12 @@ div[id^="alrt-main"] {
   user-select: none;
   pointer-events: none;
   width: 150px;
-  box-shadow: var(--boxShadow);
   padding: 5px;
+  box-shadow: var(--boxShadow); 
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  align-items: center;
   gap: 8px;
   border: var(--uiOutline);
 }
@@ -3953,7 +3968,12 @@ div[id^="alrt-main"] {
   opacity: 1;
   pointer-events: auto;
 }
-
+.context-menu-mobile {
+  width: 200px;
+  transition: 0.3s opacity;
+  border-radius: 13px;
+  padding: 8px;
+}
 
 .context-menu button {
   text-align: left;
@@ -3965,18 +3985,39 @@ div[id^="alrt-main"] {
   cursor: pointer;
   width: 100%;
   display: flex;
-  align-items: center;padding: 10px 15px;
+  align-items: center;
+  padding: 5px 10px;
   gap: 8px;
-  --hi-accent: var(--contrastingTextT);
+  --hi-accent-opacity: 0.65;
+  --hi-accent: var(--contrastingText);
   --hi-base: var(--contrastingText);
 }
 
+.context-menu-mobile button {
+  transition: 0.3s opacity;
+  padding: 10px;
+  border-radius: 5px;
+}
+
 .context-menu button:hover {
-  background: var(--accentT);
+  background: var(--contrastingHover);
 }
 
 .context-menu button i {
 }
 .context-menu button a {
   text-decoration: none;
+}
+.context-menu-divider {
+  position: relative;
+  cursor: pointer;
+  border-radius: 5px;
+  width: 85%;
+  height: 2px;
+  transition: 0.1s background, 0.3s color, 0.3s fill;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: var(--contrastingText);
+  opacity: 0.25
 }

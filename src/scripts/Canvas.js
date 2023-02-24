@@ -1004,6 +1004,10 @@ class Canvas {
 			var y = coord.y;
 			if (x === undefined || y === undefined) return;
 			this.ctx.globalCompositeOperation = "source-over";
+			if(layer.settings.alpha){
+				this.ctx.globalCompositeOperation = "source-atop";
+
+			}
 			if (isSelected()) {
 				this.ctx.save();
 				var clipPath = new Path2D();

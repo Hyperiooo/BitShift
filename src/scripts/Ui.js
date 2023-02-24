@@ -309,6 +309,7 @@ class NumberInputKeypad {
 			});
 		});
 		document.addEventListener("keydown", e=>{
+			if(!this.isopen) return
 			if(e.key == "Backspace")this.backspace();
 			if(e.key == "Enter"){
 				this.confirm(); 
