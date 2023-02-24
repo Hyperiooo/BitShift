@@ -87,6 +87,9 @@ html {
   --boxShadowT: 0.35;
   --accent: #1e78ff;
   --accentT: #1e7df0a9;
+  --contrastingBackground: #ffffff8c;
+  --contrastingText: #0b0c1a;
+  --contrastingTextT: #0b0c1a8c;
   --uiOutline: 1px solid rgba(255, 255, 255, 0.055);
 }
 
@@ -118,6 +121,10 @@ html {
   --boxShadowT: 0.15;
   --accent: #1e7df0;
   --accentT: #1e7df0a9;
+  --contrastingBackground: #ffffff8c;
+  --contrastingHover: #dfdfdf1a;
+  --contrastingText: #0b0c1a;
+  --contrastingTextT: #0b0c1a8c;
   --uiOutline: 1px solid rgba(68, 68, 68, 0.055);
 }
 
@@ -3912,4 +3919,64 @@ div[id^="alrt-main"] {
 .fab-secondary .fab-icon {
   --hi-accent: var(--accentT);
   --hi-base: var(--accent);
+}
+
+.context-menu {
+  
+  position: fixed;
+  opacity: 0;
+  transition: 0.1s opacity;
+  border-radius: 13px;
+  overflow: hidden;
+  padding: 0px;
+  margin: 0;
+  color: var(--contrastingText);
+  background: var(--contrastingBackground);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  z-index: 200001;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  pointer-events: none;
+  width: 125px;
+  box-shadow: var(--boxShadow);
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 8px;
+  border: var(--uiOutline);
+}
+.context-menu-visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+
+.context-menu button {
+  text-align: left;
+  position: relative;
+  padding: 10px;
+  margin: 0;
+  border-radius: 5px;
+  list-style: none;
+  cursor: pointer;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  --hi-accent: var(--contrastingTextT);
+  --hi-base: var(--contrastingText);
+}
+
+.context-menu button:hover {
+  background: var(--accentT);
+}
+
+.context-menu button i {
+}
+.context-menu button a {
+  text-decoration: none;
 }
