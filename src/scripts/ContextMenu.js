@@ -6,7 +6,7 @@ class ContextMenu {
 			buttons: options.buttons || [],
 			touchTarget:options.touchTarget || el,
 			touchBehavior: options.touchBehavior|| "longPress" ,
-			touchDelay:options.touchDelay ||  5,
+			touchDelay:options.touchDelay ||  500,
 		};
 		this.init();
         this.popperTarget = {
@@ -16,7 +16,7 @@ class ContextMenu {
 			this.popperTarget,
 			this.menu,
 			{
-				placement: "bottom-start",
+				placement: "left",
 				modifiers: [
 					{
 						name: "preventOverflow",
@@ -80,13 +80,12 @@ class ContextMenu {
 	}
 	render(e, inputDevice) {
 		this.menu.classList.add("context-menu-visible");
-        this.popperTarget = this.options.touchTarget
 
 		if (inputDevice === "click") {
 			this.popperTarget.getBoundingClientRect = this.generateGetBoundingClientRect(e.clientX, e.clientY);
-            this.popperTarget = this.options.touchTarget
 		}else if(inputDevice === "touch"){
             notify.log('touchinput')
+			this.popperTarget.getBoundingClientRect = function(){return this.options.touchTarget.getBoundingClientRect()}.bind(this)
         }
 
         this.popInstance.update()

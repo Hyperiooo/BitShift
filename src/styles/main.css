@@ -3926,7 +3926,7 @@ div[id^="alrt-main"] {
   position: fixed;
   opacity: 0;
   transition: 0.1s opacity;
-  border-radius: 13px;
+  border-radius: 5px;
   overflow: hidden;
   padding: 0px;
   margin: 0;
@@ -3940,9 +3940,9 @@ div[id^="alrt-main"] {
   -ms-user-select: none;
   user-select: none;
   pointer-events: none;
-  width: 125px;
+  width: 150px;
   box-shadow: var(--boxShadow);
-  padding: 8px;
+  padding: 5px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -3960,12 +3960,12 @@ div[id^="alrt-main"] {
   position: relative;
   padding: 10px;
   margin: 0;
-  border-radius: 5px;
+  border-radius: 2px;
   list-style: none;
   cursor: pointer;
   width: 100%;
   display: flex;
-  align-items: center;
+  align-items: center;padding: 10px 15px;
   gap: 8px;
   --hi-accent: var(--contrastingTextT);
   --hi-base: var(--contrastingText);
