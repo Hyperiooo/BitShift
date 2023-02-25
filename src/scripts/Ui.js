@@ -108,44 +108,52 @@ class numberDraggable {
 		this.do = false;
 		this.startP = 0;
 		this.el = el;
-		this.direction = this.el.getAttribute("data-input-num-draggable-vertical") ? true : false;
+		this.direction = this.el.getAttribute("data-input-num-draggable-vertical")
+			? true
+			: false;
 		this.startVal = this.el.value;
 		self = this;
-		this.rawValue = this.el.value
-		this.startEffectPosition = 0
+		this.rawValue = this.el.value;
+		this.startEffectPosition = 0;
 		this.pointerDown = function (e) {
-			if(isMobile)e.preventDefault()
-			e.stopPropagation()
+			if (isMobile) e.preventDefault();
+			e.stopPropagation();
 			this.do = true;
 			this.startP = this.direction ? e.clientY : e.clientX;
 			this.startVal = this.el.value;
-			this.rawValue = parseInt(this.startVal)
-			this.startEffectPosition = this.direction ? e.clientX : e.clientY
-			this.deltaX = e.clientX
-			this.deltaY = e.clientY
+			this.rawValue = parseInt(this.startVal);
+			this.startEffectPosition = this.direction ? e.clientX : e.clientY;
+			this.deltaX = e.clientX;
+			this.deltaY = e.clientY;
 		};
 		this.pointerUp = function (e) {
 			this.do = false;
 		};
-		this.deltaX
-		this.deltaY
+		this.deltaX;
+		this.deltaY;
 		this.pointerMove = function (e) {
-			e.preventDefault()
-			e.stopPropagation()
+			e.preventDefault();
+			e.stopPropagation();
 			if (this.do) {
 				var pullDistance = 200;
-				let deltaMultiplier = this.startEffectPosition - (this.direction ? e.clientX : e.clientY)
-				deltaMultiplier = pullDistance - Math.abs(deltaMultiplier)
-				deltaMultiplier = clamp(deltaMultiplier/pullDistance, 0.1, 1)
-				
-				this.rawValue += ((this.direction ?  this.deltaY - e.clientY : -this.deltaX +e.clientX) ) / 10 * deltaMultiplier
+				let deltaMultiplier =
+					this.startEffectPosition - (this.direction ? e.clientX : e.clientY);
+				deltaMultiplier = pullDistance - Math.abs(deltaMultiplier);
+				deltaMultiplier = clamp(deltaMultiplier / pullDistance, 0.1, 1);
+
+				this.rawValue +=
+					((this.direction
+						? this.deltaY - e.clientY
+						: -this.deltaX + e.clientX) /
+						10) *
+					deltaMultiplier;
 				this.el.value = clamp(
-					 Math.floor(this.rawValue),
+					Math.floor(this.rawValue),
 					this.el.min,
 					this.el.max
 				);
-				this.deltaX = e.clientX
-			this.deltaY = e.clientY
+				this.deltaX = e.clientX;
+				this.deltaY = e.clientY;
 				window.numberPad.update(this.el);
 				if (this.el.oninput) this.el.oninput(e);
 			}
@@ -153,50 +161,59 @@ class numberDraggable {
 		this.pointerDownHandler = this.pointerDown.bind(this);
 		this.pointerUpHandler = this.pointerUp.bind(this);
 		this.pointerMoveHandler = this.pointerMove.bind(this);
-		document.addEventListener("pointerdown", e =>{
-			
-		})
-		this.el.addEventListener("pointerdown", this.pointerDownHandler,  {passive: false});
-		document.addEventListener("pointerup", this.pointerUpHandler,  {passive: false});
-		document.addEventListener("pointermove", this.pointerMoveHandler,  {passive: false});
+		document.addEventListener("pointerdown", (e) => {});
+		this.el.addEventListener("pointerdown", this.pointerDownHandler, {
+			passive: false,
+		});
+		document.addEventListener("pointerup", this.pointerUpHandler, {
+			passive: false,
+		});
+		document.addEventListener("pointermove", this.pointerMoveHandler, {
+			passive: false,
+		});
 	}
 	clear() {}
 	destroy() {
-		this.el.removeEventListener("pointerdown", this.pointerDownHandler,  {passive: false});
-		document.removeEventListener("pointerup", this.pointerUpHandler,  {passive: false});
-		document.removeEventListener("pointermove", this.pointerMoveHandler,  {passive: false});
+		this.el.removeEventListener("pointerdown", this.pointerDownHandler, {
+			passive: false,
+		});
+		document.removeEventListener("pointerup", this.pointerUpHandler, {
+			passive: false,
+		});
+		document.removeEventListener("pointermove", this.pointerMoveHandler, {
+			passive: false,
+		});
 	}
 }
 
 function toggleMenu(menu, el) {
-	if(menu.nodeName) {
-		if(menu.parentElement.classList.contains("menu-open")) {
-			closeMenu(menu, el)
+	if (menu.nodeName) {
+		if (menu.parentElement.classList.contains("menu-open")) {
+			closeMenu(menu, el);
 		} else {
-			openMenu(menu, el)
+			openMenu(menu, el);
 		}
-		return
+		return;
 	}
-	if(document.getElementById("menu-" + menu).classList.contains("menu-open")) {
-		closeMenu(menu, el)
-	}else {
-		openMenu(menu, el)
+	if (document.getElementById("menu-" + menu).classList.contains("menu-open")) {
+		closeMenu(menu, el);
+	} else {
+		openMenu(menu, el);
 	}
 }
 
-
 function closeMenu(menu, el) {
-	if(menu.nodeName) {
-		menu.parentElement.classList.remove("menu-open")
-		return
+	if (menu.nodeName) {
+		menu.parentElement.classList.remove("menu-open");
+		return;
 	}
 	document.getElementById("menu-" + menu).classList.remove("menu-open");
 }
 
 function openMenu(menu, el) {
-	if(menu.nodeName) {
-		menu.parentElement.classList.add("menu-open")
-		return
+	if (menu.nodeName) {
+		menu.parentElement.classList.add("menu-open");
+		return;
 	}
 	document.getElementById("menu-" + menu).classList.add("menu-open");
 	Popper.createPopper(el, document.getElementById("menu-" + menu), {
@@ -210,7 +227,7 @@ function openMenu(menu, el) {
 					padding: 10,
 				},
 			},
-			
+
 			{
 				name: "offset",
 				options: {
@@ -238,7 +255,6 @@ function setSelectionMode(m) {
 }
 
 function openGallery() {
-	
 	window.dispatchEvent(window.cloudSyncEvent);
 	window.location.href = "./";
 }
@@ -297,7 +313,7 @@ class NumberInputKeypad {
 		this.previewUnit = this.element.querySelector("#number-pad-preview-unit");
 		this.value = 0;
 		this.unit = false;
-		this.title = "title"
+		this.title = "title";
 		this.overwriteDefault = false;
 		this.min = 0;
 		this.max = Infinity;
@@ -308,15 +324,15 @@ class NumberInputKeypad {
 				this.addToValue(e.getAttribute("data-value"));
 			});
 		});
-		document.addEventListener("keydown", e=>{
-			if(!this.isopen) return
-			if(e.key == "Backspace")this.backspace();
-			if(e.key == "Enter"){
-				this.confirm(); 
+		document.addEventListener("keydown", (e) => {
+			if (!this.isopen) return;
+			if (e.key == "Backspace") this.backspace();
+			if (e.key == "Enter") {
+				this.confirm();
 				this.close();
 			}
-			if(!isNaN(parseInt(e.key))) this.addToValue((e.key))
-		})
+			if (!isNaN(parseInt(e.key))) this.addToValue(e.key);
+		});
 		this.element
 			.querySelector("[data-backspace]")
 			.addEventListener("click", () => {
@@ -359,8 +375,10 @@ class NumberInputKeypad {
 		this.reposition();
 		this.previewValue.innerHTML = this.value;
 		this.previewUnit.innerHTML = this.unit;
-		this.target.style.setProperty("--percent", (this.value - this.min) / (this.max - this.min) * 100 + "%" )
-				
+		this.target.style.setProperty(
+			"--percent",
+			((this.value - this.min) / (this.max - this.min)) * 100 + "%"
+		);
 	}
 	open(targetElement) {
 		this.target = targetElement;
@@ -397,8 +415,10 @@ class NumberInputKeypad {
 	confirm() {
 		this.target.value = Math.max(parseInt(this.value), this.min);
 		if (this.target.oninput) this.target.oninput(this.target);
-		this.target.style.setProperty("--percent", (this.value - this.min) / (this.max - this.min) * 100 + "%" )
-		
+		this.target.style.setProperty(
+			"--percent",
+			((this.value - this.min) / (this.max - this.min)) * 100 + "%"
+		);
 	}
 	animate() {}
 }
@@ -417,11 +437,11 @@ function refreshAllNumberDraggables() {
 	});
 }
 
-var tooltips = []
+var tooltips = [];
 
 function numberDraggableClickHandler(e) {
 	if (!isMobile) return;
-	if(isMobile) e.preventDefault()
+	if (isMobile) e.preventDefault();
 	if (!window.numberPad.isopen) {
 		window.numberPad.update(e.target);
 		window.numberPad.open(e.target);
@@ -435,18 +455,18 @@ function refreshAllTooltips() {
 		e[0].destroy();
 	});
 
-	tooltips = []
+	tooltips = [];
 
-	var toolEls = document.querySelectorAll(".tooltip") 
-	toolEls.forEach(e => {
-		e.remove()
-	})
-	
+	var toolEls = document.querySelectorAll(".tooltip");
+	toolEls.forEach((e) => {
+		e.remove();
+	});
+
 	var ttp = document.querySelectorAll("[data-tooltip]");
 	ttp.forEach((e) => {
-		let tooltip = document.createElement("div")
-		tooltip.innerHTML = e.getAttribute("data-tooltip")
-		tooltip.classList.add("tooltip")
+		let tooltip = document.createElement("div");
+		tooltip.innerHTML = e.getAttribute("data-tooltip");
+		tooltip.classList.add("tooltip");
 		var popInstance = Popper.createPopper(e, tooltip, {
 			placement: "auto",
 			modifiers: [
@@ -458,7 +478,7 @@ function refreshAllTooltips() {
 						padding: 55,
 					},
 				},
-				
+
 				{
 					name: "offset",
 					options: {
@@ -481,39 +501,95 @@ function refreshAllTooltips() {
 		e.addEventListener("mouseover", tooltipDownHandler, true);
 		e.removeEventListener("mouseout", tooltipUpHandler, true);
 		e.addEventListener("mouseout", tooltipUpHandler, true);
-		document.body.appendChild(tooltip)
-		tooltips.push([popInstance, tooltip, e])
+		document.body.appendChild(tooltip);
+		tooltips.push([popInstance, tooltip, e]);
 	});
 }
 
 function tooltipDownHandler(e) {
-	if(!tooltips.find(l => l[2] == e.target))return
-	tooltips.find(l => l[2] == e.target)[1].classList.add("tooltip-visible")
-
+	if (!tooltips.find((l) => l[2] == e.target)) return;
+	tooltips.find((l) => l[2] == e.target)[1].classList.add("tooltip-visible");
 }
 function tooltipUpHandler(e) {
-	if(!tooltips.find(l => l[2] == e.target))return
-	tooltips.find(l => l[2] == e.target)[1].classList.remove("tooltip-visible")
-
+	if (!tooltips.find((l) => l[2] == e.target)) return;
+	tooltips.find((l) => l[2] == e.target)[1].classList.remove("tooltip-visible");
 }
 
 function mobileDesktopCallback(mobileCallback, desktopCallback) {
-	if(isMobile) {
-		mobileCallback()
-	}else {
-		desktopCallback()
+	if (isMobile) {
+		mobileCallback();
+	} else {
+		desktopCallback();
 	}
 }
 
 function setSettingSection(section) {
-	document.querySelectorAll(".setting-section").forEach(e=> {
-		e.classList.remove('window-main-show')
-	})
-	document.querySelectorAll(".setting-button").forEach(e=> {
-		e.classList.remove('window-sidebar-button-active')
-	})
-	document.getElementById('settings-sidebar').classList.remove('window-sidebar-open')
-	document.getElementById("setting-button-" + section).classList.add("window-sidebar-button-active")
+	document.querySelectorAll(".setting-section").forEach((e) => {
+		e.classList.remove("window-main-show");
+	});
+	document.querySelectorAll(".setting-button").forEach((e) => {
+		e.classList.remove("window-sidebar-button-active");
+	});
+	document
+		.getElementById("settings-sidebar")
+		.classList.remove("window-sidebar-open");
+	document
+		.getElementById("setting-button-" + section)
+		.classList.add("window-sidebar-button-active");
 
-	document.getElementById("setting-section-" + section).classList.add("window-main-show")
+	document
+		.getElementById("setting-section-" + section)
+		.classList.add("window-main-show");
+}
+
+class ConfirmModal {
+	constructor(
+		title,
+		message,
+		confirmText,
+		cancelText,
+		confirmCallback,
+		cancelCallback
+	) {
+		this.title = title;
+		this.message = message;
+		this.confirmText = confirmText;
+		this.cancelText = cancelText;
+		this.confirmCallback = confirmCallback;
+		this.cancelCallback = cancelCallback || function () {};
+		this.create();
+	}
+	create() {
+		this.modal = document.createElement("div");
+		this.modal.classList.add("confirm-modal");
+		this.modal.innerHTML = `
+		<div class="confirm-modal-title">${this.title}</div>
+		<div class="confirm-modal-message">${this.message}</div>
+		<div class="confirm-modal-buttons">
+			<div class="confirm-modal-button confirm-modal-button-cancel">${this.cancelText}</div>
+			<div class="confirm-modal-button confirm-modal-button-confirm">${this.confirmText}</div>
+		</div>
+		`;
+		document.body.appendChild(this.modal);
+		this.modal
+			.querySelector(".confirm-modal-button-cancel")
+			.addEventListener("click", () => {
+				this.modal.classList.add("confirm-modal-closing");
+				setTimeout(() => {
+					this.modal.remove();
+				}, 300);
+				this.cancelCallback().bind(this);
+			});
+		this.modal
+			.querySelector(".confirm-modal-button-confirm")
+			.addEventListener("click", 
+			
+			() => {
+				this.modal.classList.add("confirm-modal-closing");
+				setTimeout(() => {
+					this.modal.remove();
+				}, 300);
+				this.confirmCallback().bind(this)
+			});
+	}
 }

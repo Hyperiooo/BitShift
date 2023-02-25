@@ -241,6 +241,21 @@ async function updateProject(id, dat) {
 	queryProjects();
 }
 
+async function deleteProject(id){
+	console.log(id)
+	const { error } = await supabase.from("projects").delete().eq("id", id)
+	
+	if(error){
+		console.log(error)
+		cloudSyncError()
+	}
+	else{
+		queryProjects()
+		populateProjects()
+	}
+	
+}
+
 function selectProject(pID) {
 	console.log("Loading project " + pID + "...");
 	queryProjects().then(() => {

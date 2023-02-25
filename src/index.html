@@ -82,6 +82,8 @@
     <script src="./scripts/Utils.js" defer></script>
     <script src="./scripts/Ui.js" defer></script>
     <script src="./scripts/ColorMenu.js" defer></script>
+    <script src="./scripts/CloudSync.js" defer></script>
+    <script src="./scripts/ContextMenu.js" defer></script>
     <script src="./scripts/Exporter.js" defer></script>
     <script src="./scripts/Compressor.js" defer></script>
     <script src="./scripts/colornames.js" defer></script>
@@ -128,6 +130,10 @@
       <header id="topbar" class="ui">
         <img id="topbar-logo" src="./assets/logo.svg" alt="BitShift Logo" />
         <div id="topbar-right">
+          <span class="item" onclick="openGallery()">
+            <i class="hi-cloud"></i>
+            <i id="syncStatusIndicator" class="hi-check-outline icon-accent"></i>
+          </span>
           <span class="item" id="accountWidget">
             <i class="hi-account"></i>
             <div id="accountName"></div>

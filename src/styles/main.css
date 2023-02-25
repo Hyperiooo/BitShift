@@ -2801,6 +2801,8 @@ div[id^="alrt-main"] {
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 .cardImage {
@@ -2817,6 +2819,7 @@ div[id^="alrt-main"] {
   transition: transform 0.15s;
   overflow: hidden;
   flex-shrink: 0;
+  pointer-events: none;
 }
 
 .cardImage img {
@@ -2835,6 +2838,16 @@ div[id^="alrt-main"] {
   text-align: center;
   font-size: 18px;
   margin-top: 10px;
+  background: none;
+  width: 100%;
+  max-width: 150px;
+  box-sizing: border-box;
+  padding: 0;
+  height: fit-content;
+  text-decoration: none;
+  /*ellipsi*/
+  word-wrap: break-word;
+  text-overflow: ellipsis;
 }
 
 .cardDetails {
@@ -4020,4 +4033,107 @@ div[id^="alrt-main"] {
   align-items: center;
   background: var(--contrastingText);
   opacity: 0.25
+}
+
+.confirm-modal {
+  position: fixed;
+  border-radius: 15px;
+  overflow: hidden;
+  padding: 0px;
+  margin: 0;
+  color: var(--textMain);
+  background: var(--bgMainT);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  z-index: 200001;
+  width: 300px;
+  padding: 15px;
+  box-shadow: var(--boxShadow); 
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  border: var(--uiOutline);
+  left: 50%;
+  top:50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  animation: modal-in 0.3s ;
+}
+
+.confirm-modal-closing {
+  animation: modal-out 0.3s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes modal-in {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -30%);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+}
+
+@keyframes modal-out {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -30%) ;
+  }
+}
+
+.confirm-modal-title {
+  font-size: 25px;
+  margin-bottom: 10px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.confirm-modal-message {
+  font-size: 16px;
+  margin-bottom: 10px;
+  text-align: center;
+  color: var(--textDim);
+}
+
+.confirm-modal-buttons {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  gap: 8px;
+}
+
+.confirm-modal-button {
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.3s opacity;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px 10px;
+  gap: 8px;
+  --hi-accent-opacity: 0.65;
+  --hi-accent: var(--textMain);
+  --hi-base: var(--textMain);
+  text-align: center;
+  padding: 10px;
+}
+
+.confirm-modal-button-cancel {
+  background: var(--scrollTrack);
+  color: var(--textMain);
+}
+
+.confirm-modal-button-confirm {
+  background: var(--error);
+  color: var(--accentText);
 }
