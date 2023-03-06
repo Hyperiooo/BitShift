@@ -121,4 +121,5 @@ function rotate(points, angle, pf){
 
 	return points;
 }
-//console.log(rotate([{"x": 20, "y": 20},{"x": 80, "y": 20},{"x": 50, "y": 50}], 90, {"x": 50, "y": 30}));
+console.log(rotate([{"x": 20, "y": 20},{"x": 80, "y": 20},{"x": 50, "y": 50}], 90, {"x": 50, "y": 30}));
+
