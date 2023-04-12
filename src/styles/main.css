@@ -95,7 +95,7 @@ html {
   --textDim: #cacaca;
   --textMain: #ffffff;
   --boxShadowT: 0.35;
-  --uiOutline: 1px solid rgba(255, 255, 255, 0.055);
+  --uiOutline: 1px solid var(--bg400);
 }
 /*100 is lightest*/
 .ui-theme-light {
@@ -122,7 +122,7 @@ html {
   --textMain: #0b0c1a;
   --textDim: #1b1c2e;
   --boxShadowT: 0.15;
-  --uiOutline: 1px solid rgba(68, 68, 68, 0.055);
+  --uiOutline: 1px solid var(--bg400);
 }
 
 .ui-accent-red {
@@ -1175,7 +1175,7 @@ foreignObject {
   overflow: visible !important;
   pointer-events: none;
   user-select: none;
-  background: var(--bg300Transparent);
+  background: var(--bg200);
   backdrop-filter: saturate(180%) blur(20px);
   -webkit-backdrop-filter: saturate(180%) blur(20px);
   display: flex;
@@ -1188,6 +1188,7 @@ foreignObject {
   border-radius: 13px;
   box-shadow: var(--boxShadow);
   font-family: "JetBrains Mono";
+  border: var(--uiOutline);
 }
 
 .color-menu-panel {
@@ -1479,7 +1480,7 @@ foreignObject {
 
 .color-palette-group {
   position: relative;
-  background: var(--bg300Transparent);
+  background: var(--bg400);
   margin-bottom: 8px;
   width: 100%;
   border-radius: 5px;
@@ -1497,19 +1498,12 @@ foreignObject {
   border-radius: 5px;
   overflow: hidden;
   transition: 0.2s width;
-  background: var(--bg300Transparent);
+  background: var(--bg400);
   display: grid;
   grid-template-columns: repeat(10, 1fr);
   grid-template-rows: 1fr;
 }
 
-/*
-  display: grid;
-  width: 100%;
-  min-height: 30px;
-grid-template-columns: repeat(10, 1fr);
-grid-template-rows: auto;
-*/
 #color-menu-tabbar {
   grid-column: 1 / 6;
   grid-row: 13 / 14;
@@ -1522,7 +1516,7 @@ grid-template-rows: auto;
   padding: 2px;
   overflow: hidden;
   transition: 0.2s width;
-  background: var(--bg300Transparent);
+  background: var(--bg400);
   display: flex;
   justify-content: stretch;
 }
@@ -1540,7 +1534,7 @@ grid-template-rows: auto;
 
 .color-menu-tabbar-button-active {
   color: var(--textMain);
-  background: var(--bg100Transparent);
+  background: var(--bg600);
 }
 
 .color-palette-standalone {
@@ -1679,7 +1673,7 @@ input[type="number"] {
 }
 
 .color-slider-section {
-  background: var(--bg300Transparent);
+  background: var(--bg400);
   border-radius: 5px;
   display: flex;
   gap: 23px;
