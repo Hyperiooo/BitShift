@@ -22,12 +22,11 @@ var Themes = {
 var Accents = {
 	red: "ui-accent-red",
 	orange: "ui-accent-orange",
-	yellow: "ui-accent-yellow",
 	green: "ui-accent-green",
-	teal: "ui-accent-teal",
 	blue: "ui-accent-blue",
 	purple: "ui-accent-purple",
 	pink: "ui-accent-pink",
+	gray: "ui-accent-gray",
 };
 function setTheme(themeName) {
 	localStorage.setItem("theme", themeName);
@@ -57,7 +56,7 @@ function setTheme(themeName) {
 		.setAttribute(
 			"content",
 			getComputedStyle(document.documentElement).getPropertyValue(
-				"--appBarThemeColor"
+				"--bg200"
 			)
 		);
 	document
@@ -65,7 +64,7 @@ function setTheme(themeName) {
 		.setAttribute(
 			"content",
 			getComputedStyle(document.documentElement).getPropertyValue(
-				"--appBarThemeColor"
+				"--bg200"
 			)
 		);
 	document
@@ -73,7 +72,7 @@ function setTheme(themeName) {
 		.setAttribute(
 			"content",
 			getComputedStyle(document.documentElement).getPropertyValue(
-				"--appBarThemeColor"
+				"--bg200"
 			)
 		);
 }

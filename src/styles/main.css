@@ -17,14 +17,14 @@ button {
 }
 
 .item i {
-  color: var(--toolBarHover);
+  color: var(--bg900);
   --hi-accent: var(--accent);
-  --hi-base: var(--toolBarHover);
+  --hi-base: var(--bg900);
 }
 
 body,
 html {
-  background-color: var(--canvasBg);
+  background-color: var(--bg400);
   margin: 0px;
   min-height: 100vh;
   height: 100vh;
@@ -38,6 +38,18 @@ html {
 }
 
 :root {
+  --error: #ff163d;
+  --errorT: #ff163da9;
+  --success: #40d893;
+  --successT: #40d893a9;
+  --accent: #1e7df0;
+  --accentTransparent: #1e7df0a9;
+  --accentText: #ffffff;
+  --contrastingBackground: #ffffff;
+  --contrastingHover: #a1a1a18c;
+  --contrastingText: #0b0c1a;
+  --contrastingTextT: #0b0c1abe;
+
   --canvScale: 10;
   --canvTransformX: 0px;
   --canvTransformY: 0px;
@@ -58,155 +70,132 @@ html {
   --previousColor: #000000;
   --currentColor: #000;
 }
-
+/*100 is darkest*/
 .ui-theme-dark {
-  --windowT: #00000081;
-  --windowMain: #212125;
-  --windowMainT: #2121258c;
-  --windowSide: #2b2b30;
-  --appBarThemeColor: #141416;
-  --bgMain: #18171a;
-  --bgMainT: #161518e3;
-  --bgMainUltraT: #49484d7e;
-  --canvasBg: #202022;
-  --bgLight: #35353b;
-  --bgDark: #131214;
-  --bgDarkT: #131214e3;
-  --textMain: #ffffff;
+  --bg100: #121113;
+  --bg200: #131315;
+  --bg300: #19181b;
+  --bg400: #201f22;
+  --bg500: #2b2b30;
+  --bg600: #35353b;
+  --bg700: #3b3a3d;
+  --bg800: #49484a;
+  --bg900: #7f7f80;
+
+  --bg100Transparent: #121113ee;
+  --bg200Transparent: #131315ee;
+  --bg300Transparent: #19181bee;
+  --bg400Transparent: #201f226c;
+  --bg500Transparent: #2b2b30;
+  --bg600Transparent: #35353b;
+  --bg700Transparent: #3b3a3d;
+  --bg800Transparent: #49484a;
+  --bg900Transparent: #7f7f80;
+  
   --textDim: #cacaca;
-  --error: #ff163d;
-  --errorT: #ff163da9;
-  --success: #40d893;
-  --successT: #40d893a9;
-  --accentText: #ffffff;
-  --scrollTrack: #201f22;
-  --scrollHover: #3b3a3d;
-  --toolBarDim: #49484a;
-  --toolBarHover: #7f7f80;
-  --lightT: #99999991;
+  --textMain: #ffffff;
   --boxShadowT: 0.35;
-  --accent: #1e78ff;
-  --accentT: #1e7df0a9;
-  --contrastingBackground: #ffffff;
-  --contrastingHover: #a1a1a18c;
-  --contrastingText: #0b0c1a;
-  --contrastingTextT: #0b0c1abe;
   --uiOutline: 1px solid rgba(255, 255, 255, 0.055);
 }
-
+/*100 is lightest*/
 .ui-theme-light {
-  --windowT: #00000041;
-  --windowMain: #ffffff;
-  --windowMainT: #ffffff8c;
-  --windowSide: #eaeaee;
-  --appBarThemeColor: #edeff4;
-  --bgMain: #ffffff;
-  --bgMainT: #ffffff8c;
-  --bgMainUltraT: #cecedb7e;
-  --canvasBg: #eaeaee;
-  --bgLight: #d3d5d8;
-  --bgDark: #eef0f5;
-  --bgDarkT: #eef0f5e3;
+  --bg100: #FFFFFF;
+  --bg200: #F6F7FC;
+  --bg300: #E9ECF3;
+  --bg400: #E1E3EB;
+  --bg500: #D2D5E1;
+  --bg600: #C3C6D3;
+  --bg700: #B4B8C6;
+  --bg800: #535a70;
+  --bg900: #181e31;
+
+  --bg100Transparent: #FFFFFFe3;
+  --bg200Transparent: #F6F7FCe3;
+  --bg300Transparent: #e9ecf3f3;
+  --bg400Transparent: #E1E3EB6c;
+  --bg500Transparent: #2b2b30;
+  --bg600Transparent: #35353b;
+  --bg700Transparent: #3b3a3d;
+  --bg800Transparent: #49484a;
+  --bg900Transparent: #7f7f80;
+
   --textMain: #0b0c1a;
   --textDim: #1b1c2e;
-  --error: #e90013;
-  --errorT: #e90013a9;
-  --success: #40d893;
-  --successT: #40d893a9;
-  --accentText: #ffffff;
-  --scrollTrack: #eaeaee;
-  --scrollHover: #c0c2c9;
-  --toolBarDim: #535a70;
-  --toolBarHover: #181e31;
-  --lightT: #99999991;
   --boxShadowT: 0.15;
-  --accent: #1e7df0;
-  --accentT: #1e7df0a9;
-  --contrastingBackground: #ffffff;
-  --contrastingHover: #ff00008c;
-  --contrastingText: #0b0c1a;
-  --contrastingTextT: #0b0c1abe;
   --uiOutline: 1px solid rgba(68, 68, 68, 0.055);
 }
 
 .ui-accent-red {
   --accentText: #ffffff;
-  --accent: #ff1e44;
-  --accentT: #ff1e44a9;
+  --accent: #F33757;
+  --accentTransparent: #F33757a9;
 }
 
 .ui-accent-orange {
-  --accentText: #ffffff;
-  --accent: #ff5e1e;
-  --accentT: #ff5e1ea9;
+  --accentText: #3f0916;
+  --accent: #FFA920;
+  --accentTransparent: #FFA920a9;
 }
 
-.ui-accent-yellow {
-  --accentText: #ffffff;
-  --accent: #f3bb1b;
-  --accentT: #f3bb1ba9;
-}
 
 .ui-accent-green {
-  --accentText: #ffffff;
-  --accent: #12b965;
-  --accentT: #12b965a9;
+  --accentText: #020024;
+  --accent: #14D173;
+  --accentTransparent: #14D173a9;
 }
 
-.ui-accent-teal {
-  --accentText: #ffffff;
-  --accent: #10d0e9;
-  --accentT: #10d0e9a9;
-}
 
 .ui-accent-blue {
   --accentText: #ffffff;
-  --accent: #1e78ff;
-  --accentT: #1e7df0a9;
+  --accent: #17A4F4;
+  --accentTransparent: #17A4F4a9;
 }
 
 .ui-accent-purple {
   --accentText: #ffffff;
-  --accent: #9773fc;
-  --accentT: #9773fca9;
+  --accent: #8E65FF;
+  --accentTransparent: #8E65FFa9;
 }
 
 .ui-accent-pink {
+  --accentText: #231c42;
+  --accent: #FF85E5;
+  --accentTransparent: #FF85E5a9;
+}
+
+.ui-accent-gray {
   --accentText: #ffffff;
-  --accent: #ff2ed2;
-  --accentT: #ff2ed2a9;
+  --accent: #888B96;
+  --accentTransparent: #888B96a9;
 }
 
 #ui-accent-red {
-  background: #ff1e44;
+  background: #F33757;
 }
 
 #ui-accent-orange {
-  background: #ff5e1e;
+  background: #FFA920;
 }
 
-#ui-accent-yellow {
-  background: #b89600;
-}
 
 #ui-accent-green {
-  background: #12b965;
+  background: #14D173;
 }
 
-#ui-accent-teal {
-  background: #10d0e9;
-}
 
 #ui-accent-blue {
-  background: #1e78ff;
+  background: #17A4F4;
 }
 
 #ui-accent-purple {
-  background: #9773fc;
+  background: #8E65FF;
 }
 
 #ui-accent-pink {
-  background: #ff2ed2;
+  background: #FF85E5;
+}
+#ui-accent-gray {
+  background: #888B96;
 }
 
 [data-input-num-draggable] {
@@ -226,7 +215,7 @@ html {
 }
 
 .popup {
-  background: var(--bgMain);
+  background: var(--bg300);
   color: var(--textMain);
   font-size: 20px;
   position: absolute;
@@ -306,7 +295,7 @@ html {
 }
 
 .popup-input-num {
-  background: var(--bgLight);
+  background: var(--bg600);
   color: var(--textMain);
   margin: 0;
   padding: 0 5px;
@@ -323,7 +312,7 @@ html {
 }
 
 .popup-input-text {
-  background: var(--bgLight);
+  background: var(--bg600);
   color: var(--textMain);
   margin: 0;
   padding: 0 5px;
@@ -340,7 +329,7 @@ html {
 }
 
 .popup-input-select {
-  background: var(--bgLight);
+  background: var(--bg600);
   color: var(--textMain);
   margin: 0;
   padding: 0 5px;
@@ -377,15 +366,15 @@ html {
   left: 0;
   height: 28px;
   width: 28px;
-  background-color: var(--bgLight);
-  box-shadow: inset 0 0 0 2px var(--scrollHover);
+  background-color: var(--bg600);
+  box-shadow: inset 0 0 0 2px var(--bg700);
   pointer-events: none;
   transition: 0.2s background, 0.2s box-shadow;
   border-radius: 5px;
 }
 
 .popup-input-check:hover ~ .checkmark {
-  background-color: var(--scrollHover);
+  background-color: var(--bg700);
 }
 
 .popup-input-check:checked ~ .checkmark {
@@ -444,7 +433,7 @@ html {
 }
 
 .popup-btn {
-  background-color: var(--bgLight);
+  background-color: var(--bg600);
   color: var(--textMain);
   margin: auto;
   padding: 10px 15px 10px 15px;
@@ -469,7 +458,7 @@ html {
 }
 
 .export-menu {
-  background: var(--bgMain);
+  background: var(--bg300);
   color: var(--textMain);
   font-size: 20px;
   position: absolute;
@@ -504,7 +493,7 @@ html {
   padding: 0px;
   margin: 0;
   color: var(--textDim);
-  background: var(--bgMainT);
+  background: var(--bg300Transparent);
   backdrop-filter: saturate(180%) blur(20px);
   -webkit-backdrop-filter: saturate(180%) blur(20px);
   z-index: 200001;
@@ -541,12 +530,12 @@ html {
   display: flex;
   align-items: center;
   gap: 8px;
-  --hi-accent: var(--toolBarHover);
+  --hi-accent: var(--bg900);
   --hi-base: var(--textDim);
 }
 
 .menu .menu-btn:hover {
-  background: var(--bgLight);
+  background: var(--bg600);
   color: var(--textMain);
 }
 
@@ -776,7 +765,7 @@ foreignObject {
   touch-action: none;
   transition: 0.3s height, 0.15s opacity, 0.3s margin-bottom;
   left: 0;
-  background: var(--bgMainT);
+  background: var(--bg200Transparent);
   backdrop-filter: saturate(180%) blur(20px);
   -webkit-backdrop-filter: saturate(180%) blur(20px);
   border-radius: 0 9px 9px 0;
@@ -791,7 +780,7 @@ foreignObject {
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  background: var(--bgMainT);
+  background: var(--bg200Transparent);
   backdrop-filter: saturate(180%) blur(20px);
   -webkit-backdrop-filter: saturate(180%) blur(20px);
   border-radius: 0 0 9px 0;
@@ -838,7 +827,7 @@ foreignObject {
 
 #toolbar .item:hover,
 #tool-settings .item:hover {
-  background: var(--scrollTrack);
+  background: var(--bg400);
 }
 
 #toolbar .item:first-of-type {
@@ -869,7 +858,7 @@ foreignObject {
   display: flex;
   justify-content: center;
   align-items: center;
-  background: var(--toolBarDim);
+  background: var(--bg800);
 }
 
 .tool-multiple:after {
@@ -881,7 +870,7 @@ foreignObject {
   height: 100%;
   top: 0;
   left: 0;
-  background: var(--toolBarHover);
+  background: var(--bg900);
   clip-path: polygon(
     var(--inside) var(--edge),
     var(--edge) var(--edge),
@@ -891,7 +880,7 @@ foreignObject {
 
 .tool-popup {
   pointer-events: none;
-  background: var(--bgMainT);
+  background: var(--bg200Transparent);
   backdrop-filter: saturate(180%) blur(20px);
   -webkit-backdrop-filter: saturate(180%) blur(20px);
   border-radius: 9px;
@@ -922,8 +911,8 @@ foreignObject {
   user-select: none;
   background-image: linear-gradient(
     to bottom,
-    var(--appBarThemeColor),
-    var(--bgDarkT)
+    var(--bg200),
+    var(--bg100Transparent)
   );
   backdrop-filter: saturate(180%) blur(20px);
   -webkit-backdrop-filter: saturate(180%) blur(20px);
@@ -934,7 +923,7 @@ foreignObject {
 }
 
 #topbar i {
-  --hi-accent: var(--toolBarDim);
+  --hi-accent: var(--bg800);
 }
 .loading-icon {
   position: absolute !important;
@@ -944,7 +933,7 @@ foreignObject {
   font-size: 36px !important;
   display: block !important;
   animation: loading 1.5s cubic-bezier(0.37, 0, 0.63, 1) infinite;
-  --hi-base: var(--toolBarDim) !important;
+  --hi-base: var(--bg800) !important;
 }
 @keyframes loading {
   0% {
@@ -959,7 +948,7 @@ foreignObject {
   position: absolute !important;
   left: 45%;
   top: 45%;
-  --hi-accent: var(--bgMain) !important;
+  --hi-accent: var(--bg300) !important;
   font-size: 16px !important;
 }
 
@@ -999,8 +988,8 @@ foreignObject {
   display: flex;
   justify-content: center;
   align-items: center;
-  --hi-accent: var(--toolBarDim);
-  --hi-base: var(--toolBarHover);
+  --hi-accent: var(--bg800);
+  --hi-base: var(--bg900);
 }
 
 .topbar-button {
@@ -1022,14 +1011,14 @@ foreignObject {
 }
 
 .topbar-button {
-  color: var(--toolBarDim);
-  fill: var(--toolBarDim);
+  color: var(--bg800);
+  fill: var(--bg800);
   transition: 0.1s color, 0.1s fill;
 }
 
 .topbar-button:hover {
-  color: var(--toolBarHover);
-  fill: var(--toolBarHover);
+  color: var(--bg900);
+  fill: var(--bg900);
 }
 
 #topbar-project-name {
@@ -1050,14 +1039,14 @@ foreignObject {
   background: none;
   outline: none;
   border: none;
-  color: var(--toolBarHover);
+  color: var(--bg900);
   width: fit-content;
   text-align: center;
 }
 
 #topbar-project-name:hover {
   color: var(--textMain);
-  background: var(--bgLight);
+  background: var(--bg600);
 }
 
 #topbar-right {
@@ -1074,9 +1063,9 @@ foreignObject {
   background: none;
   outline: none;
   border: none;
-  color: var(--toolBarHover);
+  color: var(--bg900);
   text-align: center;
-  background: var(--bgMain);
+  background: var(--bg300);
   height: 36px;
 }
 
@@ -1093,9 +1082,9 @@ foreignObject {
   background: none;
   outline: none;
   border: none;
-  color: var(--toolBarHover);
+  color: var(--bg900);
   text-align: center;
-  background: var(--bgMain);
+  background: var(--bg300);
   height: 36px;
 }
 
@@ -1111,7 +1100,7 @@ foreignObject {
   display: flex;
   justify-content: center;
   align-items: center;
-  background: var(--toolBarDim);
+  background: var(--bg800);
 }
 
 #accountName {
@@ -1136,7 +1125,7 @@ foreignObject {
 }
 
 .topbar-button:hover {
-  background: var(--bgLight);
+  background: var(--bg600);
 }
 
 #toolbar .tool-active {
@@ -1154,13 +1143,11 @@ foreignObject {
 }
 
 #tool-settings .tool-active i {
-  color: var(--accent) !important;
-  --hi-accent: var(--accent);
+  --hi-accent: var(--accentTransparent);
   --hi-base: var(--accent);
 }
 #topbar .tool-active i {
-  color: var(--accent) !important;
-  --hi-accent: var(--accent);
+  --hi-accent: var(--accentTransparent);
   --hi-base: var(--accent);
 }
 
@@ -1188,7 +1175,7 @@ foreignObject {
   overflow: visible !important;
   pointer-events: none;
   user-select: none;
-  background: var(--bgMainT);
+  background: var(--bg300Transparent);
   backdrop-filter: saturate(180%) blur(20px);
   -webkit-backdrop-filter: saturate(180%) blur(20px);
   display: flex;
@@ -1232,7 +1219,7 @@ foreignObject {
 }
 
 #color-menu-drop-effect {
-  background: var(--accentT);
+  background: var(--accentTransparent);
   position: absolute;
   top: 13px;
   left: 13px;
@@ -1296,12 +1283,12 @@ foreignObject {
 }
 
 .color-menu::-webkit-scrollbar-thumb {
-  background-color: var(--bgLight);
+  background-color: var(--bg600);
   min-height: 40px;
 }
 
 .color-menu::-webkit-scrollbar-thumb:hover {
-  background-color: var(--scrollHover);
+  background-color: var(--bg700);
 }
 
 .color-menu::-webkit-scrollbar-thumb,
@@ -1312,7 +1299,7 @@ foreignObject {
 }
 
 .color-menu::-webkit-scrollbar-track {
-  background-color: var(--scrollTrack);
+  background-color: var(--bg400);
 }
 
 .color-menu .color-selector {
@@ -1428,9 +1415,9 @@ foreignObject {
   position: absolute;
   width: calc(100%);
   height: 10px;
-  -webkit-box-shadow: inset 0px 0px 0px 2px var(--toolBarHover);
-  -moz-box-shadow: inset 0px 0px 0px 2px var(--toolBarHover);
-  box-shadow: inset 0px 0px 0px 2px var(--toolBarHover);
+  -webkit-box-shadow: inset 0px 0px 0px 2px var(--bg900);
+  -moz-box-shadow: inset 0px 0px 0px 2px var(--bg900);
+  box-shadow: inset 0px 0px 0px 2px var(--bg900);
   border-radius: 5px;
   top: calc(calc(var(--pos)) - (var(--posp) * 10px));
   cursor: grab;
@@ -1463,7 +1450,7 @@ foreignObject {
   width: 170px;
   height: 30px;
   display: flex;
-  border: 2px solid var(--lightT);
+  border: 2px solid #99999991;
   border-radius: 5px;
   overflow: hidden;
   box-sizing: border-box;
@@ -1492,7 +1479,7 @@ foreignObject {
 
 .color-palette-group {
   position: relative;
-  background: var(--bgMainT);
+  background: var(--bg300Transparent);
   margin-bottom: 8px;
   width: 100%;
   border-radius: 5px;
@@ -1510,7 +1497,7 @@ foreignObject {
   border-radius: 5px;
   overflow: hidden;
   transition: 0.2s width;
-  background: var(--bgMainT);
+  background: var(--bg300Transparent);
   display: grid;
   grid-template-columns: repeat(10, 1fr);
   grid-template-rows: 1fr;
@@ -1535,7 +1522,7 @@ grid-template-rows: auto;
   padding: 2px;
   overflow: hidden;
   transition: 0.2s width;
-  background: var(--bgMainT);
+  background: var(--bg300Transparent);
   display: flex;
   justify-content: stretch;
 }
@@ -1548,19 +1535,19 @@ grid-template-rows: auto;
   align-items: center;
   gap: 10px;
   border-radius: 3px;
-  color: var(--toolBarHover);
+  color: var(--bg900);
 }
 
 .color-menu-tabbar-button-active {
   color: var(--textMain);
-  background: var(--bgDarkT);
+  background: var(--bg100Transparent);
 }
 
 .color-palette-standalone {
   --pX: -100px;
   --pY: -100px;
   position: absolute;
-  background: var(--bgLight);
+  background: var(--bg600);
   margin: 8px;
   width: calc(100% - 8px);
   border-radius: 5px;
@@ -1650,7 +1637,7 @@ input[type="number"] {
 }
 
 .color-input-num {
-  background: var(--bgDarkT);
+  background: var(--bg100Transparent);
   color: var(--textMain);
   margin: 0;
   padding: 0 5px;
@@ -1666,7 +1653,7 @@ input[type="number"] {
 }
 
 #color-hex {
-  background: var(--bgDarkT);
+  background: var(--bg100Transparent);
   color: var(--textMain);
   margin: 0;
   padding: 0 5px;
@@ -1692,7 +1679,7 @@ input[type="number"] {
 }
 
 .color-slider-section {
-  background: var(--bgMainT);
+  background: var(--bg300Transparent);
   border-radius: 5px;
   display: flex;
   gap: 23px;
@@ -1820,7 +1807,7 @@ input[type="number"] {
 }
 
 .color-input-hex {
-  background: var(--bgLight);
+  background: var(--bg600);
   color: var(--textMain);
   margin: 0;
   padding: 0 5px;
@@ -1982,13 +1969,13 @@ input {
 }
 
 .tool-settings-ui-input-num {
-  background: var(--scrollTrack);
+  background: var(--bg400);
   color: var(--textMain) !important;
   margin: 0;
   padding: 0 5px;
   font-size: 14px;
   font-weight: bolder;
-  border: 1px solid var(--bgLight);
+  border: 1px solid var(--bg600);
   border-radius: 5px;
   box-sizing: border-box;
   width: 40px !important;
@@ -2012,7 +1999,7 @@ input {
 }
 
 .tool-settings-ui-input-text {
-  background: var(--bgLight);
+  background: var(--bg600);
   color: var(--textMain);
   margin: 0;
   padding: 0 5px;
@@ -2029,7 +2016,7 @@ input {
 }
 
 .tool-settings-ui-input-select {
-  background: var(--bgLight);
+  background: var(--bg600);
   color: var(--textMain);
   margin: 0;
   padding: 0 5px;
@@ -2066,15 +2053,15 @@ input {
   left: 0;
   height: 28px;
   width: 28px;
-  background-color: var(--bgLight);
-  box-shadow: inset 0 0 0 2px var(--scrollHover);
+  background-color: var(--bg600);
+  box-shadow: inset 0 0 0 2px var(--bg700);
   pointer-events: none;
   transition: 0.2s background, 0.2s box-shadow;
   border-radius: 5px;
 }
 
 .tool-settings-ui-input-check:hover ~ .checkmark {
-  background-color: var(--scrollHover);
+  background-color: var(--bg700);
 }
 
 .tool-settings-ui-input-check:checked ~ .checkmark {
@@ -2133,7 +2120,7 @@ input {
 }
 
 .tool-settings-ui-btn {
-  background-color: var(--bgLight);
+  background-color: var(--bg600);
   color: var(--textMain);
   margin: auto;
   padding: 10px 15px 10px 15px;
@@ -2198,7 +2185,7 @@ input {
   .tool-settings-ui-input-num {
     --percent: 50%;
     height: 150px;
-    background-image: linear-gradient(to top, var(--accent) var(--percent), var(--scrollTrack) var(--percent));
+    background-image: linear-gradient(to top, var(--accent) var(--percent), var(--bg400) var(--percent));
   }*/
   #toolbar {
     position: fixed;
@@ -2245,7 +2232,7 @@ input {
 }
 
 #actionButtons {
-  background: var(--bgMainT);
+  background: var(--bg200Transparent);
   position: fixed;
   left: 50%;
   transform: translateX(-50%);
@@ -2283,7 +2270,7 @@ input {
   display: flex;
   justify-content: center;
   align-items: center;
-  background: var(--toolBarDim);
+  background: var(--bg800);
 }
 
 .actionButton {
@@ -2308,12 +2295,12 @@ input {
 .actionButton i {
   font-size: 24px;
   --hi-base: var(--textDim);
-  --hi-accent: var(--toolBarHover);
+  --hi-accent: var(--bg900);
 }
 
 .ui-theme-light .actionButton i {
   --hi-base: var(--textDim);
-  --hi-accent: var(--toolBarDim);
+  --hi-accent: var(--bg800);
 }
 
 #layer-menu {
@@ -2323,7 +2310,7 @@ input {
   padding: 0px;
   margin: 0;
   color: var(--textDim);
-  background: var(--bgMainT);
+  background: var(--bg200Transparent);
   backdrop-filter: saturate(180%) blur(20px);
   -webkit-backdrop-filter: saturate(180%) blur(20px);
   z-index: 3;
@@ -2376,12 +2363,12 @@ input {
 }
 
 #layer-main::-webkit-scrollbar-thumb {
-  background-color: var(--bgLight);
+  background-color: var(--bg600);
   min-height: 40px;
 }
 
 #layer-main::-webkit-scrollbar-thumb:hover {
-  background-color: var(--scrollHover);
+  background-color: var(--bg700);
 }
 
 #layer-main::-webkit-scrollbar-thumb,
@@ -2392,11 +2379,11 @@ input {
 }
 
 #layer-main::-webkit-scrollbar-track {
-  background-color: var(--scrollTrack);
+  background-color: var(--bg400);
 }
 
 .layer-menu-button {
-  color: var(--toolBarHover);
+  color: var(--bg900);
   flex-grow: 1;
   border: none;
   display: flex;
@@ -2413,14 +2400,13 @@ input {
 .layer-menu-button i {
   transform: scale(100%);
   transition: transform 0.2s cubic-bezier(0.175, 1.8, 0.32, 1.275), color 0.2s;
-  --hi-accent: var(--toolBarHover);
+  --hi-accent: var(--bg900);
   --hi-base: var(--textDim);
 }
 
 .layer-menu-button:active i {
   transform: scale(80%);
-  color: var(--accent);
-  --hi-accent: var(--accentT);
+  --hi-accent: var(--accentTransparent);
   --hi-base: var(--accent);
 }
 
@@ -2434,7 +2420,7 @@ input {
   --layerMovementOffset: 0px;
   --s: 1;
   --top: 0px;
-  background: var(--bgLight);
+  background: var(--bg600);
   color: var(--textMain);
   width: calc(100% - 8px);
   padding: 4px;
@@ -2509,12 +2495,12 @@ input {
 
 .moving {
   box-shadow: 0px 5px 25px rgba(0, 0, 0, 0.25);
-  background: var(--bgLight);
+  background: var(--bg600);
   transition: box-shadow 0.1s, background 0.2s;
 }
 
 .layer-active.moving {
-  background: var(--accentT);
+  background: var(--accentTransparent);
 }
 
 .layer-preview {
@@ -2723,7 +2709,7 @@ div[id^="alrt-main"] {
   left: 0;
   position: fixed;
   z-index: 99999;
-  background: var(--bgMain);
+  background: var(--bg300);
   transition: opacity 0.4s;
   opacity: 1;
 }
@@ -2854,7 +2840,7 @@ div[id^="alrt-main"] {
   font-size: 12px;
   margin-top: 3px;
   text-align: center;
-  color: var(--toolBarHover);
+  color: var(--bg900);
   font-family: "JetBrains Mono";
 }
 
@@ -2869,7 +2855,7 @@ div[id^="alrt-main"] {
   top: 0;
   left: 0;
   z-index: 1000000;
-  background: var(--windowT);
+  background: #0006;
   transition: all 0.3s;
   backdrop-filter: blur(0px);
   -webkit-backdrop-filter: blur(0px);
@@ -2895,7 +2881,7 @@ div[id^="alrt-main"] {
   transform: translate(-50%, 0%);
   width: 900px;
   height: 600px;
-  background: var(--windowMain);
+  background: var(--bg400);
   border-radius: 13px;
   overflow: unset;
   box-shadow: var(--boxShadow);
@@ -3000,7 +2986,7 @@ div[id^="alrt-main"] {
   display: flex;
   justify-content: space-around;
   align-items: center;
-  background: var(--windowMainT);
+  background: var(--bg400Transparent);
   backdrop-filter: blur(5px);
   -webkit-backdrop-filter: blur(5px);
   z-index: 9999;
@@ -3018,7 +3004,7 @@ div[id^="alrt-main"] {
 .window-sidebar {
   position: relative;
   display: inline-block;
-  background: var(--windowSide);
+  background: var(--bg500);
   backdrop-filter: saturate(180%) blur(20px);
   -webkit-backdrop-filter: saturate(180%) blur(20px);
   width: 200px;
@@ -3046,7 +3032,7 @@ div[id^="alrt-main"] {
     position: fixed;
     transform: translateX(0);
     z-index: 1000;
-    background: var(--windowMain);
+    background: var(--bg400);
     box-shadow: 0px 0px 100px #0005;
     pointer-events: all;
     transition: transform 0.3s;
@@ -3140,7 +3126,7 @@ div[id^="alrt-main"] {
 
 .window-sidebar-button i {
   font-size: 22px;
-  color: var(--toolBarDim);
+  color: var(--bg800);
   --hi-accent: var(--textMain);
   --hi-accent-opacity: 0.5;
   --hi-base: var(--textMain);
@@ -3206,7 +3192,7 @@ div[id^="alrt-main"] {
 }
 
 .window-input-num {
-  background: var(--bgLight);
+  background: var(--bg600);
   color: var(--textMain);
   margin: 0;
   padding: 0 5px;
@@ -3223,7 +3209,7 @@ div[id^="alrt-main"] {
 }
 
 .window-input-text {
-  background: var(--bgLight);
+  background: var(--bg600);
   color: var(--textMain);
   margin: 0;
   padding: 0 5px;
@@ -3240,7 +3226,7 @@ div[id^="alrt-main"] {
 }
 
 .window-input-select {
-  background: var(--bgLight);
+  background: var(--bg600);
   color: var(--textMain);
   margin: 0;
   padding: 0 5px;
@@ -3277,15 +3263,15 @@ div[id^="alrt-main"] {
   left: 0;
   height: 28px;
   width: 28px;
-  background-color: var(--bgLight);
-  box-shadow: inset 0 0 0 2px var(--scrollHover);
+  background-color: var(--bg600);
+  box-shadow: inset 0 0 0 2px var(--bg700);
   pointer-events: none;
   transition: 0.2s background, 0.2s box-shadow;
   border-radius: 5px;
 }
 
 .window-input-check:hover ~ .checkmark {
-  background-color: var(--scrollHover);
+  background-color: var(--bg700);
 }
 
 .window-input-check:checked ~ .checkmark {
@@ -3364,7 +3350,7 @@ div[id^="alrt-main"] {
 }
 
 .window-btn {
-  background-color: var(--bgLight);
+  background-color: var(--bg600);
   color: var(--textMain);
   margin: auto;
   padding: 10px 15px 10px 15px;
@@ -3407,7 +3393,7 @@ div[id^="alrt-main"] {
 
 .file-preset {
   margin: 0;
-  background: var(--bgLight);
+  background: var(--bg600);
   min-height: 90px;
   min-width: 90px;
   aspect-ratio: 1 / 1;
@@ -3428,7 +3414,7 @@ div[id^="alrt-main"] {
 .file-preset:hover,
 .file-preset:focus,
 .file-preset-active {
-  background: var(--accentT);
+  background: var(--accentTransparent);
 }
 
 .file-preset i {
@@ -3584,7 +3570,7 @@ div[id^="alrt-main"] {
   border-radius: 100px;
   clip-path: circle(40% at 50% 50%);
   z-index: 10000000;
-  background: var(--canvasBg);
+  background: var(--bg400);
 }
 
 #eyedropper-preview-current {
@@ -3640,7 +3626,7 @@ div[id^="alrt-main"] {
 
 .number-pad-input-wrap {
   will-change: transform, opacity;
-  background: var(--bgMainT);
+  background: var(--bg200);
   backdrop-filter: saturate(180%) blur(20px);
   -webkit-backdrop-filter: saturate(180%) blur(20px);
   display: grid;
@@ -3664,7 +3650,7 @@ div[id^="alrt-main"] {
 .popperArrowInner,
 .popperArrowInner::before {
   position: absolute;
-  background: var(--bgMainT);
+  background: var(--bg200);
   backdrop-filter: saturate(180%) blur(20px);
   -webkit-backdrop-filter: saturate(180%) blur(20px);
 }
@@ -3740,8 +3726,8 @@ div[id^="alrt-main"] {
   height: 100%;
   border-radius: 5px;
   color: var(--textMain);
-  background-color: var(--bgMainUltraT);
-  backdrop-filter: saturate(180%);
+  background-color: var(--bg400);
+  border: var(--uiOutline);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -3861,7 +3847,7 @@ div[id^="alrt-main"] {
 }
 
 .tooltip {
-  background: var(--bgMainT);
+  background: var(--bg200Transparent);
   backdrop-filter: saturate(180%) blur(20px);
   -webkit-backdrop-filter: saturate(180%) blur(20px);
   color: var(--textDim);
@@ -3945,7 +3931,7 @@ div[id^="alrt-main"] {
 }
 
 .fab-secondary .fab-icon {
-  --hi-accent: var(--accentT);
+  --hi-accent: var(--accentTransparent);
   --hi-base: var(--accent);
 }
 
@@ -4042,7 +4028,7 @@ div[id^="alrt-main"] {
   padding: 0px;
   margin: 0;
   color: var(--textMain);
-  background: var(--bgMainT);
+  background: var(--bg200Transparent);
   backdrop-filter: saturate(180%) blur(20px);
   -webkit-backdrop-filter: saturate(180%) blur(20px);
   z-index: 200001;
@@ -4129,7 +4115,7 @@ div[id^="alrt-main"] {
 }
 
 .confirm-modal-button-cancel {
-  background: var(--scrollTrack);
+  background: var(--bg400);
   color: var(--textMain);
 }
 

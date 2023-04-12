@@ -57,8 +57,14 @@ class ContextMenu {
     this.contextHandler = this.contextHandler.bind(this);
     this.el.addEventListener("contextmenu", this.contextHandler);
     this.touchTimeout = null;
+    this.movedelta
+    this.startX
+    this.startY
     this.options.touchTarget.addEventListener("touchstart", (e) => {
       console.log(e);
+      this.movedelta = 0
+      this.startX = e.touches[0].clientX
+      this.startY = e.touches[0].clientY
       if (this.options.touchBehavior === "longPress") {
         this.touchTimeout = setTimeout(() => {
           this.render(e, "touch");
@@ -67,6 +73,12 @@ class ContextMenu {
         this.render(e, "touch");
       }
     });
+    this.options.touchTarget.addEventListener("touchmove", e=>{
+      this.movedelta += Math.abs(e.touches[0].clientX - this.startX) + Math.abs(e.touches[0].clientY - this.startY)
+      if(this.movedelta > 10) {
+        clearTimeout(this.touchTimeout)
+      }
+    })
     this.options.touchTarget.addEventListener("touchend", (e) => {
       if (this.options.touchBehavior === "longPress") {
         clearTimeout(this.touchTimeout);
