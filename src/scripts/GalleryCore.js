@@ -197,16 +197,26 @@ class ProjectCard {
 
 		this.cardImage = document.createElement("div");
 		this.cardImage.classList.add("cardImage");
-		this.cardImage.style = this.orientation;
+		this.card.style = this.orientation;
 
 		this.cardImageImg = document.createElement("img");
 		this.cardImageImg.src = project.data.previewImage;
 		this.cardImageImg.alt = "";
 
+		this.cardTitleWrapper = document.createElement("div")
+		this.cardTitleWrapper.classList.add("card-title-wrap")
+		this.cardOptionsButton = document.createElement("button")
+		this.cardOptionsButton.classList.add("card-options")
+		this.cardOptionsButton.onclick = ()=>{ 
+			console.log("asdfasdf")
+		}
+		
+
 		this.cardTitle = document.createElement("div");
     this.cardTitle.setAttribute('contenteditable', 'false')
 		this.cardTitle.classList.add("cardTitle");
 		this.cardTitle.innerText = project.name;
+		this.cardTitle.title = project.name
     this.cardTitle.spellcheck = false;
 
     
@@ -229,7 +239,9 @@ class ProjectCard {
 		this.cardImage.appendChild(this.cardImageImg);
 		this.card.appendChild(document.createElement("br"));
 		var div = document.createElement("div");
-		div.appendChild(this.cardTitle);
+		this.cardTitleWrapper.appendChild(this.cardTitle)
+		this.cardTitleWrapper.appendChild(this.cardOptionsButton)
+		div.appendChild(this.cardTitleWrapper);
 		div.appendChild(this.cardDetails);
 		this.card.appendChild(this.cardImage);
 		this.card.appendChild(div);
@@ -258,6 +270,9 @@ class ProjectCard {
         },
       ],
       touchTarget: this.previewCanvas,
+	  onRightClick: false,
+	  buttonTarget: this.cardOptionsButton,
+	  contextPlacement: "bottom"
     });
 	}
   delete() { 

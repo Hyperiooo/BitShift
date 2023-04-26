@@ -46,9 +46,11 @@ html {
   --accentTransparent: #1e7df0a9;
   --accentText: #ffffff;
   --contrastingBackground: #ffffff;
-  --contrastingHover: #a1a1a18c;
+  --contrastingHover: #d8d8d88c;
+  --contrastingSemi: #818181;
   --contrastingText: #0b0c1a;
   --contrastingTextT: #0b0c1abe;
+  --contrastingOutline: 1px solid #E1E3EB;
 
   --canvScale: 10;
   --canvTransformX: 0px;
@@ -2774,6 +2776,9 @@ div[id^="alrt-main"] {
 }
 
 .galleryCard {
+  --width: fit-content;
+  --height: fit-content;
+  --maxSize: 150px;
   width: 150px;
   height: 225px;
   display: inline-flex;
@@ -2786,9 +2791,6 @@ div[id^="alrt-main"] {
 }
 
 .cardImage {
-  --width: fit-content;
-  --height: fit-content;
-  --maxSize: 150px;
   box-shadow: var(--boxShadow);
   width: var(--width);
   height: var(--height);
@@ -2811,29 +2813,48 @@ div[id^="alrt-main"] {
   image-rendering: pixelated;
   image-rendering: crisp-edges;
 }
-
+.card-title-wrap {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: var(--maxSize);
+  gap:5px;
+  margin-top: 15px;
+}
+.card-options {
+  width:20px;
+  height: 20px;
+  background: var(--bg500);
+  border-radius: 5px;
+  flex-shrink: 0;
+  pointer-events: all;
+}
+.card-options:hover {
+  background: var(--bg800);
+}
 .cardTitle {
   color: var(--textMain);
   font-family: "JetBrains Mono";
-  text-align: center;
-  font-size: 18px;
-  margin-top: 10px;
+  text-align: left;
+  font-size: 15px;
   background: none;
   width: 100%;
-  max-width: 150px;
+  
+  flex-shrink: 1;
   box-sizing: border-box;
   padding: 0;
   height: fit-content;
   text-decoration: none;
   /*ellipsi*/
-  word-wrap: break-word;
+  word-break: break-all;white-space: nowrap;
   text-overflow: ellipsis;
+  overflow: hidden
 }
 
 .cardDetails {
   font-size: 12px;
   margin-top: 3px;
-  text-align: center;
+  text-align: left;
   color: var(--bg900);
   font-family: "JetBrains Mono";
 }
@@ -3106,10 +3127,10 @@ div[id^="alrt-main"] {
   .window-sidebar-button:hover p,
   .window-sidebar-button-active i,
   .window-sidebar-button-active p {
-    color: var(--accentText);
-    --hi-accent: var(--accentText);
-    --hi-base: var(--accentText);
-    --hi-base-opacity: 1;
+    color: var(--accentText) !important;
+    --hi-accent: var(--accentText) !important;
+    --hi-base: var(--accentText) !important ;
+    --hi-base-opacity: 1 !important;
   }
 }
 
@@ -3948,14 +3969,13 @@ div[id^="alrt-main"] {
   user-select: none;
   pointer-events: none;
   width: 150px;
-  padding: 5px;
+  padding: 5px 0;
   box-shadow: var(--boxShadow); 
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  gap: 8px;
-  border: var(--uiOutline);
+  border: var(--contrastingOutline);
 }
 .context-menu-visible {
   opacity: 1;
@@ -3973,7 +3993,6 @@ div[id^="alrt-main"] {
   position: relative;
   padding: 10px;
   margin: 0;
-  border-radius: 2px;
   list-style: none;
   cursor: pointer;
   width: 100%;
@@ -4004,15 +4023,15 @@ div[id^="alrt-main"] {
 .context-menu-divider {
   position: relative;
   cursor: pointer;
-  border-radius: 5px;
-  width: 85%;
-  height: 2px;
+  width: 100%;
+  height: 1px;
   transition: 0.1s background, 0.3s color, 0.3s fill;
   display: flex;
   justify-content: center;
   align-items: center;
-  background: var(--contrastingText);
-  opacity: 0.25
+  background: var(--contrastingSemi);
+  opacity: 0.25;
+  margin: 5px 0;
 }
 
 .confirm-modal {
