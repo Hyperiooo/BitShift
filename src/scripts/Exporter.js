@@ -14,27 +14,27 @@ async function exportFile() {
 	layers.reverse().forEach((e) => {
 		if (e.settings.visible) eCtx.drawImage(e.canvasElement, 0, 0);
 	});
-	if (navigator.share) {
+	if (navigator.share && isMobile) {
 		var url = exportCanvas.toDataURL(
 			"image/" + document.getElementById("export-file-type").value
 		);
 		var blob = await (await fetch(url)).blob();
 		var file = new File(
 			[blob],
-			document.getElementById("export-file-name").value +
+			project.name.replace(" ", "_") +
 				"." +
 				document.getElementById("export-file-type").value,
 			{ type: "image/png" }
 		);
 		navigator.share({
-			title: "Export" + document.getElementById("export-file-name").value,
+			title: "Export " + project.name,
 			text: document.getElementById("export-file-name").value,
 			files: [file],
 		});
 	} else {
 		var link = document.createElement("a");
 		link.download =
-			document.getElementById("export-file-name").value +
+		project.name.replace(" ", "_") +
 			"." +
 			document.getElementById("export-file-type").value;
 		link.href = exportCanvas.toDataURL(
@@ -43,14 +43,20 @@ async function exportFile() {
 		link.click();
 		link.delete;
 	}
-	closeExportMenu();
+	closeWindow('export')
 }
 
-function openExportMenu() {
-	document.getElementById("export-menu").classList.add("export-open");
-	closeMenu();
+function updateExportMenu() {
+	document.getElementById("export-preview").src = createPreviewImage()
+	document.getElementById("export-title").value = project.name
+	document.getElementById("export-src-size").innerHTML = `SOURCE: ${project.width} * ${project.height}`
+	scaleFactor = document.getElementById("export-scale").value;
+	document.getElementById("export-dst-size").innerHTML = `EXPORT: ${project.width * scaleFactor} * ${project.height * scaleFactor}`
+	if(project.width > project.height){
+		document.getElementById("export-preview").classList.add("export-preview-landscape")
+	}
+	if(project.width <= project.height){
+		document.getElementById("export-preview").classList.add("export-preview-portrait")
+	}
 }
 
-function closeExportMenu() {
-	document.getElementById("export-menu").classList.remove("export-open");
-}

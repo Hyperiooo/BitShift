@@ -2798,7 +2798,7 @@ div[id^="alrt-main"] {
   background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 8 8'%3E%3Cg fill='%23bababa' fill-opacity='0.4'%3E%3Cpath fill-rule='evenodd' d='M0 0h4v4H0V0zm4 4h4v4H4V4z'/%3E%3C/g%3E%3C/svg%3E"),
     linear-gradient(to right, white, white);
   border-radius: 5px;
-  transition: transform 0.15s;
+  transition: transform 0.15s, filter 0.3s, box-shadow 0.2s;
   overflow: hidden;
   flex-shrink: 0;
   pointer-events: none;
@@ -2816,14 +2816,14 @@ div[id^="alrt-main"] {
 .card-title-wrap {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-end;
   width: var(--maxSize);
-  gap:5px;
-  margin-top: 15px;
+  gap:3px;
+  margin-top: 10px;
 }
 .card-options {
-  width:20px;
-  height: 20px;
+  width:30px;
+  height: 30px;
   background: var(--bg500);
   border-radius: 5px;
   flex-shrink: 0;
@@ -2836,7 +2836,7 @@ div[id^="alrt-main"] {
   color: var(--textMain);
   font-family: "JetBrains Mono";
   text-align: left;
-  font-size: 15px;
+  font-size: 14px;
   background: none;
   width: 100%;
   
@@ -2860,7 +2860,9 @@ div[id^="alrt-main"] {
 }
 
 .galleryCard:hover .cardImage {
-  transform: scale(105%);
+  filter: brightness(1.1) saturate(1.2);
+  transform: scale(104%);
+  box-shadow: 0px 10px 20px #ffffff22;
 }
 
 .window-wrap {
@@ -2989,6 +2991,10 @@ div[id^="alrt-main"] {
   overflow-x: hidden;
   height: 100%;
   box-sizing: border-box;
+}
+
+.window-noscroll {
+  overflow: hidden !important;
 }
 
 .window-header {
@@ -3391,6 +3397,84 @@ div[id^="alrt-main"] {
   margin-right: 8px;
   flex-wrap: wrap;
   gap: 8px;
+}
+
+.export-preview-wrapper {
+  position:absolute;
+  width: 80%; height:80%;
+  top:50%;
+  left:50%;
+  transform: translate(-50%,-50%);
+}
+#export-preview {
+  image-rendering: pixelated;
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform: translate(-50%,-50%); background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 8 8'%3E%3Cg fill='%23bababa' fill-opacity='0.4'%3E%3Cpath fill-rule='evenodd' d='M0 0h4v4H0V0zm4 4h4v4H4V4z'/%3E%3C/g%3E%3C/svg%3E"),
+  linear-gradient(to right, white, white);
+}
+.export-preview-landscape{
+  width:100%;
+}
+.export-preview-portrait{
+  height:100%;
+
+}
+
+
+#export-title {
+  display: inline-block;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top:10px;
+  cursor: text;
+  font-size: 15px;
+  border-radius: 5px;
+  height: 36px;
+  padding: 0 10px;
+  margin-left: 2px;
+  transition: 0.1s background, 0.3s color, 0.3s fill;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: none;
+  outline: none;
+  border: none;
+  color: var(--textDim);
+  width: fit-content;
+  text-align: center;
+}
+
+#export-title:hover,#export-title:focus {
+  color: var(--textMain);
+  background: var(--bg600);
+}
+
+#export-data-left *, #export-data-right * {
+  font-size:14px;
+  color: var(--bg900);
+
+  font-family: "JetBrains Mono";
+  user-select: none;
+  --webkit-user-select:none;
+
+}
+
+#export-data-left {
+  position:absolute;
+  bottom: 15px;
+  left:15px;
+}
+#export-data-right {
+  position:absolute;
+  bottom: 15px;
+  right:15px;
+}
+
+#export-data-right * {
+  text-align: right;
 }
 
 .file-preset-group {

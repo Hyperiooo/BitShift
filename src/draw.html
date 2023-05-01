@@ -242,6 +242,70 @@
         </div>
       </div>
     </div>
+    
+    <div id="window-export" class="window-wrap window-closed">
+      <div class="window-content window-mobile-vertical window-sidebar-right">
+        <button class="window-close" onclick="closeWindow('export')">
+          <i class="hi-x"></i>
+        </button>
+        <div class="window-main window-main-show">
+          <div class="window-inner window-noscroll">
+            <input type="text" id="export-title" value="" onblur="renameProject(this)" />
+            <div class="export-preview-wrapper">
+              <img id="export-preview"></img>
+            </div>
+            <div id="export-data-left">
+              <div id="export-src-size">SOURCE: 100 x 100</div>
+              <div id="export-dst-size">EXPORT: 100 x 100</div>
+            </div>
+          </div>
+        </div>
+        <div class="window-sidebar  window-sidebar-open">
+          <h1>Export</h1>
+
+          <span class="window-input-group">
+            <p class="window-input-title">File Type</p>
+            <div class="window-input-wrap">
+              <div class="window-input-field">
+                <select name="type" id="export-file-type" value="png" class="window-input-select">
+                  <option value="png" selected>.png</option>
+                  <option value="jpeg">.jpeg</option>
+                  <option value="bmp">.bmp</option>
+                </select>
+              </div>
+            </div>
+          </span>
+          <span class="window-input-group">
+            <p class="window-input-title">Scale</p>
+            <div class="window-input-wrap">
+              <div class="window-input-field">
+                <select name="type" id="export-scale" value="1" class="window-input-select" oninput="updateExportMenu()">
+                  <option value="1" selected>1x</option>
+                  <option value="2">2x</option>
+                  <option value="3">3x</option>
+                  <option value="4">4x</option>
+                  <option value="5">5x</option>
+                  <option value="6">6x</option>
+                  <option value="7">7x</option>
+                  <option value="8">8x</option>
+                  <option value="9">9x</option>
+                  <option value="10">10x</option>
+                  <option value="25">25x</option>
+                  <option value="50">50x</option>
+                  <option value="100">100x</option>
+                </select>
+              </div>
+            </div>
+          </span>
+          <div class="window-btn-group">
+            <button onclick="exportFile()" class="window-btn window-btn-imp">
+              OK
+            </button>
+            <button onclick="closeWindow('export')" class="window-btn">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </div>
   <div class="color-menu" id="color-menu" ondrop="dropHandler(event);" ondragover="dragOverHandler(event);"
     ondragleave="dragLeaveHandler(event);" ondragend="dragLeaveHandler(event);">
     <div class="color-menu-topbar">
@@ -369,63 +433,6 @@
       <div id="layer-position-preview-horizontal"></div>
     </div>
   </div>
-  <div id="export-menu" class="export-menu">
-    <div class="popup-top-bar">
-      <h1>Export</h1>
-    </div>
-    <div class="popup-column" class="" style="--maxHeight: 136px">
-      <span class="popup-input-group">
-        <p class="popup-input-title">File Name</p>
-        <div class="popup-input-wrap">
-          <div class="popup-input-field">
-            <input class="popup-input-text" id="export-file-name" type="text" value="canvas" />
-            <p class="popup-input-unit" id="export-name-extension">.png</p>
-          </div>
-        </div>
-      </span>
-      <span class="popup-input-group">
-        <p class="popup-input-title">File Type</p>
-        <div class="popup-input-wrap">
-          <div class="popup-input-field">
-            <select name="type" id="export-file-type" value="png" oninput="document.getElementById('export-name-extension').innerHTML=
-                '.' + this.value" class="popup-input-select">
-              <option value="png" selected>.png</option>
-              <option value="jpeg">.jpeg</option>
-              <option value="bmp">.bmp</option>
-            </select>
-          </div>
-        </div>
-      </span>
-      <span class="popup-input-group">
-        <p class="popup-input-title">Scale</p>
-        <div class="popup-input-wrap">
-          <div class="popup-input-field">
-            <select name="type" id="export-scale" value="1" class="popup-input-select">
-              <option value="1" selected>1x</option>
-              <option value="2">2x</option>
-              <option value="3">3x</option>
-              <option value="4">4x</option>
-              <option value="5">5x</option>
-              <option value="6">6x</option>
-              <option value="7">7x</option>
-              <option value="8">8x</option>
-              <option value="9">9x</option>
-              <option value="10">10x</option>
-              <option value="25">25x</option>
-              <option value="50">50x</option>
-              <option value="100">100x</option>
-            </select>
-          </div>
-        </div>
-      </span>
-      <div class="popup-btn-group">
-        <button onclick="exportFile()" class="popup-btn popup-btn-imp">
-          OK
-        </button>
-        <button onclick="closeExportMenu()" class="popup-btn">Cancel</button>
-      </div>
-    </div>
-  </div>
   <canvas id="eraserBrushBufferParent"></canvas>
   <canvas id="viewport"></canvas>
   <div id="canvas-parent" customcursor>
@@ -482,7 +489,7 @@
     <div id="topbar-left">
       <span class="item" onclick="openGallery()"><i class="hi-carat-left"></i></span>
       <button class="topbar-button" onclick="toggleMenu('file', this)">File</button>
-      <button class="item" onclick="openExportMenu()" id="exportButton">
+      <button class="item" onclick="openWindow('export');updateExportMenu()" id="exportButton">
         <i class="hi-export"></i>
       </button>
     </div>

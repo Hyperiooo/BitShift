@@ -295,5 +295,7 @@ function renameProject(el) {
   } else {
     projName = el.value;
     project.name = el.value;
+    document.getElementById("export-title").value = project.name
+    document.getElementById("topbar-project-name").value = project.name;
   }
 }
