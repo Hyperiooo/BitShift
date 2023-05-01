@@ -3444,7 +3444,10 @@ div[id^="alrt-main"] {
   border: none;
   color: var(--textDim);
   width: fit-content;
+  z-index: 999999;
   text-align: center;
+  backdrop-filter: blur(5px);
+  background: var(--bg400Transparent);
 }
 
 #export-title:hover,#export-title:focus {
