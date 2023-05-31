@@ -89,14 +89,14 @@ var ToolParams = {
 	freehandSelect: {
 		name: "freehandSelect",
 		id: "tool-btn-freehandSelect",
-		icon: "hi-lasso-line",
+		icon: "hi-lasso",
 		actionMenu: "selection",
 		action: "setTool('freehandSelect')",
 	},
 	magicWand: {
 		name: "magicWand",
 		id: "tool-btn-magicWand",
-		icon: "hi-magic-wand-line",
+		icon: "hi-magic-wand",
 		actionMenu: "selection",
 		action: "setTool('magicWand')",
 	},

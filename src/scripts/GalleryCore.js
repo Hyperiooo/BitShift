@@ -206,6 +206,7 @@ class ProjectCard {
 		this.cardTitleWrapper = document.createElement("div")
 		this.cardTitleWrapper.classList.add("card-title-wrap")
 		this.cardOptionsButton = document.createElement("button")
+		this.cardOptionsButton.innerHTML = "<i class='hi-three-dots-mono'></i>"
 		this.cardOptionsButton.classList.add("card-options")
 		this.cardOptionsButton.onclick = ()=>{ 
 			console.log("asdfasdf")

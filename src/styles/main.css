@@ -2438,6 +2438,10 @@ input {
   opacity: 0;
   animation-direction: forward;
   animation-fill-mode: forwards;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px
 }
 
 .layer-wrap * {
@@ -2510,6 +2514,7 @@ input {
   image-rendering: pixelated;
   image-rendering: crisp-edges;
   position: relative;
+  flex-shrink: 0;
 }
 
 .layer-alpha-icon {
@@ -2540,25 +2545,11 @@ canvas {
   -ms-user-select: none;
 }
 
-.layer-preview canvas {
-  max-width: 55px;
-  max-height: 55px;
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-}
-
 .layer-name {
   width: fit-content;
   max-width: 200px;
   overflow: hidden;
-  margin: 4px;
-  margin-left: 16px;
   pointer-events: none;
-  position: absolute;
-  top: 18px;
-  left: 60px;
 }
 
 .layer-name input[type="text"]{
@@ -2566,45 +2557,59 @@ canvas {
   border: none;
   font-size: 16px;
   font-family: 'roboto';
-  width: 120px;
+  width: 100%;
+  padding: 0;
+  padding-left: 2px;
   border-radius: 2px;
+  flex-shrink: 1;
+  word-break: break-all;white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  box-sizing: border-box;
 }
 .layer-name input[type="text"]:focus {
   background: white;
   color: black;
   border: none;
-  outline: none
+  outline: none;
+
+  
+  word-break: initial;white-space: initial;
+  text-overflow: initial;
+  overflow: visible;
+}
+.layer-complications {
+  width:100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-right: 8px;
+  gap: 6px
 }
 
-.layer-visibility {
-  position: absolute;
+.layer-visibility, .layer-locked, .layer-alpha {
   background: none;
   border: none;
   padding: 0;
   margin: 0;
   top: 50%;
-  transform: translateY(-50%);
-  right: 15px;
   cursor: pointer;
 }
-
+.layer-alpha {
+  width:0px;
+  opacity: 0;
+}
+.alpha-enabled {
+  width: fit-content;
+  opacity: 1;
+}
+.layer-alpha i,
 .layer-visibility i,
 .layer-locked i {
   font-size: 24px;
 }
 
-.layer-locked {
-  position: absolute;
-  background: none;
-  border: none;
-  font-size: 20px;
-  padding: 0;
-  margin: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  right: 45px;
-  cursor: pointer;
-}
 
 /* media queries */
 @media screen and (max-width: 600px) and (orientation: portrait) {
@@ -2823,14 +2828,23 @@ div[id^="alrt-main"] {
 }
 .card-options {
   width:30px;
-  height: 30px;
-  background: var(--bg500);
+  height: 20px;
   border-radius: 5px;
   flex-shrink: 0;
   pointer-events: all;
+  display: flex;
+
+  justify-content: flex-end;
+  align-items: center;
 }
-.card-options:hover {
-  background: var(--bg800);
+.card-options i {
+  --hi-base: var(--textMain);
+  --hi-base-opacity: 0.5;
+  
+}
+
+.card-options:hover i {
+  --hi-base-opacity: 1
 }
 .cardTitle {
   color: var(--textMain);
@@ -4040,13 +4054,12 @@ div[id^="alrt-main"] {
 .context-menu {
   position: fixed;
   opacity: 0;
-  transition: 0.1s opacity;
   border-radius: 5px;
   overflow: hidden;
   padding: 0px;
   margin: 0;
-  color: var(--contrastingText);
-  background: var(--contrastingBackground);
+  color: var(--textDim);
+  background: var(--bg500);
   backdrop-filter: saturate(180%) blur(20px);
   -webkit-backdrop-filter: saturate(180%) blur(20px);
   z-index: 200001;
@@ -4062,7 +4075,11 @@ div[id^="alrt-main"] {
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  border: var(--contrastingOutline);
+  border: 1px solid var(--bg800);
+}
+.ui-theme-light .context-menu {
+  background: var(--bg100);
+  border: 1px solid var(--bg600); 
 }
 .context-menu-visible {
   opacity: 1;
@@ -4093,16 +4110,22 @@ div[id^="alrt-main"] {
 }
 
 .context-menu-mobile button {
-  transition: 0.3s opacity;
+  transition: 0s opacity;
   padding: 10px;
   border-radius: 5px;
 }
 
 .context-menu button:hover {
-  background: var(--contrastingHover);
+  background: var(--bg600);
+  transition: 0.3s opacity;
+}
+.ui-theme-light .context-menu button:hover {
+  background: var(--bg300);
 }
 
-.context-menu button i {
+.context-menu button:not([class*='txt-col']) i {
+  --hi-base: var(--textDim);
+  --hi-accent: var(--textDim);
 }
 .context-menu button a {
   text-decoration: none;
@@ -4116,9 +4139,11 @@ div[id^="alrt-main"] {
   display: flex;
   justify-content: center;
   align-items: center;
-  background: var(--contrastingSemi);
-  opacity: 0.25;
+  background: var(--bg800);
   margin: 5px 0;
+}
+.ui-theme-light .context-menu-divider {
+  background: var(--bg600);
 }
 
 .confirm-modal {

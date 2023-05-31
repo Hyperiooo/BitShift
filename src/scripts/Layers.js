@@ -62,12 +62,16 @@ class Layer {
     this.titleInput.onblur = function(e) {
       this.name = this.titleInput.value
       this.title.style.pointerEvents = "none";
+      this.titleInput.setSelectionRange(0,0);
+      window.dispatchEvent(window.cloudSyncEvent);
     }.bind(this)
     this.title.appendChild(this.titleInput);
 
     this.layerElement.appendChild(this.previewCanvas);
     this.previewCTX = this.previewCanvas.getContext("2d");
-    this.layerElement.appendChild(this.title);
+
+    this.layerComplications = document.createElement("div");
+    this.layerComplications.classList.add("layer-complications")
 
     this.visButton = document.createElement("button");
     this.visButton.classList.add("layer-visibility");
@@ -93,9 +97,27 @@ class Layer {
 
     this.lockButton.appendChild(this.lockIcon);
 
-    this.layerElement.appendChild(this.visButton);
+    this.alphaButton = document.createElement("button");
+    this.alphaButton.classList.add("layer-alpha");
+    this.alphaButton.onclick = function () {
+      this.settings.alpha = !this.settings.alpha;
+      this.alphaButton.classList.toggle("alpha-enabled")
+    }.bind(this)
 
-    this.layerElement.appendChild(this.lockButton);
+    this.alphaIcon = document.createElement("i");
+    this.alphaIcon.classList.add("hi-alpha");
+
+    this.alphaButton.appendChild(this.alphaIcon);
+
+    if(this.settings.alpha){
+      this.alphaButton.classList.add("alpha-enabled")
+    }
+
+    this.layerElement.appendChild(this.layerComplications);
+    this.layerComplications.appendChild(this.title);
+    this.layerComplications.appendChild(this.alphaButton);
+    this.layerComplications.appendChild(this.lockButton);
+    this.layerComplications.appendChild(this.visButton);
 
     this.canvasElement = document.createElement("canvas");
     this.canvasElement.setAttribute("customcursor", "");
@@ -129,10 +151,11 @@ class Layer {
         },
         { type: "divider" },
         {
-          icon: "lock",
+          icon: "alpha",
           title: "Alpha Lock",
           action: function () {
             this.settings.alpha = !this.settings.alpha;
+            this.alphaButton.classList.toggle("alpha-enabled")
           }.bind(this),
         },
         { type: "divider" },
@@ -225,6 +248,7 @@ class Layer {
       deltaMovingY = 0;
       centerCorrection = [0, 0];
       distanceBetweenPointerAndCenterOfBoundingRect = [0, 0];
+      window.dispatchEvent(window.cloudSyncEvent);
     };
     this.endAnimating = false;
     var inAnimating = false;
@@ -539,6 +563,8 @@ class Layer {
     setLayer(
       layers[clamp(index, 0, Math.max(layers.length - 1, 0))].id || layers[0].id
     );
+    
+    window.dispatchEvent(window.cloudSyncEvent);
   }
 }
 
