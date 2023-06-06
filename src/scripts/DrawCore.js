@@ -27,6 +27,7 @@ var settings = {
     },
     penBrushSize: {
       title: "Brush Size",
+      icon: "hi-brush-width",
       value: 1,
       type: "int",
       draggable: true,
@@ -39,6 +40,7 @@ var settings = {
     },
     eraserBrushSize: {
       title: "Eraser Size",
+      icon: "hi-brush-width",
       value: 1,
       type: "int",
       draggable: true,
@@ -51,6 +53,7 @@ var settings = {
     },
     sprayBrushSize: {
       title: "Brush Size",
+      icon: "hi-brush-width",
       value: 1,
       type: "int",
       draggable: true,
@@ -63,6 +66,7 @@ var settings = {
     },
     brushSquare: {
       title: "Square Brush",
+      icon:"",
       value: false,
       type: "bool",
       callback: (e) => {
@@ -71,6 +75,7 @@ var settings = {
     },
     brushSmoothing: {
       title: "Brush Smoothness",
+      icon:"",
       value: 0,
       type: "int",
       draggable: true,
@@ -83,6 +88,7 @@ var settings = {
     },
     brushPixelPerfect: {
       title: "Pixel Perfect",
+      icon:"",
       value: false,
       type: "bool",
       callback: (e) => {
@@ -91,6 +97,7 @@ var settings = {
     },
     spraySpeed: {
       title: "Spray Speed",
+      icon:"hi-spray-speed",
       value: 1,
       type: "int",
       draggable: true,
@@ -102,6 +109,7 @@ var settings = {
     },
     spraySize: {
       title: "Spray Radius",
+      icon:"hi-radius",
       value: 10,
       type: "int",
       draggable: true,
@@ -115,6 +123,7 @@ var settings = {
     },
     contiguous: {
       title: "Contiguous",
+      icon:"hi-contiguous-on",
       value: true,
       type: "bool",
       callback: (e) => {

@@ -310,6 +310,7 @@ function updateToolSettings(tool) {
 	let toolSettings = settings.tools.assignments[tool];
 	toolContent.innerHTML = "";
 	if (!toolSettings) return;
+	toolContent.innerHTML += `<span class="toolbar-divider"></span>`;
 	for (let i = 0; i < toolSettings.length; i++) {
 		const element = toolSettings[i];
 		const setting = settings.tools[element];
@@ -320,7 +321,11 @@ function updateToolSettings(tool) {
 			inputTitle.classList.add("tool-settings-ui-input-title");
 			inputTitle.innerHTML = setting.title;
 			let inputWrap = document.createElement("div");
-			inputWrap.classList.add("tool-settings-ui-input-wrap");
+			inputWrap.classList.add("tool-settings-ui-input-num-wrap");
+			let inputLabel = document.createElement("div");
+			inputLabel.classList.add("tool-settings-ui-input-label");
+			inputLabel.innerHTML = `<i class="${setting.icon}"></i>`;
+			inputWrap.appendChild(inputLabel);
 			let inputField = document.createElement("div");
 			inputField.classList.add("tool-settings-ui-input-field");
 			inputWrap.appendChild(inputField);

@@ -847,7 +847,7 @@ foreignObject {
   --hi-base: var(--currentColor) !important;
 }
 
-#toolbar .toolbar-divider {
+#toolbar .toolbar-divider, #tool-settings .toolbar-divider {
   position: relative;
   cursor: pointer;
   border-radius: 5px;
@@ -1945,13 +1945,49 @@ input {
 }
 
 .tool-settings-ui-input-group {
-  display: inline-flex;
+  display: flex;
   justify-content: space-between;
 }
 
 .tool-settings-ui-input-wrap {
   position: relative;
   font-size: 0;
+  display: block;
+}
+
+.tool-settings-ui-input-num-wrap {
+  position: relative;
+  font-size: 0;
+  display: block;
+  margin: 0;
+  margin-bottom: 4px;
+  margin-left: 4px;
+  margin-right: 4px;
+  background: var(--bg300);
+  border: 1px solid var(--bg500);
+  box-sizing: border-box;
+  width: 40px !important;
+  border-radius: 5px;
+  overflow: hidden;
+  height:63px;
+}
+.tool-settings-ui-input-label {
+  height: 30px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position:absolute;
+  top: 0;
+  border-bottom: 1px solid var(--bg500);
+  --margin: 5px;
+  -webkit-clip-path: polygon(0 calc(100% - 1px), var(--margin) calc(100% - 1px), var(--margin) 100%, calc(100% - var(--margin)) 100%, calc(100% - var(--margin)) calc(100% - 1px), 100% calc(100% - 1px) ,  100% 0, 0 0);
+
+}
+.tool-settings-ui-input-label i {
+  flex-shrink: 0;
+  color: var(--bg900);
+  --hi-accent-opacity: 0.7;
 }
 
 .tool-settings-ui-input-field {
@@ -1965,20 +2001,18 @@ input {
 }
 
 .tool-settings-ui-input-num {
-  background: var(--bg400);
+  background: transparent;
   color: var(--textMain) !important;
   margin: 0;
   padding: 0 5px;
   font-size: 14px;
   font-weight: bolder;
-  border: 1px solid var(--bg600);
-  border-radius: 5px;
+  border: none;
   box-sizing: border-box;
-  width: 40px !important;
-  height: 40px;
-  margin-bottom: 4px;
-  margin-left: 4px;
-  margin-right: 4px;
+  border-radius: 0;
+  width: 38px !important;
+  height: 61px;
+  padding-top: 30px;
   display: block;
   font-weight: 100;
   text-align: left;
@@ -2201,8 +2235,7 @@ input {
     border-top: var(--uiOutline);
   }
 
-  #toolbar .item,
-  #tool-settings .item {
+  #toolbar .item {
     margin-left: 0;
     margin-bottom: 4px;
     margin-top: 4px;
