@@ -318,9 +318,15 @@ class NumberInputKeypad {
 		this.reposition();
 		//for all number buttons, add click event listener that updates the value
 		this.element.querySelectorAll("[data-value]").forEach((e) => {
-			e.addEventListener("click", () => {
+			e.addEventListener("touchend", (ev)=>{ev.preventDefault();
 				this.addToValue(e.getAttribute("data-value"));
-			});
+			}, {passive: false})
+			e.addEventListener("click", (ev) => {
+				ev.stopPropagation()
+				ev.stopImmediatePropagation()
+				ev.preventDefault()
+				this.addToValue(e.getAttribute("data-value"));
+			}, {passive: false});
 		});
 		document.addEventListener("keydown", (e) => {
 			if (!this.isopen) return;

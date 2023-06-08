@@ -778,229 +778,26 @@ class paletteGroup {
 		var group = document.createElement("div");
 		group.classList.add("color-palette-group");
 		group.setAttribute("data-palette-id", id);
+		var headerEl = document.createElement("div")
+		headerEl.classList.add("color-palette-header")
+		group.appendChild(headerEl)
 		var titleEl = document.createElement("h2");
 		titleEl.classList.add("color-palette-title");
 		titleEl.innerHTML = title;
+		headerEl.appendChild(titleEl);
 
-		group.appendChild(titleEl);
+		var menu = document.createElement("button");
+		menu.classList.add("color-palette-menu-button");
+		menu.innerHTML = "<i class='hi-three-dots'></i>";
+
+		headerEl.appendChild(menu);
+
 		var colorMenu = document.createElement("div");
 		colorMenu.classList.add("ui");
 		colorMenu.classList.add("color-palette-menu");
 		group.appendChild(colorMenu);
 		paletteParent.appendChild(group);
 
-		//TODO rewrite so that this works with more than one palette
-
-		var curX = 0;
-		var startX = 0;
-		var initialX = 0;
-		var curY = 0;
-		var startY = 0;
-		var initialY = 0;
-		var tX = 0;
-		var offsetX = 0;
-		var tY = 0;
-		var offsetY = 0;
-		var mainMoving = false;
-		var limit = 5;
-		var tempNode;
-		var startRect;
-		var subMoving = false;
-		var tempOut = false;
-		var snapped = false;
-
-		var holdTimeout;
-		var holdMovementAllowed = false;
-
-		var _self = this;
-
-		function mouseDownHandler(e, _self) {
-			//only initial press
-			if (holdMovementAllowed && !tempOut) e.preventDefault();
-			if (tempOut) return;
-			startRect = group.getBoundingClientRect();
-			tempNode = group.cloneNode(true);
-			tempNode.style.setProperty("--pX", "-200px");
-			tempNode.style.setProperty("--pY", "-200px");
-			tempNode.querySelector(".color-palette-title").onmouseup = mouseUpHandler;
-			tempNode.querySelector(".color-palette-title").onmousedown =
-				tempNode.querySelector(".color-palette-title").ontouchstart = (e) => {
-					e.preventDefault();
-					startRect = e.target.getBoundingClientRect();
-					if (tempOut) {
-						subMoving = true;
-						startX = e.clientX || e.touches[0].clientX;
-						startY = e.clientY || e.touches[0].clientY;
-						document.querySelectorAll(".color-palette-group").forEach((e) => {
-							e.style.setProperty("z-index", "unset", "important");
-						});
-						group.style.setProperty("z-index", "999", "important");
-						tempNode.style.setProperty("z-index", "1000", "important");
-					}
-				};
-			tempNode.classList.replace(
-				"color-palette-group",
-				"color-palette-standalone"
-			);
-			tempNode.style.width = startRect.width + "px";
-			document.body.appendChild(tempNode);
-			mainMoving = true;
-			startX = e.clientX || e.touches[0].clientX || 0;
-			startY = e.clientY || e.touches[0].clientY || 0;
-			document.querySelectorAll(".color-palette-group").forEach((e) => {
-				e.style.setProperty("z-index", "unset", "important");
-			});
-			holdTimeout = setTimeout(() => {
-				holdMovementAllowed = true;
-				if (isMobile && holdMovementAllowed) {
-					snapped = true;
-					mouseUpHandler();
-					debug.log("canMove");
-					tempNode.classList.add("color-palette-standalone-popout");
-					moveHandler(e);
-					e.preventDefault();
-				}
-			}, 1000);
-			group.style.setProperty("z-index", "999", "important");
-			tempNode.style.setProperty("z-index", "1000", "important");
-		}
-
-		function mouseUpHandler(e, _self) {
-			if (tempNode)
-				tempNode.classList.remove("color-palette-standalone-popout");
-			if (!snapped && tempNode) {
-				clearTimeout(holdTimeout);
-				mainMoving = false;
-				subMoving = false;
-				tempNode.style.setProperty("--pX", "-200px");
-				tempNode.style.setProperty("--pY", "-200px");
-				tempNode.remove();
-			}
-			if (tempOut) {
-				mouseUpSub();
-				return;
-			}
-			if (tempOut == false) {
-				//if the node has not snapped out
-				mainMoving = false;
-				if (snapped) tempOut = true;
-				subMoving = true;
-				offsetX = curX;
-				offsetY = curY;
-				var timeout = setInterval(() => {
-					var nX = lerp(curX, initialX, 0.1);
-					var nY = lerp(curY, initialY, 0.1);
-					group.style.transform = `translate(${Math.round(nX)}px, ${Math.round(
-						nY
-					)}px)`;
-					curX = nX;
-					curY = nY;
-
-					if (
-						Math.abs(curX - initialX) < 0.1 &&
-						Math.abs(curY - initialY) < 0.1
-					) {
-						curX = initialX;
-						curY = initialY;
-						group.style.transform = "unset";
-						clearTimeout(timeout);
-					}
-				}, 2);
-			} else {
-				return;
-			}
-		}
-
-		function mouseUpSub() {
-			subMoving = false;
-		}
-		document.addEventListener("mouseup", mouseUpHandler);
-		document.addEventListener("touchend", mouseUpHandler);
-		document.addEventListener("pointermove", (e) => {
-			moveHandler(e, _self);
-		});
-		titleEl.onmouseup = titleEl.ontouchend = (e) => {
-			mouseUpHandler(e, _self);
-		};
-		titleEl.onmousedown = titleEl.ontouchstart = (e) => {
-			mouseDownHandler(e, _self);
-		};
-
-		function moveHandler(e, _self) {
-			if (holdMovementAllowed) {
-				e.preventDefault();
-			}
-			var cX, cY;
-			if (e.touches) {
-				cX = e.touches[0].clientX;
-				cY = e.touches[0].clientY;
-			} else {
-				cX = e.clientX;
-				cY = e.clientY;
-			}
-			var x = cX - startX || 0;
-			var y = cY - startY || 0;
-			if (mainMoving && isMobile) {
-				if (Math.abs(x) > 10 || Math.abs(y) > 10) {
-					clearTimeout(holdTimeout);
-				}
-			} else if (mainMoving && !isMobile) {
-				curX = lerp(x, 0, 0.7);
-				curY = lerp(y, 0, 0.7);
-				group.style.transform = `translate(${Math.ceil(curX)}px, ${Math.ceil(
-					curY
-				)}px)`;
-				tempNode.style.setProperty(
-					"--pX",
-					`${startRect.x + Math.ceil(curX) - 8}px`
-				);
-				tempNode.style.setProperty(
-					"--pY",
-					`${startRect.y + Math.ceil(curY) - 8}px`
-				);
-				if (Math.abs(curX) > 100 || Math.abs(curY) > 100) {
-					snapped = true;
-					mouseUpHandler();
-					debug.log("snapped");
-				}
-				return;
-			}
-			if (!tempNode) return;
-			if (!subMoving) return;
-			if (subMoving) {
-				if (holdMovementAllowed && isMobile) {
-					tX = x - offsetX;
-					tY = y - offsetY;
-					tempNode.style.setProperty(
-						"--pX",
-						`${startRect.x + Math.ceil(tX) - 14}px`
-					);
-					tempNode.style.setProperty(
-						"--pY",
-						`${startRect.y + Math.ceil(tY) - 12}px`
-					);
-				} else if (!isMobile) {
-					var timeout = setInterval(() => {
-						offsetX = lerp(0, offsetX, 0.99);
-						offsetY = lerp(0, offsetY, 0.99);
-						if (Math.abs(offsetX) < 0.1 && Math.abs(offsetY) < 0.1) {
-							offsetX = 0;
-							offsetY = 0;
-						}
-					}, 2);
-					tX = x - offsetX;
-					tY = y - offsetY;
-					tempNode.style.setProperty(
-						"--pX",
-						`${startRect.x + Math.ceil(tX) - 8}px`
-					);
-					tempNode.style.setProperty(
-						"--pY",
-						`${startRect.y + Math.ceil(tY) - 30}px`
-					);
-				}
-			}
-		}
 
 		palette.forEach((x, i) => {
 			var color = new Color(x);
