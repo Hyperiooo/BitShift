@@ -9,11 +9,7 @@ window.currentProject;
 window.currentUserMeta;
 
 supabase.auth.onAuthStateChange(async (event, session) => {
-	console.log(event);
-	const {
-		data: { user },
-	} = await supabase.auth.getUser();
-	window.currentUser = user;
+	window.currentUser = session.user;
 	if (event == "SIGNED_IN") {
 		queryUserMeta();
 		queryProjects();
