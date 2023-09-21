@@ -363,7 +363,9 @@ function renderCanvas() {
   vCtx.strokeStyle = "#ffffff56";
   vCtx.lineWidth = 0.5;
 
-  if (transform.scale > 25) {
+  //the grid lines !!!!!!!!!!!!!!
+  let startTime = Date.now();
+  if (transform.scale > 25 && renderGridLines) {
     vCtx.beginPath();
     vCtx.moveTo(0, 0);
     var step = 0;
@@ -384,6 +386,10 @@ function renderCanvas() {
       vCtx.lineTo(transform.width * (1 - step), transform.scale * y);
     }
     vCtx.stroke();
+    let endTime = Date.now();
+    if(endTime - startTime > 0){
+      renderGridLines = false
+    }
   }
   vCtx.translate(
     -(transform.centerX - transform.width / 2),
@@ -396,7 +402,7 @@ function renderCanvas() {
   requestAnimationFrame(renderCanvas);
 }
 var lineOffset = 0;
-
+var renderGridLines = true;
 var diagonalStripeCanvas = document.createElement("canvas");
 diagonalStripeCanvas.width = window.innerWidth * window.devicePixelRatio;
 diagonalStripeCanvas.height = window.innerHeight * window.devicePixelRatio;
