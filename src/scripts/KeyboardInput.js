@@ -39,6 +39,9 @@ var keyboardAssignments = {
 	"CONTROL+D": (e) => {
 		deselect();
 	},
+	"CONTROL+A": (e) => {
+		selectAll();
+	},
 	"CONTROL+C": (e) => {
 		copySelection();
 	},
@@ -51,6 +54,9 @@ var keyboardAssignments = {
 	"CONTROL+SHIFT+D": (e) => {
 		duplicateSelection();
 	},
+	"DELETE": (e)=> {
+		clearSelection()
+	}
 };
 
 function keyboardInput(e) {
@@ -71,6 +77,7 @@ function keyboardInput(e) {
 		if (e.key != "Control" && e.key != "Alt" && e.key != "Shift")
 			input.push(e.key.toUpperCase());
 		inputString = input.join("+");
+		console.log(inputString, keyboardAssignments[inputString])
 		if (keyboardAssignments[inputString]) keyboardAssignments[inputString]();
 	}
 }

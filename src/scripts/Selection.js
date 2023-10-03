@@ -127,9 +127,14 @@ function modifySelectionPath(x1, y1, x2, y2, type) {
 
 function deselect() {
 	if (Tools.transform) confirmTransform();
+	console.log(selectionPath)
 	selectionPath = [];
 	drawSelectionPreview();
 	attemptActionMenu(getTool());
+}
+
+function selectAll(){
+	modifySelectionPath(0, 0, canvasInterface.width, canvasInterface.height, "add")
 }
 function invertSelection() {
 	//inverts selection. wow

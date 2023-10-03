@@ -22,6 +22,7 @@ var cursors = {
 var curCursor = "eyedropper";
 
 document.addEventListener("mousemove", (e) => {
+	return;
 	if (!e.target.getAttribute) return;
 	cursor.style.left =
 		e.clientX -

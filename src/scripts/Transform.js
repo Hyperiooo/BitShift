@@ -1,5 +1,10 @@
 function prepareTransform() {
 	var selectionRect = getSelectionBounds();
+	console.log(selectionRect)
+	if(selectionRect.width == 0 && selectionRect.height == 0) {
+		selectAll();
+		selectionRect = getSelectionBounds();
+	};
 	transformDummyCanvas.width = selectionRect.width;
 	transformDummyCanvas.height = selectionRect.height;
 	transformDummyCtx.save();
@@ -62,6 +67,7 @@ function confirmTransform() {
 	prevMovementPosition = [0, 0];
 	selectionMoving = false;
 }
+var hoveredHandle = "";
 var selectionMoving = false;
 var scaleMoving = false;
 var scaleMovingHandle = "";
@@ -87,29 +93,11 @@ document.body.addEventListener("pointerdown", function (e) {
 		scaleHeight = transformDummyCanvas.height;
 	}
 	scale();
-	if (e.target == boundingRectElement && Tools.transform) {
+	if(Tools.transform && !hoveredHandle) {
 		selectionMoving = true;
-	} else if (allHandles.includes(e.target) && Tools.transform) {
+	}else if(hoveredHandle && hoveredHandle != 'rot') {
 		scaleMoving = true;
-		if (e.target == handlebl) {
-			scaleMovingHandle = "bl";
-		} else if (e.target == handlebr) {
-			scaleMovingHandle = "br";
-		} else if (e.target == handletl) {
-			scaleMovingHandle = "tl";
-		} else if (e.target == handletm) {
-			scaleMovingHandle = "tm";
-		} else if (e.target == handlebm) {
-			scaleMovingHandle = "bm";
-		} else if (e.target == handleml) {
-			scaleMovingHandle = "ml";
-		} else if (e.target == handlemr) {
-			scaleMovingHandle = "mr";
-		} else if (e.target == handletr) {
-			scaleMovingHandle = "tr";
-		}
-	}else if(Tools.transform) {
-		selectionMoving = true;
+		scaleMovingHandle = hoveredHandle;
 
 	}
 });
@@ -209,6 +197,9 @@ var copiedSelectionPath;
 
 function cutSelection() {
 	copySelection();
+	canvasInterface.eraseSelection();
+}
+function clearSelection() {
 	canvasInterface.eraseSelection();
 }
 function copySelection() {

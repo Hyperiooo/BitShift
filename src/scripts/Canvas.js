@@ -131,6 +131,9 @@ class Canvas {
 		this.currentX = 0;
 		this.currentY = 0;
 
+		this.rawGlobalMouseX = 0;
+		this.rawGlobalMouseY = 0;
+
 		this.canvAngle = 0;
 		this.canvCenterX = 0;
 		this.canvCenterY = 0;
@@ -228,6 +231,9 @@ class Canvas {
 			if (e.button) {
 				if (e.button != 0) return;
 			}
+
+			this.rawGlobalMouseX = e.clientX || e.touches[0].clientX;
+			this.rawGlobalMouseY = e.clientY || e.touches[0].clientY;
 
 			this.inputActive(e);
 		};
@@ -481,10 +487,16 @@ class Canvas {
 			window.dispatchEvent(window.cloudSyncEvent);
 		}
 	}
-	getCoordinatesFromInputEvent(e) {
+	getCoordinatesFromInputEvent(e, xi, yi) {
 		var rect = this.inputLayer.getBoundingClientRect();
-		var x = e.clientX - rect.left || e.touches[0].clientX - rect.left || -1;
-		var y = e.clientY - rect.top || e.touches[0].clientY - rect.top || -1;
+		var x, y;
+		if(e) {
+			var x = e.clientX - rect.left || e.touches[0].clientX - rect.left || -1;
+			var y = e.clientY - rect.top || e.touches[0].clientY - rect.top || -1;
+		}else {
+			x = xi - rect.left
+			y = yi - rect.top;
+		}
 		var centerX = rect.width / 2;
 		var centerY = rect.height / 2;
 		x -= centerX;

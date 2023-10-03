@@ -105,7 +105,7 @@ var ToolParams = {
 		id: "tool-btn-transform",
 		icon: "hi-move",
 		actionMenu: "transform",
-		action: "setTool('transform'); showBoundingBox(); prepareTransform()",
+		action: "setTool('transform');prepareTransform(); showBoundingBox(); ",
 	},
 };
 

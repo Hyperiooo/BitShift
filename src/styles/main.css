@@ -752,7 +752,8 @@ foreignObject {
   transform: translate(-50%);
   width: 100%;
   height: 100%;
-  cursor: none;
+  cursor: crosshair;
+  /* cursor: none; */
 }
 
 #sidebar {
@@ -2694,7 +2695,7 @@ canvas {
 #cursor {
   z-index: 99999999999;
   position: absolute;
-  cursor: none;
+  /*cursor: none;*/
   pointer-events: none;
   image-rendering: -moz-crisp-edges;
   image-rendering: -webkit-crisp-edges;
@@ -3640,7 +3641,7 @@ div[id^="alrt-main"] {
 .boundingHidden {
   pointer-events: none !important;
   touch-action: none;
-  cursor: none;
+  /*cursor: none;*/
   visibility: hidden;
 }
 
