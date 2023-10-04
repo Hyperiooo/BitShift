@@ -229,7 +229,6 @@ window.onload = async function () {
     window.location.href = "/";
   }
   setUpSelectionSVG();
-  updateCursor();
   createToolUI();
   setTool("pen");
   setPickerMode("value");

@@ -19,36 +19,14 @@ var cursors = {
 	},
 };
 
-var curCursor = "eyedropper";
+var defaultCursor = "crosshair"
+var curCursor = defaultCursor;
 
-document.addEventListener("mousemove", (e) => {
-	return;
-	if (!e.target.getAttribute) return;
-	cursor.style.left =
-		e.clientX -
-		Math.floor(cursors[curCursor].origin[0] * cursors[curCursor].width) +
-		"px";
-	cursor.style.top =
-		e.clientY -
-		Math.floor(cursors[curCursor].origin[1] * cursors[curCursor].height) +
-		"px";
-	if (e.target.getAttribute("customcursor") == null) {
-		cursor.classList.add("cursor-hidden");
-	} else {
-		cursor.classList.remove("cursor-hidden");
-	}
-});
-
-document.addEventListener("touchmove", (e) => {
-	cursor.classList.add("cursor-hidden");
-});
-
-function updateCursor() {
-	document.getElementById("cursor").style.webkitMaskImage =
-		"url(" + cursors[curCursor].img + ")";
-	cursor.style.width = cursors[curCursor].width + "px";
-	cursor.style.height = cursors[curCursor].height + "px";
+function cursorOverride(cursor) {
+	if(!cursor) {canvasInterface.canvasParent.style.cursor = defaultCursor; return}
+	canvasInterface.canvasParent.style.cursor = cursor;
 }
+
 
 var cursorGroup = document.getElementById("cursorGroup");
 
@@ -56,33 +34,6 @@ var eraserBufferCanvas = document.createElement("canvas");
 eraserBufferCanvas.id = "eraserBufferCanvas";
 var eraserBufferCtx = eraserBufferCanvas.getContext("2d");
 
-function drawOnSVGCanvas(outlinePath, antiPath) {
-	cursorGroup.innerHTML = "";
-	var svgOffset = 1 / canvasInterface.canvScale;
-	var box = document.createElementNS("http://www.w3.org/2000/svg", "path");
-	var anti = document.createElementNS("http://www.w3.org/2000/svg", "path");
-	var mask = document.createElementNS("http://www.w3.org/2000/svg", "mask");
-	mask.setAttributeNS(null, "id", "mask");
-	//box.setAttributeNS(null, "d", "M 0 0 H 1 V 1 H 0 Z");
-	box.setAttributeNS(null, "d", outlinePath);
-	anti.setAttributeNS(null, "d", antiPath);
-	box.setAttributeNS(null, "fill", "white");
-	anti.setAttributeNS(null, "fill", "black");
-	var fill = document.createElementNS("http://www.w3.org/2000/svg", "rect");
-	fill.setAttributeNS(null, "x", 0);
-	fill.setAttributeNS(null, "y", 0);
-	fill.setAttributeNS(null, "width", canvasInterface.width);
-	fill.setAttributeNS(null, "height", canvasInterface.height);
-	fill.setAttributeNS(null, "fill", "white");
-	var group = document.createElementNS("http://www.w3.org/2000/svg", "g");
-	group.setAttributeNS(null, "mask", "url(#mask)");
-	group.appendChild(fill);
-
-	mask.appendChild(box);
-	//mask.appendChild(anti);
-	cursorGroup.appendChild(mask);
-	cursorGroup.appendChild(group);
-}
 
 function pathString(x, y, x2, y2, offset) {
 	return `M ${x - offset} ${y - offset} H ${x2 + offset} V ${

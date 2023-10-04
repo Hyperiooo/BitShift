@@ -2421,7 +2421,7 @@ input {
 }
 
 #layer-main::-webkit-scrollbar {
-  width: 22px;
+  width: 18px;
   border-radius: 9px;
 }
 

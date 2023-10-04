@@ -536,6 +536,10 @@ class Canvas {
 		if (Tools.sprayPaint) {
 			drawSprayPreview(x, y);
 		}
+		if (Tools.eyedropper) {
+			initEyedropper(clientX, clientY)
+			this.setColor(this.getEyedropperPixelCol(new Point(x, y)));
+		}
 		if (e.buttons != 0) {
 			//calls whenever there is touch
 			if (activeLayer.settings.locked) return;
@@ -657,9 +661,6 @@ class Canvas {
 				this.sX = x;
 				this.sY = y;
 				this.ctx.globalCompositeOperation = "source-over";
-			} else if (Tools.eyedropper) {
-				initEyedropper(clientX, clientY)
-				this.setColor(this.getEyedropperPixelCol(new Point(x, y)));
 			}
 			if (preview) {
 				this.clearPreview();

@@ -107,6 +107,9 @@ var ToolParams = {
 		actionMenu: "transform",
 		action: "setTool('transform');prepareTransform(); showBoundingBox(); ",
 	},
+	eyedropper: {		
+		actionMenu: "",
+	}
 };
 
 var ToolbarAssignments = [
@@ -444,8 +447,7 @@ function setTool(tool, el) {
 	updateToolSettings(tool);
 
 	Tools[tool] = true;
-	curCursor = settings.cursors[tool] || "crosshair";
-	updateCursor();
+	//curCursor = settings.cursors[tool] || defaultCursor;
 	document.querySelectorAll("#toolbar .item").forEach((x) => {
 		x.classList.remove("tool-active");
 	});

@@ -181,20 +181,14 @@ function renderCanvas() {
 		//draw handles
 		vCtx.fillStyle = "white";
 		var handleSize = 12;
-		function drawCircle(x, y, highlight) {
+		function drawCircle(x, y) {
 			vCtx.beginPath();
 
 			vCtx.ellipse(x, y, handleSize / 2, handleSize / 2, 0, 0, 2 * Math.PI);
-      if(highlight) {
-        vCtx.fillStyle = getComputedStyle(
-          document.documentElement
-        ).getPropertyValue("--accent");
-      }
 			vCtx.fill();
-      vCtx.fillStyle = "white";
 			vCtx.stroke();
 		}
-    var transformHandlePositions = [
+    transformHandlePositions = [
       {
         x:rect.x * transform.scale + (rect.width * transform.scale) / 2,
         y:rect.y * transform.scale - 50,
@@ -203,42 +197,50 @@ function renderCanvas() {
       {
         x: rect.x * transform.scale,
         y: rect.y * transform.scale,
-        name: "tl"
+        name: "tl",
+		cursorAngle: 45,
       },
       {
         x: rect.x * transform.scale + rect.width * transform.scale,
         y: rect.y * transform.scale,
-        name: "tr"
+        name: "tr",
+		cursorAngle: 135,
       },
       {
         x: rect.x * transform.scale,
         y: rect.y * transform.scale + rect.height * transform.scale,
-        name: "bl"
+        name: "bl",
+		cursorAngle: 315,
       },
       {
         x: rect.x * transform.scale + rect.width * transform.scale,
         y: rect.y * transform.scale + rect.height * transform.scale,
-        name: "br"
+        name: "br",
+		cursorAngle: 225,
       },
       {
         x: rect.x * transform.scale + (rect.width * transform.scale) / 2,
         y: rect.y * transform.scale,
-        name: "tm"
+        name: "tm",
+		cursorAngle: 90,
       },
       {
         x: rect.x * transform.scale + (rect.width * transform.scale) / 2,
         y: rect.y * transform.scale + rect.height * transform.scale,
-        name: "bm"
+        name: "bm",
+		cursorAngle: 270,
       },
       {
         x: rect.x * transform.scale,
         y: rect.y * transform.scale + (rect.height * transform.scale) / 2,
-        name: "ml"
+        name: "ml",
+		cursorAngle: 0,
       },
       {
         x: rect.x * transform.scale + rect.width * transform.scale,
         y: rect.y * transform.scale + (rect.height * transform.scale) / 2,
-        name: "mr"
+        name: "mr",
+		cursorAngle: 180,
       },
       
     ]
@@ -248,14 +250,9 @@ function renderCanvas() {
       var adjustedMousePos = canvasInterface.getCoordinatesFromInputEvent(false, canvasInterface.rawGlobalMouseX, canvasInterface.rawGlobalMouseY);
       adjustedMousePos.rawX *= transform.scale
 	  adjustedMousePos.rawY *= transform.scale
-	  drawCircle(handle.x, handle.y, Math.sqrt(Math.pow(handle.x - adjustedMousePos.rawX, 2) + Math.pow(handle.y - adjustedMousePos.rawY, 2)) < handleSize );
+	  drawCircle(handle.x, handle.y);
 	  drawCircle(adjustedMousePos.rawX, adjustedMousePos.rawY, false);
 	  
-	  if(Math.sqrt(Math.pow(handle.x - adjustedMousePos.rawX, 2) + Math.pow(handle.y - adjustedMousePos.rawY, 2)) < handleSize ) {
-		hoveredHandle = handle.name
-	  }else if(hoveredHandle == handle.name) {
-		hoveredHandle = false;
-	  }
     })
 	}
 
@@ -409,6 +406,7 @@ function renderCanvas() {
 
 	requestAnimationFrame(renderCanvas);
 }
+var transformHandlePositions;
 var lineOffset = 0;
 var renderGridLines = true;
 var diagonalStripeCanvas = document.createElement("canvas");
