@@ -108,6 +108,7 @@ function keyboardInput(e) {
 		if (e.key != "Control" && e.key != "Alt" && e.key != "Shift")
 			input.push(e.key.toUpperCase());
 		inputString = input.join("+");
-		if (keyboardAssignments[inputString]) {
-			keyboardAssignments[inputString]();}
+		if (keyboardAssignments[inputString]) 
+			keyboardAssignments[inputString]();
+}
 }
