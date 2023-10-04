@@ -24,6 +24,9 @@ var keyboardAssignments = {
 	S: (e) => {
 		setTool("sprayPaint");
 	},
+	M: (e) => {
+		setTool("rectangle");
+	},
 	I: (e) => {
 		setTool("eyedropper");
 	},
@@ -86,7 +89,7 @@ var keyboardAssignments = {
 		duplicateSelection();
 	},
 	DELETE: (e) => {
-		clearSelection();
+		deleteSelection();
 	},
 	ENTER:(e)=> {
 		if(Tools["transform"]) {

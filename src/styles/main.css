@@ -1625,6 +1625,7 @@ foreignObject {
 }
 
 .color-palette-title {
+  all: inherit;
   font-size: 14px;
   font-weight: unset;
   margin: 0;

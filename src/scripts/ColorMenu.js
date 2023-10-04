@@ -764,39 +764,79 @@ var setCurrent = false;
 var filePalettes = [];
 
 class paletteGroup {
-	constructor(title, palette, creator, scroll) {
+	constructor(title, palette, scroll) {
+		console.log(scroll)
 		if (scroll) {
 			setPickerMode("palette");
 		}
-		var pal = {
+		this.pal = {
 			title: title,
 			colors: palette,
 		};
-		filePalettes.push(pal);
+		filePalettes.push(this.pal);
 		var id = randomString(7);
-		var paletteParent = document.getElementById("palettes");
-		var group = document.createElement("div");
-		group.classList.add("color-palette-group");
-		group.setAttribute("data-palette-id", id);
-		var headerEl = document.createElement("div")
-		headerEl.classList.add("color-palette-header")
-		group.appendChild(headerEl)
-		var titleEl = document.createElement("h2");
-		titleEl.classList.add("color-palette-title");
-		titleEl.innerHTML = title;
-		headerEl.appendChild(titleEl);
+		this.paletteParent = document.getElementById("palettes");
+		this.palette = document.createElement("div");
+		this.palette.classList.add("color-palette-group");
+		this.palette.setAttribute("data-palette-id", id);
+		this.headerEl = document.createElement("div")
+		this.headerEl.classList.add("color-palette-header")
+		this.palette.appendChild(this.headerEl)
+		
+		this.titleInput = document.createElement("input");
+		this.titleInput.classList.add("color-palette-title")
+		this.titleInput.type = "text";
+		this.titleInput.value = title;
+		this.titleInput.onkeydown = function(e) {
+		  if(e.key == "Enter"){
+			this.titleInput.blur()
+		  }
+		}.bind(this)
+		this.titleInput.onblur = function(e) {
+		  this.name = this.titleInput.value
+		  this.headerEl.style.pointerEvents = "none";
+		  this.titleInput.setSelectionRange(0,0);
+		  window.dispatchEvent(window.cloudSyncEvent);
+		}.bind(this)
 
-		var menu = document.createElement("button");
-		menu.classList.add("color-palette-menu-button");
-		menu.innerHTML = "<i class='hi-three-dots'></i>";
+		this.headerEl.appendChild(this.titleInput);
 
-		headerEl.appendChild(menu);
+		this.menuButton = document.createElement("button");
+		this.menuButton.classList.add("color-palette-menu-button");
+		this.menuButton.innerHTML = "<i class='hi-three-dots'></i>";
+		var contextMenu = new ContextMenu(this.menuButton, {
+			buttons: [
+			  {
+				icon: "pencil",
+				title: "Rename",
+				action: function () {
+				  this.titleInput.focus();
+				  this.headerEl.style.pointerEvents = "auto";
+				}.bind(this),
+			  },
+			  { type: "divider" },
+			  { type: "divider" },
+			  {
+				color: "red",
+				icon: "trash",
+				title: "Delete",
+				action: function () {
+				  this.delete();
+				}.bind(this),
+			  },
+			],
+			buttonTarget: this.menuButton,
+		  });
+
+
+		  
+		this.headerEl.appendChild(this.menuButton);
 
 		var colorMenu = document.createElement("div");
 		colorMenu.classList.add("ui");
 		colorMenu.classList.add("color-palette-menu");
-		group.appendChild(colorMenu);
-		paletteParent.appendChild(group);
+		this.palette.appendChild(colorMenu);
+		this.paletteParent.appendChild(this.palette);
 
 
 		palette.forEach((x, i) => {

@@ -174,16 +174,6 @@ var ToolbarActionMenus = {
 			name: "Flip Vertical",
 			action: "flipVertical()",
 			icon: "hi-flip-vertical",
-		},
-		{
-			name: "Rotate Left",
-			action: "rotateLeft()",
-			icon: "hi-rotate-left",
-		},
-		{
-			name: "Rotate Right",
-			action: "rotateRight()",
-			icon: "hi-rotate-right",
 		}
 	],
 	selection: [
@@ -206,6 +196,11 @@ var ToolbarActionMenus = {
 			name: "Paste",
 			action: "pasteSelection()",
 			icon: "hi-paste",
+		},
+		{
+			name: "Delete",
+			action: "deleteSelection()",
+			icon: "hi-trash",
 		},
 	],
 };
@@ -456,6 +451,7 @@ function setTool(tool, el) {
 		e.classList.add("tool-active");
 	});
 	attemptActionMenu(tool);
+	if(window.canvasInterface) cursorOverride();
 }
 function attemptActionMenu(tool) {
 	var shouldActionMenuBeShown = false;

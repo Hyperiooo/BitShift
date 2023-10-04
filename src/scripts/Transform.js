@@ -168,7 +168,40 @@ function detectTransformHandleInteraction(e) {
 		}
 	});
 	if (!hoveredHandle) {
-		cursorOverride();
+		var bg = getComputedStyle(document.documentElement)
+		.getPropertyValue('--bg100');
+		var txt = getComputedStyle(document.documentElement)
+		.getPropertyValue('--textMain');
+		handleCursorSVG = `
+				<svg xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1" viewBox="0 0 32 32" width="30" height="30">
+				<defs>
+				  <style>
+				  .cls-1 {
+					fill: ${bg};
+				  }
+			
+				  .cls-2 {
+					fill: ${txt};
+				  }
+				  .shadow {
+					filter: drop-shadow( 1px 1px 2px rgba(0, 0, 0, .35));
+					/* Similar syntax to box-shadow */
+				  }
+				  </style>
+				</defs>
+				<g class="shadow">
+				   <g xmlns="http://www.w3.org/2000/svg" transform-origin="15 15" transform="rotate(${
+							transform.angle
+						})">
+						<path class="cls-2" d="m28.3,14.35l-2.84-2.84c-.91-.91-2.39-.91-3.3,0-.68.68-.85,1.67-.52,2.5h-3.64v-3.64c.27.11.56.16.85.16.6,0,1.2-.23,1.65-.68.91-.91.91-2.39,0-3.3l-2.84-2.84c-.91-.91-2.39-.91-3.3,0l-2.84,2.84c-.91.91-.91,2.39,0,3.3.68.68,1.67.85,2.5.52v3.64h-3.64c.33-.84.16-1.83-.52-2.5-.91-.91-2.39-.91-3.3,0l-2.84,2.84c-.44.44-.68,1.03-.68,1.65s.25,1.21.68,1.65l2.84,2.84c.46.46,1.05.68,1.65.68s1.2-.23,1.65-.68c.68-.68.85-1.67.52-2.5h3.64v3.64c-.84-.33-1.83-.16-2.5.52-.91.91-.91,2.39,0,3.3l2.84,2.84c.46.46,1.05.68,1.65.68s1.2-.23,1.65-.68l2.84-2.84c.91-.91.91-2.39,0-3.3-.68-.68-1.67-.85-2.5-.52v-3.64h3.64c-.33.84-.16,1.83.52,2.5.46.46,1.05.68,1.65.68s1.2-.23,1.65-.68l2.84-2.84c.44-.44.68-1.03.68-1.65s-.25-1.21-.68-1.65Z"/>
+  <path class="cls-1" d="m27.35,15.3l-2.84-2.84c-.39-.39-1.01-.39-1.4,0-.39.39-.39,1.01,0,1.4l1.15,1.15h-7.27v-7.27l1.15,1.15c.19.19.45.29.7.29s.51-.1.7-.29c.39-.39.39-1.01,0-1.4l-2.84-2.84c-.39-.39-1.01-.39-1.4,0l-2.84,2.84c-.39.39-.39,1.01,0,1.4s1.01.39,1.4,0l1.15-1.15v7.27h-7.27l1.15-1.15c.39-.39.39-1.01,0-1.4s-1.01-.39-1.4,0l-2.84,2.84c-.19.19-.29.44-.29.7s.1.51.29.7l2.84,2.84c.19.19.45.29.7.29s.51-.1.7-.29c.39-.39.39-1.01,0-1.4l-1.15-1.15h7.27v7.27l-1.15-1.15c-.39-.39-1.01-.39-1.4,0s-.39,1.01,0,1.4l2.84,2.84c.19.19.45.29.7.29s.51-.1.7-.29l2.84-2.84c.39-.39.39-1.01,0-1.4s-1.01-.39-1.4,0l-1.15,1.15v-7.27h7.27l-1.15,1.15c-.39.39-.39,1.01,0,1.4.19.19.45.29.7.29s.51-.1.7-.29l2.84-2.84c.19-.19.29-.44.29-.7s-.1-.51-.29-.7Z"/></g>
+   </g>
+			  </svg>`;
+			  var encoded = btoa(handleCursorSVG);
+  
+			  cursorOverride(
+				  `url("data:image/svg+xml;base64,${encoded}") 15 15, ${defaultCursor}`
+			  );
 	}
 }
 document.body.addEventListener("pointerdown", function (e) {
@@ -197,7 +230,7 @@ document.body.addEventListener("pointerup", function (e) {
 });
 
 document.body.addEventListener("pointermove", function (e) {
-	if (canvasInterface.panning) return;
+	if (!Tools.transform || canvasInterface.panning) return
 
 	detectTransformHandleInteraction(e);
 
@@ -290,9 +323,11 @@ var copiedSelectionPath;
 
 function cutSelection() {
 	copySelection();
+	notify.log("Selection Cut", { icon: "hi-scissors-mono" })
 	canvasInterface.eraseSelection();
 }
-function clearSelection() {
+function deleteSelection() {
+	notify.log("Selection Deleted", { icon: "hi-trash-mono" })
 	canvasInterface.eraseSelection();
 }
 function copySelection() {
@@ -325,9 +360,11 @@ function copySelection() {
 		getSelectionBounds().height
 	);
 	copyDummyCtx.restore();
+	notify.log("Selection Copied", { icon: "hi-copy-mono" })
 }
 function pasteSelection() {
 	confirmTransform();
+	notify.log("Selection Pasted", { icon: "hi-paste-mono" })
 
 	selectionPath = JSON.parse(JSON.stringify(copiedSelectionPath));
 	drawSelectionPreview();
