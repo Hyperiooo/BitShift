@@ -88,6 +88,11 @@ var keyboardAssignments = {
 	DELETE: (e) => {
 		clearSelection();
 	},
+	ENTER:(e)=> {
+		if(Tools["transform"]) {
+			confirmTransform(); setTool(previousTool)
+		}
+	}
 };
 
 function keyboardInput(e) {

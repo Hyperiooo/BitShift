@@ -126,11 +126,13 @@ function modifySelectionPath(x1, y1, x2, y2, type) {
 }
 
 function deselect() {
-	if (Tools.transform) confirmTransform();
+	if (Tools.transform) {
+		confirmTransform(); setTool(previousTool)};
 	console.log(selectionPath)
 	selectionPath = [];
 	drawSelectionPreview();
 	attemptActionMenu(getTool());
+	
 }
 
 function selectAll(){

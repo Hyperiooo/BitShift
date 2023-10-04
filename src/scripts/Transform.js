@@ -47,7 +47,7 @@ function prepareTransform() {
 }
 function confirmTransform() {
 	scaleAlreadyMoving = false;
-	//notify.log("Transformed", { icon: "hi-move" });
+	notify.log("Transformed", { icon: "hi-move" });
 	pasted = false;
 	canvasInterface.ctx.drawImage(canvasInterface.previewcanvas, 0, 0);
 	canvasInterface.pctx.clearRect(
@@ -65,6 +65,7 @@ function confirmTransform() {
 	updateCanvasPreview();
 	prevMovementPosition = [0, 0];
 	selectionMoving = false;
+	window.dispatchEvent(window.cloudSyncEvent);
 }
 var hoveredHandle = "";
 var selectionMoving = false;
