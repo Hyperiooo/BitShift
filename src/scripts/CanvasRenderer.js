@@ -138,8 +138,7 @@ function renderCanvas() {
 		tCtx.setTransform(1, 0, 0, 1, 0, 0);
 		tCtx.globalCompositeOperation = "source-out";
 		tCtx.scale(window.devicePixelRatio, window.devicePixelRatio);
-		tCtx.globalAlpha = 0.2;
-		tCtx.fillStyle = "#000";
+		tCtx.fillStyle = "#0000003b";
 		tCtx.fillRect(0, 0, viewport.width, viewport.height);
 
 		vCtx.setTransform(1, 0, 0, 1, 0, 0);

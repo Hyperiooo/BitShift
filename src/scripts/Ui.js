@@ -184,6 +184,194 @@ class numberDraggable {
 	}
 }
 
+class elementResizable {
+	constructor(el) {
+		this.el = el
+		this.resizableContainer = document.createElement("div")
+		this.resizableContainer.classList.add("resizable-container")
+		this.el.appendChild(this.resizableContainer)
+
+		this.resizing = false; 
+		this.horizontal = null; 
+		this.vertical = null;
+
+		this.baseWidth = this.el.offsetWidth
+		this.baseHeight = this.el.offsetHeight
+		this.baseX = this.el.offsetLeft
+		this.baseY = this.el.offsetTop
+
+		this.startMouseX = 0;
+		this.startMouseY = 0;
+
+		console.log(this.baseWidth, this.baseHeight, this.baseX, this.baseY)
+
+		this.catchSize = 8;
+
+		this.leftSideCatch = document.createElement("div")
+		this.leftSideCatch.classList.add("resizable-catch")
+		this.leftSideCatch.style.width = (this.catchSize) + "px"
+		this.leftSideCatch.style.height = `calc(100% - ${this.catchSize}px)`
+		this.leftSideCatch.style.top = (this.catchSize/2) + "px"
+		this.leftSideCatch.style.left = `-${this.catchSize/2}px`
+		this.leftSideCatch.style.cursor = cursors.resize()
+		this.leftSideCatch.onpointerdown = (e)=>{
+			this.resizing = true;
+			this.horizontal = "right"
+			this.vertical = null
+			this.startMouseX = e.clientX
+		}
+		this.resizableContainer.appendChild(this.leftSideCatch)
+
+		this.rightSideCatch = document.createElement("div")
+		this.rightSideCatch.classList.add("resizable-catch")
+		this.rightSideCatch.style.width = (this.catchSize) + "px"
+		this.rightSideCatch.style.height = `calc(100% - ${this.catchSize}px)`
+		this.rightSideCatch.style.top = (this.catchSize/2) + "px"
+		this.rightSideCatch.style.right = `-${this.catchSize/2}px`
+		this.rightSideCatch.style.cursor = cursors.resize()
+		this.rightSideCatch.onpointerdown = (e)=>{
+			this.resizing = true;
+			this.horizontal = "right"
+			this.vertical = null
+			this.startMouseX = e.clientX
+		}
+		this.resizableContainer.appendChild(this.rightSideCatch)
+
+		this.topSideCatch = document.createElement("div")
+		this.topSideCatch.classList.add("resizable-catch")
+		this.topSideCatch.style.height = (this.catchSize) + "px"
+		this.topSideCatch.style.width = `calc(100% - ${this.catchSize}px)`
+		this.topSideCatch.style.left = (this.catchSize/2) + "px"
+		this.topSideCatch.style.top = `-${this.catchSize/2}px`
+		this.topSideCatch.style.cursor = cursors.resize(90)
+		
+		this.leftSideCatch.onpointerdown = (e)=>{
+			this.resizing = true;
+			this.vertical = "top"
+			this.horizontal = null
+			this.startMouseY = e.clientY
+		}
+		this.resizableContainer.appendChild(this.topSideCatch)
+
+		this.bottomSideCatch = document.createElement("div")
+		this.bottomSideCatch.classList.add("resizable-catch")
+		this.bottomSideCatch.style.height = (this.catchSize) + "px"
+		this.bottomSideCatch.style.width = `calc(100% - ${this.catchSize}px)`
+		this.bottomSideCatch.style.left = (this.catchSize/2) + "px"
+		this.bottomSideCatch.style.bottom = `-${this.catchSize/2}px`
+		this.bottomSideCatch.style.cursor = cursors.resize(90)
+		this.bottomSideCatch.onpointerdown = (e)=>{
+			this.resizing = true;
+			this.vertical = "bottom"
+			this.horizontal = null
+			this.startMouseY = e.clientY
+		}
+		this.resizableContainer.appendChild(this.bottomSideCatch)
+
+		this.leftTopCornerCatch = document.createElement("div")
+		this.leftTopCornerCatch.classList.add("resizable-catch")
+		this.leftTopCornerCatch.style.width = (this.catchSize) + "px"
+		this.leftTopCornerCatch.style.height = (this.catchSize) + "px"
+		this.leftTopCornerCatch.style.top = `-${this.catchSize/2}px`
+		this.leftTopCornerCatch.style.left = `-${this.catchSize/2}px`
+		this.leftTopCornerCatch.style.cursor = cursors.resize(45)
+		this.leftTopCornerCatch.onpointerdown = (e)=>{
+			this.resizing = true;
+			this.horizontal = "left"
+			this.vertical = "top"
+			this.startMouseX = e.clientX
+			this.startMouseY = e.clientY
+
+		}
+		this.resizableContainer.appendChild(this.leftTopCornerCatch)
+
+		this.rightTopCornerCatch = document.createElement("div")
+		this.rightTopCornerCatch.classList.add("resizable-catch")
+		this.rightTopCornerCatch.style.width = (this.catchSize) + "px"
+		this.rightTopCornerCatch.style.height = (this.catchSize) + "px"
+		this.rightTopCornerCatch.style.top = `-${this.catchSize/2}px`
+		this.rightTopCornerCatch.style.right = `-${this.catchSize/2}px`
+		this.rightTopCornerCatch.style.cursor = cursors.resize(135)
+		this.rightTopCornerCatch.onpointerdown = (e)=>{
+			this.resizing = true;
+			this.horizontal = "right"
+			this.vertical = "top"
+			this.startMouseX = e.clientX
+			this.startMouseY = e.clientY
+
+		}
+		this.resizableContainer.appendChild(this.rightTopCornerCatch)
+
+		this.leftBottomCornerCatch = document.createElement("div")
+		this.leftBottomCornerCatch.classList.add("resizable-catch")
+		this.leftBottomCornerCatch.style.width = (this.catchSize) + "px"
+		this.leftBottomCornerCatch.style.height = (this.catchSize) + "px"
+		this.leftBottomCornerCatch.style.bottom = `-${this.catchSize/2}px`
+		this.leftBottomCornerCatch.style.left = `-${this.catchSize/2}px`
+		this.leftBottomCornerCatch.style.cursor = cursors.resize(135)
+		this.leftBottomCornerCatch.onpointerdown = (e)=>{
+			this.resizing = true;
+			this.horizontal = "left"
+			this.vertical = "bottom"
+			this.startMouseX = e.clientX
+			this.startMouseY = e.clientY
+
+		}
+		this.resizableContainer.appendChild(this.leftBottomCornerCatch)
+
+		this.rightBottomCornerCatch = document.createElement("div")
+		this.rightBottomCornerCatch.classList.add("resizable-catch")
+		this.rightBottomCornerCatch.style.width = (this.catchSize) + "px"
+		this.rightBottomCornerCatch.style.height = (this.catchSize) + "px"
+		this.rightBottomCornerCatch.style.bottom = `-${this.catchSize/2}px`
+		this.rightBottomCornerCatch.style.right = `-${this.catchSize/2}px`
+		this.rightBottomCornerCatch.style.cursor = cursors.resize(45)
+		this.rightBottomCornerCatch.onpointerdown = (e)=>{
+			this.resizing = true;
+			this.horizontal = "right"
+			this.vertical = "bottom"
+			this.startMouseX = e.clientX
+			this.startMouseY = e.clientY
+
+		}
+		this.resizableContainer.appendChild(this.rightBottomCornerCatch)
+		
+		document.addEventListener("pointerup", function(e) {
+			this.resizing= false;
+			this.baseWidth = this.el.offsetWidth
+			this.baseHeight = this.el.offsetHeight
+			this.baseX = this.el.offsetLeft
+			this.baseY = this.el.offsetTop
+		}.bind(this), {
+			passive: false,
+		});
+		document.addEventListener("pointermove", function (e){
+			if(!this.resizing) return
+
+			if(this.horizontal == "left") {
+				this.el.style.width = (this.baseWidth + (this.startMouseX - e.clientX)) + "px"
+				console.log(this.el.style.width)
+				this.el.style.left = (this.baseX - (this.startMouseX - e.clientX)) + "px"
+			}
+			if(this.horizontal == "right") {
+				this.el.style.width = (this.baseWidth - (this.startMouseX - e.clientX)) + "px"
+			}
+			if(this.vertical == "top") {
+				this.el.style.height = (this.baseHeight + (this.startMouseY - e.clientY)) + "px"
+				this.el.style.top = (this.baseY - (this.startMouseY - e.clientY)) + "px"
+			}
+			if(this.vertical == "bottom") {
+				this.el.style.height = (this.baseHeight - (this.startMouseY - e.clientY)) + "px"
+			}
+
+		}.bind(this) , {
+			passive: false,
+		});
+
+
+	}
+}
+
 function toggleMenu(menu, el) {
 	if (menu.nodeName) {
 		if (menu.parentElement.classList.contains("menu-open")) {

@@ -1,9 +1,63 @@
-function toggleColorPicker() {
-	document.getElementById("color-menu").classList.toggle("color-open");
+function toggleColorPicker(el) {
+
+	if (document.getElementById("color-menu").classList.contains("color-open")) {
+		closeColorPicker(el);
+	} else {
+		openColorPicker(el);
+	}
+
+}
+function closeColorPicker
+(el) {
+	document.getElementById("color-menu").classList.remove("color-open");
+	
+		
+}
+
+function openColorPicker(el) {
+	if (!el) return;
+	document.getElementById("color-menu").classList.add("color-open");
 	document.getElementById("layer-menu").classList.remove("layer-open");
 	document
 		.getElementById("layer-toggle-button")
 		.classList.remove("tool-active");
+
+		
+		window.colorMenuPopper.state.elements.reference = el;
+		window.colorMenuPopper.update();
+		window.colorMenuPopper.forceUpdate();
+		
+		hueRect = hueRange.getBoundingClientRect();
+		valueRect = valueRange.getBoundingClientRect();
+	
+		
+}
+
+function initializeColorMenu(){ 
+	window.colorMenuPopper = Popper.createPopper(document.documentElement, document.getElementById("color-menu"), {
+		placement: "auto",
+		modifiers: [
+			{
+				name: "preventOverflow",
+				options: {
+					mainAxis: true, // true by default
+					altAxis: true, // false by default
+				},
+			},
+			{
+				name: "offset",
+				options: {
+					offset: [0, 18],
+				},
+			},
+			{
+				name: "arrow",
+				options: {
+					element: document.getElementById('color-arrow'),
+				},
+			},
+		],
+	});
 }
 
 function act(clr) {
@@ -319,6 +373,8 @@ class ColorSlider {
 		this.startEffectPosition = 0;
 
 		function handlePointerDown(e) {
+		this.boundingClientRect = this.el.getBoundingClientRect();
+		this.width = this.boundingClientRect.width;
 			if (e.target == this.el || this.el.contains(e.target)) {
 				this.rawX = e.clientX - this.boundingClientRect.left;
 				this.startEffectPosition = e.clientY;

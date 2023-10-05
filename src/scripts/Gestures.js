@@ -3,7 +3,7 @@ var gestureAssignments = {
 		canvasInterface.clear();
 	},
 	"ALT+C": (e) => {
-		toggleColorPicker();
+		openColorPicker();
 	},
 	P: (e) => {
 		setTool("pen");

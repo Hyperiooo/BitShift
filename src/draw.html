@@ -308,12 +308,15 @@
     </div>
   <div class="color-menu" id="color-menu" ondrop="dropHandler(event);" ondragover="dragOverHandler(event);"
     ondragleave="dragLeaveHandler(event);" ondragend="dragLeaveHandler(event);">
+    <div id="color-arrow" class="popperArrow" data-popper-arrow>
+      <div class="popperArrowInner"></div>
+    </div>
     <div class="color-menu-topbar">
       <div id="color-preview" onclick="colorPreviewClickHandler(event)" ontouchstart="colorPreviewClickHandler(event)">
         <div id="color-previous"></div>
         <div id="color-current"></div>
       </div>
-      <button class="color-menu-close-button" onclick="toggleColorPicker()">
+      <button class="color-menu-close-button" onclick="closeColorPicker()">
         <i class="hi-x"></i>
       </button>
     </div>
@@ -336,7 +339,12 @@
           ontouchend="hueEndDrag(event)"></div>
       </div>
     </div>
-    <div id="color-menu-value-panel" class="color-menu-panel ">
+    <div id="color-menu-value-panel" class="color-menu-panel" data-element-resizable>
+      <div class="color-slider-section">
+        <div class="color-slider-group">
+          <p>Hex</p><input id="color-hex" data-color-input type="text" />
+        </div>
+      </div>
       <div class="color-slider-section">
         <div class="color-slider-group">
           <p>R</p>
@@ -387,11 +395,6 @@
           </div><input class="color-input-num" id="color-hsla-l" value="100" min="0" data-color-input max="100"
             type="number" data-input-num-draggable data-input-num-unit="%" />
 
-        </div>
-      </div>
-      <div class="color-slider-section">
-        <div class="color-slider-group">
-          <p>Hex</p><input id="color-hex" data-color-input type="text" />
         </div>
       </div>
 
@@ -521,7 +524,7 @@
       
     </div>
     <div id="tool-settings">
-      <span class="item toolbar-landscape-only" onclick="toggleColorPicker()"><i class="hi-circle-fill"
+      <span class="item toolbar-landscape-only" onclick="toggleColorPicker(this)"><i class="hi-circle-fill"
           data-tool-color-menu-button></i>
       </span>
       <div id="tool-settings-content"></div>

@@ -214,6 +214,8 @@ window.onload = async function () {
   valueRect = valueRange.getBoundingClientRect();
 
   refreshAllNumberDraggables();
+  initializeColorMenu()
+
 
   setTheme(localStorage.getItem("theme") || "ui-theme-dark");
   setAccent(localStorage.getItem("accent") || "ui-accent-blue");
@@ -238,6 +240,9 @@ window.onload = async function () {
   });
   setPickerMode("picker");
   refreshAllTooltips();
+
+  
+  //window.colorMenuResizableObject = new elementResizable(document.getElementById("color-menu"))
 
   const namedCols = window.namedColors.reduce(
     (o, { name, hex }) => Object.assign(o, { [name]: hex }),
