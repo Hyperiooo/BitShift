@@ -1671,6 +1671,9 @@ foreignObject {
   overflow: hidden;
   box-sizing: border-box;
 }
+.color-palette-popout .color-palette-title {
+  margin: 8px;
+}
 
 
 .color-palette-title:focus {
