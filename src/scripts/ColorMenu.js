@@ -966,6 +966,7 @@ class paletteGroup {
 
 		this.popoutTitle.onpointerdown = function (e) {
 			this.popoutRect = this.popout.getBoundingClientRect();
+			this.canvasParentRect = canvasInterface.canvasParent.getBoundingClientRect();
 			this.popoutMove = true;
 			this.movePX = e.clientX;
 			this.movePY = e.clientY;
@@ -973,8 +974,9 @@ class paletteGroup {
 		}.bind(this)
 		document.addEventListener("pointermove", function(e) {
 			if(this.popoutMove){
-				this.popout.style.top = this.popoutRect.top + (e.clientY - this.movePY) + "px";
-				this.popout.style.left = this.popoutRect.left + (e.clientX - this.movePX) + "px";
+				var padding = 5
+				this.popout.style.top = Math.max(padding + 50, Math.min(this.popoutRect.top + (e.clientY - this.movePY), window.innerHeight - this.popoutRect.height - padding)) + "px";
+				this.popout.style.left = Math.max(padding, Math.min(this.popoutRect.left + (e.clientX - this.movePX), window.innerWidth - this.popoutRect.width - padding)) + "px";
 			}
 		}.bind(this))
 		document.addEventListener("pointerup", function(e) {
