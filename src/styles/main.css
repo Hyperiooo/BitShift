@@ -1165,7 +1165,7 @@ foreignObject {
   padding: 0px;
   margin: 0;
   color: var(--textDim);
-  z-index: 3;
+  z-index: 100;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -1190,12 +1190,8 @@ foreignObject {
   box-shadow: var(--boxShadow);
   font-family: "JetBrains Mono";
   border: var(--uiOutline);
-  height: 486px;
+  height: 450px !important;
   width: 300px;
-  min-width: 250px;
-  max-width: 350px;
-  max-height: 600px;
-  min-height:300px;
 }
 
 .color-menu-panel {
@@ -1496,6 +1492,33 @@ foreignObject {
   margin-right: 0;
   display: flex;
   flex-wrap: wrap;
+} 
+
+.color-palette-popout {
+  position: absolute;
+  background: var(--bg400);
+  margin-bottom: 8px;
+  width: 100%;
+  border-radius: 5px;
+  overflow: hidden;
+  z-index: 99;
+  margin-right: 0;
+  display: flex;
+  flex-wrap: wrap;
+  width: 300px;
+  box-shadow: var(--boxShadow);
+  opacity: 0;
+  transform: scale(.25);
+  pointer-events: none;
+  transition: opacity 0.6s cubic-bezier(0.175, 1.8, 0.32, 1.275), transform 0.5s cubic-bezier(0.175, 1.8, 0.32, 1.275);
+}
+
+.color-palette-popout-open {
+  opacity: 1;
+  transform: scale(1);
+  pointer-events: all;
+  transition: opacity 0.1s cubic-bezier(0.175, 1.8, 0.32, 1.275), transform 0.3s cubic-bezier(0.175, 1.8, 0.32, 1.275);
+
 }
 
 #color-menu-recent-colors {
@@ -1625,7 +1648,8 @@ foreignObject {
   justify-content: center;
   align-items: center;
   flex-shrink: 1;
-
+  --hi-accent: var(--textDim);
+  --hi-base: var(--textDim);
 }
 
 .color-palette-title {
@@ -1718,9 +1742,9 @@ input[type="number"] {
   background: var(--bg400);
   border-radius: 5px;
   display: flex;
-  gap: 23px;
+  gap: 20px;
   flex-direction: column;
-  padding: 12px 8px;
+  padding: 8px 8px;
   justify-content: space-between;
   box-sizing: border-box;
 }

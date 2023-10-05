@@ -214,7 +214,6 @@ window.onload = async function () {
   valueRect = valueRange.getBoundingClientRect();
 
   refreshAllNumberDraggables();
-  initializeColorMenu()
 
 
   setTheme(localStorage.getItem("theme") || "ui-theme-dark");
@@ -249,6 +248,8 @@ window.onload = async function () {
     {}
   );
   nCol = nearestColor.from(namedCols);
+  
+  initializeColorMenu()
 };
 
 window.onbeforeunload = function () {

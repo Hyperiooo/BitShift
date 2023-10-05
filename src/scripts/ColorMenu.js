@@ -1,63 +1,53 @@
 function toggleColorPicker(el) {
-
 	if (document.getElementById("color-menu").classList.contains("color-open")) {
 		closeColorPicker(el);
 	} else {
 		openColorPicker(el);
 	}
-
 }
-function closeColorPicker
-(el) {
+function closeColorPicker(el) {
 	document.getElementById("color-menu").classList.remove("color-open");
-	
-		
 }
 
 function openColorPicker(el) {
 	if (!el) return;
 	document.getElementById("color-menu").classList.add("color-open");
-	document.getElementById("layer-menu").classList.remove("layer-open");
-	document
-		.getElementById("layer-toggle-button")
-		.classList.remove("tool-active");
 
-		
-		window.colorMenuPopper.state.elements.reference = el;
-		window.colorMenuPopper.update();
-		window.colorMenuPopper.forceUpdate();
-		
-		hueRect = hueRange.getBoundingClientRect();
-		valueRect = valueRange.getBoundingClientRect();
-	
-		
+	window.colorMenuPopper.state.elements.reference = el;
+	window.colorMenuPopper.update();
+	window.colorMenuPopper.forceUpdate();
+
 }
 
-function initializeColorMenu(){ 
-	window.colorMenuPopper = Popper.createPopper(document.documentElement, document.getElementById("color-menu"), {
-		placement: "auto",
-		modifiers: [
-			{
-				name: "preventOverflow",
-				options: {
-					mainAxis: true, // true by default
-					altAxis: true, // false by default
+function initializeColorMenu() {
+	window.colorMenuPopper = Popper.createPopper(
+		document.documentElement,
+		document.getElementById("color-menu"),
+		{
+			placement: "auto",
+			modifiers: [
+				{
+					name: "preventOverflow",
+					options: {
+						mainAxis: true, // true by default
+						altAxis: true, // false by default
+					},
 				},
-			},
-			{
-				name: "offset",
-				options: {
-					offset: [0, 18],
+				{
+					name: "offset",
+					options: {
+						offset: [0, 18],
+					},
 				},
-			},
-			{
-				name: "arrow",
-				options: {
-					element: document.getElementById('color-arrow'),
+				{
+					name: "arrow",
+					options: {
+						element: document.getElementById("color-arrow"),
+					},
 				},
-			},
-		],
-	});
+			],
+		}
+	);
 }
 
 function act(clr) {
@@ -152,6 +142,8 @@ var hueRange;
 var hueRect;
 
 function hueThumb(e) {
+	
+	hueRect = hueRange.getBoundingClientRect();
 	hueMoving = true;
 }
 
@@ -205,6 +197,7 @@ var valueTwoFingerDist = 0;
 var valueTwoFingerStartDist = 0;
 
 function valueThumb(e) {
+	valueRect = valueRange.getBoundingClientRect();
 	var x, y;
 	if (e.touches) {
 		x = e.touches[0].clientX - (valueRect ? valueRect.left : 0);
@@ -373,8 +366,8 @@ class ColorSlider {
 		this.startEffectPosition = 0;
 
 		function handlePointerDown(e) {
-		this.boundingClientRect = this.el.getBoundingClientRect();
-		this.width = this.boundingClientRect.width;
+			this.boundingClientRect = this.el.getBoundingClientRect();
+			this.width = this.boundingClientRect.width;
 			if (e.target == this.el || this.el.contains(e.target)) {
 				this.rawX = e.clientX - this.boundingClientRect.left;
 				this.startEffectPosition = e.clientY;
@@ -549,7 +542,7 @@ function colorPreviewClickHandler(e) {
 				]);
 			}
 		}
-		pal = pal.mode("lch").correctLightness().colors(8);
+		pal = pal.mode("lch").correctLightness().colors(10);
 		let rgbPal = pal.map((e) => {
 			return hexToRGB(e);
 		});
@@ -805,9 +798,8 @@ var defaultPalettes = [
 			"#3c3c3c",
 			"#7f7f7f",
 			"#b8a7b9",
-			
 		],
-	}
+	},
 ];
 
 function clearPalettes() {
@@ -821,7 +813,7 @@ var filePalettes = [];
 
 class paletteGroup {
 	constructor(title, palette, scroll) {
-		console.log(scroll)
+		console.log(scroll);
 		if (scroll) {
 			setPickerMode("palette");
 		}
@@ -835,25 +827,25 @@ class paletteGroup {
 		this.palette = document.createElement("div");
 		this.palette.classList.add("color-palette-group");
 		this.palette.setAttribute("data-palette-id", id);
-		this.headerEl = document.createElement("div")
-		this.headerEl.classList.add("color-palette-header")
-		this.palette.appendChild(this.headerEl)
-		
+		this.headerEl = document.createElement("div");
+		this.headerEl.classList.add("color-palette-header");
+		this.palette.appendChild(this.headerEl);
+
 		this.titleInput = document.createElement("input");
-		this.titleInput.classList.add("color-palette-title")
+		this.titleInput.classList.add("color-palette-title");
 		this.titleInput.type = "text";
-		this.titleInput.value = title;
-		this.titleInput.onkeydown = function(e) {
-		  if(e.key == "Enter"){
-			this.titleInput.blur()
-		  }
-		}.bind(this)
-		this.titleInput.onblur = function(e) {
-		  this.name = this.titleInput.value
-		  this.headerEl.style.pointerEvents = "none";
-		  this.titleInput.setSelectionRange(0,0);
-		  window.dispatchEvent(window.cloudSyncEvent);
-		}.bind(this)
+		this.titleInput.value = this.pal.title;
+		this.titleInput.onkeydown = function (e) {
+			if (e.key == "Enter") {
+				this.titleInput.blur();
+			}
+		}.bind(this);
+		this.titleInput.onblur = function (e) {
+			this.pal.title = this.titleInput.value;
+			this.titleInput.style.pointerEvents = "none";
+			this.titleInput.setSelectionRange(0, 0);
+			window.dispatchEvent(window.cloudSyncEvent);
+		}.bind(this);
 
 		this.headerEl.appendChild(this.titleInput);
 
@@ -862,30 +854,35 @@ class paletteGroup {
 		this.menuButton.innerHTML = "<i class='hi-three-dots'></i>";
 		var contextMenu = new ContextMenu(this.menuButton, {
 			buttons: [
-			  {
-				icon: "pencil",
-				title: "Rename",
-				action: function () {
-				  this.titleInput.focus();
-				  this.headerEl.style.pointerEvents = "auto";
-				}.bind(this),
-			  },
-			  { type: "divider" },
-			  { type: "divider" },
-			  {
-				color: "red",
-				icon: "trash",
-				title: "Delete",
-				action: function () {
-				  this.delete();
-				}.bind(this),
-			  },
+				{
+					icon: "pencil",
+					title: "Rename",
+					action: function () {
+						this.titleInput.focus();
+						this.headerEl.style.pointerEvents = "auto";
+					}.bind(this),
+				},
+				{ type: "divider" },
+				{
+					icon: "carat-up",
+					title: "Popout",
+					action: function () {
+						this.openPopout();
+					}.bind(this),
+				},
+				{ type: "divider" },
+				{
+					color: "red",
+					icon: "trash",
+					title: "Delete",
+					action: function () {
+						this.delete();
+					}.bind(this),
+				},
 			],
 			buttonTarget: this.menuButton,
-		  });
+		});
 
-
-		  
 		this.headerEl.appendChild(this.menuButton);
 
 		var colorMenu = document.createElement("div");
@@ -893,7 +890,6 @@ class paletteGroup {
 		colorMenu.classList.add("color-palette-menu");
 		this.palette.appendChild(colorMenu);
 		this.paletteParent.appendChild(this.palette);
-
 
 		palette.forEach((x, i) => {
 			var color = new Color(x);
@@ -924,10 +920,107 @@ class paletteGroup {
 		canvasInterface.setColor(new Color(palette[0]));
 		var rect = colorMenu.getBoundingClientRect();
 		var colorMenu = document.getElementById("color-menu");
-		if (scroll)
+		this.createPopout();
+		if (scroll){
 			document
 				.getElementById("color-menu-palette-panel")
 				.scrollTo({ behavior: "smooth", top: colorMenu.scrollTop + rect.top });
+				window.dispatchEvent(window.cloudSyncEvent);}
+	}
+	delete(){
+
+		if(filePalettes.length == 1) return;
+		
+		var i = filePalettes.findIndex((x) => x == this.pal)
+
+		if(i > -1){
+			filePalettes.splice(i, 1)
+		}
+		this.paletteParent.removeChild(this.palette)
+		window.dispatchEvent(window.cloudSyncEvent);
+	}
+	createPopout() {
+		
+		this.popout = document.createElement("div");
+		this.popout.classList.add("color-palette-popout");
+		this.popoutHeader = document.createElement("div");
+		this.popoutHeader.classList.add("color-palette-header");
+		this.popout.appendChild(this.popoutHeader);
+
+		this.popoutTitle = document.createElement("h2");
+		this.popoutTitle.classList.add("color-palette-title");
+		this.popoutTitle.style.pointerEvents = "all";
+		this.popoutTitle.innerText = this.pal.title;
+		this.popoutHeader.appendChild(this.popoutTitle);
+
+		this.popoutClose = document.createElement("button");
+		this.popoutClose.classList.add("color-palette-menu-button");
+		this.popoutClose.innerHTML = "<i class='hi-x'></i>";
+		this.popoutClose.onclick = this.closePopout.bind(this)
+		this.popoutHeader.appendChild(this.popoutClose);
+		this.popoutRect = this.popout.getBoundingClientRect();
+		
+		this.popoutMove = false;
+		this.movePX = 0;
+		this.movePY = 0;
+
+		this.popoutTitle.onpointerdown = function (e) {
+			this.popoutRect = this.popout.getBoundingClientRect();
+			this.popoutMove = true;
+			this.movePX = e.clientX;
+			this.movePY = e.clientY;
+			console.log("asf")
+		}.bind(this)
+		document.addEventListener("pointermove", function(e) {
+			if(this.popoutMove){
+				this.popout.style.top = this.popoutRect.top + (e.clientY - this.movePY) + "px";
+				this.popout.style.left = this.popoutRect.left + (e.clientX - this.movePX) + "px";
+			}
+		}.bind(this))
+		document.addEventListener("pointerup", function(e) {
+			this.popoutMove = false;
+		}.bind(this))
+
+
+		
+		var colorMenu = document.createElement("div");
+		colorMenu.classList.add("ui");
+		colorMenu.classList.add("color-palette-menu");
+		this.popout.appendChild(colorMenu);
+
+		this.pal.colors.forEach((x, i) => {
+			var color = new Color(x);
+			if (!setCurrent && typeof canvasInterface !== "undefined") {
+				setCurrent = true;
+			}
+			let e = document.createElement("div");
+			e.setAttribute("data-palette-color", color.hexh);
+			
+			e.innerHTML = color.name;
+			e.style.color = color.contrastingColor;
+			e.classList.add("palette-color");
+			e.style.setProperty("--color", color.hex);
+			e.addEventListener("click", () => {
+				pickerColor = color;
+				updatePickerColor();
+				canvasInterface.setColor(color);
+			});
+			colorMenu.appendChild(e);
+		});
+
+
+		document.body.appendChild(this.popout);
+
+	}
+	openPopout(){
+		//center popout
+		this.popout.style.top = window.innerHeight / 2 - this.popout.offsetHeight / 2 + "px";
+		this.popout.style.left = window.innerWidth / 2 - this.popout.offsetWidth / 2 + "px";
+
+		this.popout.classList.add("color-palette-popout-open");
+	}
+	closePopout(){
+		this.popout.classList.remove("color-palette-popout-open");
 	}
 }
 
@@ -955,7 +1048,6 @@ function setPickerMode(m) {
 }
 
 function initEyedropper(clientX, clientY) {
-	
 	canvasInterface.eyedropperPreviewElement.style.top = clientY + "px";
 	canvasInterface.eyedropperPreviewElement.style.left = clientX + "px";
 	canvasInterface.eyedropperPreviewElement.classList.add(
