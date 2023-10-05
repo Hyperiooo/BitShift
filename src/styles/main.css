@@ -1499,7 +1499,7 @@ foreignObject {
   background: var(--bg400);
   margin-bottom: 8px;
   width: 100%;
-  border-radius: 5px;
+  border-radius: 13px;
   overflow: hidden;
   z-index: 99;
   margin-right: 0;
