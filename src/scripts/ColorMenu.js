@@ -1,9 +1,53 @@
-function toggleColorPicker() {
-	document.getElementById("color-menu").classList.toggle("color-open");
-	document.getElementById("layer-menu").classList.remove("layer-open");
-	document
-		.getElementById("layer-toggle-button")
-		.classList.remove("tool-active");
+function toggleColorPicker(el) {
+	if (document.getElementById("color-menu").classList.contains("color-open")) {
+		closeColorPicker(el);
+	} else {
+		openColorPicker(el);
+	}
+}
+function closeColorPicker(el) {
+	document.getElementById("color-menu").classList.remove("color-open");
+}
+
+function openColorPicker(el) {
+	if (!el) return;
+	document.getElementById("color-menu").classList.add("color-open");
+
+	window.colorMenuPopper.state.elements.reference = el;
+	window.colorMenuPopper.update();
+	window.colorMenuPopper.forceUpdate();
+
+}
+
+function initializeColorMenu() {
+	window.colorMenuPopper = Popper.createPopper(
+		document.documentElement,
+		document.getElementById("color-menu"),
+		{
+			placement: "auto",
+			modifiers: [
+				{
+					name: "preventOverflow",
+					options: {
+						mainAxis: true, // true by default
+						altAxis: true, // false by default
+					},
+				},
+				{
+					name: "offset",
+					options: {
+						offset: [0, 18],
+					},
+				},
+				{
+					name: "arrow",
+					options: {
+						element: document.getElementById("color-arrow"),
+					},
+				},
+			],
+		}
+	);
 }
 
 function act(clr) {
@@ -57,7 +101,6 @@ function updateColorNum(el, keycode) {
 							),
 						});
 					} else {
-						console.log("isntvalid");
 						isValid = false;
 					}
 				} else if (e.id.includes("hsla")) {
@@ -99,6 +142,8 @@ var hueRange;
 var hueRect;
 
 function hueThumb(e) {
+	
+	hueRect = hueRange.getBoundingClientRect();
 	hueMoving = true;
 }
 
@@ -152,6 +197,7 @@ var valueTwoFingerDist = 0;
 var valueTwoFingerStartDist = 0;
 
 function valueThumb(e) {
+	valueRect = valueRange.getBoundingClientRect();
 	var x, y;
 	if (e.touches) {
 		x = e.touches[0].clientX - (valueRect ? valueRect.left : 0);
@@ -302,18 +348,34 @@ class ColorSlider {
 		this.max = this.inputElement.max;
 		this.boundingClientRect = this.el.getBoundingClientRect();
 		this.width = this.boundingClientRect.width;
-		document.addEventListener("pointerdown", handlePointerDown.bind(this));
-		document.addEventListener("pointermove", handlePointerMove.bind(this));
-		document.addEventListener("pointerup", handlePointerUp.bind(this));
+		document.addEventListener("pointerdown", handlePointerDown.bind(this), {
+			passive: false,
+		});
+		document.addEventListener("pointermove", handlePointerMove.bind(this), {
+			passive: false,
+		});
+		document.addEventListener("pointerup", handlePointerUp.bind(this), {
+			passive: false,
+		});
 
 		this.startY = 0;
+		this.rawValue;
+		this.rawX = 0;
+		this.pX = 0;
+
+		this.startEffectPosition = 0;
 
 		function handlePointerDown(e) {
+			this.boundingClientRect = this.el.getBoundingClientRect();
+			this.width = this.boundingClientRect.width;
 			if (e.target == this.el || this.el.contains(e.target)) {
+				this.rawX = e.clientX - this.boundingClientRect.left;
+				this.startEffectPosition = e.clientY;
+				this.pX = this.rawX;
+				this.rawValue = (this.rawX / this.width) * this.max;
+
 				this.inputElement.value = clamp(
-					Math.floor(
-						((e.clientX - this.boundingClientRect.left) / this.width) * this.max
-					),
+					Math.floor(this.rawValue),
 					this.min,
 					this.max
 				);
@@ -323,13 +385,24 @@ class ColorSlider {
 		}
 		function handlePointerMove(e) {
 			if (this.enabled) {
+				var pullDistance = 200;
+				let deltaMultiplier = this.startEffectPosition - e.clientY;
+
+				deltaMultiplier = pullDistance - Math.abs(deltaMultiplier);
+
+				deltaMultiplier = clamp(deltaMultiplier / pullDistance, 0.1, 1);
+
+				let delta = this.pX - (e.clientX - this.boundingClientRect.left);
+
+				this.rawX -= delta * deltaMultiplier;
+				this.rawValue = (this.rawX / this.width) * this.max;
+
 				this.inputElement.value = clamp(
-					Math.floor(
-						((e.clientX - this.boundingClientRect.left) / this.width) * this.max
-					),
+					Math.floor(this.rawValue),
 					this.min,
 					this.max
 				);
+				this.pX = e.clientX - this.boundingClientRect.left;
 				this.inputElement.oninput(this.inputElement, null);
 			}
 		}
@@ -468,15 +541,12 @@ function colorPreviewClickHandler(e) {
 					col.set("hsv.h", "-60").set("hsv.s", "*3").set("hsv.v", "*.3").hex(),
 				]);
 			}
-			debug.log(col.hsv()[0]);
 		}
-		pal = pal.mode("lch").correctLightness().colors(8);
+		pal = pal.mode("lch").correctLightness().colors(10);
 		let rgbPal = pal.map((e) => {
 			return hexToRGB(e);
 		});
-		console.log(col.hex(), pal, true);
-		console.log(rgbPal);
-		new paletteGroup("col.hex()", pal, true);
+		new paletteGroup(paletteName(pal), pal, true);
 		clearTimeout(colPreviewTimeout);
 		clickedOnce = false;
 	}
@@ -552,7 +622,6 @@ function dragLeaveHandler(e) {
 }
 
 async function dropHandler(e) {
-	console.log("File(s) dropped");
 	document
 		.getElementById("color-menu-drop-effect")
 		.classList.remove("color-menu-drop-effect-on");
@@ -563,7 +632,6 @@ async function dropHandler(e) {
 	const dt = e.dataTransfer;
 	if (!dt) return;
 	if (dt.items) {
-		console.log(dt.items);
 		const items = await getAllFileEntries(dt.items);
 		if (!items) return;
 		const files = await Promise.all(
@@ -647,13 +715,6 @@ function addPaletteViewsFromFiles(files) {
 					file,
 					function (err, palette, formatUsed, matchedFileExtension) {
 						if (palette) {
-							console.log(
-								file.name.replaceArray(
-									formatUsed.fileExtensionsPretty.split(", "),
-									""
-								)
-							);
-							console.log(palette);
 							var finPalette = formatAnyPalette(
 								AnyPalette.uniqueColors(palette)
 							).map((e) => {
@@ -702,102 +763,41 @@ function formatAnyPalette(palette) {
 
 var defaultPalettes = [
 	{
-		title: "Default",
+		title: "Lospec Snackbar",
+		creator: "Isa",
 		colors: [
-			"#243d7eff",
-			"#1c3d60ff",
-			"#116066ff",
-			"#1f7e76ff",
-			"#32a68bff",
-			"#17df78ff",
-			"#0df57dff",
-			"#01ffaaff",
-			"#91ffe7ff",
-			"#d9fffdff",
-			"#aaf7ffff",
-			"#8cdcffff",
-			"#73b7ffff",
-			"#4a89ffff",
-			"#2945feff",
-			"#2032a4ff",
-			"#7629c3ff",
-			"#b02468ff",
-			"#d21856ff",
-			"#ed1f4cff",
-			"#ff4d2eff",
-			"#ff8d54ff",
-			"#f9c083ff",
-			"#fffbd6ff",
-			"#ffffffff",
-			"#b48c6cff",
-			"#8e6849ff",
-			"#633a29ff",
-			"#4e2419ff",
-			"#2a0d09ff",
-		],
-	},
-	{
-		title: "dont remember",
-		colors: [
-			"#5ba675ff",
-			"#6bc96cff",
-			"#abdd64ff",
-			"#fcef8dff",
-			"#ffb879ff",
-			"#ea6262ff",
-			"#cc425eff",
-			"#a32858ff",
-			"#751756ff",
-			"#390947ff",
-			"#611851ff",
-			"#873555ff",
-			"#a6555fff",
-			"#c97373ff",
-			"#f2ae99ff",
-			"#ffc3f2ff",
-			"#ee8fcbff",
-			"#d46eb3ff",
-			"#873e84ff",
-			"#1f102aff",
-			"#4a3052ff",
-			"#7b5480ff",
-			"#a6859fff",
-			"#d9bdc8ff",
-			"#ffffffff",
-			"#aee2ffff",
-			"#8db7ffff",
-			"#6d80faff",
-			"#8465ecff",
-			"#834dc4ff",
-			"#7d2da0ff",
-			"#4e187cff",
-		],
-	},
-	{
-		title: "Astralae",
-		colors: [
-			"#fff1aaff",
-			"#fff7dbff",
-			"#ffffffff",
-			"#e0feffff",
-			"#c1f0ffff",
-			"#aee0f7ff",
-			"#71d7fdff",
-			"#14afffff",
-			"#395effff",
-			"#5245e0ff",
-			"#483a99ff",
-			"#7a63f6ff",
-			"#9685fbff",
-			"#bc89fcff",
-			"#d49bf3ff",
-			"#fd8ef1ff",
-			"#ffa9fbff",
-			"#fdbffeff",
-			"#fecdffff",
-			"#fdeafeff",
-			"#67e4ffff",
-			"#5efffeff",
+			"#0b2458",
+			"#0c5c67",
+			"#12916b",
+			"#27e931",
+			"#fff34f",
+			"#f6c23b",
+			"#e97b21",
+			"#d44b49",
+			"#a21839",
+			"#5d093a",
+			"#3e0346",
+			"#7d1475",
+			"#ba2e89",
+			"#f481b0",
+			"#eeb8b4",
+			"#9756c7",
+			"#2c226e",
+			"#11073a",
+			"#2424af",
+			"#4b7cdb",
+			"#6acaf4",
+			"#86ffed",
+			"#fff7e9",
+			"#ffd8a5",
+			"#dd9c60",
+			"#752314",
+			"#4b050a",
+			"#2c0008",
+			"#35281f",
+			"#3c3c3c",
+			"#7f7f7f",
+			"#b8a7b9",
 		],
 	},
 ];
@@ -813,242 +813,83 @@ var filePalettes = [];
 
 class paletteGroup {
 	constructor(title, palette, scroll) {
+		console.log(scroll);
 		if (scroll) {
 			setPickerMode("palette");
 		}
-		var pal = {
+		this.pal = {
 			title: title,
 			colors: palette,
 		};
-		filePalettes.push(pal);
+		filePalettes.push(this.pal);
 		var id = randomString(7);
-		var paletteParent = document.getElementById("palettes");
-		var group = document.createElement("div");
-		group.classList.add("color-palette-group");
-		group.setAttribute("data-palette-id", id);
-		var titleEl = document.createElement("h2");
-		titleEl.classList.add("color-palette-title");
-		titleEl.innerText = title;
+		this.paletteParent = document.getElementById("palettes");
+		this.palette = document.createElement("div");
+		this.palette.classList.add("color-palette-group");
+		this.palette.setAttribute("data-palette-id", id);
+		this.headerEl = document.createElement("div");
+		this.headerEl.classList.add("color-palette-header");
+		this.palette.appendChild(this.headerEl);
 
-		group.appendChild(titleEl);
+		this.titleInput = document.createElement("input");
+		this.titleInput.classList.add("color-palette-title");
+		this.titleInput.type = "text";
+		this.titleInput.value = this.pal.title;
+		this.titleInput.onkeydown = function (e) {
+			if (e.key == "Enter") {
+				this.titleInput.blur();
+			}
+		}.bind(this);
+		this.titleInput.onblur = function (e) {
+			this.pal.title = this.titleInput.value;
+			this.titleInput.style.pointerEvents = "none";
+			this.titleInput.setSelectionRange(0, 0);
+			window.dispatchEvent(window.cloudSyncEvent);
+		}.bind(this);
+
+		this.headerEl.appendChild(this.titleInput);
+
+		this.menuButton = document.createElement("button");
+		this.menuButton.classList.add("color-palette-menu-button");
+		this.menuButton.innerHTML = "<i class='hi-three-dots'></i>";
+		var contextMenu = new ContextMenu(this.menuButton, {
+			buttons: [
+				{
+					icon: "pencil",
+					title: "Rename",
+					action: function () {
+						this.titleInput.focus();
+						this.headerEl.style.pointerEvents = "auto";
+					}.bind(this),
+				},
+				{ type: "divider" },
+				{
+					icon: "carat-up",
+					title: "Popout",
+					action: function () {
+						this.openPopout();
+					}.bind(this),
+				},
+				{ type: "divider" },
+				{
+					color: "red",
+					icon: "trash",
+					title: "Delete",
+					action: function () {
+						this.delete();
+					}.bind(this),
+				},
+			],
+			buttonTarget: this.menuButton,
+		});
+
+		this.headerEl.appendChild(this.menuButton);
+
 		var colorMenu = document.createElement("div");
 		colorMenu.classList.add("ui");
 		colorMenu.classList.add("color-palette-menu");
-		group.appendChild(colorMenu);
-		paletteParent.appendChild(group);
-
-		//TODO rewrite so that this works with more than one palette
-
-		var curX = 0;
-		var startX = 0;
-		var initialX = 0;
-		var curY = 0;
-		var startY = 0;
-		var initialY = 0;
-		var tX = 0;
-		var offsetX = 0;
-		var tY = 0;
-		var offsetY = 0;
-		var mainMoving = false;
-		var limit = 5;
-		var tempNode;
-		var startRect;
-		var subMoving = false;
-		var tempOut = false;
-		var snapped = false;
-
-		var holdTimeout;
-		var holdMovementAllowed = false;
-
-		var _self = this;
-
-		function mouseDownHandler(e, _self) {
-			//only initial press
-			if (holdMovementAllowed && !tempOut) e.preventDefault();
-			if (tempOut) return;
-			startRect = group.getBoundingClientRect();
-			tempNode = group.cloneNode(true);
-			tempNode.style.setProperty("--pX", "-200px");
-			tempNode.style.setProperty("--pY", "-200px");
-			tempNode.querySelector(".color-palette-title").onmouseup = mouseUpHandler;
-			tempNode.querySelector(".color-palette-title").onmousedown =
-				tempNode.querySelector(".color-palette-title").ontouchstart = (e) => {
-					e.preventDefault();
-					startRect = e.target.getBoundingClientRect();
-					if (tempOut) {
-						subMoving = true;
-						startX = e.clientX || e.touches[0].clientX;
-						startY = e.clientY || e.touches[0].clientY;
-						document.querySelectorAll(".color-palette-group").forEach((e) => {
-							e.style.setProperty("z-index", "unset", "important");
-						});
-						group.style.setProperty("z-index", "999", "important");
-						tempNode.style.setProperty("z-index", "1000", "important");
-					}
-				};
-			tempNode.classList.replace(
-				"color-palette-group",
-				"color-palette-standalone"
-			);
-			tempNode.style.width = startRect.width + "px";
-			document.body.appendChild(tempNode);
-			mainMoving = true;
-			startX = e.clientX || e.touches[0].clientX || 0;
-			startY = e.clientY || e.touches[0].clientY || 0;
-			document.querySelectorAll(".color-palette-group").forEach((e) => {
-				e.style.setProperty("z-index", "unset", "important");
-			});
-			holdTimeout = setTimeout(() => {
-				holdMovementAllowed = true;
-				if (isMobile && holdMovementAllowed) {
-					snapped = true;
-					mouseUpHandler();
-					debug.log("canMove");
-					tempNode.classList.add("color-palette-standalone-popout");
-					moveHandler(e);
-					e.preventDefault();
-				}
-			}, 1000);
-			group.style.setProperty("z-index", "999", "important");
-			tempNode.style.setProperty("z-index", "1000", "important");
-		}
-
-		function mouseUpHandler(e, _self) {
-			if (tempNode)
-				tempNode.classList.remove("color-palette-standalone-popout");
-			if (!snapped && tempNode) {
-				clearTimeout(holdTimeout);
-				mainMoving = false;
-				subMoving = false;
-				tempNode.style.setProperty("--pX", "-200px");
-				tempNode.style.setProperty("--pY", "-200px");
-				tempNode.remove();
-			}
-			if (tempOut) {
-				mouseUpSub();
-				return;
-			}
-			if (tempOut == false) {
-				//if the node has not snapped out
-				mainMoving = false;
-				if (snapped) tempOut = true;
-				subMoving = true;
-				offsetX = curX;
-				offsetY = curY;
-				var timeout = setInterval(() => {
-					var nX = lerp(curX, initialX, 0.1);
-					var nY = lerp(curY, initialY, 0.1);
-					group.style.transform = `translate(${Math.round(nX)}px, ${Math.round(
-						nY
-					)}px)`;
-					curX = nX;
-					curY = nY;
-
-					if (
-						Math.abs(curX - initialX) < 0.1 &&
-						Math.abs(curY - initialY) < 0.1
-					) {
-						curX = initialX;
-						curY = initialY;
-						group.style.transform = "unset";
-						clearTimeout(timeout);
-					}
-				}, 2);
-			} else {
-				return;
-			}
-		}
-
-		function mouseUpSub() {
-			subMoving = false;
-		}
-		document.addEventListener("mouseup", mouseUpHandler);
-		document.addEventListener("touchend", mouseUpHandler);
-		document.addEventListener("pointermove", (e) => {
-			moveHandler(e, _self);
-		});
-		titleEl.onmouseup = titleEl.ontouchend = (e) => {
-			mouseUpHandler(e, _self);
-		};
-		titleEl.onmousedown = titleEl.ontouchstart = (e) => {
-			mouseDownHandler(e, _self);
-		};
-
-		function moveHandler(e, _self) {
-			if (holdMovementAllowed) {
-				e.preventDefault();
-			}
-			var cX, cY;
-			if (e.touches) {
-				cX = e.touches[0].clientX;
-				cY = e.touches[0].clientY;
-			} else {
-				cX = e.clientX;
-				cY = e.clientY;
-			}
-			var x = cX - startX || 0;
-			var y = cY - startY || 0;
-			if (mainMoving && isMobile) {
-				if (Math.abs(x) > 10 || Math.abs(y) > 10) {
-					clearTimeout(holdTimeout);
-				}
-			} else if (mainMoving && !isMobile) {
-				curX = lerp(x, 0, 0.7);
-				curY = lerp(y, 0, 0.7);
-				group.style.transform = `translate(${Math.ceil(curX)}px, ${Math.ceil(
-					curY
-				)}px)`;
-				tempNode.style.setProperty(
-					"--pX",
-					`${startRect.x + Math.ceil(curX) - 8}px`
-				);
-				tempNode.style.setProperty(
-					"--pY",
-					`${startRect.y + Math.ceil(curY) - 8}px`
-				);
-				if (Math.abs(curX) > 100 || Math.abs(curY) > 100) {
-					snapped = true;
-					mouseUpHandler();
-					debug.log("snapped");
-				}
-				return;
-			}
-			if (!tempNode) return;
-			if (!subMoving) return;
-			if (subMoving) {
-				if (holdMovementAllowed && isMobile) {
-					tX = x - offsetX;
-					tY = y - offsetY;
-					tempNode.style.setProperty(
-						"--pX",
-						`${startRect.x + Math.ceil(tX) - 14}px`
-					);
-					tempNode.style.setProperty(
-						"--pY",
-						`${startRect.y + Math.ceil(tY) - 12}px`
-					);
-				} else if (!isMobile) {
-					var timeout = setInterval(() => {
-						offsetX = lerp(0, offsetX, 0.99);
-						offsetY = lerp(0, offsetY, 0.99);
-						if (Math.abs(offsetX) < 0.1 && Math.abs(offsetY) < 0.1) {
-							offsetX = 0;
-							offsetY = 0;
-						}
-					}, 2);
-					tX = x - offsetX;
-					tY = y - offsetY;
-					tempNode.style.setProperty(
-						"--pX",
-						`${startRect.x + Math.ceil(tX) - 8}px`
-					);
-					tempNode.style.setProperty(
-						"--pY",
-						`${startRect.y + Math.ceil(tY) - 30}px`
-					);
-				}
-			}
-		}
+		this.palette.appendChild(colorMenu);
+		this.paletteParent.appendChild(this.palette);
 
 		palette.forEach((x, i) => {
 			var color = new Color(x);
@@ -1064,6 +905,8 @@ class paletteGroup {
 					e.style.opacity = 1;
 				}, 200);
 			}
+			e.innerHTML = color.name;
+			e.style.color = color.contrastingColor;
 			e.classList.add("palette-color");
 			e.style.setProperty("--color", color.hex);
 			e.addEventListener("click", () => {
@@ -1077,10 +920,109 @@ class paletteGroup {
 		canvasInterface.setColor(new Color(palette[0]));
 		var rect = colorMenu.getBoundingClientRect();
 		var colorMenu = document.getElementById("color-menu");
-		if (scroll)
+		this.createPopout();
+		if (scroll){
 			document
 				.getElementById("color-menu-palette-panel")
 				.scrollTo({ behavior: "smooth", top: colorMenu.scrollTop + rect.top });
+				window.dispatchEvent(window.cloudSyncEvent);}
+	}
+	delete(){
+
+		if(filePalettes.length == 1) return;
+		
+		var i = filePalettes.findIndex((x) => x == this.pal)
+
+		if(i > -1){
+			filePalettes.splice(i, 1)
+		}
+		this.paletteParent.removeChild(this.palette)
+		window.dispatchEvent(window.cloudSyncEvent);
+	}
+	createPopout() {
+		
+		this.popout = document.createElement("div");
+		this.popout.classList.add("color-palette-popout");
+		this.popoutHeader = document.createElement("div");
+		this.popoutHeader.classList.add("color-palette-header");
+		this.popout.appendChild(this.popoutHeader);
+
+		this.popoutTitle = document.createElement("h2");
+		this.popoutTitle.classList.add("color-palette-title");
+		this.popoutTitle.style.pointerEvents = "all";
+		this.popoutTitle.innerText = this.pal.title;
+		this.popoutHeader.appendChild(this.popoutTitle);
+
+		this.popoutClose = document.createElement("button");
+		this.popoutClose.classList.add("color-palette-menu-button");
+		this.popoutClose.innerHTML = "<i class='hi-x'></i>";
+		this.popoutClose.onclick = this.closePopout.bind(this)
+		this.popoutHeader.appendChild(this.popoutClose);
+		this.popoutRect = this.popout.getBoundingClientRect();
+		
+		this.popoutMove = false;
+		this.movePX = 0;
+		this.movePY = 0;
+
+		this.popoutTitle.onpointerdown = function (e) {
+			this.popoutRect = this.popout.getBoundingClientRect();
+			this.canvasParentRect = canvasInterface.canvasParent.getBoundingClientRect();
+			this.popoutMove = true;
+			this.movePX = e.clientX;
+			this.movePY = e.clientY;
+			console.log("asf")
+		}.bind(this)
+		document.addEventListener("pointermove", function(e) {
+			if(this.popoutMove){
+				var padding = 5
+				this.popout.style.top = Math.max(padding + 50, Math.min(this.popoutRect.top + (e.clientY - this.movePY), window.innerHeight - this.popoutRect.height - padding)) + "px";
+				this.popout.style.left = Math.max(padding, Math.min(this.popoutRect.left + (e.clientX - this.movePX), window.innerWidth - this.popoutRect.width - padding)) + "px";
+			}
+		}.bind(this))
+		document.addEventListener("pointerup", function(e) {
+			this.popoutMove = false;
+		}.bind(this))
+
+
+		
+		var colorMenu = document.createElement("div");
+		colorMenu.classList.add("ui");
+		colorMenu.classList.add("color-palette-menu");
+		this.popout.appendChild(colorMenu);
+
+		this.pal.colors.forEach((x, i) => {
+			var color = new Color(x);
+			if (!setCurrent && typeof canvasInterface !== "undefined") {
+				setCurrent = true;
+			}
+			let e = document.createElement("div");
+			e.setAttribute("data-palette-color", color.hexh);
+			
+			e.innerHTML = color.name;
+			e.style.color = color.contrastingColor;
+			e.classList.add("palette-color");
+			e.style.setProperty("--color", color.hex);
+			e.addEventListener("click", () => {
+				pickerColor = color;
+				updatePickerColor();
+				canvasInterface.setColor(color);
+			});
+			colorMenu.appendChild(e);
+		});
+
+
+		document.body.appendChild(this.popout);
+
+	}
+	openPopout(){
+		//center popout
+		this.popout.style.top = window.innerHeight / 2 - this.popout.offsetHeight / 2 + "px";
+		this.popout.style.left = window.innerWidth / 2 - this.popout.offsetWidth / 2 + "px";
+
+		this.popout.classList.add("color-palette-popout-open");
+	}
+	closePopout(){
+		this.popout.classList.remove("color-palette-popout-open");
 	}
 }
 
@@ -1088,7 +1030,7 @@ function preparePalette() {
 	window.colors.forEach((g) => {
 		var title = truncate(g.title);
 		var palette = g.colors;
-		new paletteGroup(title, palette);
+		new paletteGroup(title, palette, g.creator);
 	});
 }
 
@@ -1105,4 +1047,12 @@ function setPickerMode(m) {
 	document
 		.getElementById(`color-mode-${m}`)
 		.classList.add("color-menu-tabbar-button-active");
+}
+
+function initEyedropper(clientX, clientY) {
+	canvasInterface.eyedropperPreviewElement.style.top = clientY + "px";
+	canvasInterface.eyedropperPreviewElement.style.left = clientX + "px";
+	canvasInterface.eyedropperPreviewElement.classList.add(
+		"eyedropper-preview-visible"
+	);
 }

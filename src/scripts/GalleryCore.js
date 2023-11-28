@@ -138,6 +138,11 @@ window.onload = async function () {
 		theme: "bitshift-confirmation",
 		behavior: "overwrite",
 	});
+	const namedCols = window.namedColors.reduce(
+		(o, { name, hex }) => Object.assign(o, { [name]: hex }),
+		{}
+	);
+	nCol = nearestColor.from(namedCols);
 	window.colors = defaultPalettes;
 
 	refreshAllNumberDraggables();
@@ -150,34 +155,130 @@ window.onload = async function () {
 	const {
 		data: { user },
 	} = await supabase.auth.getUser();
-	populateProjects();
 };
 function populateProjects() {
-	document.getElementById("galleryWrapper").innerHTML = "";
+	document.getElementById("galleryWrapper").innerHTML =
+		"<i class='hi-loading-outline loading-icon'></i>";
 	queryProjects().then(() => {
+		document.getElementById("galleryWrapper").innerHTML = "";
 		[...window.allLoadedProjects].reverse().forEach((project) => {
-			console.log(project.name);
-			var orientation = "";
-			if (project.data.width > project.data.height) {
-				orientation = "--width: var(--maxSize)";
-			} else if (project.data.width < project.data.height) {
-				orientation = "--height: var(--maxSize)";
-			} else {
-				orientation = "--width: var(--maxSize); --height: var(--maxSize)";
-			}
-			var html = `
-			<button class="galleryCard" onclick="openProject('${project.id}')">
-			  <br><div class="cardImage" style="${orientation}">
-				<img src="${project.data.previewImage}" alt="">
-			  </div><div>
-			  <div class="cardTitle">${project.name}</div>
-			  <div class="cardDetails">${project.data.width}px x ${project.data.height}px</div>
-			  </div></button>
-			`;
-			document.getElementById("galleryWrapper").innerHTML += html;
+			new ProjectCard(project);
 		});
-		console.log(window.allLoadedProjects);
 	});
+}
+class ProjectCard {
+	constructor(project) {
+		this.project = project;
+		this.orientation = "";
+		if (project.data.width > project.data.height) {
+			this.orientation = "--width: var(--maxSize)";
+		} else if (project.data.width < project.data.height) {
+			this.orientation = "--height: var(--maxSize)";
+		} else {
+			this.orientation = "--width: var(--maxSize); --height: var(--maxSize)";
+		}
+		this.card = document.createElement("button");
+		this.card.classList.add("galleryCard");
+    
+    this.doubleClick = false;
+		this.card.onclick = () => {
+      if(isMobile) {
+        openProject(this.project.id)
+      }else {
+        if(this.doubleClick) {
+          openProject(this.project.id)
+        }
+        this.doubleClick = true
+        setTimeout(() => {
+          this.doubleClick = false
+        }, 200)
+      }
+		};
+
+		this.cardImage = document.createElement("div");
+		this.cardImage.classList.add("cardImage");
+		this.card.style = this.orientation;
+
+		this.cardImageImg = document.createElement("img");
+		this.cardImageImg.src = project.data.previewImage;
+		this.cardImageImg.alt = "";
+
+		this.cardTitleWrapper = document.createElement("div")
+		this.cardTitleWrapper.classList.add("card-title-wrap")
+		this.cardOptionsButton = document.createElement("button")
+		this.cardOptionsButton.innerHTML = "<i class='hi-three-dots-mono'></i>"
+		this.cardOptionsButton.classList.add("card-options")
+		this.cardOptionsButton.onclick = ()=>{ 
+			console.log("asdfasdf")
+		}
+		
+
+		this.cardTitle = document.createElement("div");
+    this.cardTitle.setAttribute('contenteditable', 'false')
+		this.cardTitle.classList.add("cardTitle");
+		this.cardTitle.innerText = project.name;
+		this.cardTitle.title = project.name
+    this.cardTitle.spellcheck = false;
+
+    
+    this.cardTitle.onkeydown = function(e) {
+      if(e.key == "Enter"){
+        this.cardTitle.blur()
+      }
+    }.bind(this)
+    this.cardTitle.onblur = function(e) {
+      notify.log(this.cardTitle.innerHTML)
+      this.cardTitle.style.pointerEvents = "none";
+      this.project.data.name = this.cardTitle.innerHTML
+      updateProject(this.project.id, this.project.data)
+    }.bind(this)
+
+		this.cardDetails = document.createElement("div");
+		this.cardDetails.classList.add("cardDetails");
+		this.cardDetails.innerText = `${project.data.width}px x ${project.data.height}px`;
+
+		this.cardImage.appendChild(this.cardImageImg);
+		this.card.appendChild(document.createElement("br"));
+		var div = document.createElement("div");
+		this.cardTitleWrapper.appendChild(this.cardTitle)
+		this.cardTitleWrapper.appendChild(this.cardOptionsButton)
+		div.appendChild(this.cardTitleWrapper);
+		div.appendChild(this.cardDetails);
+		this.card.appendChild(this.cardImage);
+		this.card.appendChild(div);
+		document.getElementById("galleryWrapper").appendChild(this.card);
+
+    var contextMenu = new ContextMenu(this.card, {
+      buttons: [
+        {
+          icon: "pencil",
+          title: "Rename",
+          action: function () {
+            this.cardTitle.setAttribute('contenteditable', 'true')
+            this.cardTitle.focus();
+            this.cardTitle.style.pointerEvents = "auto";
+          }.bind(this),
+        },
+        { type: "divider" },
+        {
+          color: "red",
+          icon: "trash",
+          title: "Delete",
+          action: function () {
+            //this.delete();
+            new ConfirmModal("Delete Project", "Are you sure you want to delete this project? This cannot be undone.", "Delete", "Cancel", this.delete.bind(this), null)
+          }.bind(this),
+        },
+      ],
+      touchTarget: this.previewCanvas,
+	  onRightClick: false,
+	  buttonTarget: this.cardOptionsButton,
+	  contextPlacement: "bottom"
+    });
+	}
+  delete() { 
+    deleteProject(this.project.id)
+  }
 }
 function openProject(id) {
 	window.location.href = "/draw#" + id;
@@ -228,7 +329,6 @@ function setPreset(w, h, el) {
 
 function populatePresets() {
 	var parent = document.getElementById("file-presets");
-	console.log(presets);
 
 	for (let i = 0; i < presets.length; i++) {
 		let preset = presets[i];

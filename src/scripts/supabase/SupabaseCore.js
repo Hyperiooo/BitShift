@@ -9,14 +9,11 @@ window.currentProject;
 window.currentUserMeta;
 
 supabase.auth.onAuthStateChange(async (event, session) => {
-	console.log(event);
-	const {
-		data: { user },
-	} = await supabase.auth.getUser();
-	window.currentUser = user;
+	window.currentUser = session.user;
 	if (event == "SIGNED_IN") {
 		queryUserMeta();
 		queryProjects();
+		if(typeof populateProjects === "function")populateProjects();
 	} else if (event == "SIGNED_OUT") {
 		generateProjectList();
 		if (
@@ -238,6 +235,21 @@ async function updateProject(id, dat) {
 		postCloudSync();
 	}
 	queryProjects();
+}
+
+async function deleteProject(id){
+	console.log(id)
+	const { error } = await supabase.from("projects").delete().eq("id", id)
+	
+	if(error){
+		console.log(error)
+		cloudSyncError()
+	}
+	else{
+		queryProjects()
+		populateProjects()
+	}
+	
 }
 
 function selectProject(pID) {

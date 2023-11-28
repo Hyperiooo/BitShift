@@ -131,56 +131,56 @@ class Canvas {
 		this.currentX = 0;
 		this.currentY = 0;
 
+		this.rawGlobalMouseX = 0;
+		this.rawGlobalMouseY = 0;
+
 		this.canvAngle = 0;
 		this.canvCenterX = 0;
 		this.canvCenterY = 0;
 		this.zoom = new SuperZoom(this.inputLayer, {
 			minZoom: 0.25,
-			initialAngle: 45,
+			initialAngle: 0,
 			initialZoom: settings.ui.canvasScale,
 			onTransform: function (e) {
-				
 				if (!this.zoom.getTransform) return;
 				var transf = this.zoom.getTransform();
 				this.setCanvScale(transf.scale);
 				this.canvAngle = transf.angle;
-				var r = this.inputLayer.getBoundingClientRect()
-				document.body.style.setProperty(
-					"--panzoomTransformOrigin",
-					transf.origin
-				);
-				document.body.style.setProperty("--panzoomTransform", transf.transform);
-				var xPos = r.x
-				var yPos = r.y
-				var rotations = (Math.floor(transf.angle / 90) < 0 ?4 - Math.abs( Math.floor(transf.angle/90)) : Math.floor(transf.angle/90)) % 4
-				if(rotations == 0) {
-					xPos  +=(transf.height * Math.sin(this.zoom.toRadians(transf.angle)))
-				}else if (rotations == 1) {
-					xPos += r.width
-					yPos  -= (transf.height * Math.cos(this.zoom.toRadians(transf.angle)))
-				
-				}else if (rotations == 2) {
-					yPos += r.height
-					xPos  += r.width + (transf.height * Math.sin(this.zoom.toRadians(transf.angle)))
-				}else if (rotations == 3) {
-					yPos  -= (transf.width * Math.sin(this.zoom.toRadians(transf.angle)))
-				
+			}.bind(this),
+
+			onTouchPanComplete: function (e, x, y) {
+				var threshold = 5;
+				var snapAngle = 90;
+				var targetAngle = snapAngle * Math.round(e.angle / snapAngle);
+				var curAngle = e.angle;
+				var transf = {
+					angle: curAngle,
+				};
+				if (
+					e.angle % snapAngle < threshold ||
+					e.angle % snapAngle > snapAngle - threshold
+				) {
+					//rn();
+					var am = anime({
+						targets: transf,
+						angle: targetAngle,
+						duration: 100,
+						easing: "easeOutCirc",
+						update: function () {
+							if (this.zoom.transforming) am.pause();
+							this.zoom.rotateTo(
+								transf.angle,
+								x,
+								y
+							);
+						}.bind(this),
+					});
 				}
-				document.body.style.setProperty("--scale", transf.scale)
-				document.body.style.setProperty("--angle", transf.angle + "deg")
-				document.body.style.setProperty("--scaledX", xPos + "px");
-				document.body.style.setProperty("--scaledY", yPos + "px");
-
-				document.body.style.setProperty("--scaledWidth", transf.width + "px");
-
-				document.body.style.setProperty("--scaledHeight", transf.height + "px");
 			}.bind(this),
 			validateMousePan: function (e) {
-				console.log("a", e.button);
 				if (e.button == 1) return true;
 			},
 			validateTouchPan: function (e) {
-				console.log("b", e.touches.length);
 				if (e.touches.length == 2) return true;
 			},
 			zoomStep: 10,
@@ -189,12 +189,20 @@ class Canvas {
 			snapRotationTolerance: 10,
 		});
 		setTimeout(() => {
-			this.zoom.options.onTransform().bind(this);
+			this.zoom.options.onTransform()
 		}, 1);
 		setTimeout(() => {
-			this.zoom.setRotationOrigin(0, 0);
-			this.zoom.recenter();
-		}, 10);
+			var targetX = (window.innerWidth - this.width * settings.ui.canvasScale) / 2;
+			var targetY = (window.innerHeight - this.height * settings.ui.canvasScale) / 2;
+			
+			this.zoom.zoomTo(
+				settings.ui.canvasScale,
+				window.innerWidth / 2,
+				window.innerHeight / 2
+			);
+			this.zoom.rotateTo(0);
+			this.zoom.moveTo(targetX, targetY);
+		}, 1);
 
 		this.panning = false;
 
@@ -218,11 +226,14 @@ class Canvas {
 			if (e.touches && e.touches.length > 1) {
 				this.panning = true;
 				return;
-			} 
+			}
 
 			if (e.button) {
 				if (e.button != 0) return;
 			}
+
+			this.rawGlobalMouseX = e.clientX || e.touches[0].clientX;
+			this.rawGlobalMouseY = e.clientY || e.touches[0].clientY;
 
 			this.inputActive(e);
 		};
@@ -249,6 +260,8 @@ class Canvas {
 		this.canvasParent.addEventListener("touchend", this.touchEndEvent);
 		this.canvasParent.addEventListener("mouseup", this.mouseUpEvent);
 		this.canvasParent.addEventListener("touchstart", this.clickEvent);
+
+		renderCanvas();
 	}
 	recenter() {
 		var targetCanvasScale;
@@ -262,7 +275,9 @@ class Canvas {
 		}
 		var targetX = (window.innerWidth - this.width * targetCanvasScale) / 2;
 		var targetY = (window.innerHeight - this.height * targetCanvasScale) / 2;
-		var targetCanvasAngle = 0;
+		var snapAngle = 90;
+		var targetCanvasAngle =
+			snapAngle * Math.round({ ...this.zoom.getTransform() }.angle / snapAngle);
 		var _self = this;
 		var transf = {
 			x: { ...this.zoom.getTransform() }.x,
@@ -277,9 +292,9 @@ class Canvas {
 			transf.angle == targetCanvasAngle
 		)
 			return;
-		this.zoom.setRotationOriginPercent(0.5, 0.5);
+		this.zoom.rotateTo({ ...this.zoom.getTransform() }.angle);
 
-		anime({
+		var am = anime({
 			targets: transf,
 			x: targetX,
 			y: targetY,
@@ -288,6 +303,7 @@ class Canvas {
 			duration: 300,
 			easing: "spring(0.5, 100, 10, 0)",
 			update: function () {
+				if (this.zoom.transforming) am.pause();
 				this.zoom.zoomTo(
 					transf.scale,
 					window.innerWidth / 2,
@@ -312,8 +328,10 @@ class Canvas {
 		closeAllToolPopups();
 		updatePrevious(this.color);
 		
+		var clientX = e.clientX || e.touches[0].clientX;
+		var clientY = e.clientY || e.touches[0].clientY;
 
-		var {rawX, rawY, x, y} = this.getCoordinatesFromInputEvent(e)
+		var { rawX, rawY, x, y } = this.getCoordinatesFromInputEvent(e);
 		if (
 			Tools.circle ||
 			Tools.ellipse ||
@@ -329,11 +347,14 @@ class Canvas {
 			this.sX = x;
 			this.sY = y;
 		}
+
+		if(Tools.eyedropper) {
+			initEyedropper(clientX, clientY)
+		}
 		this.touching = true;
 
 		this.undoBuffer = layer.canvasElement.toDataURL();
 	}
-
 
 	inputUp(e, wasPanning) {
 		if (
@@ -350,7 +371,7 @@ class Canvas {
 			this.clearPreview();
 			this.tempL = [];
 		}
-		if (Tools.rectangleMarquee) {
+		if (Tools.rectangleMarquee && !wasPanning) {
 			var p;
 			if (settings.tools.selectionMode.value == "replace") {
 				selectionPath = [];
@@ -392,7 +413,7 @@ class Canvas {
 			this.clearPreview();
 			this.tempL = [];
 		}
-		if (Tools.ellipseMarquee) {
+		if (Tools.ellipseMarquee && !wasPanning) {
 			var p;
 			if (settings.tools.selectionMode.value == "replace") {
 				selectionPath = [];
@@ -466,11 +487,16 @@ class Canvas {
 			window.dispatchEvent(window.cloudSyncEvent);
 		}
 	}
-	getCoordinatesFromInputEvent(e) {
-		
+	getCoordinatesFromInputEvent(e, xi, yi) {
 		var rect = this.inputLayer.getBoundingClientRect();
-		var x = e.clientX - rect.left || e.touches[0].clientX - rect.left || -1;
-		var y = e.clientY - rect.top || e.touches[0].clientY - rect.top || -1;
+		var x, y;
+		if(e) {
+			var x = e.clientX - rect.left || e.touches[0].clientX - rect.left || -1;
+			var y = e.clientY - rect.top || e.touches[0].clientY - rect.top || -1;
+		}else {
+			x = xi - rect.left
+			y = yi - rect.top;
+		}
 		var centerX = rect.width / 2;
 		var centerY = rect.height / 2;
 		x -= centerX;
@@ -483,12 +509,12 @@ class Canvas {
 
 		var rawX = (x + centerX) / this.canvScale;
 		var rawY = (y + centerY) / this.canvScale;
-    	rawX += (0.5 - ((rect.width /(this.canvScale * this.width) )    / 2) ) * this.width;
-    	rawY += (0.5 - ((rect.height / (this.canvScale * this.height) ) / 2)) * this.height;
+		rawX += (0.5 - rect.width / (this.canvScale * this.width) / 2) * this.width;
+		rawY +=
+			(0.5 - rect.height / (this.canvScale * this.height) / 2) * this.height;
 		x = Math.floor(rawX);
 		y = Math.floor(rawY);
-		return {rawX, rawY, x, y}
-
+		return { rawX, rawY, x, y };
 	}
 	inputActive(e) {
 		this.touching = true;
@@ -498,7 +524,7 @@ class Canvas {
 		var clientX = e.clientX || e.touches[0].clientX;
 		var clientY = e.clientY || e.touches[0].clientY;
 
-		var {rawX, rawY, x, y} = this.getCoordinatesFromInputEvent(e)
+		var { rawX, rawY, x, y } = this.getCoordinatesFromInputEvent(e);
 		this.currentX = x;
 		this.currentY = y;
 		this.lastKnownX = x;
@@ -509,6 +535,10 @@ class Canvas {
 		}
 		if (Tools.sprayPaint) {
 			drawSprayPreview(x, y);
+		}
+		if (Tools.eyedropper) {
+			initEyedropper(clientX, clientY)
+			this.setColor(this.getEyedropperPixelCol(new Point(x, y)));
 		}
 		if (e.buttons != 0) {
 			//calls whenever there is touch
@@ -631,21 +661,6 @@ class Canvas {
 				this.sX = x;
 				this.sY = y;
 				this.ctx.globalCompositeOperation = "source-over";
-			} else if (Tools.eyedropper) {
-				this.eyedropperPreviewElement.style.top = clientY + "px";
-				this.eyedropperPreviewElement.style.left = clientX + "px";
-				this.eyedropperPreviewElement.classList.add(
-					"eyedropper-preview-visible"
-				);
-				this.eyedropperPreviewCanvas.style.setProperty(
-					"--x",
-					rawX / this.width
-				);
-				this.eyedropperPreviewCanvas.style.setProperty(
-					"--y",
-					rawY / this.width
-				);
-				this.setColor(this.getEyedropperPixelCol(new Point(x, y)));
 			}
 			if (preview) {
 				this.clearPreview();
@@ -766,11 +781,9 @@ class Canvas {
 							this.tempL = filledEllipse(q.x1, q.y1, q.x2, q.y2);
 						var p;
 						for (p of this.tempL) this.pDraw(p);
-						//if(this.ctrlKey) console.log('control hehe')
 					}
 				}
 				if (Tools.line) {
-					console.log("a");
 					let c = new Point(this.sX, this.sY);
 					this.tempL = line(c, new Point(x, y));
 					var p;
@@ -970,6 +983,10 @@ class Canvas {
 			var y = coord.y;
 			if (x === undefined || y === undefined) return;
 			this.ctx.globalCompositeOperation = "source-over";
+			if(layer.settings.alpha){
+				this.ctx.globalCompositeOperation = "source-atop";
+
+			}
 			if (isSelected()) {
 				this.ctx.save();
 				var clipPath = new Path2D();
@@ -1123,6 +1140,7 @@ class Canvas {
 	}
 	erase(coord) {
 		if (coord.constructor.name == "Point") {
+			this.canvasUpdated = true;
 			var x = coord.x;
 			var y = coord.y;
 			if (isSelected()) {
@@ -1143,6 +1161,7 @@ class Canvas {
 				this.ctx.fillRect(x, y, 1, 1);
 			}
 		} else if (coord.constructor.name == "Rect") {
+			this.canvasUpdated = true;
 			var x1 = coord.x1;
 			var y1 = coord.y1;
 			var x2 = coord.x2;
@@ -1279,7 +1298,6 @@ class Canvas {
 		var imgData = this.ctx.getImageData(0, 0, this.width, this.height);
 
 		var pixel = (p.y * this.width + p.x) * 4;
-		console.log(imgData.data[pixel + 3]);
 		return new Color({
 			r: imgData.data[pixel],
 			g: imgData.data[pixel + 1],
@@ -1307,9 +1325,7 @@ class Canvas {
 
 	fillerNonContiguous(p) {
 		var src = this.getPixelCol(p).rgba;
-		console.log(src);
 		var im = this.ctx.getImageData(0, 0, this.width, this.height);
-		console.log(im.data[0], im.data[1], im.data[2], im.data[3]);
 		for (var i = 0; i < im.data.length; i += 4) {
 			if (
 				im.data[i] === src.r &&

@@ -1,54 +1,130 @@
 var cursors = {
-	crosshair: {
-		img: "assets/cursors/crosshair.png",
-		width: 7,
-		height: 7,
-		origin: [0.5, 0.5],
+	resize: (angle = 0) => {
+		var bg = getComputedStyle(document.documentElement).getPropertyValue(
+			"--bg100"
+		);
+		var txt = getComputedStyle(document.documentElement).getPropertyValue(
+			"--textMain"
+		);
+
+		var handleCursorSVG = `<svg xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1" viewBox="0 0 32 32" width="30" height="30">
+				<defs>
+				  <style>
+				  .cls-1 {
+					fill: ${bg};
+				  }
+			
+				  .cls-2 {
+					fill: ${txt};
+				  }
+				  .shadow {
+					filter: drop-shadow( 1px 1px 2px rgba(0, 0, 0, .35));
+					/* Similar syntax to box-shadow */
+				  }
+				  </style>
+				</defs>
+				<g class="shadow">
+				   <g xmlns="http://www.w3.org/2000/svg" transform-origin="15 15" transform="rotate(${
+					angle
+						})">
+						<path class="cls-2" d="m28.3,14.35l-3.84-3.84c-.91-.91-2.39-.91-3.3,0-.91.91-.91,2.39,0,3.3l.2.2h-10.7l.2-.2c.91-.91.91-2.39,0-3.3-.91-.91-2.39-.91-3.3,0l-3.84,3.84c-.44.44-.68,1.03-.68,1.65s.25,1.21.68,1.65l3.84,3.84c.46.46,1.05.68,1.65.68s1.2-.23,1.65-.68c.91-.91.91-2.39,0-3.3l-.2-.2h10.7l-.2.2c-.91.91-.91,2.39,0,3.3.46.46,1.05.68,1.65.68s1.2-.23,1.65-.68l3.84-3.84c.44-.44.68-1.03.68-1.65s-.25-1.21-.68-1.65Z"/>
+  				<path class="cls-1" d="m27.35,15.3l-3.84-3.84c-.39-.39-1.01-.39-1.4,0s-.39,1.01,0,1.4l2.15,2.15H7.74l2.15-2.15c.39-.39.39-1.01,0-1.4s-1.01-.39-1.4,0l-3.84,3.84c-.19.19-.29.44-.29.7s.1.51.29.7l3.84,3.84c.19.19.45.29.7.29s.51-.1.7-.29c.39-.39.39-1.01,0-1.4l-2.15-2.15h16.51l-2.15,2.15c-.39.39-.39,1.01,0,1.4.19.19.45.29.7.29s.51-.1.7-.29l3.84-3.84c.19-.19.29-.44.29-.7s-.1-.51-.29-.7Z"/>
+  				</g>
+  				</g>
+			  </svg>`;
+
+		var encoded = btoa(handleCursorSVG);
+
+		return `url("data:image/svg+xml;base64,${encoded}") 15 15, ${defaultCursor}`;
 	},
-	eyedropper: {
-		img: "assets/cursors/eyedropper.png",
-		width: 16,
-		height: 16,
-		origin: [0, 1],
+	rotate: (angle = 0)=> {
+		var bg = getComputedStyle(document.documentElement).getPropertyValue(
+			"--bg100"
+		);
+		var txt = getComputedStyle(document.documentElement).getPropertyValue(
+			"--textMain"
+		);
+
+		var handleCursorSVG = `
+				<svg xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1" viewBox="0 0 32 32" width="30" height="30">
+				<defs>
+				  <style>
+				  .cls-1 {
+					fill: ${bg};
+				  }
+			
+				  .cls-2 {
+					fill: ${txt};
+				  }
+				  .shadow {
+					filter: drop-shadow( 1px 1px 2px rgba(0, 0, 0, .35));
+					/* Similar syntax to box-shadow */
+				  }
+				  </style>
+				</defs>
+				<g class="shadow">
+				   <g xmlns="http://www.w3.org/2000/svg" transform-origin="15 15" transform="rotate(${
+							angle
+						})">
+						<path class="cls-2" d="m26.65,15.13c-1.1,0-1.99.89-1.99,1.99v.14l-.02-.02c-4.76-4.76-12.51-4.76-17.27,0l-.02.02v-.14c0-1.1-.89-1.99-1.99-1.99s-1.99.89-1.99,1.99v5.44c0,1.1.89,1.99,1.99,1.99h5.44c1.1,0,1.99-.89,1.99-1.99s-.89-1.99-1.99-1.99h-.14l.02-.02c2.94-2.94,7.72-2.94,10.66,0l.02.02h-.14c-1.1,0-1.99.89-1.99,1.99s.89,1.99,1.99,1.99h5.44c1.1,0,1.99-.89,1.99-1.99v-5.44c0-1.1-.89-1.99-1.99-1.99Z"/>
+  						<path class="cls-1" d="m26.65,16.13c-.55,0-.99.44-.99.99v3.04l-1.97-1.97c-4.24-4.24-11.13-4.24-15.37,0l-1.97,1.97v-3.05c0-.55-.44-.99-.99-.99s-.99.44-.99.99v5.44c0,.55.44.99.99.99h5.44c.55,0,.99-.44.99-.99s-.44-.99-.99-.99h-3.04l1.97-1.97c1.68-1.68,3.91-2.6,6.28-2.6s4.6.92,6.28,2.6l1.97,1.97h-3.05c-.55,0-.99.44-.99.99s.44.99.99.99h5.44c.55,0,.99-.44.99-.99v-5.44c0-.55-.44-.99-.99-.99Z"/>
+   </g>
+   </g>
+			  </svg>`;
+
+		var encoded = btoa(handleCursorSVG);
+
+		return `url("data:image/svg+xml;base64,${encoded}") 15 15, ${defaultCursor}`;
+		
 	},
-	fillbucket: {
-		img: "assets/cursors/fillbucket.png",
-		width: 15,
-		height: 15,
-		origin: [0, 1],
-	},
+	move: (angle = 0) => {
+		var bg = getComputedStyle(document.documentElement).getPropertyValue(
+			"--bg100"
+		);
+		var txt = getComputedStyle(document.documentElement).getPropertyValue(
+			"--textMain"
+		);
+
+		var handleCursorSVG = `
+		<svg xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1" viewBox="0 0 32 32" width="30" height="30">
+		<defs>
+		  <style>
+		  .cls-1 {
+			fill: ${bg};
+		  }
+	
+		  .cls-2 {
+			fill: ${txt};
+		  }
+		  .shadow {
+			filter: drop-shadow( 1px 1px 2px rgba(0, 0, 0, .35));
+			/* Similar syntax to box-shadow */
+		  }
+		  </style>
+		</defs>
+		<g class="shadow">
+		   <g xmlns="http://www.w3.org/2000/svg" transform-origin="15 15" transform="rotate(${angle})">
+				<path class="cls-2" d="m28.3,14.35l-2.84-2.84c-.91-.91-2.39-.91-3.3,0-.68.68-.85,1.67-.52,2.5h-3.64v-3.64c.27.11.56.16.85.16.6,0,1.2-.23,1.65-.68.91-.91.91-2.39,0-3.3l-2.84-2.84c-.91-.91-2.39-.91-3.3,0l-2.84,2.84c-.91.91-.91,2.39,0,3.3.68.68,1.67.85,2.5.52v3.64h-3.64c.33-.84.16-1.83-.52-2.5-.91-.91-2.39-.91-3.3,0l-2.84,2.84c-.44.44-.68,1.03-.68,1.65s.25,1.21.68,1.65l2.84,2.84c.46.46,1.05.68,1.65.68s1.2-.23,1.65-.68c.68-.68.85-1.67.52-2.5h3.64v3.64c-.84-.33-1.83-.16-2.5.52-.91.91-.91,2.39,0,3.3l2.84,2.84c.46.46,1.05.68,1.65.68s1.2-.23,1.65-.68l2.84-2.84c.91-.91.91-2.39,0-3.3-.68-.68-1.67-.85-2.5-.52v-3.64h3.64c-.33.84-.16,1.83.52,2.5.46.46,1.05.68,1.65.68s1.2-.23,1.65-.68l2.84-2.84c.44-.44.68-1.03.68-1.65s-.25-1.21-.68-1.65Z"/>
+<path class="cls-1" d="m27.35,15.3l-2.84-2.84c-.39-.39-1.01-.39-1.4,0-.39.39-.39,1.01,0,1.4l1.15,1.15h-7.27v-7.27l1.15,1.15c.19.19.45.29.7.29s.51-.1.7-.29c.39-.39.39-1.01,0-1.4l-2.84-2.84c-.39-.39-1.01-.39-1.4,0l-2.84,2.84c-.39.39-.39,1.01,0,1.4s1.01.39,1.4,0l1.15-1.15v7.27h-7.27l1.15-1.15c.39-.39.39-1.01,0-1.4s-1.01-.39-1.4,0l-2.84,2.84c-.19.19-.29.44-.29.7s.1.51.29.7l2.84,2.84c.19.19.45.29.7.29s.51-.1.7-.29c.39-.39.39-1.01,0-1.4l-1.15-1.15h7.27v7.27l-1.15-1.15c-.39-.39-1.01-.39-1.4,0s-.39,1.01,0,1.4l2.84,2.84c.19.19.45.29.7.29s.51-.1.7-.29l2.84-2.84c.39-.39.39-1.01,0-1.4s-1.01-.39-1.4,0l-1.15,1.15v-7.27h7.27l-1.15,1.15c-.39.39-.39,1.01,0,1.4.19.19.45.29.7.29s.51-.1.7-.29l2.84-2.84c.19-.19.29-.44.29-.7s-.1-.51-.29-.7Z"/></g>
+</g>
+	  </svg>`;
+
+		var encoded = btoa(handleCursorSVG);
+
+		return `url("data:image/svg+xml;base64,${encoded}") 15 15, ${defaultCursor}`;
+		
+	}
 };
 
-var curCursor = "eyedropper";
+var defaultCursor = "crosshair";
+var curCursor = defaultCursor;
 
-document.addEventListener("mousemove",(e) => {
-	
-	if (!e.target.getAttribute) return;
-	cursor.style.left =
-		e.clientX -
-		Math.floor(cursors[curCursor].origin[0] * cursors[curCursor].width) +
-		"px";
-	cursor.style.top =
-		e.clientY -
-		Math.floor(cursors[curCursor].origin[1] * cursors[curCursor].height) +
-		"px";
-	if (e.target.getAttribute("customcursor") == null) {
-		cursor.classList.add("cursor-hidden")
-	} else {
-		cursor.classList.remove("cursor-hidden")
+function cursorOverride(cursor) {
+	if (!cursor) {
+		canvasInterface.canvasParent.style.cursor = defaultCursor;
+		return;
 	}
-})
-
-document.addEventListener("touchmove", e=>{
-	
-	cursor.classList.add("cursor-hidden")
-})
-
-function updateCursor() {
-	document.getElementById("cursor").style.webkitMaskImage =
-		"url(" + cursors[curCursor].img + ")";
-	cursor.style.width = cursors[curCursor].width + "px";
-	cursor.style.height = cursors[curCursor].height + "px";
+	canvasInterface.canvasParent.style.cursor = cursor;
 }
 
 var cursorGroup = document.getElementById("cursorGroup");
@@ -56,34 +132,6 @@ var cursorGroup = document.getElementById("cursorGroup");
 var eraserBufferCanvas = document.createElement("canvas");
 eraserBufferCanvas.id = "eraserBufferCanvas";
 var eraserBufferCtx = eraserBufferCanvas.getContext("2d");
-
-function drawOnSVGCanvas(outlinePath, antiPath) {
-	cursorGroup.innerHTML = "";
-	var svgOffset = 1 / canvasInterface.canvScale;
-	var box = document.createElementNS("http://www.w3.org/2000/svg", "path");
-	var anti = document.createElementNS("http://www.w3.org/2000/svg", "path");
-	var mask = document.createElementNS("http://www.w3.org/2000/svg", "mask");
-	mask.setAttributeNS(null, "id", "mask");
-	//box.setAttributeNS(null, "d", "M 0 0 H 1 V 1 H 0 Z");
-	box.setAttributeNS(null, "d", outlinePath);
-	anti.setAttributeNS(null, "d", antiPath);
-	box.setAttributeNS(null, "fill", "white");
-	anti.setAttributeNS(null, "fill", "black");
-	var fill = document.createElementNS("http://www.w3.org/2000/svg", "rect");
-	fill.setAttributeNS(null, "x", 0);
-	fill.setAttributeNS(null, "y", 0);
-	fill.setAttributeNS(null, "width", canvasInterface.width);
-	fill.setAttributeNS(null, "height", canvasInterface.height);
-	fill.setAttributeNS(null, "fill", "white");
-	var group = document.createElementNS("http://www.w3.org/2000/svg", "g");
-	group.setAttributeNS(null, "mask", "url(#mask)");
-	group.appendChild(fill);
-
-	mask.appendChild(box);
-	mask.appendChild(anti);
-	cursorGroup.appendChild(mask);
-	cursorGroup.appendChild(group);
-}
 
 function pathString(x, y, x2, y2, offset) {
 	return `M ${x - offset} ${y - offset} H ${x2 + offset} V ${
@@ -93,11 +141,6 @@ function pathString(x, y, x2, y2, offset) {
 var svgOffset = 0;
 
 function drawEraserPreview(x, y) {
-	cursorGroup.innerHTML = "";
-	eraserBufferCanvas.width = project.width;
-	eraserBufferCanvas.height = project.height;
-	eraserBufferCtx.clearRect(0, 0, project.width, project.height);
-	eraserBufferCtx.fillStyle = "white";
 	let brushSize = parseInt(settings.tools.eraserBrushSize.value);
 	let r = brushSize - 1;
 	if (Tools.fillBucket) r = 0;
@@ -113,22 +156,35 @@ function drawEraserPreview(x, y) {
 		c = filledEllipse(x - r / 2, y - r / 2, x + r / 2, y + r / 2);
 	}
 	var b;
-	//for (b of c) { eBufDraw(b) }
-	var outlinePath = "";
-	var antiPath = "";
-	for (b of c) {
-		outlinePath += pathString(b.x1, b.y1, b.x2, b.y2, svgOffset);
-		antiPath += pathString(b.x1, b.y1, b.x2, b.y2, 0);
-	}
 
-	drawOnSVGCanvas(outlinePath, antiPath);
+	cursorOutlinePath = [];
+	for (b of c) {
+		var modifierPath = [
+			[
+				{ X: b.x1, Y: b.y1 },
+				{ X: b.x2, Y: b.y1 },
+				{ X: b.x2, Y: b.y2 + 1 },
+				{ X: b.x1, Y: b.y2 + 1 },
+			],
+		];
+		var cpr = new ClipperLib.Clipper();
+		var cliptype = ClipperLib.ClipType.ctUnion;
+
+		cpr.AddPaths(cursorOutlinePath, ClipperLib.PolyType.ptSubject, true);
+		cpr.AddPaths(modifierPath, ClipperLib.PolyType.ptClip, true);
+		var modifiedPaths = new ClipperLib.Paths();
+		cpr.Execute(
+			cliptype,
+			modifiedPaths,
+			ClipperLib.PolyFillType.pftNonZero,
+			ClipperLib.PolyFillType.pftNonZero
+		);
+		cursorOutlinePath = modifiedPaths;
+	}
 }
+var cursorOutlinePath = [];
 
 function drawSprayPreview(x, y) {
-	eraserBufferCanvas.width = project.width;
-	eraserBufferCanvas.height = project.height;
-	eraserBufferCtx.clearRect(0, 0, project.width, project.height);
-	eraserBufferCtx.fillStyle = "white";
 	let brushSize = parseInt(settings.tools.spraySize.value);
 	let r = brushSize - 1;
 	if (Tools.fillBucket) r = 0;
@@ -144,43 +200,30 @@ function drawSprayPreview(x, y) {
 		c = filledEllipse(x - r / 2, y - r / 2, x + r / 2, y + r / 2);
 	}
 	var b;
-	var outlinePath = "";
-	var antiPath = "";
-	for (b of c) {
-		outlinePath += pathString(b.x1, b.y1, b.x2, b.y2, svgOffset);
-		antiPath += pathString(b.x1, b.y1, b.x2, b.y2, 0);
-	}
-	drawOnSVGCanvas(outlinePath, antiPath);
-}
 
-function eBufDraw(coord) {
-	eraserBufferCtx.globalCompositeOperation = "source-over";
-	if (coord.constructor.name == "Point") {
-		var x = coord.x;
-		var y = coord.y;
-		eraserBufferCtx.fillRect(x, y, 1, 1);
-	} else if (coord.constructor.name == "Rect") {
-		var x1 = coord.x1;
-		var y1 = coord.y1;
-		var x2 = coord.x2;
-		var y2 = coord.y2;
-		var ax1, ax2, ay1, ay2;
-		if (x1 >= x2) {
-			ax1 = x2;
-			ax2 = x1;
-		} else if (x1 < x2) {
-			ax1 = x1;
-			ax2 = x2;
-		}
-		if (y1 >= y2) {
-			ay1 = y2;
-			ay2 = y1;
-		} else if (y1 < y2) {
-			ay1 = y1;
-			ay2 = y2;
-		}
-		if (ay2 - ay1 == 0) ay2 = ay1 + 1;
-		eraserBufferCtx.fillRect(ax1, ay1, ax2 - ax1, ay2 - ay1);
+	cursorOutlinePath = [];
+	for (b of c) {
+		var modifierPath = [
+			[
+				{ X: b.x1, Y: b.y1 },
+				{ X: b.x2, Y: b.y1 },
+				{ X: b.x2, Y: b.y2 + 1 },
+				{ X: b.x1, Y: b.y2 + 1 },
+			],
+		];
+		var cpr = new ClipperLib.Clipper();
+		var cliptype = ClipperLib.ClipType.ctUnion;
+
+		cpr.AddPaths(cursorOutlinePath, ClipperLib.PolyType.ptSubject, true);
+		cpr.AddPaths(modifierPath, ClipperLib.PolyType.ptClip, true);
+		var modifiedPaths = new ClipperLib.Paths();
+		cpr.Execute(
+			cliptype,
+			modifiedPaths,
+			ClipperLib.PolyFillType.pftNonZero,
+			ClipperLib.PolyFillType.pftNonZero
+		);
+		cursorOutlinePath = modifiedPaths;
 	}
 }
 

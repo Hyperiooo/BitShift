@@ -101,7 +101,7 @@ function modifySelectionPath(x1, y1, x2, y2, type) {
 		ClipperLib.PolyFillType.pftNonZero
 	);
 	selectionPath = modifiedPaths;
-
+	//bind it to canvas
 	modifierPath = [
 		[
 			{ X: 0, Y: 0 },
@@ -126,10 +126,17 @@ function modifySelectionPath(x1, y1, x2, y2, type) {
 }
 
 function deselect() {
-	if (Tools.transform) confirmTransform();
+	if (Tools.transform) {
+		confirmTransform(); setTool(previousTool)};
+	console.log(selectionPath)
 	selectionPath = [];
 	drawSelectionPreview();
 	attemptActionMenu(getTool());
+	
+}
+
+function selectAll(){
+	modifySelectionPath(0, 0, canvasInterface.width, canvasInterface.height, "add")
 }
 function invertSelection() {
 	//inverts selection. wow
@@ -172,7 +179,6 @@ function drawSelectionPreview() {
 	});
 	drawOnSelectionSVG(paths2string(selectionPath));
 	if (isSelected()) {
-		//show action button if selected, hide if not
 	} else {
 		hideBoundingBox();
 	}
@@ -302,7 +308,7 @@ var minY = 0;
 var maxY = 0;
 
 function updateBounding() {
-	var rect = getSelectionRect();
+	var rect = getSelectionBounds();
 	boundingRectElement.setAttributeNS(null, "x", rect.x);
 	boundingRectElement.setAttributeNS(null, "y", rect.y);
 	boundingRectElement.setAttributeNS(null, "width", rect.width);
@@ -349,7 +355,7 @@ function hideBoundingBox() {
 	boundingSVG.classList.add("boundingHidden");
 }
 
-function getSelectionRect() {
+function getSelectionBounds() {
 	var a = ClipperLib.Clipper.GetBounds(selectionPath);
 	return {
 		width: a.right - a.left,

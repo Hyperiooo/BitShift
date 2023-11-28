@@ -1,6 +1,6 @@
 .alrt-wrap[data-theme="bitshift-confirmation"] {
     color: var(--textMain);
-    background: var(--bgMainT);
+    background: var(--bg300Transparent);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     padding: 0;

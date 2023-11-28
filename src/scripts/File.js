@@ -62,7 +62,6 @@ function loadFile(file) {
 	window.canvasInterface.setColor(project.currColor);
 	updatePrevious(project.currColor);
 	project.layers.forEach((e) => {
-		console.log(e);
 		newLayer(e.name, e.data, e.settings);
 	});
 	if (project.layers.length == 0) {

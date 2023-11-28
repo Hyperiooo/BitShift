@@ -1,5 +1,9 @@
 function prepareTransform() {
-	var selectionRect = getSelectionRect();
+	var selectionRect = getSelectionBounds();
+	if (selectionRect.width == 0 && selectionRect.height == 0) {
+		selectAll();
+		selectionRect = getSelectionBounds();
+	}
 	transformDummyCanvas.width = selectionRect.width;
 	transformDummyCanvas.height = selectionRect.height;
 	transformDummyCtx.save();
@@ -43,7 +47,7 @@ function prepareTransform() {
 }
 function confirmTransform() {
 	scaleAlreadyMoving = false;
-	//notify.log("Transformed", { icon: "hi-move" });
+	notify.log("Transformed", { icon: "hi-move" });
 	pasted = false;
 	canvasInterface.ctx.drawImage(canvasInterface.previewcanvas, 0, 0);
 	canvasInterface.pctx.clearRect(
@@ -61,7 +65,9 @@ function confirmTransform() {
 	updateCanvasPreview();
 	prevMovementPosition = [0, 0];
 	selectionMoving = false;
+	window.dispatchEvent(window.cloudSyncEvent);
 }
+var hoveredHandle = "";
 var selectionMoving = false;
 var scaleMoving = false;
 var scaleMovingHandle = "";
@@ -77,42 +83,54 @@ var allHandles = [
 	handletm, // top
 	handlemr, // right
 ];
-document.body.addEventListener("pointerdown", function (e) {
-	if (!Tools.transform) return;
-	if (e.target == boundingRectElement || allHandles.includes(e.target)) {
-		var rect = canvasInterface.bggridcanvas.getBoundingClientRect();
-		var x = e.clientX - rect.left || e.touches[0].clientX - rect.left || -1;
-		var y = e.clientY - rect.top || e.touches[0].clientY - rect.top || -1;
-		x = Math.floor(x / canvasInterface.canvScale);
-		y = Math.floor(y / canvasInterface.canvScale);
-		prevMovementPosition = [x, y];
+function detectTransformHandleInteraction(e) {
+	var transform = canvasInterface.zoom.getTransform();
+	if (!transformHandlePositions) return;
+	if (scaleMoving) return;
+	transformHandlePositions.forEach((handle) => {
+		var adjustedMousePos = canvasInterface.getCoordinatesFromInputEvent(e);
+		adjustedMousePos.rawX *= transform.scale;
+		adjustedMousePos.rawY *= transform.scale;
+		if (
+			Math.sqrt(
+				Math.pow(handle.x - adjustedMousePos.rawX, 2) +
+					Math.pow(handle.y - adjustedMousePos.rawY, 2)
+			) < 12
+		) {
+			hoveredHandle = handle.name;
+			var handleCursorSVG = "";
+			if (hoveredHandle != "rot") {
+				cursorOverride(cursors.resize(handle.cursorAngle + transform.angle));
+			} else {
+				cursorOverride(cursors.rotate(handle.cursorAngle + transform.angle));
+			}
+		} else if (hoveredHandle == handle.name) {
+			hoveredHandle = false;
+		}
+	});
+	if (!hoveredHandle) {
+
+		cursorOverride(cursors.move());
 	}
+}
+document.body.addEventListener("pointerdown", function (e) {
+	if (!Tools.transform || canvasInterface.panning) return;
+	if (e.target != canvasInterface.canvasParent) return;
+	var { rawX, rawY, x, y } = canvasInterface.getCoordinatesFromInputEvent(e);
+	prevMovementPosition = [x, y];
 	if (!scaleAlreadyMoving) {
 		scaleWidth = transformDummyCanvas.width;
 		scaleHeight = transformDummyCanvas.height;
 	}
 	scale();
-	if (e.target == boundingRectElement && Tools.transform) {
+
+	detectTransformHandleInteraction(e);
+
+	if (Tools.transform && !hoveredHandle) {
 		selectionMoving = true;
-	} else if (allHandles.includes(e.target) && Tools.transform) {
+	} else if (hoveredHandle && hoveredHandle != "rot") {
 		scaleMoving = true;
-		if (e.target == handlebl) {
-			scaleMovingHandle = "bl";
-		} else if (e.target == handlebr) {
-			scaleMovingHandle = "br";
-		} else if (e.target == handletl) {
-			scaleMovingHandle = "tl";
-		} else if (e.target == handletm) {
-			scaleMovingHandle = "tm";
-		} else if (e.target == handlebm) {
-			scaleMovingHandle = "bm";
-		} else if (e.target == handleml) {
-			scaleMovingHandle = "ml";
-		} else if (e.target == handlemr) {
-			scaleMovingHandle = "mr";
-		} else if (e.target == handletr) {
-			scaleMovingHandle = "tr";
-		}
+		scaleMovingHandle = hoveredHandle;
 	}
 });
 document.body.addEventListener("pointerup", function (e) {
@@ -121,14 +139,14 @@ document.body.addEventListener("pointerup", function (e) {
 });
 
 document.body.addEventListener("pointermove", function (e) {
-	if (!scaleMoving && !selectionMoving) return;
-	var rect = canvasInterface.bggridcanvas.getBoundingClientRect();
-	var x = e.clientX - rect.left || e.touches[0].clientX - rect.left || -1;
-	var y = e.clientY - rect.top || e.touches[0].clientY - rect.top || -1;
-	x = Math.floor(x / canvasInterface.canvScale);
-	y = Math.floor(y / canvasInterface.canvScale);
+	if (!Tools.transform || canvasInterface.panning) return;
 
-	var selectionRect = getSelectionRect();
+	detectTransformHandleInteraction(e);
+
+	if (!scaleMoving && !selectionMoving) return;
+	var { rawX, rawY, x, y } = canvasInterface.getCoordinatesFromInputEvent(e);
+
+	var selectionRect = getSelectionBounds();
 	var dx = x - prevMovementPosition[0];
 	var dy = y - prevMovementPosition[1];
 	canvasInterface.pctx.clearRect(
@@ -186,7 +204,7 @@ document.body.addEventListener("pointermove", function (e) {
 		}
 		scale();
 
-		var selectionRect = getSelectionRect();
+		var selectionRect = getSelectionBounds();
 
 		canvasInterface.pctx.drawImage(
 			scaleDummyCanvas,
@@ -214,15 +232,20 @@ var copiedSelectionPath;
 
 function cutSelection() {
 	copySelection();
+	notify.log("Selection Cut", { icon: "hi-scissors-mono" });
+	canvasInterface.eraseSelection();
+}
+function deleteSelection() {
+	notify.log("Selection Deleted", { icon: "hi-trash-mono" });
 	canvasInterface.eraseSelection();
 }
 function copySelection() {
 	copyDummyCtx.clearRect(0, 0, copyDummyCanvas.width, copyDummyCanvas.height);
-	var selectionRect = getSelectionRect();
+	var selectionRect = getSelectionBounds();
 	copiedSelectionRect = JSON.parse(JSON.stringify(selectionRect));
 	copiedSelectionPath = JSON.parse(JSON.stringify(selectionPath));
-	copyDummyCanvas.width = getSelectionRect().width;
-	copyDummyCanvas.height = getSelectionRect().height;
+	copyDummyCanvas.width = getSelectionBounds().width;
+	copyDummyCanvas.height = getSelectionBounds().height;
 	copyDummyCtx.save();
 	var clipPath = new Path2D();
 	selectionPath.forEach((e) => {
@@ -236,19 +259,21 @@ function copySelection() {
 	copyDummyCtx.clip(clipPath, "evenodd");
 	copyDummyCtx.drawImage(
 		canvasInterface.canvas,
-		getSelectionRect().x,
-		getSelectionRect().y,
-		getSelectionRect().width,
-		getSelectionRect().height,
+		getSelectionBounds().x,
+		getSelectionBounds().y,
+		getSelectionBounds().width,
+		getSelectionBounds().height,
 		0,
 		0,
-		getSelectionRect().width,
-		getSelectionRect().height
+		getSelectionBounds().width,
+		getSelectionBounds().height
 	);
 	copyDummyCtx.restore();
+	notify.log("Selection Copied", { icon: "hi-copy-mono" });
 }
 function pasteSelection() {
 	confirmTransform();
+	notify.log("Selection Pasted", { icon: "hi-paste-mono" });
 
 	selectionPath = JSON.parse(JSON.stringify(copiedSelectionPath));
 	drawSelectionPreview();

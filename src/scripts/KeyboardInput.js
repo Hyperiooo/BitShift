@@ -7,7 +7,7 @@ var keyboardAssignments = {
 		canvasInterface.clear();
 	},
 	"ALT+C": (e) => {
-		toggleColorPicker();
+		openColorPicker();
 	},
 	P: (e) => {
 		setTool("pen");
@@ -24,11 +24,42 @@ var keyboardAssignments = {
 	S: (e) => {
 		setTool("sprayPaint");
 	},
+	M: (e) => {
+		setTool("rectangle");
+	},
 	I: (e) => {
 		setTool("eyedropper");
 	},
 	L: (e) => {
 		setTool("line");
+	},
+	T: (e) => {
+		setTool("transform");
+		prepareTransform();
+		showBoundingBox();
+	},
+	ALT: (e) => {
+		if (window.eyedropperEnabled) return;
+		previousTool = getTool();
+		compileForEyedropper();
+		initEyedropper(
+			canvasInterface.rawGlobalMouseX,
+			canvasInterface.rawGlobalMouseY
+		);
+		setTool("eyedropper", document.getElementById("tool-btn-eyedropper"));
+		window.eyedropperEnabled = true;
+		document.addEventListener(
+			"keyup",
+			function (e) {
+				if (e.key == "Alt" && window.eyedropperEnabled) {
+					setTool(previousTool);
+					canvasInterface.eyedropperPreviewElement.classList.remove(
+						"eyedropper-preview-visible"
+					);
+					window.eyedropperEnabled = false;
+				}
+			}.bind(this)
+		);
 	},
 	"CONTROL+Z": (e) => {
 		undo();
@@ -39,8 +70,14 @@ var keyboardAssignments = {
 	"CONTROL+D": (e) => {
 		deselect();
 	},
+	"CONTROL+A": (e) => {
+		selectAll();
+	},
 	"CONTROL+C": (e) => {
 		copySelection();
+	},
+	"CONTROL+L": (e) => {
+		toggleLayerMenu();
 	},
 	"CONTROL+V": (e) => {
 		pasteSelection();
@@ -51,6 +88,14 @@ var keyboardAssignments = {
 	"CONTROL+SHIFT+D": (e) => {
 		duplicateSelection();
 	},
+	DELETE: (e) => {
+		deleteSelection();
+	},
+	ENTER:(e)=> {
+		if(Tools["transform"]) {
+			confirmTransform(); setTool(previousTool)
+		}
+	}
 };
 
 function keyboardInput(e) {
@@ -71,6 +116,7 @@ function keyboardInput(e) {
 		if (e.key != "Control" && e.key != "Alt" && e.key != "Shift")
 			input.push(e.key.toUpperCase());
 		inputString = input.join("+");
-		if (keyboardAssignments[inputString]) keyboardAssignments[inputString]();
-	}
+		if (keyboardAssignments[inputString]) 
+			keyboardAssignments[inputString]();
+}
 }

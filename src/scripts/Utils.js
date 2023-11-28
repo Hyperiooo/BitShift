@@ -329,7 +329,6 @@ class Color {
 				this.hsva.v,
 				this.hsva.a,
 			]);
-			console.log("a");
 			var rgbFromHSL = HSLToRGB(hslFromHSV);
 			var hexFromRGB = rgbToHex(
 				rgbFromHSL[0],
@@ -439,8 +438,46 @@ class Color {
 			l: this.hsla.l,
 		};
 		this.hexh = this.hex.replace("#", "");
+		this.hexa = this.hex.substring(0, this.hex.length - 2)
+		this.hexah = this.hexa.replace("#", "")
+		this.contrastingColor = invertColor(this.hexa)
+		this.name = getColorName(this.hex.substring(0, this.hex.length - 2)).name
 	}
 }
+var nCol
+function getColorName(hex) {
+	return nCol(hex)
+}
+
+function invertColor(bgColor) {
+    var color = (bgColor.charAt(0) === '#') ? bgColor.substring(1, 7) : bgColor;
+  var r = parseInt(color.substring(0, 2), 16); // hexToR
+  var g = parseInt(color.substring(2, 4), 16); // hexToG
+  var b = parseInt(color.substring(4, 6), 16); // hexToB
+  var uicolors = [r / 255, g / 255, b / 255];
+  var c = uicolors.map((col) => {
+    if (col <= 0.03928) {
+      return col / 12.92;
+    }
+    return Math.pow((col + 0.055) / 1.055, 2.4);
+  });
+  var L = (0.2126 * c[0]) + (0.7152 * c[1]) + (0.0722 * c[2]);
+  return (L > 0.179) ? "#000000" : "#ffffff";
+}
+//takes array of hex colors and then returns a cool palette name
+function paletteName(array) {
+
+	var colors = []
+	array.forEach(e=>{
+		colors.push(new Color(e).name)
+	})
+	var firstName = colors[Math.floor(Math.random() * colors.length)]
+	var lastName = colors[Math.floor(Math.random() * colors.length)]
+	var first = firstName.split(" ")[0]
+	var last = lastName.split(" ")[1] ? lastName.split(" ")[1] : lastName
+	return first + " " + last
+}
+
 
 function convertToVerboseHex(hex) {
 	hex = hex.replace("#", "");

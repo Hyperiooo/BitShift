@@ -89,14 +89,14 @@ var ToolParams = {
 	freehandSelect: {
 		name: "freehandSelect",
 		id: "tool-btn-freehandSelect",
-		icon: "hi-lasso-line",
+		icon: "hi-lasso",
 		actionMenu: "selection",
 		action: "setTool('freehandSelect')",
 	},
 	magicWand: {
 		name: "magicWand",
 		id: "tool-btn-magicWand",
-		icon: "hi-magic-wand-line",
+		icon: "hi-magic-wand",
 		actionMenu: "selection",
 		action: "setTool('magicWand')",
 	},
@@ -105,8 +105,11 @@ var ToolParams = {
 		id: "tool-btn-transform",
 		icon: "hi-move",
 		actionMenu: "transform",
-		action: "setTool('transform'); showBoundingBox(); prepareTransform()",
+		action: "setTool('transform');prepareTransform(); showBoundingBox(); ",
 	},
+	eyedropper: {		
+		actionMenu: "",
+	}
 };
 
 var ToolbarAssignments = [
@@ -149,7 +152,8 @@ var ToolbarActionMenus = {
 		{
 			name: "Deselect",
 			action: "deselect()",
-			icon: "hi-x",
+			icon: "hi-deselect",
+			textAlwaysVisible: true,
 			condition: () => {
 				return isSelected() || ToolParams[getTool()].actionMenu == "selection";
 			},
@@ -164,49 +168,39 @@ var ToolbarActionMenus = {
 		{
 			name: "Flip Horizontal",
 			action: "flipHorizontal()",
-			icon: "hi-flip-horizontal-line",
+			icon: "hi-flip-horizontal",
 		},
 		{
 			name: "Flip Vertical",
 			action: "flipVertical()",
-			icon: "hi-flip-vertical-line",
-		},
-		{
-			name: "Rotate Left",
-			action: "rotateLeft()",
-			icon: "hi-rotate-left-line",
-		},
-		{
-			name: "Rotate Right",
-			action: "rotateRight()",
-			icon: "hi-rotate-right-line",
-		},
-		{
-			name: "Reset Transform",
-			action: "resetTransform()",
-			icon: "hi-undo",
-		},
+			icon: "hi-flip-vertical",
+		}
 	],
 	selection: [
 		{
 			name: "Invert",
 			action: "invertSelection()",
-			icon: "hi-invert-line",
+			icon: "hi-invert",
 		},
 		{
 			name: "Cut",
 			action: "cutSelection()",
-			icon: "hi-scissors-line",
+			icon: "hi-scissors",
 		},
 		{
 			name: "Copy",
 			action: "copySelection()",
-			icon: "hi-copy-line",
+			icon: "hi-copy",
 		},
 		{
 			name: "Paste",
 			action: "pasteSelection()",
-			icon: "hi-paste-line",
+			icon: "hi-paste",
+		},
+		{
+			name: "Delete",
+			action: "deleteSelection()",
+			icon: "hi-trash",
 		},
 	],
 };
@@ -314,6 +308,7 @@ function updateToolSettings(tool) {
 	let toolSettings = settings.tools.assignments[tool];
 	toolContent.innerHTML = "";
 	if (!toolSettings) return;
+	toolContent.innerHTML += `<span class="toolbar-divider"></span>`;
 	for (let i = 0; i < toolSettings.length; i++) {
 		const element = toolSettings[i];
 		const setting = settings.tools[element];
@@ -324,7 +319,11 @@ function updateToolSettings(tool) {
 			inputTitle.classList.add("tool-settings-ui-input-title");
 			inputTitle.innerHTML = setting.title;
 			let inputWrap = document.createElement("div");
-			inputWrap.classList.add("tool-settings-ui-input-wrap");
+			inputWrap.classList.add("tool-settings-ui-input-num-wrap");
+			let inputLabel = document.createElement("div");
+			inputLabel.classList.add("tool-settings-ui-input-label");
+			inputLabel.innerHTML = `<i class="${setting.icon}"></i>`;
+			inputWrap.appendChild(inputLabel);
 			let inputField = document.createElement("div");
 			inputField.classList.add("tool-settings-ui-input-field");
 			inputWrap.appendChild(inputField);
@@ -443,8 +442,7 @@ function setTool(tool, el) {
 	updateToolSettings(tool);
 
 	Tools[tool] = true;
-	curCursor = settings.cursors[tool] || "crosshair";
-	updateCursor();
+	//curCursor = settings.cursors[tool] || defaultCursor;
 	document.querySelectorAll("#toolbar .item").forEach((x) => {
 		x.classList.remove("tool-active");
 	});
@@ -453,6 +451,7 @@ function setTool(tool, el) {
 		e.classList.add("tool-active");
 	});
 	attemptActionMenu(tool);
+	if(window.canvasInterface) cursorOverride();
 }
 function attemptActionMenu(tool) {
 	var shouldActionMenuBeShown = false;
@@ -481,10 +480,11 @@ function createActionMenu(menu) {
 	var universal = false;
 	ToolbarActionMenus["universal"].forEach((e) => {
 		if (e.condition()) {
+			universal = true;
+			var cls = e.textAlwaysVisible && universal && menu != "noAction"?  "actionButtonText" : ""
 			actionMenu.innerHTML += `<button class="actionButton" onclick="${e.action}">
 			<i class="${e.icon}"></i>
-			${e.name}</button>`;
-			universal = true;
+			<span class="${cls}">${e.name}</span></button>`;
 		}
 	});
 	if (universal && menu != "noAction") {
@@ -494,7 +494,7 @@ function createActionMenu(menu) {
 	menu.forEach((e) => {
 		actionMenu.innerHTML += `<button class="actionButton" onclick="${e.action}">
 		<i class="${e.icon}"></i>
-		${e.name}</button>`;
+		<span class="actionButtonText">${e.name}</span></button>`;
 	});
 }
 //find true in Tools
