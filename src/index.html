@@ -4,49 +4,20 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Rotating Plane with Checker Pattern Texture</title>
+  <title>doooooooooo</title>
   <script type="module" src="./scripts/Core.js"></script>
   <link rel="stylesheet" href="./styles/main.css">
   <script src="https://cdn.jsdelivr.net/gh/noahpin/SuperZoom@v0.1.2/src/superzoom.js"></script>
 </head>
 
 <body>
-  <div id="input-layer" customcursor></div>
+  <div id="input-layer"></div>
   <script src="https://twgljs.org/dist/4.x/twgl-full.min.js"></script>
-  <script id="vs" type="not-js">
-// we will always pass a 0 to 1 unit quad
-// and then use matrices to manipulate it
-attribute vec4 position;   
-
-uniform mat4 matrix;
-uniform mat4 textureMatrix;
-
-varying vec2 texcoord;
-
-void main () {
-  gl_Position = matrix * position;
-  
-  texcoord = (textureMatrix * position).xy;
-}
-</script>
-  <script id="fs" type="not-js">
-precision mediump float;
-
-varying vec2 texcoord;
-uniform sampler2D texture;
-
-void main() {
-  if (texcoord.x < 0.0 || texcoord.x > 1.0 ||
-      texcoord.y < 0.0 || texcoord.y > 1.0) {
-    discard;
-  }
-  if(texture2D(texture, texcoord).a == 0.0) {
-    discard;
-  }
-  gl_FragColor = texture2D(texture, texcoord);
-}
-</script>
   <canvas id="c"></canvas>
+  <div id="debug-window">
+    <div id="debug-values"></div>
+    <div id="debug-logger"></div>
+  </div>
 </body>
 
 </html>

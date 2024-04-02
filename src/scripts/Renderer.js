@@ -1,18 +1,54 @@
+import { DebugWindow } from "./Debug.js";
 import { Cel, LayerTexture } from "./Image.js";
+import { Color, COLORS } from "./Util.js";
 window.Image = Image;
 var m4 = twgl.m4;
 window.gl = document.getElementById("c").getContext("webgl");
 export class Renderer {
-	constructor() {
-		this.programInfo = twgl.createProgramInfo(gl, ["vs", "fs"]);
-		// a unit quad
+	constructor(canvasWidth, canvasHeight) {
+		this.baseVs = `
+		// we will always pass a 0 to 1 unit quad
+		// and then use matrices to manipulate it
+		attribute vec4 position;   
+		
+		uniform mat4 matrix;
+		uniform mat4 textureMatrix;
+		
+		varying vec2 texcoord;
+		
+		void main () {
+		  gl_Position = matrix * position;
+		  
+		  texcoord = (textureMatrix * position).xy;
+		}`
+		this.baseFs = `
+		precision mediump float;
+		
+		varying vec2 texcoord;
+		uniform sampler2D texture;
+		
+		void main() {
+		  if (texcoord.x < 0.0 || texcoord.x > 1.0 ||
+			  texcoord.y < 0.0 || texcoord.y > 1.0) {
+			discard;
+		  }
+		  if(texture2D(texture, texcoord).a == 0.0) {
+			discard;
+		  }
+		  gl_FragColor = texture2D(texture, texcoord);
+		}
+		`
+		this.programInfo = twgl.createProgramInfo(gl, [this.baseVs, this.baseFs]);
+		
 		this.bufferInfo = twgl.primitives.createXYQuadBufferInfo(gl);
 
-		this.baseCanvasWidth = 1000;
-		this.baseCanvasHeight = 1000;
+		this.baseCanvasWidth = canvasWidth;
+		this.baseCanvasHeight = canvasHeight;
 
 		this.canvasScale = 1;
 		this.canvasAngle = 0;
+
+		this.textureUpdateQueue = [];
 
 		if (
 			window.innerHeight /
@@ -119,7 +155,7 @@ export class Renderer {
 		var whiteTexData = new Cel(
 			this.baseCanvasWidth,
 			this.baseCanvasHeight,
-			[255, 255, 255, 255]
+			COLORS.clear
 		);
 		whiteTexData.clear();
 		whiteTexData.data = generateGridImageData(
@@ -130,48 +166,41 @@ export class Renderer {
 		let texData = new Cel(
 			this.baseCanvasWidth,
 			this.baseCanvasHeight,
-			[255, 255, 255, 0]
+			COLORS.clear
 		);
 		window.texData = texData;
-		this.dummycel = new Cel(30, 30, [255, 0, 0, 100]);
+		this.dummycel = new Cel(19, 19, COLORS.green);
 		// create a dummy texture, as we'll generate the texture data in the shader
-		var blankTex = new LayerTexture(
-			whiteTexData,
-			this.baseCanvasWidth,
-			this.baseCanvasHeight
-		);
-		blankTex.updateTexture();
-		var temp = new LayerTexture(
-			texData,
-			this.baseCanvasWidth,
-			this.baseCanvasHeight
-		);
+		this.addCelToRenderQueue(whiteTexData);
+		this.addCelToRenderQueue(texData);
+
 		texData.drawCel(this.dummycel, 10, 10);
-		this.dummycel.fill(0, 255, 0, 100);
+		this.dummycel.fill(new Color([255, 0, 0, 125]));
 		texData.drawCel(this.dummycel, 9, 9);
-		this.dummycel.fill(96, 159, 0, 161);
+		this.dummycel.fill(COLORS.green);
 		texData.drawCel(this.dummycel, 1, 1);
-		this.dummycel.fill(125, 125, 0, 161);
+		this.dummycel.fill(COLORS.green);
 		texData.drawCel(this.dummycel, 4, 4);
-		this.renderQueue.push(blankTex);
-		this.renderQueue.push(temp);
+	}
+	addCelToRenderQueue(cel, width, height) {
+		var texture = new LayerTexture(
+			cel,
+			width || this.baseCanvasWidth,
+			height || this.baseCanvasHeight
+		);
+		texture.updateTexture();
+		this.renderQueue.push(texture);
+		return texture;
 	}
 	render() {
-		this.time *= 0.01;
-		// texData.clear();
-		// texData.drawRect(
-		// 	44,
-		// 	40,
-		// 	20,
-		// 	20,
-		// 	Math.random() * 255,
-		// 	Math.random() * 255,
-		// 	255,
-		// 	255
-		// );
-		var {rawX, rawY, x, y} = this.getCoordinatesFromInputEvent(null, mouseX, mouseY);
-		this.dummycel.fill(Math.floor(Math.random() * 255),Math.floor(Math.random() * 255),Math.floor(Math.random() * 255),125);
-		//texData.drawCel(this.dummycel, x, y);
+		this.textureUpdateQueue.forEach((update) => {
+			update();
+		});
+		this.textureUpdateQueue = [];
+
+		window.DebugWindow.upsertValue("Canvas Scale", this.canvasScale);
+		window.DebugWindow.upsertValue("Canvas Angle", this.canvasAngle);
+
 		gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
 		twgl.resizeCanvasToDisplaySize(gl.canvas);

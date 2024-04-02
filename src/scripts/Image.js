@@ -1,49 +1,51 @@
-import { MUL_UN8 } from "./Util.js";
-
 export class Cel {
-	constructor(width, height, color = [0, 0, 0, 0]) {
+	constructor(width, height, color = COLORS.clear) {
 		this.width = width;
 		this.height = height;
-		this.data = new Array(width * height * 4).fill(0);
+		this.data = new Uint8Array(width * height * 4).fill(0);
 		this.layer = {
 			updateTexture: () => {},
 		};
-		this.fill(...color);
-	}
-	rData() {
-		return new Uint8Array(this.data);
+		this.fill(color);
+
+		this.addedToUpdateQueue = false;
 	}
 	clear() {
-		this.data = new Array(this.width * this.height * 4).fill(0);
-		this.layer.updateTexture();
+		this.data.fill(0);
+		this.addCelToTextureUpdateQueue();
 	}
-	fill(r, g, b, a) {
-		let pixelData = [r, g, b, a];
+	fill(color) {
+		let pixelData = color.rgbaarr;
 		for (let i = 0; i < this.data.length; i += 4) {
-			this.data.splice(i, 4, ...pixelData);
+			this.data.set(pixelData, i);
 		}
-		this.layer.updateTexture();
+		this.addCelToTextureUpdateQueue();
 	}
-	//draws a pixel in canvasSpace, 0:0 being top left. if the pixel is beyond the bounds of the cel, expand the cel array to accomodate.
-	drawPixel(x, y, r, g, b, a) {
-		let pixelData = [r, g, b, a];
+	//draws a pixel in canvasSpace, 0:0 being top left.
+	//TODO: if the pixel is beyond the bounds of the cel, expand the cel array to accomodate.
+	drawPixel(x, y, color) {
+		let pixelData = color.rgbaarr;
 		let index = (x + y * this.width) * 4;
-		this.data.splice(index, 4, ...pixelData);
-		this.layer.updateTexture();
+		this.data.set(pixelData, index);
+		this.addCelToTextureUpdateQueue();
 	}
-	drawRect(x, y, w, h, r, g, b, a) {
-		let pixelData = [r, g, b, a];
+	drawRect(x, y, w, h, color) {
+		let pixelData = color.rgbaarr;
 		let rowData = new Array(w * 4).fill(0);
 		for (let i = 0; i < w * 4; i += 4) {
 			rowData.splice(i, 4, ...pixelData);
 		}
 		for (let i = 0; i < h; i++) {
 			let index = (x + (y + i) * this.width) * 4;
-			this.data.splice(index, w * 4, ...rowData);
+			this.data.set(rowData, index);
 		}
-		this.layer.updateTexture();
+		this.addCelToTextureUpdateQueue();
 	}
-	drawCel(cel, x, y) {
+	drawCel(cel, x, y, center) {
+		if(center) {
+			x -= Math.floor(cel.width / 2);
+			y -= Math.floor(cel.height / 2);
+		}
 		let xStart = Math.max(0, x);
 		let yStart = Math.max(0, y);
 		let xEnd = Math.min(this.width, x + cel.width);
@@ -51,51 +53,66 @@ export class Cel {
 		let celXStart = Math.max(0, -x);
 		let celYStart = Math.max(0, -y);
 		if (xStart >= xEnd || yStart >= yEnd) return;
-
+	
+		const destData = this.data;
+		const sourceData = cel.data;
+		const sourceWidth = cel.width;
+	
 		for (let i = yStart; i < yEnd; i++) {
-			let index = (xStart + i * this.width) * 4;
-			let celIndex = (celXStart + (i - yStart + celYStart) * cel.width) * 4;
-			//this.data.splice(index, (xEnd - xStart) * 4, ...cel.data.slice(celIndex, celIndex + (xEnd - xStart) * 4));
-			//instead of splicing, go through every pixel and composite with the alpha of the source pixel and the destination pixel
-			//copy the way this blendfuncseparate works
-			// gl.blendFuncSeparate(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA, gl.ONE, gl.ONE_MINUS_SRC_ALPHA );
-			//the destination will more than likely be a 0,0,0,0, so need to ensure that black isnt composited with the color. the color should be preserved.
+			let destIndex = (xStart + i * this.width) * 4;
+			let sourceIndex = (celXStart + (i - yStart + celYStart) * sourceWidth) * 4;
+			let destRowOffset = (this.width - (xEnd - xStart)) * 4;
+	
 			for (let j = xStart; j < xEnd; j++) {
-				let destIndex = index + (j - xStart) * 4;
-				let sourceIndex = celIndex + (j - xStart) * 4;
-
 				let Rr, Rg, Rb, Ra;
-
-				// code referenced from  https://github.com/loilo/color-blend/tree/master
-				let Br = this.data[destIndex + 0];
-				let Bg = this.data[destIndex + 1];
-				let Bb = this.data[destIndex + 2];
-				let Ba = this.data[destIndex + 3] / 255;
-
-				let Sr = cel.data[sourceIndex + 0];
-				let Sg = cel.data[sourceIndex + 1];
-				let Sb = cel.data[sourceIndex + 2];
-				let Sa = cel.data[sourceIndex + 3] / 255;
-
+	
+				let Br = destData[destIndex + 0];
+				let Bg = destData[destIndex + 1];
+				let Bb = destData[destIndex + 2];
+				let Ba = destData[destIndex + 3] / 255;
+	
+				let Sr = sourceData[sourceIndex + 0];
+				let Sg = sourceData[sourceIndex + 1];
+				let Sb = sourceData[sourceIndex + 2];
+				let Sa = sourceData[sourceIndex + 3] / 255;
+	
 				Ra = Sa + Ba - Sa * Ba;
-
+	
 				Rr = Sr;
 				Rg = Sg;
 				Rb = Sb;
-
+	
 				Rr =
 					(1 - Sa / Ra) * Br + (Sa / Ra) * Math.round((1 - Ba) * Sr + Ba * Rr);
 				Rg =
 					(1 - Sa / Ra) * Bg + (Sa / Ra) * Math.round((1 - Ba) * Sg + Ba * Rg);
 				Rb =
 					(1 - Sa / Ra) * Bb + (Sa / Ra) * Math.round((1 - Ba) * Sb + Ba * Rb);
-
+	
 				Ra *= 255;
-
-				this.data.splice(destIndex, 4, ...[Rr, Rg, Rb, Ra]);
+	
+				destData[destIndex + 0] = Rr;
+				destData[destIndex + 1] = Rg;
+				destData[destIndex + 2] = Rb;
+				destData[destIndex + 3] = Ra;
+	
+				destIndex += 4;
+				sourceIndex += 4;
 			}
+	
+			destIndex += destRowOffset;
 		}
+	
+		this.addCelToTextureUpdateQueue();
+	}
+	addCelToTextureUpdateQueue() {
+		if(window.CoreRenderer === undefined || this.addedToUpdateQueue)return;
+		CoreRenderer.textureUpdateQueue.push(this.updateTexture.bind(this));
+		this.addedToUpdateQueue = true;
+	}
+	updateTexture() {
 		this.layer.updateTexture();
+		this.addedToUpdateQueue = false;
 	}
 }
 
@@ -108,7 +125,7 @@ export class LayerTexture {
 		this.glTex = twgl.createTexture(gl, {
 			mag: gl.NEAREST,
 			min: gl.LINEAR,
-			src: this.cel.rData(),
+			src: this.cel.data,
 			width: this.width,
 			height: this.height,
 		});
@@ -124,7 +141,7 @@ export class LayerTexture {
 			0,
 			gl.RGBA,
 			gl.UNSIGNED_BYTE,
-			this.cel.rData()
+			this.cel.data
 		);
 	}
 }
