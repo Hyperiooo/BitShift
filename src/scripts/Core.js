@@ -4,8 +4,9 @@ import { CanvasManager } from "./CanvasManager.js";
 import { DebugWindow } from "./Debug.js";
 import { InputManager } from "./InputManager.js";
 window.onload = function () {
-	let projSize = { x: 128, y: 128 };
+	let projSize = { x: 1028, y: 1028 };
 	window.DebugWindow = new DebugWindow();
+	window.DebugWindow.enableDebug()
 	window.CoreRenderer = new Renderer(projSize.x, projSize.y);
 	//window.CoreRenderer.startRendering();
 	window.CanvasManager = new CanvasManager(projSize.x, projSize.y);

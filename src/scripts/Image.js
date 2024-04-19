@@ -1,3 +1,4 @@
+import {line} from "./Shapes.js"
 export class Cel {
 	constructor(width, height, color = COLORS.clear) {
 		this.width = width;
@@ -29,6 +30,7 @@ export class Cel {
 		this.data.set(pixelData, index);
 		this.addCelToTextureUpdateQueue();
 	}
+	//TODO: make this use the rect class
 	drawRect(x, y, w, h, color) {
 		let pixelData = color.rgbaarr;
 		let rowData = new Array(w * 4).fill(0);
@@ -41,6 +43,7 @@ export class Cel {
 		}
 		this.addCelToTextureUpdateQueue();
 	}
+	//TODO: make this use the point class
 	drawCel(cel, x, y, center) {
 		if(center) {
 			x -= Math.floor(cel.width / 2);
@@ -104,6 +107,13 @@ export class Cel {
 		}
 	
 		this.addCelToTextureUpdateQueue();
+	}
+	drawLine(cel, p1, p2, center) {
+		//generate line pixels
+		let linePoints = line(p1, p2);
+		linePoints.forEach(p => {
+			this.drawCel(cel, p.x, p.y, center);
+		})
 	}
 	addCelToTextureUpdateQueue() {
 		if(window.CoreRenderer === undefined || this.addedToUpdateQueue)return;

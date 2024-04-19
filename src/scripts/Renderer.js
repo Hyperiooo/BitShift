@@ -1,6 +1,6 @@
-import { DebugWindow } from "./Debug.js";
 import { Cel, LayerTexture } from "./Image.js";
 import { Color, COLORS } from "./Util.js";
+import { Point } from "./Shapes.js";
 window.Image = Image;
 var m4 = twgl.m4;
 window.gl = document.getElementById("c").getContext("webgl");
@@ -49,6 +49,8 @@ export class Renderer {
 		this.canvasAngle = 0;
 
 		this.textureUpdateQueue = [];
+
+		this.renderTime = 0;
 
 		if (
 			window.innerHeight /
@@ -169,7 +171,7 @@ export class Renderer {
 			COLORS.clear
 		);
 		window.texData = texData;
-		this.dummycel = new Cel(19, 19, COLORS.green);
+		this.dummycel = new Cel(4, 4, COLORS.green);
 		// create a dummy texture, as we'll generate the texture data in the shader
 		this.addCelToRenderQueue(whiteTexData);
 		this.addCelToRenderQueue(texData);
@@ -181,6 +183,7 @@ export class Renderer {
 		texData.drawCel(this.dummycel, 1, 1);
 		this.dummycel.fill(COLORS.green);
 		texData.drawCel(this.dummycel, 4, 4);
+		texData.drawLine(this.dummycel, new Point(0, 0), new Point(10, 10))
 	}
 	addCelToRenderQueue(cel, width, height) {
 		var texture = new LayerTexture(
@@ -192,11 +195,21 @@ export class Renderer {
 		this.renderQueue.push(texture);
 		return texture;
 	}
-	render() {
+	render(now) {
+		//calculate fps
+		now *= 0.001;
+		let deltaTime = now - this.renderTime;
+		this.renderTime = now;
+		let fps = 1 / deltaTime;
+		DebugWindow.upsertValue("FPS", fps);
 		this.textureUpdateQueue.forEach((update) => {
 			update();
 		});
 		this.textureUpdateQueue = [];
+
+		var {rawX, rawY, x, y} = this.getCoordinatesFromInputEvent(null, mouseX, mouseY);
+		this.dummycel.fill(COLORS.random());
+		texData.drawLine(this.dummycel, new Point(x, y), new Point(0, 0));
 
 		window.DebugWindow.upsertValue("Canvas Scale", this.canvasScale);
 		window.DebugWindow.upsertValue("Canvas Angle", this.canvasAngle);
@@ -206,6 +219,8 @@ export class Renderer {
 		twgl.resizeCanvasToDisplaySize(gl.canvas);
 		gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
 		var transform = this.zoom.getTransform();
+
+        DebugWindow.upsertValue("Render Queue Size", this.renderQueue.length);
 		this.renderQueue.forEach((layer) => {
 			this.drawImage(
 				gl.canvas.width,

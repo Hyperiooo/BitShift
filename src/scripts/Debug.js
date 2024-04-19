@@ -5,12 +5,15 @@ export class DebugWindow {
 		this.values = document.getElementById("debug-values");
 		this.data = {};
         this.valEls = {}
+		this.enabled = false;
 	}
 	log(...message) {
+		if(!this.enabled) return;
 		this.logger.innerHTML += message.join(" ") + "<br>";
 		this.logger.scrollTop = this.logger.scrollHeight;
 	}
 	upsertValue(key, ...value) {
+		if(!this.enabled) return;
         if(this.valEls[key] === undefined) {
             let newEl = document.createElement("div");
             this.values.appendChild(newEl);
@@ -22,5 +25,8 @@ export class DebugWindow {
             else{return e}
         }).join(", ");
 
+	}
+	enableDebug() {
+		this.enabled = true;
 	}
 }

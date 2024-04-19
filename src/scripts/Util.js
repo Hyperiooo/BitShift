@@ -457,4 +457,5 @@ export const COLORS = {
 	silver: new Color("#c0c0c0"),
 	gray: new Color("#808080"),
 	clear: new Color("#00000000"),
+	random: function () {return new Color({r: Math.floor(Math.random() * 255),g: Math.floor(Math.random() * 255),b: Math.floor(Math.random() * 255),a: 255})}
 };

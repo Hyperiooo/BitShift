@@ -1,6 +1,6 @@
 body {
   margin: 0;
-  background: linear-gradient(90deg, rgba(2, 0, 36, 1) 0%, rgba(9, 9, 121, 1) 35%, rgba(0, 212, 255, 1) 100%);
+  background: lightgray;
   width: 100vw;
   height: 100vh;
   overflow: hidden;
@@ -15,13 +15,14 @@ body {
   padding: 5px;
   height: 400px;
   width: 500px;
-  background: #0000008a;
+  background: #ffffff8a;
+  border:1px solid #3333;
   border-radius: 8px;
   position: absolute;
   z-index: 99999999;
   bottom: 10px;
   left: 10px;
-  color: white;
+  color: black;
   font-family: monospace;
   overflow: hidden;
   display: flex;
@@ -34,7 +35,8 @@ body {
 #debug-logger, #debug-values {
   height: 50%;
   overflow-y: auto;
-  background: #0000008a;
+  background: #ffffff8a;
+  border:1px solid #3333;
   border-radius: 3px;
 
 }
