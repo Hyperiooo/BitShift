@@ -3,9 +3,15 @@ import { Color, COLORS } from "./Util.js";
 import { Point } from "./Shapes.js";
 window.Image = Image;
 var m4 = twgl.m4;
-window.gl = document.getElementById("c").getContext("webgl");
 export class Renderer {
-	constructor(canvasWidth, canvasHeight) {
+	/**
+	 * Creates a renderer and mounts a WebGL instance on the `canvas` object
+	 * 
+	 * @param {HTMLCanvasElement} canvas 
+	 * @param {Number} canvasWidth 
+	 * @param {Number} canvasHeight 
+	 */
+	constructor(canvas, canvasWidth, canvasHeight) {
 		this.baseVs = `
 		// we will always pass a 0 to 1 unit quad
 		// and then use matrices to manipulate it
@@ -20,7 +26,7 @@ export class Renderer {
 		  gl_Position = matrix * position;
 		  
 		  texcoord = (textureMatrix * position).xy;
-		}`
+		}`;
 		this.baseFs = `
 		precision mediump float;
 		
@@ -37,9 +43,10 @@ export class Renderer {
 		  }
 		  gl_FragColor = texture2D(texture, texcoord);
 		}
-		`
+		`;
+		window.gl = canvas.getContext("webgl"); //TODO: currently, it is only possible to have one webgl instance in the scene due to this. possibly make a way to create "headless" renderers? so that brush preview is possible through individual canvases.. or, use the image data and pass to a 'normal' 2d canvas?
 		this.programInfo = twgl.createProgramInfo(gl, [this.baseVs, this.baseFs]);
-		
+
 		this.bufferInfo = twgl.primitives.createXYQuadBufferInfo(gl);
 
 		this.baseCanvasWidth = canvasWidth;
@@ -173,7 +180,7 @@ export class Renderer {
 		window.texData = texData;
 		this.dummycel = new Cel(4, 4, COLORS.green);
 		// create a dummy texture, as we'll generate the texture data in the shader
-		this.addCelToRenderQueue(whiteTexData);
+		this.addCelToRenderQueue(whiteTexData, this.baseCanvasWidth, this.baseCanvasHeight, "Grid Background");
 		this.addCelToRenderQueue(texData);
 
 		texData.drawCel(this.dummycel, 10, 10);
@@ -183,16 +190,19 @@ export class Renderer {
 		texData.drawCel(this.dummycel, 1, 1);
 		this.dummycel.fill(COLORS.green);
 		texData.drawCel(this.dummycel, 4, 4);
-		texData.drawLine(this.dummycel, new Point(0, 0), new Point(10, 10))
+		texData.drawLine(this.dummycel, new Point(0, 0), new Point(10, 10));
 	}
-	addCelToRenderQueue(cel, width, height) {
-		var texture = new LayerTexture(
-			cel,
-			width || this.baseCanvasWidth,
-			height || this.baseCanvasHeight
-		);
+	addCelToRenderQueue(
+		cel,
+		width = this.baseCanvasWidth,
+		height = this.baseCanvasHeight,
+		label = "Layer " + this.renderQueue.length
+	) {
+		var texture = new LayerTexture(cel, width, height, label);
 		texture.updateTexture();
 		this.renderQueue.push(texture);
+		window.Debug.upsertValue("Render Queue ", this.renderQueue);
+		Debug.upsertValue("Render Queue Size", this.renderQueue.length);
 		return texture;
 	}
 	render(now) {
@@ -201,18 +211,14 @@ export class Renderer {
 		let deltaTime = now - this.renderTime;
 		this.renderTime = now;
 		let fps = 1 / deltaTime;
-		DebugWindow.upsertValue("FPS", fps);
+		Debug.upsertValue("FPS", fps);
 		this.textureUpdateQueue.forEach((update) => {
 			update();
 		});
 		this.textureUpdateQueue = [];
 
-		var {rawX, rawY, x, y} = this.getCoordinatesFromInputEvent(null, mouseX, mouseY);
-		this.dummycel.fill(COLORS.random());
-		texData.drawLine(this.dummycel, new Point(x, y), new Point(0, 0));
-
-		window.DebugWindow.upsertValue("Canvas Scale", this.canvasScale);
-		window.DebugWindow.upsertValue("Canvas Angle", this.canvasAngle);
+		window.Debug.upsertValue("Canvas Scale", this.canvasScale);
+		window.Debug.upsertValue("Canvas Angle", this.canvasAngle);
 
 		gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
@@ -220,7 +226,6 @@ export class Renderer {
 		gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
 		var transform = this.zoom.getTransform();
 
-        DebugWindow.upsertValue("Render Queue Size", this.renderQueue.length);
 		this.renderQueue.forEach((layer) => {
 			this.drawImage(
 				gl.canvas.width,

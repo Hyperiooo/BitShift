@@ -1,4 +1,4 @@
-import {line} from "./Shapes.js"
+import { line } from "./Shapes.js";
 export class Cel {
 	constructor(width, height, color = COLORS.clear) {
 		this.width = width;
@@ -45,7 +45,7 @@ export class Cel {
 	}
 	//TODO: make this use the point class
 	drawCel(cel, x, y, center) {
-		if(center) {
+		if (center) {
 			x -= Math.floor(cel.width / 2);
 			y -= Math.floor(cel.height / 2);
 		}
@@ -56,67 +56,68 @@ export class Cel {
 		let celXStart = Math.max(0, -x);
 		let celYStart = Math.max(0, -y);
 		if (xStart >= xEnd || yStart >= yEnd) return;
-	
+
 		const destData = this.data;
 		const sourceData = cel.data;
 		const sourceWidth = cel.width;
-	
+
 		for (let i = yStart; i < yEnd; i++) {
 			let destIndex = (xStart + i * this.width) * 4;
-			let sourceIndex = (celXStart + (i - yStart + celYStart) * sourceWidth) * 4;
+			let sourceIndex =
+				(celXStart + (i - yStart + celYStart) * sourceWidth) * 4;
 			let destRowOffset = (this.width - (xEnd - xStart)) * 4;
-	
+
 			for (let j = xStart; j < xEnd; j++) {
 				let Rr, Rg, Rb, Ra;
-	
+
 				let Br = destData[destIndex + 0];
 				let Bg = destData[destIndex + 1];
 				let Bb = destData[destIndex + 2];
 				let Ba = destData[destIndex + 3] / 255;
-	
+
 				let Sr = sourceData[sourceIndex + 0];
 				let Sg = sourceData[sourceIndex + 1];
 				let Sb = sourceData[sourceIndex + 2];
 				let Sa = sourceData[sourceIndex + 3] / 255;
-	
+
 				Ra = Sa + Ba - Sa * Ba;
-	
+
 				Rr = Sr;
 				Rg = Sg;
 				Rb = Sb;
-	
+
 				Rr =
 					(1 - Sa / Ra) * Br + (Sa / Ra) * Math.round((1 - Ba) * Sr + Ba * Rr);
 				Rg =
 					(1 - Sa / Ra) * Bg + (Sa / Ra) * Math.round((1 - Ba) * Sg + Ba * Rg);
 				Rb =
 					(1 - Sa / Ra) * Bb + (Sa / Ra) * Math.round((1 - Ba) * Sb + Ba * Rb);
-	
+
 				Ra *= 255;
-	
+
 				destData[destIndex + 0] = Rr;
 				destData[destIndex + 1] = Rg;
 				destData[destIndex + 2] = Rb;
 				destData[destIndex + 3] = Ra;
-	
+
 				destIndex += 4;
 				sourceIndex += 4;
 			}
-	
+
 			destIndex += destRowOffset;
 		}
-	
+
 		this.addCelToTextureUpdateQueue();
 	}
 	drawLine(cel, p1, p2, center) {
 		//generate line pixels
 		let linePoints = line(p1, p2);
-		linePoints.forEach(p => {
+		linePoints.forEach((p) => {
 			this.drawCel(cel, p.x, p.y, center);
-		})
+		});
 	}
 	addCelToTextureUpdateQueue() {
-		if(window.CoreRenderer === undefined || this.addedToUpdateQueue)return;
+		if (window.CoreRenderer === undefined || this.addedToUpdateQueue) return;
 		CoreRenderer.textureUpdateQueue.push(this.updateTexture.bind(this));
 		this.addedToUpdateQueue = true;
 	}
@@ -127,10 +128,11 @@ export class Cel {
 }
 
 export class LayerTexture {
-	constructor(cel, w, h) {
+	constructor(cel, w, h, label) {
 		this.width = w;
 		this.height = h;
 		this.cel = cel;
+		this.label = label;
 		this.cel.layer = this;
 		this.glTex = twgl.createTexture(gl, {
 			mag: gl.NEAREST,

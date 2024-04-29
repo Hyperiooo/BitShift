@@ -1,4 +1,4 @@
-export class DebugWindow {
+export class Debug {
 	constructor() {
 		this.window = document.getElementById("debug-window");
 		this.logger = document.getElementById("debug-logger");
@@ -25,6 +25,13 @@ export class DebugWindow {
             else{return e}
         }).join(", ");
 
+	}
+	stringifyObject (o) {
+		let s = "";
+		o.forEach(e=>{
+			s += e.label + ", "
+		})
+		return s;
 	}
 	enableDebug() {
 		this.enabled = true;

@@ -24,7 +24,7 @@ export class Tool {
 		this.keyDownEvent = null;
 		this.keyUpEvent = null;
 	}
-    inputActive(e) {
+    inputActive(e, pE) {
 
     }
     inputStart(e) {

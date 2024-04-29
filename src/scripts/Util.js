@@ -459,3 +459,11 @@ export const COLORS = {
 	clear: new Color("#00000000"),
 	random: function () {return new Color({r: Math.floor(Math.random() * 255),g: Math.floor(Math.random() * 255),b: Math.floor(Math.random() * 255),a: 255})}
 };
+
+
+export function toRadians(angle) {
+	return angle * (Math.PI / 180);
+}
+export function toDegrees(angle) {
+	return angle * (180 / Math.PI);
+}
