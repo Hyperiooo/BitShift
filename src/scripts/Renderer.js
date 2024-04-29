@@ -1,4 +1,4 @@
-import { Cel, LayerTexture } from "./Image.js";
+import { Cel, LayerTexture } from "./ImageData.js";
 import { Color, COLORS } from "./Util.js";
 import { Point } from "./Shapes.js";
 window.Image = Image;
@@ -135,23 +135,19 @@ export class Renderer {
 			snapRotationTolerance: 10,
 		});
 
-		setTimeout(() => {
-			this.zoom.options.onTransform();
-		}, 1);
-		setTimeout(() => {
-			var targetX =
-				(window.innerWidth - this.baseCanvasWidth * this.canvasScale) / 2;
-			var targetY =
-				(window.innerHeight - this.baseCanvasHeight * this.canvasScale) / 2;
+		this.zoom.options.onTransform();
+		var targetX =
+			(window.innerWidth - this.baseCanvasWidth * this.canvasScale) / 2;
+		var targetY =
+			(window.innerHeight - this.baseCanvasHeight * this.canvasScale) / 2;
 
-			this.zoom.zoomTo(
-				this.canvasScale,
-				window.innerWidth / 2,
-				window.innerHeight / 2
-			);
-			this.zoom.rotateTo(0);
-			this.zoom.moveTo(targetX, targetY);
-		}, 1);
+		this.zoom.zoomTo(
+			this.canvasScale,
+			window.innerWidth / 2,
+			window.innerHeight / 2
+		);
+		this.zoom.rotateTo(0);
+		this.zoom.moveTo(targetX, targetY);
 
 		this.renderQueue = [];
 		this.constructRenderQueue();
@@ -171,39 +167,33 @@ export class Renderer {
 			this.baseCanvasWidth,
 			this.baseCanvasHeight
 		);
-
-		let texData = new Cel(
-			this.baseCanvasWidth,
-			this.baseCanvasHeight,
-			COLORS.clear
-		);
-		window.texData = texData;
-		this.dummycel = new Cel(4, 4, COLORS.green);
-		// create a dummy texture, as we'll generate the texture data in the shader
 		this.addCelToRenderQueue(whiteTexData, this.baseCanvasWidth, this.baseCanvasHeight, "Grid Background");
-		this.addCelToRenderQueue(texData);
-
-		texData.drawCel(this.dummycel, 10, 10);
-		this.dummycel.fill(new Color([255, 0, 0, 125]));
-		texData.drawCel(this.dummycel, 9, 9);
-		this.dummycel.fill(COLORS.green);
-		texData.drawCel(this.dummycel, 1, 1);
-		this.dummycel.fill(COLORS.green);
-		texData.drawCel(this.dummycel, 4, 4);
-		texData.drawLine(this.dummycel, new Point(0, 0), new Point(10, 10));
 	}
 	addCelToRenderQueue(
 		cel,
 		width = this.baseCanvasWidth,
 		height = this.baseCanvasHeight,
-		label = "Layer " + this.renderQueue.length
+		label = "Cel " + this.renderQueue.length
 	) {
 		var texture = new LayerTexture(cel, width, height, label);
 		texture.updateTexture();
 		this.renderQueue.push(texture);
-		window.Debug.upsertValue("Render Queue ", this.renderQueue);
+		Debug.upsertValue("Render Queue ", this.renderQueue);
 		Debug.upsertValue("Render Queue Size", this.renderQueue.length);
 		return texture;
+	}
+	addLayerTextureToRenderQueue(
+		layerTexture,
+		width = this.baseCanvasWidth,
+		height = this.baseCanvasHeight,
+		label = "Layer " + this.renderQueue.length
+	) {
+		layerTexture.updateTexture();
+		this.renderQueue.push(layerTexture);
+		Debug.upsertValue("Render Queue ", this.renderQueue);
+		Debug.upsertValue("Render Queue Size", this.renderQueue.length);
+		return layerTexture;
+
 	}
 	render(now) {
 		//calculate fps

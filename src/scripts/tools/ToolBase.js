@@ -24,13 +24,16 @@ export class Tool {
 		this.keyDownEvent = null;
 		this.keyUpEvent = null;
 	}
-    inputActive(e, pE) {
+    inputActive(e) {
 
     }
     inputStart(e) {
 
     }
     inputEnd(e) {
+        
+    }
+    inputPreview(e) {
         
     }
 }

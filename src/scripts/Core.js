@@ -4,16 +4,19 @@ import { CanvasManager } from "./CanvasManager.js";
 import { Debug } from "./Debug.js";
 import { InputManager } from "./InputManager.js";
 import { ToolManager } from "./tools/ToolManager.js";
+import { LayerManager } from "./LayerManager.js";
 window.onload = function () {
-	let projSize = { x: 1028, y: 1028 };
+	window.projectSize = { w: 1028, h: 1028 };
 	window.Debug = new Debug();
 	window.Debug.enableDebug()
 	window.Canvas = document.getElementById("rendering-canvas");
-	window.CoreRenderer = new Renderer(window.Canvas, projSize.x, projSize.y);
+	window.CoreRenderer = new Renderer(window.Canvas, projectSize.w, projectSize.h);
 	//window.CoreRenderer.startRendering();
-	window.CanvasManager = new CanvasManager(projSize.x, projSize.y);
+	window.CanvasManager = new CanvasManager(projectSize.w, projectSize.h);
 	window.CanvasManager.bindRenderer(window.CoreRenderer);
 	window.InputManager = new InputManager(window.Canvas);
 	window.ToolManager = new ToolManager();
 	window.ToolManager.registerTools();
+	window.LayerManager = new LayerManager();
+	window.LayerManager.createLayer();
 };

@@ -12,6 +12,7 @@ export class InputManager {
         window.addEventListener('wheel', this.wheel.bind(this));
 
         this.clickBegan = false;
+        this.isDrawingSurface = false;
 
     }
     keyDown(e) {
@@ -67,6 +68,7 @@ export class InputManager {
          * manages the layers
          */
         if(e.target == this.drawingSurface) {//drawing events
+            this.isDrawingSurface = true;
             ToolManager.getActiveTool().inputStart(e);
         }
         let buttonTypes = ["Left", "Middle", "Right"]
@@ -75,12 +77,18 @@ export class InputManager {
     }
     pointerUp(e) {
         this.active = false;
+        this.isDrawingSurface = true;
         Debug.upsertValue("Mouse Button", "None");
 
     }
     pointerMove(e) {
         Debug.upsertValue("Mouse Position", e.x, e.y);
-        if(!this.active) return;
+        if(this.isDrawingSurface && this.active) {//drawing events
+            ToolManager.getActiveTool().inputActive(e);
+        }else if (e.target == this.drawingSurface && !this.active) {
+            ToolManager.getActiveTool().inputPreview(e);
+
+        }
     }
 
     wheel(e) {

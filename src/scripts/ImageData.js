@@ -10,6 +10,7 @@ export class Cel {
 		this.fill(color);
 
 		this.addedToUpdateQueue = false;
+
 	}
 	clear() {
 		this.data.fill(0);
@@ -109,6 +110,9 @@ export class Cel {
 
 		this.addCelToTextureUpdateQueue();
 	}
+	/**
+	 * draws a cel once. next time something is drawn, this 
+	 */
 	drawLine(cel, p1, p2, center) {
 		//generate line pixels
 		let linePoints = line(p1, p2);
