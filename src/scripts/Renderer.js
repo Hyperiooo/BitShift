@@ -96,6 +96,7 @@ export class Renderer {
 				this.canvasScale = transf.scale;
 				this.canvasAngle = transf.angle;
 			}.bind(this),
+			wheelRotateSpeed: 0,
 
 			onTouchPanComplete: function (e, x, y) {
 				return;

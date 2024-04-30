@@ -21,13 +21,13 @@ export class Brush extends Tool {
 			new Point(coords.x, coords.y),
 			new Point(pCoords.x, pCoords.y)
 		);
-		this.brushEngine(linePoints);
 		this.layerCel.drawLine(
 			this.dummyCel,
 			new Point(coords.x, coords.y),
 			new Point(pCoords.x, pCoords.y)
 		);
 		this.pE = e;
+		this.brushEngine(linePoints);
 	}
 	inputStart(e) {
 		this.pE = e;
@@ -46,10 +46,10 @@ export class Brush extends Tool {
 		//layerCel.tempDrawCel(dummyCel, coords.x, coords.y, true);
 	}
 	brushEngine(points) {
-		let spacing = -100;
+		let spacing = 0;
 		if (spacing >= 0) spacing += 1;
 		if (spacing < 0) spacing = Math.abs(1 / spacing);
-		let scattering = 4;
+		let scattering = 0;
 		for (let ix = 0; ix < points.length; ix += spacing) {
 			let i = Math.floor(ix);
 			let p = points[i];
