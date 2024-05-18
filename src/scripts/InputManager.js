@@ -16,10 +16,8 @@ export class InputManager {
 
     }
     keyDown(e) {
-        Debug.log("KeyDown: ", e.key);
     }
     keyUp(e) {
-        Debug.log("KeyUp: ", e.key);
     }
     pointerDown(e) {
         this.active = true; //TODO: adapt this so that multiple presses via different pointer id's are possible - only update respective pointers etc.
@@ -79,6 +77,7 @@ export class InputManager {
         this.active = false;
         this.isDrawingSurface = true;
         Debug.upsertValue("Mouse Button", "None");
+        ToolManager.getActiveTool().inputEnd(e);
 
     }
     pointerMove(e) {

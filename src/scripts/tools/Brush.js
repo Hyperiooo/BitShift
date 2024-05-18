@@ -7,37 +7,45 @@ export class Brush extends Tool {
 	constructor() {
 		super();
 		this.name = "Brush";
-		this.pE = null;
+		this.pC = null;
 		this.brushCel = new Cel(1, 1, COLORS.black);
 		this.layerCel = null;
 		this.dummyCel = new Cel(1, 1, COLORS.red);
+		this.listenToEvent = false;
 	}
 	inputActive(e) {
+		console.log(this.listenToEvent);
+		if (!this.listenToEvent) return;
 		let coords = CoreRenderer.getCoordinatesFromInputEvent(e);
-		let pCoords = CoreRenderer.getCoordinatesFromInputEvent(this.pE);
 		let layer = LayerManager.getActiveLayer();
 		this.layerCel = layer.layerCel;
 		let linePoints = line(
 			new Point(coords.x, coords.y),
-			new Point(pCoords.x, pCoords.y)
+			new Point(this.pC.x, this.pC.y)
 		);
-		this.layerCel.drawLine(
-			this.dummyCel,
-			new Point(coords.x, coords.y),
-			new Point(pCoords.x, pCoords.y)
-		);
-		this.pE = e;
+		this.pC = coords;
 		this.brushEngine(linePoints);
 	}
 	inputStart(e) {
-		this.pE = e;
 		let coords = CoreRenderer.getCoordinatesFromInputEvent(e);
 		let layer = LayerManager.getActiveLayer();
 		this.layerCel = layer.layerCel;
-		let dummyCel = new Cel(4, 4, COLORS.green);
-		this.brushEngine([coords]);
+		if (e.button == 0) {
+			this.listenToEvent = true;
+			this.brushEngine([coords]);
+			if (e.shiftKey) {
+				let linePoints = line(
+					new Point(coords.x, coords.y),
+					new Point(this.pC.x, this.pC.y)
+				);
+				this.brushEngine(linePoints);
+			}
+			this.pC = coords;
+		}
 	}
-	inputEnd(e) {}
+	inputEnd(e) {
+		this.listenToEvent = false;
+	}
 	inputPreview(e) {
 		let coords = CoreRenderer.getCoordinatesFromInputEvent(e);
 		let layer = LayerManager.getActiveLayer();

@@ -6,7 +6,7 @@ import { InputManager } from "./InputManager.js";
 import { ToolManager } from "./tools/ToolManager.js";
 import { LayerManager } from "./LayerManager.js";
 window.onload = function () {
-	window.projectSize = { w: 1028, h: 1028 };
+	window.projectSize = { w: 128, h: 128 };
 	window.Debug = new Debug();
 	window.Debug.enableDebug()
 	window.Canvas = document.getElementById("rendering-canvas");
