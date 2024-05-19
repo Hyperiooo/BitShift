@@ -14,6 +14,8 @@ export class Brush extends Tool {
 		this.listenToEvent = false;
 	}
 	inputActive(e) {
+
+		//TODO: only use penpoint classes if pointer type is a pen
 		console.log(this.listenToEvent);
 		if (!this.listenToEvent) return;
 		let coords = CoreRenderer.getCoordinatesFromInputEvent(e);
@@ -57,7 +59,7 @@ export class Brush extends Tool {
 		let spacing = 0;
 		if (spacing >= 0) spacing += 1;
 		if (spacing < 0) spacing = Math.abs(1 / spacing);
-		let scattering = 0;
+		let scattering = 10;
 		for (let ix = 0; ix < points.length; ix += spacing) {
 			let i = Math.floor(ix);
 			let p = points[i];

@@ -5,6 +5,16 @@ export class Point {
     }
 }
 
+export class PenPoint {
+    constructor(x, y, pressure, azimuth, altitude) {
+        this.x = x;
+        this.y = y;
+        this.pressure = pressure;
+        this.azimuth = azimuth;
+        this.altitude = altitude;
+    }
+}
+
 export class Rect {
     constructor(x1, y1, x2, y2) {
         this.x1 = x1;
