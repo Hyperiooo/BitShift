@@ -10,10 +10,17 @@ export class InputManager {
         window.addEventListener('pointerup', this.pointerUp.bind(this));
         window.addEventListener('pointermove', this.pointerMove.bind(this));
         window.addEventListener('wheel', this.wheel.bind(this));
+        
+        window.addEventListener('touchstart', this.preventDefault, {passive: false});
+        window.addEventListener('touchend', this.preventDefault, {passive: false});
+        window.addEventListener('touchmove', this.preventDefault, {passive: false});
 
         this.clickBegan = false;
         this.isDrawingSurface = false;
 
+    }
+    preventDefault(e) {
+        e.preventDefault();
     }
     keyDown(e) {
     }

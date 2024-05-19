@@ -44,7 +44,13 @@ export class Renderer {
 		  gl_FragColor = texture2D(texture, texcoord);
 		}
 		`;
-		window.gl = canvas.getContext("webgl"); //TODO: currently, it is only possible to have one webgl instance in the scene due to this. possibly make a way to create "headless" renderers? so that brush preview is possible through individual canvases.. or, use the image data and pass to a 'normal' 2d canvas?
+
+		this.canvas = canvas;
+		this.canvas.width = window.innerWidth * window.devicePixelRatio;
+		Debug.log(this.canvas.width)
+		Debug.log(window.innerWidth)
+		this.canvas.height = window.innerHeight * window.devicePixelRatio;
+		window.gl = this.canvas.getContext("webgl"); //TODO: currently, it is only possible to have one webgl instance in the scene due to this. possibly make a way to create "headless" renderers? so that brush preview is possible through individual canvases.. or, use the image data and pass to a 'normal' 2d canvas?
 		this.programInfo = twgl.createProgramInfo(gl, [this.baseVs, this.baseFs]);
 
 		this.bufferInfo = twgl.primitives.createXYQuadBufferInfo(gl);
@@ -58,6 +64,7 @@ export class Renderer {
 		this.textureUpdateQueue = [];
 
 		this.renderTime = 0;
+		Debug.log(window.devicePixelRatio)
 
 		if (
 			window.innerHeight /
@@ -213,7 +220,7 @@ export class Renderer {
 
 		gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-		twgl.resizeCanvasToDisplaySize(gl.canvas);
+		twgl.resizeCanvasToDisplaySize(gl.canvas, window.devicePixelRatio);
 		gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
 		var transform = this.zoom.getTransform();
 
@@ -243,10 +250,10 @@ export class Renderer {
 	) {
 		let dstWidth = texWidth;
 		let dstHeight = texHeight;
-		//dstWidth /= window.devicePixelRatio;
-		//dstHeight /= window.devicePixelRatio;
-		//dstX /= window.devicePixelRatio;
-		//dstY /= window.devicePixelRatio;
+		dstWidth *= window.devicePixelRatio;
+		dstHeight *= window.devicePixelRatio;
+		dstX *= window.devicePixelRatio;
+		dstY *= window.devicePixelRatio;
 
 		var mat = m4.identity();
 		var tmat = m4.identity();
