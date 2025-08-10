@@ -59,3 +59,7 @@ canvas {
   -webkit-user-select: none;
   box-sizing: border-box;
 }
+
+.hidden {
+  display: none !important;
+}

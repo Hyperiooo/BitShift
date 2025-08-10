@@ -6,10 +6,10 @@ var m4 = twgl.m4;
 export class Renderer {
 	/**
 	 * Creates a renderer and mounts a WebGL instance on the `canvas` object
-	 * 
-	 * @param {HTMLCanvasElement} canvas 
-	 * @param {Number} canvasWidth 
-	 * @param {Number} canvasHeight 
+	 *
+	 * @param {HTMLCanvasElement} canvas
+	 * @param {Number} canvasWidth
+	 * @param {Number} canvasHeight
 	 */
 	constructor(canvas, canvasWidth, canvasHeight) {
 		this.baseVs = `
@@ -42,13 +42,75 @@ export class Renderer {
 			discard;
 		  }
 		  gl_FragColor = texture2D(texture, texcoord);
+		  gl_FragColor = vec4(texcoord.x, texcoord.y, 0.0, 1.0);
 		}
 		`;
 
+		this.baseVs = `
+		attribute vec2 position;
+
+		void main() {
+			// Convert position to clip space (-1 to 1)
+			gl_Position = vec4(position, 0.0, 1.0);
+		}`;
+
+		this.baseFs = `
+precision mediump float;
+
+uniform sampler2D texture;     // The texture to sample
+uniform vec2 resolution;       // Canvas or viewport resolution (width, height)
+uniform float scaleX;          // X scale
+uniform float scaleY;          // Y scale
+uniform float tWidth;
+uniform float tHeight;
+uniform float translateX;      // X translation
+uniform float translateY;      // Y translation
+uniform float rotation;        // Rotation angle in radians
+
+void main() {
+    vec2 ndc = ((gl_FragCoord.xy + vec2(-1. * translateX, translateY)));
+	ndc.x += tWidth / 2.;
+	ndc.y -= tHeight / 2.;
+
+	// ndc.x += 50.;
+	// ndc.y += 50.;
+	ndc.y -= resolution.y - tHeight;
+
+	ndc.x -= tWidth / 2.;
+	ndc.y -= tHeight / 2.;
+	
+	ndc = vec2(
+        ndc.x * cos(rotation) - ndc.y * sin(rotation),
+        ndc.x * sin(rotation) + ndc.y * cos(rotation)
+    );
+
+	ndc.x += tWidth / 2.;
+	ndc.y += tHeight / 2.;
+	
+
+	ndc /= vec2(tWidth, tHeight);
+	ndc.y = 1. - ndc.y;
+	
+    if (ndc.x < 0.0 || ndc.x >= 1.0 || ndc.y < 0.0 || ndc.y >= 1.0) {
+        discard;
+    }
+
+	gl_FragColor = vec4(ndc, 0., 1.);
+	
+    vec4 col = texture2D(texture, ndc);
+    
+    if (col.a == 0.0) {
+        discard;
+    }
+    
+    gl_FragColor = col;
+}
+`;
+
 		this.canvas = canvas;
 		this.canvas.width = window.innerWidth * window.devicePixelRatio;
-		Debug.log(this.canvas.width)
-		Debug.log(window.innerWidth)
+		Debug.log(this.canvas.width);
+		Debug.log(window.innerWidth);
 		this.canvas.height = window.innerHeight * window.devicePixelRatio;
 		window.gl = this.canvas.getContext("webgl"); //TODO: currently, it is only possible to have one webgl instance in the scene due to this. possibly make a way to create "headless" renderers? so that brush preview is possible through individual canvases.. or, use the image data and pass to a 'normal' 2d canvas?
 		this.programInfo = twgl.createProgramInfo(gl, [this.baseVs, this.baseFs]);
@@ -64,7 +126,7 @@ export class Renderer {
 		this.textureUpdateQueue = [];
 
 		this.renderTime = 0;
-		Debug.log(window.devicePixelRatio)
+		Debug.log(window.devicePixelRatio);
 
 		if (
 			window.innerHeight /
@@ -175,7 +237,12 @@ export class Renderer {
 			this.baseCanvasWidth,
 			this.baseCanvasHeight
 		);
-		this.addCelToRenderQueue(whiteTexData, this.baseCanvasWidth, this.baseCanvasHeight, "Grid Background");
+		this.addCelToRenderQueue(
+			whiteTexData,
+			this.baseCanvasWidth,
+			this.baseCanvasHeight,
+			"Grid Background"
+		);
 	}
 	addCelToRenderQueue(
 		cel,
@@ -201,7 +268,6 @@ export class Renderer {
 		Debug.upsertValue("Render Queue ", this.renderQueue);
 		Debug.upsertValue("Render Queue Size", this.renderQueue.length);
 		return layerTexture;
-
 	}
 	render(now) {
 		//calculate fps
@@ -258,12 +324,26 @@ export class Renderer {
 		var mat = m4.identity();
 		var tmat = m4.identity();
 
+		let aspectRatio = targetWidth / targetHeight;
+
+		let scaleX = this.canvasScale / 4;
+		let scaleY = -scaleX
+		let translateX = (dstX + (dstWidth / 2) * this.canvasScale) / targetWidth * 2 * aspectRatio - 1;
+		let translateY = -(dstY + (dstHeight / 2) * this.canvasScale) / targetHeight * 2 + 1;
+		let rotation = this.zoom.toRadians(this.canvasAngle);
 		var uniforms = {
-			matrix: mat,
-			textureMatrix: tmat,
 			texture: tex,
+			resolution: [targetWidth, targetHeight],
+			scaleX: scaleX,
+			scaleY: scaleY,
+			tWidth: dstWidth * this.canvasScale,
+			tHeight: dstHeight * this.canvasScale,
+			translateX: dstX,
+			translateY: dstY,
+			rotation: rotation
 		};
 
+		
 		gl.enable(gl.BLEND);
 		gl.blendFuncSeparate(
 			gl.SRC_ALPHA,

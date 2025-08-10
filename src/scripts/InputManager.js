@@ -102,7 +102,7 @@ export class InputManager {
 		Debug.upsertValue("Pointer azimuth", this.azimuthAngle);
 		Debug.upsertValue("Pointer altitude", this.altitudeAngle);
 
-		console.log("-", e);
+		// console.log("-", e);
 		if (this.isDrawingSurface && this.active) {
 			//drawing events
 			ToolManager.getActiveTool().inputActive(e);
